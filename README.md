@@ -4,6 +4,7 @@ The relevance of job search in our time constantly increases. [Get Job](http://g
 
 
 [Live Demo](http://get-job.live)
+[Heroku Deployment](https://get-job.herokuapp.com)
 
 ![mockup]()
 
@@ -49,9 +50,11 @@ The main goal of the app is to deliver a solution that creates real value for th
     - As a Jobseeker I want to be able to use the search bar on the page of the full list of jobs.
     - As a Jobseeker I want to be able to see the search panel all the time when I scroll the page so that I can easily search for jobs.
     - As a Jobseeker I want to be able to save a job so that I can apply for it later.
+    - As a Jobseeker I want to be able to see my favorite jobs so that I can apply for them later.
     - As a Jobseeker I want to be able to see the Apply and Save buttons on the detailed job page on the mobile screens all the time when I scroll the page so that I can easily apply for a job or save it for later.
     - As a Jobseeker I want to be able to go back to the list of jobs from the detailed job page so that I can continue searching for jobs.
     - As a Jobseeker I want to be able to have access to the search bar on the dropdown menu on the mobile screens so that I can easily search for jobs at any time.
+    - As a Jobseeker I want to be able to delete my account so that I can remove my data from the app.
 
 #### Empolyer Goals
 - ##### First Time Visitor:
@@ -79,9 +82,15 @@ The main goal of the app is to deliver a solution that creates real value for th
     - As an Employer I want to be able to see the search panel all the time when I scroll the page so that I can easily search for resumes.
     - As an Employer I want to be able to hire a jobseeker so that I can get the right candidate.
     - As an Employer I want to be able to save a resume so that I can hire the candidate later.
+    - As an Employer I want to be able to see the bookmarked resumes so that I can hire the candidate later.
     - As an Employer I want to be able to see the Hire and Save buttons on the detailed resume page on the mobile screen all the time when I scroll the page so that I can easily hire a candidate or save the resume for later.
     - As an Employer I want to be able to return to the list of resumes from the detailed resume page so that I can continue searching for candidates.
     - As an Employer I want to be able to have access to the search bar on the dropdown menu on the mobile screens so that I can easily search for resumes at any time.
+    - As an Employer I want to be able to close/deactivate the job so that I can stop receiving new applications and remove the job from the search results.
+    - As an Employer I want to be able to reopen/activate the job so that I can start receiving new applications and the job will be shown in the search results.
+    - As an Employer I want to be able to delete the job so that I can remove it from the list of my jobs.
+    - As an Employer I want to be able to update the job details so that I can keep the job information up to date.
+    - As an Employer I want to be able to delete my account so that I can remove my data from the app.
 
 #### Admin Goals
 - As an Admin I want to be able to moderate the posted jobs so that I can protect the app from inappropriate content.
@@ -126,8 +135,17 @@ The Get Job platform based on the intuitive and easy to use structure. Every pag
 The flowchart below shows the structure of the app and the relationships between the pages. The flowchart was created using [Microsoft Visio](https://www.microsoft.com/en-ie/microsoft-365/visio/).
 ![flowchart]()
 
+### Database Design
+The Get Job platform uses a relational database to store and manage data. The RDBMS used for this project is [PostgreSQL](https://www.postgresql.org/) which hosted on cloud service [ElephantSQL](https://www.elephantsql.com/).
+
+The ER Diagram below shows the structure of the database and the relationships between the tables. This diagram was created using [Microsoft Visio](https://www.microsoft.com/en-ie/microsoft-365/visio/).
+![er_diagram]()
+
+
 ### UI Design
 ...
+
+#### Wireframes
 
 
 ## Features
@@ -137,6 +155,25 @@ Since the User always visits the site for some content and for some purpose, the
 The one of the important features of the app is the search bar. Like a google search bar, it placed in the center of the page to be easily found and allows users to achieve their main goal - to find a job, quickly and easily.
 
 ![top_icon]()
+
+### Development Features
+- #### Django Authentication and Authorization System
+The app uses the Django Allauth package that is built on top of the built-in Django Authentication and Authorization System. The system provides a secure way to manage user accounts and allows users to create an account, login, logout, reset password, and update their profile. Also, the package is used to provide additional features such as email verification, social authentication, and password reset.
+
+- #### Role System
+To manage the different types of users, I created Custom User Model and implemented a role system.
+The app contains two main types of users - Jobseekers and Employers. So the system allows users to create an account as a Jobseeker or an Employer. All the time when we want to create a new user, we have to assign him to a role. The email address is used as a unique identifier of the user and the system does not allow users to register multiple accounts with the same email address. So the Jobseeker and the Employer can not have the same email address.
+
+The role system was implemented by adding a `role` field to the `User` model. The `role` field is a choice field with options `Admin`, `Jobseeker`, and `Employer`. The `role` field also provides access to the appropriate pages, features and content of the app. For example, the Jobseeker can not create a job post and the Employer can not apply for a job.
+
+- #### Branching Strategy
+The app was built using the _Feature_ branching strategy. The strategy allows me to create a branch for a specific feature, task or bug without affecting the `master` branch, which keeps the main codebase clean and stable. I never push directly to the `master` branch. Instead, I work on a separate `develop` branch and create a new branch for each feature from the `develop` branch. When the feature is ready, I create a pull request and merge the branch into the `develop` branch. Before merging, the code is processed by the Continuous Integration (CI) system to check the code quality and run tests. Then the branch is deployed to the Heroku staging environment for manual testing. When the testing is successfully completed, I create a pull request to merge the `develop` branch into the `master` branch. The strategy allows to review the code and test the app before merging and keep the master branch clean and stable.
+See the [Deployment](#deployment) section for more details.
+
+- #### Database
+The app uses a relational database service [ElephantSQL](https://www.elephantsql.com/) to store and manage data.
+
+
 
 ## Technologies Used
 - ### Languages
@@ -153,9 +190,9 @@ The one of the important features of the app is the search bar. Like a google se
 
 - ### Tools
     - [Git](https://git-scm.com/)
-    - [GitHub](https://github.com)
+    - [GitHub Actions](https://docs.github.com/en/actions)
+    - [Heroku Pipelines](https://devcenter.heroku.com/articles/pipelines)
     - [Microsoft Visio](https://www.microsoft.com/en-ie/microsoft-365/visio/)
-    - [Heroku](https://www.heroku.com/)
     - [Cloudinary](https://cloudinary.com/)
     - [Balsamiq](https://balsamiq.com/)
 
@@ -169,15 +206,42 @@ The one of the important features of the app is the search bar. Like a google se
 ## Testing
 See [TESTING.md]() for an overview of the app testing and debugging.
 
-## Deployment
-...
+## Deployment, CI/CD
+The Get Job platform is deployed on the [Heroku](https://www.heroku.com/) cloud platform and can be accessed here https://get-job.herokuapp.com.
+
+The build, test, and deployment processes of the app are automated using Continuous Integration based on [GitHub Actions](https://docs.github.com/en/actions) and Continuous Deployment based on [Heroku Pipelines](https://devcenter.heroku.com/articles/pipelines).
+
+- #### Continuous Integration
+The GitHub repository is configured to use automated _Continuous Integration_ workflows. The workflow is triggered when a pull request is created and merged into the `develop` and/or `master` branches. When the workflow is triggered, it performs the build, lint, and test tasks.
+
+- #### Continuous Deployment
+The _Continuous Deployment_ workflow is implemented using [Heroku GitHub Integration](https://devcenter.heroku.com/articles/github-integration). This feature allows me to connect the app to a GitHub repository and deploy the app automatically from the selected branch when a new commit is pushed to the repository. The GitHub integration also supports the option to [wait for CI to pass before deploying](https://devcenter.heroku.com/articles/github-integration#automatic-deploys) the app. So the app is deployed automatically only when the build and test tasks are passed.
+
+[Heroku Pipelines](https://devcenter.heroku.com/articles/pipelines) is used to implement the _Continuous Deployment_ workflow. The pipeline is configured to deploy the app to the two environments - _Staging_ and _Production_:
+1. The _Staging_ stage is used to preview code changes and features before being deployed to production. This stage is triggered when a new commit is pushed to the `develop` branch or a pull request is merged into the branch from the feature branches. The app is deployed to the Heroku staging environment automatically when the tests are passed. The staging environment is available here https://get-job-test.herokuapp.com.
+2. The _Production_ stage is a live environment for the app. It is triggered by the pull request to merge the `develop` branch into the `master` branch. It also deploys the app automatically when GitHub Actions CI is passed. The production environment is available by the link https://get-job.herokuapp.com.
 
 ## Credits
 - ### Code
-...
+The Get Job platform is based on my own implementation of code, applying what I have learned from the [Code Institute](https://codeinstitute.net/) Full Stack Software Development course and other educational resources.
+
+- ### Educational Resources
+    - Django Multiple User Types, Custom User Model, and email authentication
+    https://youtu.be/f0hdXr2MOEA
+    https://youtu.be/Z6QMPAcS6E8
+    https://medium.com/geekculture/how-to-implement-multiple-user-types-in-django-b72df7a98dc3
+    https://medium.com/@royprins/django-custom-user-model-email-authentication-d3e89d36210f
+
 
 - ### Content
-...
+    - Hero Vector images from []()
 
 ## Contacts
-...
+If you have any questions about the project, or you would like to contact me for any other reason, please feel free to contact me by email or via social media.
+
+[![Gmail Badge](https://img.shields.io/badge/-flashdrag@gmail.com-c14438?style=flat-square&logo=Gmail&logoColor=white&link=mailto:flashdrag@gmail.com)](mailto:flashdrag@gmail.com)
+
+[<img src='https://img.shields.io/badge/Telegram-333333?style=for-the-badge&logo=telegram&logoColor=white&style=plastic&logoWidth=20&labelColor=2CA5E0' alt='Telegram'>](https://t.me/flashdrag) [<img src='https://img.shields.io/badge/LinkedIn-333333?style=for-the-badge&logo=linkedin&logoColor=white&style=plastic&logoWidth=20&labelColor=0077B5' alt='Telegram'>](https://www.linkedin.com/in/pavlo-myskov)
+
+
+The repositories of these and other projects are available on my [GitHub profile](
