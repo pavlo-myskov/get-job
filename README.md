@@ -167,8 +167,15 @@ The app contains two main types of users - Jobseekers and Employers. So the syst
 The role system was implemented by adding a `role` field to the `User` model. The `role` field is a choice field with options `Admin`, `Jobseeker`, and `Employer`. The `role` field also provides access to the appropriate pages, features and content of the app. For example, the Jobseeker can not create a job post and the Employer can not apply for a job.
 
 - #### Branching Strategy
-The app was built using the _Feature_ branching strategy. The strategy allows me to create a branch for a specific feature, task or bug without affecting the `master` branch, which keeps the main codebase clean and stable. I never push directly to the `master` branch. Instead, I work on a separate `develop` branch and create a new branch for each feature from the `develop` branch. When the feature is ready, I create a pull request and merge the branch into the `develop` branch. Before merging, the code is processed by the Continuous Integration (CI) system to check the code quality and run tests. Then the branch is deployed to the Heroku staging environment for manual testing. When the testing is successfully completed, I create a pull request to merge the `develop` branch into the `master` branch. The strategy allows to review the code and test the app before merging and keep the master branch clean and stable.
-See the [Deployment](#deployment) section for more details.
+The app was built using the _Feature_ branching strategy. The strategy allows me to create a branch for a specific feature, task or bug without affecting the `master` branch, which keeps the main codebase clean and stable.
+
+I have two main branches - `master` and `develop`. Whenever I want to add a new feature, I create a new branch from the `develop` branch. Then I develop the feature and when it is ready, I create a pull request and merge the `feature` branch into the `develop` branch. Before merging, the code is processed by the Continuous Integration (CI) system to check the code quality and run tests. Then the branch is deployed to the Heroku staging environment for manual testing. When the testing is completed, I pull the latest changes from the remote `develop` branch to the local `develop` branch and merge it into the local `master` branch. Then I push the local `master` branch to the remote `master` branch which triggers the GitHub Actions CI system to run tests. When the CI system successfully completes the checks, the branch is deploying to the Heroku production environment. The strategy allows me to keep the `master` branch clean and stable and test the app before it is deployed to the production environment.
+
+See the [Deployment](#deployment) section for more details about the CI/CD process.
+
+|Branching Strategy|
+|:--:|
+|![branching_strategy](docs/images/ci-cd-diagram.avif)|
 
 - #### Database
 The app uses a relational database service [ElephantSQL](https://www.elephantsql.com/) to store and manage data.
@@ -209,7 +216,7 @@ See [TESTING.md]() for an overview of the app testing and debugging.
 ## Deployment, CI/CD
 The Get Job platform is deployed on the [Heroku](https://www.heroku.com/) cloud platform and can be accessed here https://get-job.herokuapp.com.
 
-The build, test, and deployment processes of the app are automated using Continuous Integration based on [GitHub Actions](https://docs.github.com/en/actions) and Continuous Deployment based on [Heroku Pipelines](https://devcenter.heroku.com/articles/pipelines).
+The build, test, and deployment processes of the app are _automated_ using Continuous Integration based on [GitHub Actions](https://docs.github.com/en/actions) and Continuous Deployment based on [Heroku Pipelines](https://devcenter.heroku.com/articles/pipelines).
 
 - #### Continuous Integration
 The GitHub repository is configured to use automated _Continuous Integration_ workflows. The workflow is triggered when a pull request is created and merged into the `develop` and/or `master` branches. When the workflow is triggered, it performs the build, lint, and test tasks.
@@ -218,8 +225,8 @@ The GitHub repository is configured to use automated _Continuous Integration_ wo
 The _Continuous Deployment_ workflow is implemented using [Heroku GitHub Integration](https://devcenter.heroku.com/articles/github-integration). This feature allows me to connect the app to a GitHub repository and deploy the app automatically from the selected branch when a new commit is pushed to the repository. The GitHub integration also supports the option to [wait for CI to pass before deploying](https://devcenter.heroku.com/articles/github-integration#automatic-deploys) the app. So the app is deployed automatically only when the build and test tasks are passed.
 
 [Heroku Pipelines](https://devcenter.heroku.com/articles/pipelines) is used to implement the _Continuous Deployment_ workflow. The pipeline is configured to deploy the app to the two environments - _Staging_ and _Production_:
-1. The _Staging_ stage is used to preview code changes and features before being deployed to production. This stage is triggered when a new commit is pushed to the `develop` branch or a pull request is merged into the branch from the feature branches. The app is deployed to the Heroku staging environment automatically when the tests are passed. The staging environment is available here https://get-job-test.herokuapp.com.
-2. The _Production_ stage is a live environment for the app. It is triggered by the pull request to merge the `develop` branch into the `master` branch. It also deploys the app automatically when GitHub Actions CI is passed. The production environment is available by the link https://get-job.herokuapp.com.
+1. The _Staging_ stage is used to preview code changes and features before being deployed to production. This stage is triggered when a new commit is pushed to the `develop` branch or a pull request is merged into the branch from the feature branches. The app is deployed to the Heroku staging environment automatically when the tests are passed. The staging environment is available here https://get-job-dev.herokuapp.com.
+2. The _Production_ stage is a live environment for the app. It is triggered when a new commit is pushed to the `master` branch. It also deploys the app automatically when GitHub Actions CI is passed. The production environment is available by the link https://get-job.herokuapp.com.
 
 ## Credits
 - ### Code
@@ -231,10 +238,13 @@ The Get Job platform is based on my own implementation of code, applying what I 
     https://youtu.be/Z6QMPAcS6E8
     https://medium.com/geekculture/how-to-implement-multiple-user-types-in-django-b72df7a98dc3
     https://medium.com/@royprins/django-custom-user-model-email-authentication-d3e89d36210f
+    - CI/CD pipelines
+    https://blog.logrocket.com/ci-cd-pipelines-react-github-actions-heroku/
 
 
 - ### Content
     - Hero Vector images from []()
+    - Branching Strategy diagram is taken from [ci-cd-pipelines-react-github-actions-heroku](https://blog.logrocket.com/ci-cd-pipelines-react-github-actions-heroku/) blog post.
 
 ## Contacts
 If you have any questions about the project, or you would like to contact me for any other reason, please feel free to contact me by email or via social media.
