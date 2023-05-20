@@ -1,0 +1,13 @@
+[flake8]
+exclude =
+    */migrations/*,
+    *__pycache__/*,
+    *venv/*,
+    *node_modules/*,
+    *static/*,
+    *media/*
+# ignore unused importes
+extend-ignore = F401
+
+# or in command line in github actions:
+# flake8 . --exclude=*/migrations/* --max-line-length=120 --ignore=F401
