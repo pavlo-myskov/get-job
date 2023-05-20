@@ -1,4 +1,8 @@
 # Get Job
+
+[![CI Workflow](https://github.com/FlashDrago/get-job/actions/workflows/production.yml/badge.svg?branch=master)](https://github.com/FlashDrag/get-job/actions/workflows/production.yml)
+
+
 ## Overview
 The relevance of job search in our time constantly increases. [Get Job](http://get-job.live) is an online Job Platform that helps Jobseekers to get desirable jobs and Employers to find the right candidates. The app includes two modes: _Jobseeker Mode_ and _Employer Mode_. _Jobseeker Mode_ allows users to search for jobs and apply for jobs as well as create their resumes and manage their applications. And _Employer Mode_ allows users to post jobs, search for candidates and hire them. The *Get Job* portal is designed to be simple and intuitive so that users can easily navigate the app and perform the desired actions.
 
