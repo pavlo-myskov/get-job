@@ -27,8 +27,6 @@ development = os.getenv('DEVELOPMENT', False)
 DEBUG = os.getenv('DEBUG', False)
 SECRET_KEY = os.getenv('SECRET_KEY')
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
 
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost',
                  'get-job-dev.herokuapp.com',
@@ -44,7 +42,9 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'cloudinary_storage',
     'django.contrib.staticfiles',
+    'cloudinary',
 ]
 
 MIDDLEWARE = [
@@ -135,10 +135,29 @@ USE_L10N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
+# ___Static files (CSS, JavaScript, Images)___
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
-STATIC_URL = '/static/'
+# Credentials for the cloudinary_storage
+CLOUDINARY_STORAGE = {
+    'CLOUDINARY_URL': os.getenv('CLOUDINARY_URL'),
+}
+
+# URL path for your static files.
+STATIC_URL = '/static/get-job/'
+# Cloudinary's storage for static files
+STATICFILES_STORAGE = 'cloudinary_storage.storage.'\
+    'StaticHashedCloudinaryStorage'
+# Dir where your static files are stored during development
+STATICFILES_DIRS = [os.path.join(BASE_DIR, "static"), ]
+# Dir where static files will be collected using python manage.py collectstatic
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+# URL path for media files
+MEDIA_URL = '/media/get-job/'
+# Media cloudinary storage
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+# ___---___
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
