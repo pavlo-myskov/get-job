@@ -1,6 +1,6 @@
 # Get Job
 ## Overview
-The relevance of job search in our time constantly increases. [Get Job](http://get-job.live) is an online Job Platform that helps Jobseekers to get a desirable job and Employers to find the right candidates. The app includes two modes: _Jobseeker Mode_ and _Employer Mode_. _Jobseeker Mode_ allows users to search for jobs and apply for jobs as well as create their resume and manage their applications. And _Employer Mode_ allows users to post jobs, search for candidates and hire them. The *Get Job* portal is designed to be simple and intuitive so that users can easily navigate the app and perform the desired actions.
+The relevance of job search in our time constantly increases. [Get Job](http://get-job.live) is an online Job Platform that helps Jobseekers to get desirable jobs and Employers to find the right candidates. The app includes two modes: _Jobseeker Mode_ and _Employer Mode_. _Jobseeker Mode_ allows users to search for jobs and apply for jobs as well as create their resumes and manage their applications. And _Employer Mode_ allows users to post jobs, search for candidates and hire them. The *Get Job* portal is designed to be simple and intuitive so that users can easily navigate the app and perform the desired actions.
 
 
 [Live Demo](http://get-job.live)
@@ -16,24 +16,24 @@ The main goal of the app is to deliver a solution that creates real value for th
 
 #### Project Goals
 - To help jobseekers get a job.
-- To help employers connect with right candidates.
+- To help employers connect with the right candidates.
 - To provide a website with a clear purpose.
 - To provide a simple and intuitive UI that allows users to easily navigate the app.
 - To make the website available and functional on every device, especially on mobile devices, as they are the most popular devices for job search.
-- To setup a authentication mechanism that allows users to create their profile, save and manage their data.
+- To set up an authentication mechanism that allows users to create their profile, save and manage their data.
 
 
 ### User Stories
 #### Jobseeker Goals
 - ##### First Time Visitor:
     - As a Jobseeker I want to be able to see the purpose of the app so that I can decide if it is useful for me.
-    - As a Jobseeker I want to be able to create resume so that I can apply for jobs.
+    - As a Jobseeker I want to be able to create a resume so that I can apply for jobs.
     - As a Jobseeker I want to be able to search for jobs so that I can find an appropriate job.
     - As a Jobseeker I want to be able to see the latest jobs so that I be informed about new jobs.
     - As a Jobseeker I want to be able to register an account so that I can build my profile.
 
 - ##### Frequent Visitor:
-    - As a Jobseeker I want to be able to login to my account so that I can manage my data and apply for jobs.
+    - As a Jobseeker I want to be able to log in to my account so that I can manage my data and apply for jobs.
     - As a Jobseeker I want to be able to update my profile so that I can keep my data up to date.
     - As a Jobseeker I want to be able to get notifications so that I can be informed about my applications.
     - As a Jobseeker I want to be able to search for jobs so that I can select the appropriate job.
@@ -42,7 +42,7 @@ The main goal of the app is to deliver a solution that creates real value for th
     - As a Jobseeker I want to be able to apply for a job so that I can get a job.
     - As a Jobseeker I want to be able to see my applications so that I can manage them.
     - As a Jobseeker I want to be able to log out so that I can protect my data.
-    - As a Jobseeker I want to be able to see number of applicants for a job so that I can see my chances to get a job.
+    - As a Jobseeker I want to be able to see the number of applicants for a job so that I can see my chances to get a job.
     - As a Jobseeker I want to be able to open the list of all jobs.
     - As a Jobseeker I want to be able to select sort order for the list of jobs so that I can see the most relevant jobs first.
     - As a Jobseeker I want to be able to reset my password so that I can restore access to my account.
@@ -56,7 +56,7 @@ The main goal of the app is to deliver a solution that creates real value for th
     - As a Jobseeker I want to be able to have access to the search bar on the dropdown menu on the mobile screens so that I can easily search for jobs at any time.
     - As a Jobseeker I want to be able to delete my account so that I can remove my data from the app.
 
-#### Empolyer Goals
+#### Employer Goals
 - ##### First Time Visitor:
     - As an Employer I want to be able to toggle the site to employer mode so that I can see the relevant content.
     - As an Employer I want to be able to see the purpose of the app so that I can decide if it is useful for me.
@@ -71,13 +71,13 @@ The main goal of the app is to deliver a solution that creates real value for th
     - As an Employer I want to be able to see my all posted jobs so that I can manage them.
     <!-- - As an Employer I want to be able to see applicants for my jobs so that I can select the right candidate. -->
     - As an Employer I want to be able to open a resume card from the search results so that I can see the full resume.
-    - As an Employer I want to be able to see a full detailed view of the jobseeker resume so that I can decide if the candidate is the perfect match for my job.
+    - As an Employer I want to be able to see a full detailed view of the jobseeker's resume so that I can decide if the candidate is the perfect match for my job.
     - As an Employer I want to be able can to get notifications so that I can be informed about new applicants.
     - As an Employer I want to be able to logout so that I can protect my data.
     - As an Employer I want to be able to open the list of all resumes.
     - As an Employer I want to be able to select the sort order for the list of resumes so that I can see the most relevant resumes first.
     - As an Employer I want to be able to reset my password so that I can restore access to my account.
-    - As an Employer I want to be able to select the searching area in the list of resumes so that I can find candidates in the desired area.
+    - As an Employer I want to be able to select the search area in the list of resumes so that I can find candidates in the desired area.
     - As an Employer I want to be able to use the search bar on the page of the full list of resumes.
     - As an Employer I want to be able to see the search panel all the time when I scroll the page so that I can easily search for resumes.
     - As an Employer I want to be able to hire a jobseeker so that I can get the right candidate.
@@ -92,43 +92,43 @@ The main goal of the app is to deliver a solution that creates real value for th
     - As an Employer I want to be able to update the job details so that I can keep the job information up to date.
     - As an Employer I want to be able to delete my account so that I can remove my data from the app.
 
-#### Admin Goals
-- As an Admin I want to be able to moderate the posted jobs so that I can protect the app from inappropriate content.
+#### Moderator Goals
+- As a Moderator I want to be able to review and approve the posted jobs so that I can protect the app from inappropriate content.
 
 ### Agile methodology
-This project was developed with the Agile methodology which allowed me to develop the app in an iterative and incremental way, and adapt changes with flexibility even in the late stages of development.
+This project was developed with the Agile methodology which allowed me to develop the app iteratively and incrementally, and adapt changes with flexibility even in the late stages of development.
 
-_GitHub Issues_ and _Projects_ are used to manage the development process. Each part of the app divided into _Epics_ which are broken down into _User Stories_ and _Tasks_. An Epic represents a large body of work, such as a feature.
+_GitHub Issues_ and _Projects_ are used to manage the development process. Each part of the app is divided into _Epics__ which are broken down into _User Stories_ and _Tasks_. An Epic represents a large body of work, such as a feature.
 
-Each Epic is developed in a separate branch and merged to the master branch after testing and debugging and then deployed to the production server on _Heroku_. The _master_ branch is always production-ready and all changes are deployed automatically to the production server. This helps isolate development of each feature and minimize the risk of breaking the production code. The feature branches merged to the _master_ branch using _Pull Requests_ which allows to review the code and test the changes before merging.
+Each Epic is developed in a separate branch and merged to the master branch after testing and debugging and then deployed to the production server on _Heroku_. The _master_ branch is always production-ready and all changes are deployed automatically to the production server. This helps isolate the development of each feature and minimize the risk of breaking the production code. The feature branches merged to the _master_ branch using _Pull Requests_ which allows to review of the code and test the changes before merging.
 
-_GitHub Kanban_ board is used to track the progress of the development process. When _User Story_ is created, it is automatically added to the _Backlog_ column to be prioritized. The product _Backlog_ is never complete, as it is dynamic document to respond to changes effectively. As new features are identified, they are added to the product _Backlog_. As the product is released, the product _Backlog_ is constantly updated to reflect changes in the product and changes in the market. The Kanban board includes the following columns:
-- **Backlog** - the list of all _User Stories_ that has not yet been scheduled to be completed. As new _User Stories_ are created, they are automatically added to the _Backlog_ column.
+_GitHub Kanban_ board is used to track the progress of the development process. When _User Story_ is created, it is automatically added to the _Backlog_ column to be prioritized. The product _Backlog_ is never complete, as it is a dynamic document to respond to changes effectively. As new features are identified, they are added to the product _Backlog_. As the product is released, the product _Backlog_ is constantly updated to reflect changes in the product and changes in the market. The Kanban board includes the following columns:
+- **Backlog** - the list of all _User _Stories_ that have not yet been scheduled to be completed. As new _User Stories_ are created, they are automatically added to the _Backlog_ column.
 - **Development** - the collection of prioritized _User Stories_ that have to be completed before the end of the current _Sprint_.
 - **Testing** - user stories that are currently being tested.
 - **Done** - all completed and tested _User Stories_.
 
-The _User Stories_ prioritized using the _MoSCoW_ method and moved to the _Sprint Backlog_ column and added to the _Milstone_. The prioritation was based on the following criteria:
+The _User Stories_ were prioritized using the _MoSCoW_ method and moved to the _Sprint Backlog_ column and added to the _Milestone_. The prioritisation was based on the following criteria:
 - **Must Have** - The _User Story_ is crucial and add significant value to the product and must be delivered in the current iteration.
 - **Should Have** - The _User Story_ is important but not critical to the success. Simply delivery is not guaranteed within the current iteration.
 - **Could Have** - The _User Story_ is desirable and would only be delivered in their entirety in a best-case scenario. When a problem occurs and the deadline is at risk, one or more could-have items are dropped.
-- **Won't Have** - The _User Story_ will not be delivered in the current delivery timebox, but may be considered for the future.
+- **Won't Have** - The _User Story_ will not be delivered in the current delivery timebox but may be considered for the future.
 
 To balance the distribution of work in the current iteration, 60% of the effort was allocated to the _Must Have_, 20% to the _Should Have_, 20% to the _Could Have_.
 
 _Milestones_ were used to group issues into sprints. Each _Sprint_ had a due date. When the _Sprint_ starts, the _Milestone_ is created and the _User Stories_ are added to the _Milestone_ and. _User Stories_ are prioritized using the _MoSCoW_ method and moved to the _Development_ column.
-Then  After the development is completed, the _User Stories_ are moved to the _Testing_ column. When the testing is successfully completed, the _User Stories_ closed using _commit_ message with reference to the User Story ID.
+Then  After the development is completed, the _User Stories_ are moved to the _Testing_ column. When the testing is successfully completed, the _User Stories_ closed using a _commit_ message with reference to the User Story ID.
 
 ### Structure
-The Get Job platform based on the intuitive and easy to use structure. Every page has a consistent layout and navigation to allow users to easily find the information they need. The app has a responsive design to provide an optimal viewing experience across a wide range of devices.
+The Get Job platform is based on an intuitive and easy-to-use structure. Every page has a consistent layout and navigation to allow users to easily find the information they need. The app has a responsive design to provide an optimal viewing experience across a wide range of devices.
 
 - The Jobseeker's and Employer's Navbar structures are similar but have different purposes. The Jobseeker can search for jobs and the Employer can search for resumes as well as Jobseeker can create a resume and the Employer can create a job post.
-- The index page of the app is a Jobseeker home page which can be toggled to Employer home page. The Jobseeker and the Employer home pages structure is similar. The difference is only in the content of the pages.
-- The login page contains a indentical login form for jobseekers and employers but user has to select the role before login.
-- The register forms are different for jobseekers and employers as they include different fields.
+- The index page of the app is a Jobseeker home page which can be toggled to the Employer home page. The Jobseeker and the Employer home page structure is similar. The difference is only in the content of the pages.
+- The login page contains an indentical login form for jobseekers and employers but the user has to select the role before login.
+- The registration forms are different for jobseekers and employers as they include different fields.
 - The List of Resumes and the List of Jobs page structures are identical. The difference is also only in the content of the pages.
 - The app also includes separate Detailed pages of the Resume and the Job.
-- Jobseekers and Employers have own Profile pages to manage their accounts and view their resumes and created jobs.
+- Jobseekers and Employers have their own Profile pages to manage their accounts and view their resumes and created jobs.
 
 
 #### Flowchart
@@ -136,7 +136,7 @@ The flowchart below shows the structure of the app and the relationships between
 ![flowchart]()
 
 ### Database Design
-The Get Job platform uses a relational database to store and manage data. The RDBMS used for this project is [PostgreSQL](https://www.postgresql.org/) which hosted on cloud service [ElephantSQL](https://www.elephantsql.com/).
+The Get Job platform uses a relational database to store and manage data. The RDBMS used for this project is [PostgreSQL](https://www.postgresql.org/) which is hosted on the cloud service [ElephantSQL](https://www.elephantsql.com/).
 
 The ER Diagram below shows the structure of the database and the relationships between the tables. This diagram was created using [Microsoft Visio](https://www.microsoft.com/en-ie/microsoft-365/visio/).
 ![er_diagram]()
@@ -149,10 +149,10 @@ The ER Diagram below shows the structure of the database and the relationships b
 
 
 ## Features
-Since the User always visits the site for some content and for some purpose, the Features of the app primarily designed solve the problems of the Jobseekers and Employers and help them to achieve their goals. The UX is designed to create single-use learning and does not distract users attention from the main goal - to find a job or a candidate.
+Since the User always visits the site for some content and some purpose, the Features of the app are primarily designed to solve the problems of the Jobseekers and Employers and help them to achieve their goals. The UX is designed to create single-use learning and does not distract users' attention from the main goal - to find a job or a candidate.
 
 - #### Jobseeker's Search bar
-The one of the important features of the app is the search bar. Like a google search bar, it placed in the center of the page to be easily found and allows users to achieve their main goal - to find a job, quickly and easily.
+One of the important features of the app is the search bar. Like a Google search bar, it is placed in the center of the page to be easily found and allows users to achieve their main goal - to find a job, quickly and easily.
 
 ![top_icon]()
 
@@ -169,7 +169,7 @@ The role system was implemented by adding a `role` field to the `User` model. Th
 - #### Branching Strategy
 The app was built using the _Feature_ branching strategy. The strategy allows me to create a branch for a specific feature, task or bug without affecting the `master` branch, which keeps the main codebase clean and stable.
 
-I have two main branches - `master` and `develop`. Whenever I want to add a new feature, I create a new branch from the `develop` branch. Then I develop the feature and when it is ready, I create a pull request and merge the `feature` branch into the `develop` branch. Before merging, the code is processed by the Continuous Integration (CI) system to check the code quality and run tests. Then the branch is deployed to the Heroku staging environment for manual testing. When the testing is completed, I pull the latest changes from the remote `develop` branch to the local `develop` branch and merge it into the local `master` branch. Then I push the local `master` branch to the remote `master` branch which triggers the GitHub Actions CI system to run tests. When the CI system successfully completes the checks, the branch is deploying to the Heroku production environment. The strategy allows me to keep the `master` branch clean and stable and test the app before it is deployed to the production environment.
+I have two main branches - `master` and `develop`. Whenever I want to add a new feature, I create a new branch from the `develop` branch. Then I develop the feature and when it is ready, I create a pull request and merge the `feature` branch into the `develop` branch. Before merging, the code is processed by the Continuous Integration (CI) system to check the code quality and run tests. Then the branch is deployed to the Heroku staging environment for manual testing. When the testing is completed, I pull the latest changes from the remote `develop` branch to the local `develop` branch and merge it into the local `master` branch. Then I push the local `master` branch to the remote `master` branch which triggers the GitHub Actions CI system to run tests. When the CI system successfully completes the checks, the branch is deployed to the Heroku production environment. The strategy allows me to keep the `master` branch clean and stable and test the app before it is deployed to the production environment.
 
 See the [Deployment](#deployment) section for more details about the CI/CD process.
 
@@ -252,6 +252,3 @@ If you have any questions about the project, or you would like to contact me for
 [![Gmail Badge](https://img.shields.io/badge/-flashdrag@gmail.com-c14438?style=flat-square&logo=Gmail&logoColor=white&link=mailto:flashdrag@gmail.com)](mailto:flashdrag@gmail.com)
 
 [<img src='https://img.shields.io/badge/Telegram-333333?style=for-the-badge&logo=telegram&logoColor=white&style=plastic&logoWidth=20&labelColor=2CA5E0' alt='Telegram'>](https://t.me/flashdrag) [<img src='https://img.shields.io/badge/LinkedIn-333333?style=for-the-badge&logo=linkedin&logoColor=white&style=plastic&logoWidth=20&labelColor=0077B5' alt='Telegram'>](https://www.linkedin.com/in/pavlo-myskov)
-
-
-The repositories of these and other projects are available on my [GitHub profile](
