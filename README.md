@@ -6,9 +6,11 @@
 ## Overview
 The relevance of job search in our time constantly increases. [Get Job](http://get-job.live) is an online Job Platform that helps Jobseekers to get desirable jobs and Employers to find the right candidates. The app includes two modes: _Jobseeker Mode_ and _Employer Mode_. _Jobseeker Mode_ allows users to search for jobs and apply for jobs as well as create their resumes and manage their applications. And _Employer Mode_ allows users to post jobs, search for candidates and hire them. The *Get Job* portal is designed to be simple and intuitive so that users can easily navigate the app and perform the desired actions.
 
-
-[Live Demo](http://get-job.live)
 [Heroku Deployment](https://get-job.herokuapp.com)
+_or_
+http://get-job.live (_non secure http protocol_)
+
+
 
 ![mockup]()
 
@@ -218,7 +220,8 @@ The app uses a relational database service [ElephantSQL](https://www.elephantsql
 See [TESTING.md]() for an overview of the app testing and debugging.
 
 ## Deployment, CI/CD
-The Get Job platform is deployed on the [Heroku](https://www.heroku.com/) cloud platform and can be accessed here https://get-job.herokuapp.com.
+The Get Job platform is deployed on the [Heroku](https://www.heroku.com/) cloud platform and can be accessed here https://get-job.herokuapp.com or here http://get-job.live.
+The _get-job.live_ domain name is not secure as the Heroku free dyno plan does not support [SSL certificates for custom domains](https://devcenter.heroku.com/articles/ssl#dynos-and-certificate-options). The apps using Eco dynos can only use the built-in certificate associated with _appname.herokuapp.com_.
 
 The build, test, and deployment processes of the app are _automated_ using Continuous Integration based on [GitHub Actions](https://docs.github.com/en/actions) and Continuous Deployment based on [Heroku Pipelines](https://devcenter.heroku.com/articles/pipelines).
 
