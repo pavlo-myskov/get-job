@@ -31,7 +31,8 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost',
                  'get-job-dev.herokuapp.com',
                  'get-job.herokuapp.com',
-                 'get-job.live']
+                 'get-job.live',
+                 'www.get-job.live']
 
 
 # Application definition
@@ -164,3 +165,6 @@ DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Set custom user model as default
+AUTH_USER_MODEL = "core.User"
