@@ -198,7 +198,7 @@ The app uses a relational database service [ElephantSQL](https://www.elephantsql
     - [Django 4.2](https://docs.djangoproject.com/en/4.2/)
     - [Bootstrap 5](https://getbootstrap.com/docs/5.3/getting-started/introduction/)
     - [jQuery 3.6.4](https://releases.jquery.com/)
-    - [Font Awesome](https://fontawesome.com/)
+    - [Font Awesome 6.4](https://fontawesome.com/)
     - [Google Fonts](https://fonts.google.com/)
 
 - ### Tools
