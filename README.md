@@ -251,6 +251,7 @@ The Get Job platform is based on my own implementation of code, applying what I 
 
 
 - ### Content
+    - Logo Briefcase from https://uxwing.com
     - Hero Vector images from []()
     - Branching Strategy diagram is taken from [ci-cd-pipelines-react-github-actions-heroku](https://blog.logrocket.com/ci-cd-pipelines-react-github-actions-heroku/) blog post.
 

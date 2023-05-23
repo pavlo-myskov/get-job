@@ -1,5 +1,46 @@
 {% extends "base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
 
 {% block content %}
-<h1>Hello Jobseeker</h1>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">
+      <img src="{% static 'images/briefcase_uxwing.com.png' %}" alt="briefcase logo" width="30" height="24" class="d-inline-block align-text-top">
+      Get Job
+    </a>
+    <div class="btn-group col-3" role="group" aria-label="user role">
+      <a href="#" class="btn btn-primary active" aria-current="Jobseeker">Jobseeker</a>
+      <a href="#" class="btn btn-outline-primary">Employer</a>
+    </div>
+    {% if user.is_authenticated %}
+      <ul class="nav nav-pills">
+        <li class="nav-item">
+          <a class="nav-link" href="#">
+            <i class="fa-regular fa-bell"></i>
+          </a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">
+            <i class="fa-solid fa-user"></i>
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profile dropdown menu">
+            <li><a class="dropdown-item" href="#">My Profile</a></li>
+            <li><a class="dropdown-item" href="#">Search for Jobs</a></li>
+            <li><a class="dropdown-item" href="#">My Applications</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="#">LogOut</a></li>
+          </ul>
+        </li>
+      </ul>
+    {% else %}
+      <div class="nav-item">
+        <a class="nav-link" href="#">
+          <i class="fa-solid fa-right-to-bracket"></i>
+          Sign In/Sign Up
+        </a>
+      </div>
+    {% endif %}
+  </div>
+</nav>
 {% endblock content %}
