@@ -33,6 +33,7 @@ The main goal of the app is to deliver a solution that creates real value for th
 #### Jobseeker Goals
 - ##### First Time Visitor:
     - As a Jobseeker I want to be able to see the purpose of the app so that I can decide if it is useful for me.
+    - As a Jobseeker I want to be able to see the navigation bar so that I can easily navigate the app.
     - As a Jobseeker I want to be able to create a resume so that I can apply for jobs.
     - As a Jobseeker I want to be able to search for jobs so that I can find an appropriate job.
     - As a Jobseeker I want to be able to see the latest jobs so that I be informed about new jobs.
@@ -110,7 +111,8 @@ Each Epic is developed in a separate branch and merged to the master branch afte
 
 _GitHub Kanban_ board is used to track the progress of the development process. When _User Story_ is created, it is automatically added to the _Backlog_ column to be prioritized. The product _Backlog_ is never complete, as it is a dynamic document to respond to changes effectively. As new features are identified, they are added to the product _Backlog_. As the product is released, the product _Backlog_ is constantly updated to reflect changes in the product and changes in the market. The Kanban board includes the following columns:
 - **Backlog** - the list of all _User _Stories_ that have not yet been scheduled to be completed. As new _User Stories_ are created, they are automatically added to the _Backlog_ column.
-- **Development** - the collection of prioritized _User Stories_ that have to be completed before the end of the current _Sprint_.
+- **Sprint Backlog** - the collection of prioritized _User Stories_ that have been selected for the current _Sprint_.
+- **Development** - the user stories that are currently being developed.
 - **Testing** - user stories that are currently being tested.
 - **Done** - all completed and tested _User Stories_.
 
@@ -120,10 +122,8 @@ The _User Stories_ were prioritized using the _MoSCoW_ method and moved to the _
 - **Could Have** - The _User Story_ is desirable and would only be delivered in their entirety in a best-case scenario. When a problem occurs and the deadline is at risk, one or more could-have items are dropped.
 - **Won't Have** - The _User Story_ will not be delivered in the current delivery timebox but may be considered for the future.
 
-To balance the distribution of work in the current iteration, 60% of the effort was allocated to the _Must Have_, 20% to the _Should Have_, 20% to the _Could Have_.
-
-_Milestones_ were used to group issues into sprints. Each _Sprint_ had a due date. When the _Sprint_ starts, the _Milestone_ is created and the _User Stories_ are added to the _Milestone_ and. _User Stories_ are prioritized using the _MoSCoW_ method and moved to the _Development_ column.
-Then  After the development is completed, the _User Stories_ are moved to the _Testing_ column. When the testing is successfully completed, the _User Stories_ closed using a _commit_ message with reference to the User Story ID.
+_Milestones_ were used to group issues into sprints. When the _Sprint_ starts, the _Milestone_ is created and the _User Stories_ are prioritised using the _MoSCoW_ method and added to the _Sprint Backlog_ column. The user story that is currently being developed is moved to the _Development_ column.
+Then after the development is completed, the _User Stories_ are moved to the _Testing_ column. When the testing is successfully completed, the _User Stories_ closed using a _commit_ message with reference to the User Story ID.
 
 ### Structure
 The Get Job platform is based on an intuitive and easy-to-use structure. Every page has a consistent layout and navigation to allow users to easily find the information they need. The app has a responsive design to provide an optimal viewing experience across a wide range of devices.
