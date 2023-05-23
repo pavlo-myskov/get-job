@@ -43,6 +43,10 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
     'cloudinary_storage',
     'django.contrib.staticfiles',
     'cloudinary',
@@ -145,7 +149,7 @@ CLOUDINARY_STORAGE = {
     'CLOUDINARY_URL': os.getenv('CLOUDINARY_URL'),
 }
 
-# URL path for your static files.
+# URL path for your static files where they will be served from
 STATIC_URL = '/static/get-job/'
 # Cloudinary's storage for static files
 STATICFILES_STORAGE = 'cloudinary_storage.storage.'\
@@ -155,8 +159,10 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, "static"), ]
 # Dir where static files will be collected using python manage.py collectstatic
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-# URL path for media files
+# URL path for media files where they will be served from
 MEDIA_URL = '/media/get-job/'
+# Dir where media files are stored during development
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # Media cloudinary storage
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 # ___---___
@@ -168,3 +174,29 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Set custom user model as default
 AUTH_USER_MODEL = "core.User"
+
+
+# ___Allauth___
+SITE_ID = 1
+
+# Specifies the URL that the user will be redirected
+# to after a successful login or logout.
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
+
+# No e-mail verification is required to complete the signup process.
+ACCOUNT_EMAIL_VERIFICATION = 'none'
+# Removes the username field from the signup form.
+ACCOUNT_USER_MODEL_USERNAME_FIELD = None
+# Requires the user to enter a unique e-mail address during signup.
+ACCOUNT_EMAIL_REQUIRED = True
+# Removes the username field from the signup form.
+ACCOUNT_USERNAME_REQUIRED = False
+# Remembers the user’s session after closing the browser.
+ACCOUNT_SESSION_REMEMBER = True
+# Allows the user to log in using their e-mail address and password.
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+# Prevents multiple signups with the same e-mail address.
+ACCOUNT_UNIQUE_EMAIL = True
+# Disables the e-mail verification when a user signs up.
+ACCOUNT_EMAIL_VERIFICATION = 'none'
