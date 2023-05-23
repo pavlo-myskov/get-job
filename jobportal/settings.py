@@ -50,6 +50,8 @@ INSTALLED_APPS = [
     'cloudinary_storage',
     'django.contrib.staticfiles',
     'cloudinary',
+    'crispy_forms',
+    'crispy_bootstrap5',
     'core',
 ]
 
@@ -200,3 +202,8 @@ ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_UNIQUE_EMAIL = True
 # Disables the e-mail verification when a user signs up.
 ACCOUNT_EMAIL_VERIFICATION = 'none'
+
+
+# ___Crispy bootstrap5___
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+CRISPY_TEMPLATE_PACK = "bootstrap5"

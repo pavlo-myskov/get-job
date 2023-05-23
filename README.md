@@ -211,6 +211,7 @@ The app uses a relational database service [ElephantSQL](https://www.elephantsql
 
 - ### Django packages
 - [django-crispy-forms](https://django-crispy-forms.readthedocs.io/en/latest/)
+- [cripsy-bootstrap5](https://github.com/django-crispy-forms/crispy-bootstrap5)
 - [django-allauth](https://django-allauth.readthedocs.io/en/latest/)
 - [django-cloudinary-storage](https://pypi.org/project/django-cloudinary-storage/)
 <!-- - [django-countries](https://pypi.org/project/django-countries/) -->
