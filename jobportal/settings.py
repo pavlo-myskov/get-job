@@ -62,8 +62,8 @@ INSTALLED_APPS = [
     'storages',
     'crispy_forms',
     'crispy_bootstrap5',
-    # 'sass_processor',
-    # 'compressor',
+    'sass_processor',
+    'compressor',
     'core',
     'jobseeker',
 ]
@@ -96,13 +96,13 @@ TEMPLATES = [
     },
 ]
 
-# STATICFILES_FINDERS = [
-#     # Default finders
-#     'django.contrib.staticfiles.finders.FileSystemFinder',
-#     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-#     # sass processor and compressor finders
-#     'sass_processor.finders.CssFinder',
-# ]
+STATICFILES_FINDERS = [
+    # Default finders
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    # sass processor and compressor finders
+    'sass_processor.finders.CssFinder',
+]
 
 WSGI_APPLICATION = 'jobportal.wsgi.application'
 
@@ -194,9 +194,6 @@ else:
     # URL path for your static files where they
     # will be served from during development
     STATIC_URL = '/static/'
-    # Dir where static files will be collected using
-    # python manage.py collectstatic
-    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
     # URL path for media files where they will be served from
     MEDIA_URL = '/media/'
@@ -205,6 +202,11 @@ else:
 
 # Dir where your static files are stored during development
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "static"), ]
+# Dir where static files will be collected using
+# python manage.py collectstatic
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+# Dir where sass files are stored
+SASS_PROCESSOR_ROOT = os.path.join(BASE_DIR, 'static')
 # ___---___
 
 # Default primary key field type
