@@ -1,6 +1,6 @@
 # Get Job
 
-[![CI Workflow](https://github.com/FlashDrago/get-job/actions/workflows/production.yml/badge.svg?branch=master)](https://github.com/FlashDrag/get-job/actions/workflows/production.yml)
+[![Django CI](https://github.com/FlashDrago/get-job/actions/workflows/production.yml/badge.svg?branch=master)](https://github.com/FlashDrag/get-job/actions/workflows/production.yml)
 
 
 ## Overview
@@ -60,11 +60,12 @@ The main goal of the app is to deliver a solution that creates real value for th
     - As a Jobseeker I want to be able to see my favorite jobs so that I can apply for them later.
     - As a Jobseeker I want to be able to see the Apply and Save buttons on the detailed job page on the mobile screens all the time when I scroll the page so that I can easily apply for a job or save it for later.
     - As a Jobseeker I want to be able to go back to the list of jobs from the detailed job page so that I can continue searching for jobs.
-    - As a Jobseeker I want to be able to have access to the search bar on the dropdown menu on the mobile screens so that I can easily search for jobs at any time.
+    - As a Jobseeker I want to be able to have access to the search bar on the navigation panel so that I can easily search for jobs at any time.
     - As a Jobseeker I want to be able to delete my account so that I can remove my data from the app.
 
 #### Employer Goals
 - ##### First Time Visitor:
+    - As an Employer I want to be able to see the navigation bar so that I can easily navigate the app.
     - As an Employer I want to be able to toggle the site to employer mode so that I can see the relevant content.
     - As an Employer I want to be able to see the purpose of the app so that I can decide if it is useful for me.
     - As an Employer I want to be able to post a job so that I can find the right candidate.
@@ -92,7 +93,7 @@ The main goal of the app is to deliver a solution that creates real value for th
     - As an Employer I want to be able to see the bookmarked resumes so that I can hire the candidate later.
     - As an Employer I want to be able to see the Hire and Save buttons on the detailed resume page on the mobile screen all the time when I scroll the page so that I can easily hire a candidate or save the resume for later.
     - As an Employer I want to be able to return to the list of resumes from the detailed resume page so that I can continue searching for candidates.
-    - As an Employer I want to be able to have access to the search bar on the dropdown menu on the mobile screens so that I can easily search for resumes at any time.
+    As an Employer I want to be able to have access to the search bar on the navigation panel so that I can easily search for resumes at any time.
     - As an Employer I want to be able to close/deactivate the job so that I can stop receiving new applications and remove the job from the search results.
     - As an Employer I want to be able to reopen/activate the job so that I can start receiving new applications and the job will be shown in the search results.
     - As an Employer I want to be able to delete the job so that I can remove it from the list of my jobs.
@@ -186,7 +187,8 @@ See the [Deployment](#deployment) section for more details about the CI/CD proce
 - #### Database
 The app uses a relational database service [ElephantSQL](https://www.elephantsql.com/) to store and manage data.
 
-
+- #### Static Files
+The app uses the [Amazon S3](https://aws.amazon.com/s3/) cloud service to store static files such as images, CSS, and JavaScript files.
 
 ## Technologies Used
 - ### Languages
@@ -200,6 +202,8 @@ The app uses a relational database service [ElephantSQL](https://www.elephantsql
     - [jQuery 3.6.4](https://releases.jquery.com/)
     - [Font Awesome 6.4](https://fontawesome.com/)
     - [Google Fonts](https://fonts.google.com/)
+    - [libsass](https://pypi.org/project/libsass/)
+    - [boto3](https://boto3.amazonaws.com/v1/documentation/api/latest/index.html)
 
 - ### Tools
     - [Git](https://git-scm.com/)
@@ -213,8 +217,10 @@ The app uses a relational database service [ElephantSQL](https://www.elephantsql
 - [django-crispy-forms](https://django-crispy-forms.readthedocs.io/en/latest/)
 - [cripsy-bootstrap5](https://github.com/django-crispy-forms/crispy-bootstrap5)
 - [django-allauth](https://django-allauth.readthedocs.io/en/latest/)
-- [django-cloudinary-storage](https://pypi.org/project/django-cloudinary-storage/)
-<!-- - [django-countries](https://pypi.org/project/django-countries/) -->
+- [django-compressor](https://django-compressor.readthedocs.io/en/stable/)
+- [django-sass-processor](https://pypi.org/project/django-sass-processor/)
+- [django-storages](https://django-storages.readthedocs.io/en/latest/)
+
 
 
 ## Testing

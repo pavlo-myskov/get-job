@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 import os
+import sys
 from pathlib import Path
 from dotenv import load_dotenv
 
@@ -23,8 +24,18 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
-development = os.getenv('DEVELOPMENT', False)
-DEBUG = os.getenv('DEBUG', False)
+development = os.getenv('DEVELOPMENT', False) == 'True'
+if development:
+    print('Development mode is ON.')
+else:
+    print('Development mode is OFF.')
+
+DEBUG = os.getenv('DEBUG', False) == 'True'
+if DEBUG:
+    print('Debug mode is ON.')
+else:
+    print('Debug mode is OFF.')
+
 SECRET_KEY = os.getenv('SECRET_KEY')
 
 
@@ -47,11 +58,12 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
-    'cloudinary_storage',
     'django.contrib.staticfiles',
-    'cloudinary',
+    'storages',
     'crispy_forms',
     'crispy_bootstrap5',
+    'sass_processor',
+    'compressor',
     'core',
     'jobseeker',
 ]
@@ -84,6 +96,14 @@ TEMPLATES = [
     },
 ]
 
+STATICFILES_FINDERS = [
+    # Default finders
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    # sass processor and compressor finders
+    'sass_processor.finders.CssFinder',
+]
+
 WSGI_APPLICATION = 'jobportal.wsgi.application'
 
 
@@ -97,7 +117,10 @@ if development:
             'NAME': BASE_DIR / 'db.sqlite3',
         }
     }
-else:
+elif len(sys.argv) > 0 and sys.argv[1] != 'collectstatic':
+    if os.getenv("DATABASE_URL", None) is None:
+        raise Exception("DATABASE_URL environment variable not defined")
+
     # Parse database configuration from $DATABASE_URL
     import dj_database_url
     DATABASES = {
@@ -147,27 +170,43 @@ USE_TZ = True
 # ___Static files (CSS, JavaScript, Images)___
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
-# Credentials for the cloudinary_storage
-CLOUDINARY_STORAGE = {
-    'CLOUDINARY_URL': os.getenv('CLOUDINARY_URL'),
-}
+if not development:
+    # aws settings
+    AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
+    AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
+    AWS_STORAGE_BUCKET_NAME = os.getenv('AWS_STORAGE_BUCKET_NAME')
+    AWS_DEFAULT_ACL = None
+    AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
+    AWS_S3_OBJECT_PARAMETERS = {'CacheControl': 'max-age=86400'}
 
-# URL path for your static files where they will be served from
-STATIC_URL = '/static/get-job/'
-# Cloudinary's storage for static files
-STATICFILES_STORAGE = 'cloudinary_storage.storage.'\
-    'StaticHashedCloudinaryStorage'
+    # s3 static settings
+    AWS_LOCATION = 'static'
+    # URL path for your static files where they will be served from
+    STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{AWS_LOCATION}/'
+    STATICFILES_STORAGE = 'storage_backends.StaticStorage'
+
+    # s3 public media settings
+    PUBLIC_MEDIA_LOCATION = 'media'
+    # URL path for media files where they will be served from
+    MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{PUBLIC_MEDIA_LOCATION}/'
+    DEFAULT_FILE_STORAGE = 'storage_backends.PublicMediaStorage'
+else:
+    # URL path for your static files where they
+    # will be served from during development
+    STATIC_URL = '/static/'
+
+    # URL path for media files where they will be served from
+    MEDIA_URL = '/media/'
+    # Dir where media files are stored during development
+    MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
 # Dir where your static files are stored during development
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "static"), ]
-# Dir where static files will be collected using python manage.py collectstatic
+# Dir where static files will be collected using
+# python manage.py collectstatic
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-
-# URL path for media files where they will be served from
-MEDIA_URL = '/media/get-job/'
-# Dir where media files are stored during development
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-# Media cloudinary storage
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+# Dir where sass files are stored
+SASS_PROCESSOR_ROOT = os.path.join(BASE_DIR, 'static')
 # ___---___
 
 # Default primary key field type
@@ -180,6 +219,15 @@ AUTH_USER_MODEL = "core.User"
 
 
 # ___Allauth___
+
+# AUTHENTICATION_BACKENDS = [
+#     # Needed to login by username in Django admin, regardless of `allauth`
+#     'django.contrib.auth.backends.ModelBackend',
+
+#     # `allauth` specific authentication methods, such as login by e-mail
+#     'allauth.account.auth_backends.AuthenticationBackend',
+#     ]
+
 SITE_ID = 1
 
 # Specifies the URL that the user will be redirected
