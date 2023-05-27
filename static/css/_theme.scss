@@ -1,0 +1,17 @@
+@import "../bootstrap/scss/functions";
+
+$light: #f5f7f8;
+$royalpurple: #874c87;
+
+
+@import "../bootstrap/scss/variables";
+@import "../bootstrap/scss/mixins";
+
+// Create a map of custom colors
+$custom-colors: (
+  "royalpurple": $royalpurple,
+  "light": $light
+);
+
+// Merge the custom colors with the default colors
+$theme-colors: map-merge($theme-colors, $custom-colors);
