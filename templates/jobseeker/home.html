@@ -16,6 +16,14 @@
     </div>
     {% if not user.is_authenticated %}
     <ul class="nav nav-pills">
+      <li class="d-none d-lg-flex aligns-items-center py-1">
+        <form class="form-outline input-group input-group-sm">
+          <input type="search" id="search" class="form-control purple-input" placeholder="search job" aria-label="Search">
+          <button type="submit" class="btn btn-royalpurple">
+            <i class="fas fa-search"></i>
+          </button>
+        </form>
+      </li>
       <li class="nav-item">
         <a class="nav-link text-royalpurple px-2 px-sm-4" href="#" aria-label="notifications">
           <i class="fa-regular fa-bell fs-5"></i>
@@ -27,7 +35,14 @@
           <i class="fa-solid fa-user fs-5"></i>
         </a>
         <ul class="dropdown-menu jobseeker-dm dropdown-menu-end" aria-labelledby="jobseeker profile dropdown menu">
-
+          <li class="d-lg-none mx-3 my-2">
+            <form class="form-outline input-group input-group-sm">
+              <input type="search" id="search" class="form-control purple-input" placeholder="search job" aria-label="Search">
+              <button type="submit" class="btn btn-royalpurple">
+                <i class="fas fa-search"></i>
+              </button>
+            </form>
+          </li>
           <li><a class="dropdown-item" href="#">My Profile</a></li>
           <li><a class="dropdown-item" href="#">Search for Jobs</a></li>
           <li><a class="dropdown-item" href="#">My Applications</a></li>

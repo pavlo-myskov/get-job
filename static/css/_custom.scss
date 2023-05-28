@@ -18,3 +18,11 @@
     width: 100%;
   }
 }
+
+.purple-input {
+  &:focus {
+    outline: none;
+    border-color: $royalpurple;
+    box-shadow: 0 0 0 $input-btn-focus-width rgba($royalpurple, .3);
+  }
+}
