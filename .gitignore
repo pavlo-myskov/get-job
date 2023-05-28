@@ -3,5 +3,3 @@ __pycache__/
 db.sqlite3
 .vscode/
 .ssl_certs/
-main.css
-main.css.map
