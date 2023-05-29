@@ -158,6 +158,18 @@ The ER Diagram below shows the structure of the database and the relationships b
 ## Features
 Since the User always visits the site for some content and some purpose, the Features of the app are primarily designed to solve the problems of the Jobseekers and Employers and help them to achieve their goals. The UX is designed to create single-use learning and does not distract users' attention from the main goal - to find a job or a candidate.
 
+### Jobseeker's Home page
+The Jobseeker's Home page is designed to help Jobseekers to find a job quickly and easily. The page divided into 5 sections: Navbar, Hero, Search panel, Latest Jobs, and Footer.
+![jobseeker_home]()
+
+- #### Navbar
+The navigation bar is designed to be simple and intuitive. It includes the app logo, the toggle button to switch between the Jobseeker's and Employer's Home pages, the Sign-Up / Sign-In buttons if the user is not logged in and the Search bar, a Notification icon and the Profile dropdown menu if the user is logged in. The Navbar is fully responsive and the text of the Logo and Sign Up / Sign In buttons as well as the Search bar is hidden on small screens to save space. The Dropdown menu expands to full width on small screens to make it easier to use. In addition, the search bar of the Navbar is moved to the Dropdown menu on small screens to be easily found as it is the main feature of the app.
+![navbar]()
+
+- #### Hero
+The Hero section contains call-to-action headings and a button to encourage users to create a resume. The image of the section conveys the main message of the app - recruiters are looking for candidates reviewing resumes. When the users are clicking on the `Create Resume` button and if they are logged in, then they are redirected to the Create Resume page, otherwise to the Sign-Up / Sign-In.
+![hero]()
+
 - #### Jobseeker's Search bar
 One of the important features of the app is the search bar. Like a Google search bar, it is placed in the center of the page to be easily found and allows users to achieve their main goal - to find a job, quickly and easily.
 

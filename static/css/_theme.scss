@@ -3,15 +3,46 @@
 $light: #f5f7f8;
 $royalpurple: #874c87;
 
-
 @import "../bootstrap/scss/variables";
 @import "../bootstrap/scss/mixins";
 
 // Create a map of custom colors
 $custom-colors: (
   "royalpurple": $royalpurple,
-  "light": $light
+  "light": $light,
+  "gray-200": $gray-200
 );
 
 // Merge the custom colors with the default colors
 $theme-colors: map-merge($theme-colors, $custom-colors);
+
+// Create a map of custom font sizes for "display" classes
+// e.g. display-7, display-8, etc.
+$custom-font-sizes: (
+  7: 2rem,
+  8: 1.5rem,
+  9: 1.25rem,
+  10: 1rem,
+);
+
+// Merge the custom font sizes with the default font sizes
+$display-font-sizes: map-merge($display-font-sizes, $custom-font-sizes);
+
+
+// Create a map of custom utilities
+@import "../bootstrap/scss/utilities";
+
+$custom-utilities: (
+  // Add responsive breakpoints to the font sizes,
+  // e.g. fs-1, fs-sm-2, fs-md-3, etc.
+  "font-size":
+    map-merge(
+      map-get($utilities, "font-size"),
+      (
+        responsive: true,
+      )
+    ),
+);
+
+// Merge the custom utilities with the default utilities
+$utilities: map-merge($utilities, $custom-utilities);
