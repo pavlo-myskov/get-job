@@ -40,6 +40,7 @@ The main goal of the app is to deliver a solution that creates real value for th
     - As a Jobseeker I want to be able to register an account so that I can build my profile.
 
 - ##### Frequent Visitor:
+    - As a Jobseeker I want to be able to see the navigation bar when I scroll the page up so that I can access the navigation bar at any time.
     - As a Jobseeker I want to be able to log in to my account so that I can manage my data and apply for jobs.
     - As a Jobseeker I want to be able to update my profile so that I can keep my data up to date.
     - As a Jobseeker I want to be able to get notifications so that I can be informed about my applications.
@@ -74,6 +75,7 @@ The main goal of the app is to deliver a solution that creates real value for th
     - As an Employer I want to be able to see the latest resumes so that I be informed about new candidates.
 
 - ##### Frequent Visitor:
+    - As an Employer I want to be able to see the navigation bar when I scroll the page up so that I can access the navigation bar at any time.
     - As an Employer I want to be able to login to my account so that I can manage my jobs.
     - As an Employer I want to be able to update my profile so that I can keep my data up to date.
     - As an Employer I want to be able to see my all posted jobs so that I can manage them.
@@ -157,6 +159,19 @@ The ER Diagram below shows the structure of the database and the relationships b
 
 ## Features
 Since the User always visits the site for some content and some purpose, the Features of the app are primarily designed to solve the problems of the Jobseekers and Employers and help them to achieve their goals. The UX is designed to create single-use learning and does not distract users' attention from the main goal - to find a job or a candidate.
+
+### Jobseeker's Home page
+The Jobseeker's Home page is designed to help Jobseekers to find a job quickly and easily. The page divided into 5 sections: Navbar, Hero, Search panel, Latest Jobs, and Footer.
+![jobseeker_home]()
+
+- #### Navbar
+The navigation bar is designed to be simple and intuitive. It includes the app logo, the toggle button to switch between the Jobseeker's and Employer's Home pages, the Sign-Up / Sign-In buttons if the user is not logged in and the Search bar, a Notification icon and the Profile dropdown menu if the user is logged in. The Navbar is fully responsive and the text of the Logo and Sign Up / Sign In buttons as well as the Search bar is hidden on small screens to save space. The Dropdown menu expands to full width on small screens to make it easier to use. In addition, the search bar of the Navbar is moved to the Dropdown menu on small screens to be easily found as it is the main feature of the app.
+The Navbar is flexible and always available when the user needs. It hides on scroll down and shows on scroll up.
+![navbar]()
+
+- #### Hero
+The Hero section contains call-to-action headings and a button to encourage users to create a resume. The image of the section conveys the main message of the app - recruiters are looking for candidates reviewing resumes. When the users are clicking on the `Create Resume` button and if they are logged in, then they are redirected to the Create Resume page, otherwise to the Sign-Up / Sign-In.
+![hero]()
 
 - #### Jobseeker's Search bar
 One of the important features of the app is the search bar. Like a Google search bar, it is placed in the center of the page to be easily found and allows users to achieve their main goal - to find a job, quickly and easily.
@@ -258,7 +273,7 @@ The Get Job platform is based on my own implementation of code, applying what I 
 
 - ### Content
     - Logo Briefcase from https://uxwing.com
-    - Hero Vector images from []()
+    - Hero image designed By agny_illustration from https://pngtree.com/freepng/modern-flat-design-concept-of-recruitment-presentation-for-employment-and-recruiting-application-for-employee-hiring-can-used-for-web-banner-infographics-landing-page-flat-vector-illustration_5332898.html?sol=downref&id=bef
     - Branching Strategy diagram is taken from [ci-cd-pipelines-react-github-actions-heroku](https://blog.logrocket.com/ci-cd-pipelines-react-github-actions-heroku/) blog post.
 
 ## Contacts
