@@ -33,7 +33,10 @@
   }
 }
 
-// hide/show navbar on scroll
+// Hide/Show navbar on scroll
+// works togheter with hideShowNavbar() function in static js file
+
+// fix navbar to top of screen
 .smart-scroll{
   position: fixed;
   top: 0;
@@ -41,9 +44,11 @@
   left: 0;
   z-index: 1030;
 }
+// hide navbar on scroll down
 .scrolled-down{
    transform:translateY(-100%); transition: all 0.3s ease-in-out;
 }
+// show navbar on scroll up
 .scrolled-up{
    transform:translateY(0); transition: all 0.3s ease-in-out;
 }
