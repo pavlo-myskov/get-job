@@ -52,3 +52,19 @@
 .scrolled-up{
    transform:translateY(0); transition: all 0.3s ease-in-out;
 }
+
+// Vacansies cards
+
+// remove list borders
+.borderless li {
+  border: none;
+}
+
+// Truncate card text to 3 lines
+.custom-text-truncate {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
