@@ -7762,8 +7762,6 @@ textarea.form-control-lg {
   .btn-save:hover {
     color: #874c87; }
     .btn-save:hover::before {
-      content: "\f004";
-      font: var(--fa-font-solid);
-      color: #874c87; }
+      font-weight: 900; }
 
 /*# sourceMappingURL=main.css.map */
