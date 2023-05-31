@@ -7735,4 +7735,14 @@ textarea.form-control-lg {
   overflow: hidden;
   text-overflow: ellipsis; }
 
+@media screen and (min-width: 400px) and (max-width: 767px) {
+  .ps-1-custom {
+    padding-left: 0.25rem !important; } }
+
+.vaccancy-card .list-group-item {
+  padding: 0.2rem 1rem; }
+
+.text-justify {
+  text-align: justify !important; }
+
 /*# sourceMappingURL=main.css.map */

@@ -37,7 +37,7 @@
 // works togheter with hideShowNavbar() function in static js file
 
 // fix navbar to top of screen
-.smart-scroll{
+.smart-scroll {
   position: fixed;
   top: 0;
   right: 0;
@@ -45,12 +45,14 @@
   z-index: 1030;
 }
 // hide navbar on scroll down
-.scrolled-down{
-   transform:translateY(-100%); transition: all 0.3s ease-in-out;
+.scrolled-down {
+  transform: translateY(-100%);
+  transition: all 0.3s ease-in-out;
 }
 // show navbar on scroll up
-.scrolled-up{
-   transform:translateY(0); transition: all 0.3s ease-in-out;
+.scrolled-up {
+  transform: translateY(0);
+  transition: all 0.3s ease-in-out;
 }
 
 // Vacansies cards
@@ -67,4 +69,25 @@
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+// change padding of company item text in front of icons
+@media screen and (min-width: 400px) {
+  @media (max-width: 767px) {
+    .ps-1-custom {
+      padding-left: 0.25rem !important;
+    }
+  }
+}
+
+.vaccancy-card {
+  // override list-group-item padding
+  .list-group-item {
+    padding: 0.2rem 1rem;
+  }
+}
+
+// justify text
+.text-justify {
+  text-align: justify !important;
 }

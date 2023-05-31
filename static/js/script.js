@@ -1,14 +1,17 @@
 $(document).ready(function () {
+    let windowWidth = $(window).width();
+
     // init dropdown
     let dropdown = new bootstrap.Dropdown(document.querySelector('.dropdown-toggle'))
 
-    let windowWidth = $(window).width();
     hideShowNavbar(windowWidth, dropdown);
+    fixDaysCounterPosition(windowWidth);
 
-    // restart hideShowNavbar() on window resize
+    // restart functions on windows resize
     $(window).resize(function () {
         windowWidth = $(window).width();
         hideShowNavbar(windowWidth, dropdown);
+        fixDaysCounterPosition(windowWidth);
     });
 });
 
@@ -52,6 +55,18 @@ function hideShowNavbar(windowWidth, dropdown) {
         $('.navbar').removeClass('smart-scroll');
         // remove padding top from body
         $('body').css('padding-top', '0');
+    }
+}
+
+/**
+ * Fix absolute position of days counter on screens larger than 400px.
+ * Days counter is located on every card.
+ */
+function fixDaysCounterPosition(windowWidth) {
+    if (windowWidth > 440) {
+        $('.days-counter').addClass('position-absolute top-0 end-0 pt-2 pe-3')
+    } else {
+        $('.days-counter').removeClass('position-absolute top-0 end-0 pt-2 pe-3')
     }
 }
 
