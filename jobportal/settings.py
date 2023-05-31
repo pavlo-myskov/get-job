@@ -60,6 +60,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'django.contrib.staticfiles',
     'storages',
+    'fontawesomefree',
     'crispy_forms',
     'crispy_bootstrap5',
     'sass_processor',
