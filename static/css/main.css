@@ -7725,4 +7725,14 @@ textarea.form-control-lg {
   transform: translateY(0);
   transition: all 0.3s ease-in-out; }
 
+.borderless li {
+  border: none; }
+
+.custom-text-truncate {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis; }
+
 /*# sourceMappingURL=main.css.map */
