@@ -91,3 +91,32 @@
 .text-justify {
   text-align: justify !important;
 }
+
+// save button
+.btn-save {
+  &::before {
+    font-family: "Font Awesome 5 Free";
+    // heart icon
+    content: "\f004";
+  }
+  display: inline-block;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #874c87;
+  text-align: center;
+  text-decoration: none;
+  vertical-align: middle;
+  cursor: pointer;
+  padding: 0.375rem 0.75rem;
+  font-size: 1rem;
+
+  &:hover {
+    &::before {
+      // filled heart icon
+      content: "\f004";
+      font: var(--fa-font-solid);
+      color: #874c87;
+    }
+    color: #874c87;
+  }
+}

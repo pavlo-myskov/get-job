@@ -7745,4 +7745,25 @@ textarea.form-control-lg {
 .text-justify {
   text-align: justify !important; }
 
+.btn-save {
+  display: inline-block;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #874c87;
+  text-align: center;
+  text-decoration: none;
+  vertical-align: middle;
+  cursor: pointer;
+  padding: 0.375rem 0.75rem;
+  font-size: 1rem; }
+  .btn-save::before {
+    font-family: "Font Awesome 5 Free";
+    content: "\f004"; }
+  .btn-save:hover {
+    color: #874c87; }
+    .btn-save:hover::before {
+      content: "\f004";
+      font: var(--fa-font-solid);
+      color: #874c87; }
+
 /*# sourceMappingURL=main.css.map */
