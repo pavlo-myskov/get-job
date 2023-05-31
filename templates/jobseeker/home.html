@@ -100,96 +100,102 @@
     </section>
 
     <!-- Vacancies section -->
-    <section class="container">
-      <h2 class="text-muted pb-1">Latest Vacancies</h2>
-      <div class="card vaccancy-card my-2">
-        <div class="card-body">
-          <div class="d-flex justify-content-between mb-1">
-            <h5 class="card-title my-auto">Digital Operations Assistant</h5>
-            <p><small class="text-muted">5 days ago</small></p>
-          </div>
-          <div class="row company-body">
-            <ul class="col-8 list-group borderless">
-              <li class="list-group-item">
-                <div class="row d-flex align-items-center">
-                  <i class="col-1 text-center text-royalpurple pe-0 fa fa-building-user"></i>
-                  <span class="col-11 ps-0">TechWave Innovations</span>
+    <section class="container g-4">
+      <h2 class="text-muted">Latest Vacancies</h2>
+      <div class="row row-cols-1 row-cols-xl-2 g-2">
+        <div class="col">
+          <div class="card vaccancy-card">
+            <div class="card-body">
+              <div class="d-flex justify-content-between mb-1">
+                <h5 class="card-title my-auto">Digital Operations Assistant</h5>
+                <p><small class="text-muted">5 days ago</small></p>
+              </div>
+              <div class="row company-body">
+                <ul class="col-8 list-group borderless">
+                  <li class="list-group-item">
+                    <div class="row d-flex align-items-center">
+                      <i class="col-2 col-md-1 col-xl-2 text-center text-royalpurple pe-0 fa fa-building-user"></i>
+                      <span class="col-10 col-md-11 col-xl-10 ps-1 ps-lg-0">TechWave Innovations</span>
+                    </div>
+                  </li>
+                  <li class="list-group-item">
+                    <div class="row d-flex align-items-center">
+                      <i class="col-2 col-md-1 col-xl-2 text-center text-royalpurple pe-0 fa fa-location-dot"></i>
+                      <span class="col-10 col-md-11 col-xl-10 ps-1 ps-lg-0">co. Cork</span>
+                    </div>
+                  </li>
+                  <li class="list-group-item">
+                    <div class="row d-flex align-items-center">
+                      <i class="col-2 col-md-1 col-xl-2 text-center text-royalpurple pe-0 fa fa-money-bills"></i>
+                      <span class="col-10 col-md-11 col-xl-10 ps-1 ps-lg-0">45000</span>
+                    </div>
+                  </li>
+                </ul>
+                <div class="col-4 mx-auto my-auto text-center">
+                  <img src="{% static 'images/company-placeholder.png' %}" class="img-thumbnail" alt="company logo"
+                    style="max-height: 90px;">
                 </div>
-              </li>
-              <li class="list-group-item">
-                <div class="row d-flex align-items-center">
-                  <i class="col-1 text-center text-royalpurple pe-0 fa fa-location-dot"></i>
-                  <span class="col-11 ps-0">co. Cork</span>
-                </div>
-              </li>
-              <li class="list-group-item">
-                <div class="row d-flex align-items-center">
-                  <i class="col-1 text-center text-royalpurple pe-0 fa fa-money-bills"></i>
-                  <span class="col-11 ps-0">45000</span>
-                </div>
-              </li>
-            </ul>
-            <div class="col-4 mx-auto my-auto text-center">
-              <img src="{% static 'images/company-placeholder.png' %}" class="img-thumbnail" alt="company logo"
-                style="max-height: 90px;">
+              </div>
+              <p class="card-text mt-2 custom-text-truncate">
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptatum. Lorem ipsum dolor sit amet
+                consectetur adipisicing elit. Nesciunt aut omnis cupiditate voluptatum eius doloremque facilis deserunt
+                excepturi quaerat consequuntur nobis iste, repudiandae debitis soluta? Blanditiis sint atque explicabo
+                illo. Lorem ipsum dolor sit amet consectetur, adipisicing elit. Natus nisi laboriosam corrupti accusamus
+                consectetur exercitationem fugit repellat placeat asperiores, maiores culpa! Voluptas sint nisi esse
+                officiis eveniet eligendi temporibus doloribus?
+              </p>
+              <div class="d-flex justify-content-between">
+                <a href="#" class="btn btn-outline-royalpurple">Save</a>
+                <a href="#" class="btn btn-royalpurple">Apply</a>
+              </div>
             </div>
-          </div>
-          <p class="card-text mt-2 custom-text-truncate">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptatum. Lorem ipsum dolor sit amet
-            consectetur adipisicing elit. Nesciunt aut omnis cupiditate voluptatum eius doloremque facilis deserunt
-            excepturi quaerat consequuntur nobis iste, repudiandae debitis soluta? Blanditiis sint atque explicabo
-            illo. Lorem ipsum dolor sit amet consectetur, adipisicing elit. Natus nisi laboriosam corrupti accusamus
-            consectetur exercitationem fugit repellat placeat asperiores, maiores culpa! Voluptas sint nisi esse
-            officiis eveniet eligendi temporibus doloribus?
-          </p>
-          <div class="d-flex justify-content-between">
-            <a href="#" class="btn btn-outline-royalpurple">Save</a>
-            <a href="#" class="btn btn-royalpurple">Apply</a>
           </div>
         </div>
-      </div>
-      <div class="card vaccancy-card">
-        <div class="card-body">
-          <div class="d-flex justify-content-between mb-1">
-            <h5 class="card-title my-auto">Cloud Solutions Architect</h5>
-            <p><small class="text-muted">8 days ago</small></p>
-          </div>
-          <div class="row company-body">
-            <ul class="col-8 list-group borderless">
-              <li class="list-group-item">
-                <div class="row d-flex align-items-center">
-                  <i class="col-1 text-center text-royalpurple pe-0 fa fa-building-user"></i>
-                  <span class="col-11 ps-0">Nimbus Synergy Solutions</span>
+        <div class="col">
+          <div class="card vaccancy-card">
+            <div class="card-body">
+              <div class="d-flex justify-content-between mb-1">
+                <h5 class="card-title my-auto">Cloud Solutions Architect</h5>
+                <p><small class="text-muted">8 days ago</small></p>
+              </div>
+              <div class="row company-body">
+                <ul class="col-8 list-group borderless">
+                  <li class="list-group-item">
+                    <div class="row d-flex align-items-center">
+                      <i class="col-2 col-md-1 col-xl-2 text-center text-royalpurple pe-0 fa fa-building-user"></i>
+                      <span class="col-10 col-md-11 col-xl-10 ps-1 ps-lg-0">Nimbus Synergy Solutions</span>
+                    </div>
+                  </li>
+                  <li class="list-group-item">
+                    <div class="row d-flex align-items-center">
+                      <i class="col-2 col-md-1 col-xl-2 text-center text-royalpurple pe-0 fa fa-location-dot"></i>
+                      <span class="col-10 col-md-11 col-xl-10 ps-1 ps-lg-0">co. Limerick</span>
+                    </div>
+                  </li>
+                  <li class="list-group-item">
+                    <div class="row d-flex align-items-center">
+                      <i class="col-2 col-md-1 col-xl-2 text-center text-royalpurple pe-0 fa fa-money-bills"></i>
+                      <span class="col-10 col-md-11 col-xl-10 ps-1 ps-lg-0">Not Disclosed</span>
+                    </div>
+                  </li>
+                </ul>
+                <div class="col-4 mx-auto my-auto text-center">
+                  <img src="{% static 'images/company-placeholder.png' %}" class="img-thumbnail" alt="company logo"
+                    style="max-height: 90px;">
                 </div>
-              </li>
-              <li class="list-group-item">
-                <div class="row d-flex align-items-center">
-                  <i class="col-1 text-center text-royalpurple pe-0 fa fa-location-dot"></i>
-                  <span class="col-11 ps-0">co. Limerick</span>
-                </div>
-              </li>
-              <li class="list-group-item">
-                <div class="row d-flex align-items-center">
-                  <i class="col-1 text-center text-royalpurple pe-0 fa fa-money-bills"></i>
-                  <span class="col-11 ps-0">Not Disclosed</span>
-                </div>
-              </li>
-            </ul>
-            <div class="col-4 mx-auto my-auto text-center">
-              <img src="{% static 'images/company-placeholder.png' %}" class="img-thumbnail" alt="company logo"
-                style="max-height: 90px;">
+              </div>
+              <p class="card-text mt-2 custom-text-truncate">
+                Nesciunt aut omnis cupiditate voluptatum eius doloremque facilis deserunt
+                excepturi quaerat consequuntur nobis iste, repudiandae debitis soluta? Blanditiis sint atque explicabo
+                illo. Lorem ipsum dolor sit amet consectetur. Lorem ipsum, dolor sit amet consectetur adipisicing elit.
+                Consectetur vel consequatur in deleniti a provident, iure sunt fuga sint quidem accusamus commodi
+                reprehenderit aliquid eos officia, libero ipsam nostrum alias.
+              </p>
+              <div class="d-flex justify-content-between">
+                <a href="#" class="btn btn-outline-royalpurple">Save</a>
+                <a href="#" class="btn btn-royalpurple">Apply</a>
+              </div>
             </div>
-          </div>
-          <p class="card-text mt-2 custom-text-truncate">
-            Nesciunt aut omnis cupiditate voluptatum eius doloremque facilis deserunt
-            excepturi quaerat consequuntur nobis iste, repudiandae debitis soluta? Blanditiis sint atque explicabo
-            illo. Lorem ipsum dolor sit amet consectetur. Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-            Consectetur vel consequatur in deleniti a provident, iure sunt fuga sint quidem accusamus commodi
-            reprehenderit aliquid eos officia, libero ipsam nostrum alias.
-          </p>
-          <div class="d-flex justify-content-between">
-            <a href="#" class="btn btn-outline-royalpurple">Save</a>
-            <a href="#" class="btn btn-royalpurple">Apply</a>
           </div>
         </div>
       </div>
