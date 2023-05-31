@@ -215,7 +215,6 @@ The app uses the [Amazon S3](https://aws.amazon.com/s3/) cloud service to store 
     - [Django 4.2](https://docs.djangoproject.com/en/4.2/)
     - [Bootstrap 5](https://getbootstrap.com/docs/5.3/getting-started/introduction/)
     - [jQuery 3.6.4](https://releases.jquery.com/)
-    - [Font Awesome 6.4](https://fontawesome.com/)
     - [Google Fonts](https://fonts.google.com/)
     - [libsass](https://pypi.org/project/libsass/)
     - [boto3](https://boto3.amazonaws.com/v1/documentation/api/latest/index.html)
@@ -229,6 +228,7 @@ The app uses the [Amazon S3](https://aws.amazon.com/s3/) cloud service to store 
     - [Balsamiq](https://balsamiq.com/)
 
 - ### Django packages
+- [django fontawesomefree 6.4](https://fontawesome.com/docs/web/use-with/python-django)
 - [django-crispy-forms](https://django-crispy-forms.readthedocs.io/en/latest/)
 - [cripsy-bootstrap5](https://github.com/django-crispy-forms/crispy-bootstrap5)
 - [django-allauth](https://django-allauth.readthedocs.io/en/latest/)
