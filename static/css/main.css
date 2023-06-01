@@ -7742,6 +7742,14 @@ textarea.form-control-lg {
 .vaccancy-card .list-group-item {
   padding: 0.2rem 1rem; }
 
+@media (min-width: 768px) {
+  .vaccancy-card .list-group-item {
+    padding: 0.3rem 1rem; } }
+
+@media (min-width: 1200px) {
+  .vaccancy-card .list-group-item {
+    padding: 0.2rem 1rem; } }
+
 .text-justify {
   text-align: justify !important; }
 
