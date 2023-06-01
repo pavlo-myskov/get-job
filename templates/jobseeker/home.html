@@ -68,13 +68,13 @@
 
 <main class="container">
   <!-- Hero Section -->
-  <section class="row py-2 py-md-4 m-0 mb-4 mb-md-0">
+  <section class="row py-2 py-md-4 m-0 mb-4 mb-md-0 hero-container">
     <div class="col-md-7 order-1 order-md-0 d-flex align-items-start flex-column justify-content-evenly">
       <div class="py-4 py-md-0 w-100">
         <h1 class="fs-2 pb-0 pb-lg-1 text-center text-sm-start text-muted">Stand Out From the Crowd</h1>
         <h2 class="fs-4 lead text-center text-md-start">Create a Resume that Gets Noticed</h2>
       </div>
-      <a href="#" class="btn btn-outline-royalpurple shadow-sm mt-2 mt-md-0 py-1 align-self-end align-self-md-start">Create
+      <a href="#" class="btn btn-outline-royalpurple mt-2 mt-md-0 py-1 align-self-end align-self-md-start">Create
         Resume</a>
     </div>
     <div class="col-md-5 my-3 px-5 px-md-1 my-md-auto order-0 order-md-1">
@@ -85,30 +85,32 @@
 
   <div class="bg-light rounded pb-3">
     <!-- Search section -->
-    <section class="py-5">
+    <section class="py-5 search-container">
       <div class="text-center">
         <h2 class="text-muted">Let's Find Your Next Job</h2>
         <h5 class="lead">Type your desired Job Title</h4>
       </div>
       <div class="container px-md-5 pt-4 pt-lg-5 pb-1 pb-md-3 pb-lg-5 mx-auto">
         <form class="input-group">
-          <input class="form-control purple-input me-2" type="search" placeholder="e.g. Software Developer"
+          <input class="form-control search-bar purple-input me-2" type="search" placeholder="e.g. Software Developer"
             aria-label="search job">
-          <button class="btn btn-outline-royalpurple" type="submit">Find Job</button>
+          <button class="btn btn-royalpurple" type="submit">Find Job</button>
         </form>
       </div>
     </section>
 
     <!-- Vacancies section -->
-    <section class="container g-1 g-sm-2 g-md-4">
+    <section class="container vaccancy-container g-1 g-sm-2 g-md-4">
       <h2 class="text-muted ps-3">Latest Vacancies</h2>
       <div class="row row-cols-1 row-cols-xl-2 g-2">
         <!-- ______card______ -->
         <div class="col">
           <div class="card vaccancy-card">
-            <div class="card-body">
-              <h5 class="card-title">Digital Operations Assistant</h5>
-              <small class="days-counter text-muted">5 days ago</small>
+            <div class="card-body position-relative">
+              <h5 class="card-title">
+                <a href="#" class="text-decoration-none stretched-link text-dark">Digital Operations Assistant</a>
+              </h5>
+              <p class="days-counter text-muted"><small>5 days ago</small></p>
               <div class="row company-body my-2">
                 <ul class="col-8 list-group borderless">
                   <li class="list-group-item">
@@ -144,14 +146,17 @@
                 consectetur exercitationem fugit repellat placeat asperiores, maiores culpa! Voluptas sint nisi esse
                 officiis eveniet eligendi temporibus doloribus?
               </p>
+
+            </div>
+            <div class="card-footer">
               <div class="d-flex justify-content-between px-3">
-                <a href="#" class="btn-save">
+                <a href="#" class="btn-save card-link">
                   <!-- TODO saved
                   <i class="fa fa-heart"></i>
                   -->
                   Save
                 </a>
-                <a href="#" class="btn btn-outline-royalpurple py-0 my-1">Apply</a>
+                <a href="#" class="btn btn-outline-royalpurple card-link py-0 my-1">Apply</a>
               </div>
             </div>
           </div>
