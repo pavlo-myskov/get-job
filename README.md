@@ -174,7 +174,12 @@ The Hero section contains call-to-action headings and a button to encourage user
 ![hero]()
 
 - #### Jobseeker's Search bar
-One of the important features of the app is the search bar. Like a Google search bar, it is placed in the center of the page to be easily found and allows users to achieve their main goal - to find a job, quickly and easily.
+One of the important features of the app is the search bar. It is placed in the center of the page to be easily found and allows users to achieve their main goal - to find a job quickly and easily.
+![search_bar]()
+
+- #### Latest Jobs
+The Latest Jobs section is a list of the latest vacancies posted by Employers. Each Vacancy represented by a Bootstrap Card component. The Card contains the Job Title, Days ago, the Company Name, the Location, the Salary and the main section of the Job Description. The card title is clickable and redirects the user to the Job Details page. Also a user can save the job to the Favorites or directly Apply for the Job escaping the Job Details page. The section is fully responsive. On small screens, the cards are arranged in one column and on extra large screens in two columns to be easily readable.
+![latest_jobs]()
 
 ![top_icon]()
 
@@ -203,7 +208,7 @@ See the [Deployment](#deployment) section for more details about the CI/CD proce
 The app uses a relational database service [ElephantSQL](https://www.elephantsql.com/) to store and manage data.
 
 - #### Static Files
-The app uses the [Amazon S3](https://aws.amazon.com/s3/) cloud service to store static files such as images, CSS, and JavaScript files.
+The app uses the [Cloudinary](https://cloudinary.com/) cloud service to store static files such as images, CSS, and JavaScript files.
 
 ## Technologies Used
 - ### Languages
@@ -218,7 +223,6 @@ The app uses the [Amazon S3](https://aws.amazon.com/s3/) cloud service to store 
     - [Font Awesome 6.4](https://fontawesome.com/)
     - [Google Fonts](https://fonts.google.com/)
     - [libsass](https://pypi.org/project/libsass/)
-    - [boto3](https://boto3.amazonaws.com/v1/documentation/api/latest/index.html)
 
 - ### Tools
     - [Git](https://git-scm.com/)
@@ -234,7 +238,6 @@ The app uses the [Amazon S3](https://aws.amazon.com/s3/) cloud service to store 
 - [django-allauth](https://django-allauth.readthedocs.io/en/latest/)
 - [django-compressor](https://django-compressor.readthedocs.io/en/stable/)
 - [django-sass-processor](https://pypi.org/project/django-sass-processor/)
-- [django-storages](https://django-storages.readthedocs.io/en/latest/)
 
 
 
