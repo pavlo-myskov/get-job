@@ -72,20 +72,20 @@
 }
 
 // change padding of company items text in front of icons
-@media screen and (min-width: 400px) {
-  @media (max-width: 767px) {
-    .ps-1-custom {
-      padding-left: 0.25rem !important;
-    }
+@include media-breakpoint-between(cb, md) {
+  .ps-1-custom {
+    padding-left: 0.25rem !important;
   }
 }
 
 // override list-group-item padding
 .vaccancy-card {
-  .list-group-item {
-    padding: 0.2rem $list-group-item-padding-x;
+  @include media-breakpoint-down(md) {
+    .list-group-item {
+      padding: 0.2rem $list-group-item-padding-x;
+    }
   }
-  @include media-breakpoint-up(md) {
+  @include media-breakpoint-between(md, xl) {
     .list-group-item {
       padding: 0.3rem $list-group-item-padding-x;
     }

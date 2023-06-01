@@ -28,6 +28,14 @@ $custom-font-sizes: (
 // Merge the custom font sizes with the default font sizes
 $display-font-sizes: map-merge($display-font-sizes, $custom-font-sizes);
 
+// Breakpoints
+$custom-breakpoints: (
+  "cb": 400px,
+);
+
+// Merge the custom breakpoints with the default breakpoints
+$grid-breakpoints: map-merge($grid-breakpoints, $custom-breakpoints);
+
 
 // Create a map of custom utilities
 @import "../bootstrap/scss/utilities";
