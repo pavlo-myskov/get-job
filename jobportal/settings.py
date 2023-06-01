@@ -58,9 +58,9 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
+    'cloudinary_storage',
     'django.contrib.staticfiles',
-    'storages',
-    'fontawesomefree',
+    'cloudinary',
     'crispy_forms',
     'crispy_bootstrap5',
     'sass_processor',
@@ -172,25 +172,17 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 if not development:
-    # aws settings
-    AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
-    AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
-    AWS_STORAGE_BUCKET_NAME = os.getenv('AWS_STORAGE_BUCKET_NAME')
-    AWS_DEFAULT_ACL = None
-    AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
-    AWS_S3_OBJECT_PARAMETERS = {'CacheControl': 'max-age=86400'}
+    STATIC_URL = '/static/get-job/'
 
-    # s3 static settings
-    AWS_LOCATION = 'static'
-    # URL path for your static files where they will be served from
-    STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{AWS_LOCATION}/'
-    STATICFILES_STORAGE = 'storage_backends.StaticStorage'
+    CLOUDINARY_STORAGE = {
+        'CLOUDINARY_URL': os.getenv('CLOUDINARY_URL'),
+    }
+    STATICFILES_STORAGE = 'cloudinary_storage.storage.'\
+        'StaticHashedCloudinaryStorage'
 
-    # s3 public media settings
-    PUBLIC_MEDIA_LOCATION = 'media'
-    # URL path for media files where they will be served from
-    MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{PUBLIC_MEDIA_LOCATION}/'
-    DEFAULT_FILE_STORAGE = 'storage_backends.PublicMediaStorage'
+    # cloudinary media settings
+    MEDIA_URL = '/media/get-job/'
+    DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 else:
     # URL path for your static files where they
     # will be served from during development
