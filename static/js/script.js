@@ -64,10 +64,8 @@ function hideShowNavbar(windowWidth, dropdown) {
  */
 function fixDaysCounterPosition(windowWidth) {
     if (windowWidth > 440) {
-        $('.days-counter').addClass('position-absolute top-0 end-0 pt-2 pe-3')
+        $('.days-counter').removeClass('card-subtitle').addClass('position-absolute top-0 end-0 pt-2 pe-3')
     } else {
-        $('.days-counter').removeClass('position-absolute top-0 end-0 pt-2 pe-3')
+        $('.days-counter').removeClass('position-absolute top-0 end-0 pt-2 pe-3').addClass('card-subtitle')
     }
 }
-
-
