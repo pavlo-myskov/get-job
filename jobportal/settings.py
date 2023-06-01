@@ -61,7 +61,6 @@ INSTALLED_APPS = [
     'cloudinary_storage',
     'django.contrib.staticfiles',
     'cloudinary',
-    'fontawesomefree',
     'crispy_forms',
     'crispy_bootstrap5',
     'sass_processor',
@@ -178,8 +177,8 @@ if not development:
     CLOUDINARY_STORAGE = {
         'CLOUDINARY_URL': os.getenv('CLOUDINARY_URL'),
     }
-    STATICFILES_STORAGE = 'cloudinary_storage.storage.'
-    'StaticHashedCloudinaryStorage'
+    STATICFILES_STORAGE = 'cloudinary_storage.storage.'\
+        'StaticHashedCloudinaryStorage'
 
     # cloudinary media settings
     MEDIA_URL = '/media/get-job/'
