@@ -44,7 +44,7 @@ JOB_TYPES = (
     ("CONTRACT", "Contract"),
     ("PERMANENT", "Permanent"),
     ("TEMPORARY", "Temporary"),
-    ("INTERNSHIP", "Internship"),
+    ("APPRENTICESHIP", "Apprenticeship"),
     ("VOLUNTEER", "Volunteer"),
 )
 
