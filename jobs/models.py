@@ -89,6 +89,7 @@ class Vacancy(models.Model):
         # the vaccancies will be ordered by the date they were created,
         # with the most recent ones at the top
         ordering = ["-created_on"]
+        verbose_name_plural = "vacancies"
 
     def __str__(self):
         return self.title
