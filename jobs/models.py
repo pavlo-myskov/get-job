@@ -1,65 +1,65 @@
 from django.db import models
 from django.urls import reverse
 
-IRELAND_COUNTIES = (
-    ("DUBLIN", "Dublin"),
-    ("DUBLIN_CITY_CENTRE", "Dublin City Centre"),
-    ("DUBLIN_NORTH", "Dublin North"),
-    ("DUBLIN_SOUTH", "Dublin South"),
-    ("DUBLIN_WEST", "Dublin West"),
-    ("CARLOW", "Carlow"),
-    ("CAVAN", "Cavan"),
-    ("CLARE", "Clare"),
-    ("CORK", "Cork"),
-    ("DONEGAL", "Donegal"),
-    ("GALWAY", "Galway"),
-    ("KERRY", "Kerry"),
-    ("KILDARE", "Kildare"),
-    ("KILKENNY", "Kilkenny"),
-    ("LAOIS", "Laois"),
-    ("LEITRIM", "Leitrim"),
-    ("LIMERICK", "Limerick"),
-    ("LONGFORD", "Longford"),
-    ("LOUTH", "Louth"),
-    ("MAYO", "Mayo"),
-    ("MEATH", "Meath"),
-    ("MONAGHAN", "Monaghan"),
-    ("OFFALY", "Offaly"),
-    ("ROSCOMMON", "Roscommon"),
-    ("SLIGO", "Sligo"),
-    ("TIPPERARY", "Tipperary"),
-    ("WATERFORD", "Waterford"),
-    ("WESTMEATH", "Westmeath"),
-    ("WEXFORD", "Wexford"),
-    ("WICKLOW", "Wicklow"),
-    ("NORTHERN_IRELAND", "Northern Ireland"),
-    ("UK", "UK"),
-    ("EUROPE", "Europe"),
-    ("WORLDWIDE", "Worldwide"),
-)
 
-JOB_TYPES = (
-    ("FULL_TIME", "Full Time"),
-    ("PART_TIME", "Part Time"),
-    ("CONTRACT", "Contract"),
-    ("PERMANENT", "Permanent"),
-    ("TEMPORARY", "Temporary"),
-    ("APPRENTICESHIP", "Apprenticeship"),
-    ("VOLUNTEER", "Volunteer"),
-)
+class IrelandCounties(models.TextChoices):
+    DUBLIN = "DUBLIN", "Dublin"
+    DUBLIN_CITY_CENTRE = "DUBLIN_CITY_CENTRE", "Dublin City Centre"
+    DUBLIN_NORTH = "DUBLIN_NORTH", "Dublin North"
+    DUBLIN_SOUTH = "DUBLIN_SOUTH", "Dublin South"
+    DUBLIN_WEST = "DUBLIN_WEST", "Dublin West"
+    CARLOW = "CARLOW", "Carlow"
+    CAVAN = "CAVAN", "Cavan"
+    CLARE = "CLARE", "Clare"
+    CORK = "CORK", "Cork"
+    DONEGAL = "DONEGAL", "Donegal"
+    GALWAY = "GALWAY", "Galway"
+    KERRY = "KERRY", "Kerry"
+    KILDARE = "KILDARE", "Kildare"
+    KILKENNY = "KILKENNY", "Kilkenny"
+    LAOIS = "LAOIS", "Laois"
+    LEITRIM = "LEITRIM", "Leitrim"
+    LIMERICK = "LIMERICK", "Limerick"
+    LONGFORD = "LONGFORD", "Longford"
+    LOUTH = "LOUTH", "Louth"
+    MAYO = "MAYO", "Mayo"
+    MEATH = "MEATH", "Meath"
+    MONAGHAN = "MONAGHAN", "Monaghan"
+    OFFALY = "OFFALY", "Offaly"
+    ROSCOMMON = "ROSCOMMON", "Roscommon"
+    SLIGO = "SLIGO", "Sligo"
+    TIPPERARY = "TIPPERARY", "Tipperary"
+    WATERFORD = "WATERFORD", "Waterford"
+    WESTMEATH = "WESTMEATH", "Westmeath"
+    WEXFORD = "WEXFORD", "Wexford"
+    WICKLOW = "WICKLOW", "Wicklow"
+    NORTHERN_IRELAND = "NORTHERN_IRELAND", "Northern Ireland"
+    UK = "UK", "UK"
+    EUROPE = "EUROPE", "Europe"
+    WORLDWIDE = "WORDLWIDE", "Worldwide"
 
-JOB_LOCATIONS = (
-    ("ON_SITE", "On Site"),
-    ("REMOTE", "Remote"),
-    ("HYBRID", "Hybrid"),
-)
 
-JOB_POST_STATUS = (
-    ("R", "In review"),
-    ("A", "Active"),
-    ("W", "Withdrawn"),
-    ("C", "Closed"),
-)
+class JobTypes(models.TextChoices):
+    FULL_TIME = "FULL_TIME", "Full Time"
+    PART_TIME = "PART_TIME", "Part Time"
+    CONTRACT = "CONTRACT", "Contract"
+    PERMANENT = "PERMANENT", "Permanent"
+    TEMPORARY = "TEMPORARY", "Temporary"
+    APPRENTICESHIP = "APPRENTICESHIP", "Apprenticeship"
+    VOLUNTEER = "VOLUNTEER", "Volunteer"
+
+
+class JobLocations(models.TextChoices):
+    ON_SITE = "ON_SITE", "On Site"
+    REMOTE = "REMOTE", "Remote"
+    HYBRID = "HYBRID", "Hybrid"
+
+
+class JobPostStatus(models.TextChoices):
+    IN_REVIEW = "IN_REVIEW", "In Review"
+    ACTIVE = "ACTIVE", "Active"
+    WITHDRAWN = "WITHDRAWN", "Withdrawn"
+    CLOSED = "CLOSED", "Closed"
 
 
 class Vacancy(models.Model):
@@ -75,17 +75,21 @@ class Vacancy(models.Model):
     """
     body = models.TextField(blank=False)
     area = models.CharField(
-        choices=IRELAND_COUNTIES, max_length=50, blank=False
+        choices=IrelandCounties.choices, max_length=50, blank=False
     )
     job_location = models.CharField(
-        max_length=50, choices=JOB_LOCATIONS, blank=False
+        max_length=50, choices=JobLocations.choices, blank=False
     )
-    job_type = models.CharField(choices=JOB_TYPES, max_length=50, blank=False)
+    job_type = models.CharField(
+        choices=JobTypes.choices, max_length=50, blank=False
+    )
     salary = models.CharField(max_length=50, default="Negotiable", blank=False)
     experience = models.CharField(max_length=50, blank=True, null=True)
     created_on = models.DateTimeField(auto_now_add=True)
     status = models.CharField(
-        choices=JOB_POST_STATUS, max_length=50, default="R"
+        choices=JobPostStatus.choices,
+        max_length=50,
+        default=JobPostStatus.IN_REVIEW,
     )
 
     class Meta:
