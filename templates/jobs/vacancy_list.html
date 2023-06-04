@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% load static %}
+{% load time_filters %}
+
+{% block content %}
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Title</th>
+      <th scope="col">Time ago</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% if job_list %}
+    {% for vacancy in job_list%}
+      <tr>
+        <th scope="row">{{ vacancy.id }}</th>
+        <td>{{ vacancy }}</td>
+        <td>{{ vacancy.created_on|timeago }} ago</td>
+      </tr>
+    {% endfor %}
+    {% else %}
+      <tr>
+        <td colspan="3">No vacancies found</td>
+      </tr>
+    {% endif %}
+  </tbody>
+</table>
+
+{% endblock %}
