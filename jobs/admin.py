@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Vacancy, JobPostStatus
+from .models import Vacancy
 
 
 @admin.register(Vacancy)
@@ -37,10 +37,10 @@ class VacancyAdmin(admin.ModelAdmin):
     actions = ['approve_job_posts', 'withdraw_job_posts', 'close_job_posts']
 
     def approve_job_posts(self, request, queryset):
-        queryset.update(status=JobPostStatus.ACTIVE)
+        queryset.update(status=Vacancy.JobPostStatus.ACTIVE)
 
     def withdraw_job_posts(self, request, queryset):
-        queryset.update(status=JobPostStatus.WITHDRAWN)
+        queryset.update(status=Vacancy.JobPostStatus.WITHDRAWN)
 
     def close_job_posts(self, request, queryset):
-        queryset.update(status=JobPostStatus.CLOSED)
+        queryset.update(status=Vacancy.JobPostStatus.CLOSED)

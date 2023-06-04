@@ -2,7 +2,7 @@ from django.db import models
 from django.urls import reverse
 
 
-class IrelandCounties(models.TextChoices):
+class IrelandAreas(models.TextChoices):
     DUBLIN_CITY = "DUBLIN_CITY", "Dublin"
     DUBLIN_CITY_CENTRE = "DUBLIN_CITY_CENTRE", "Dublin City Centre"
     DUBLIN_NORTH = "DUBLIN_NORTH", "Dublin North"
@@ -45,30 +45,28 @@ class IrelandCounties(models.TextChoices):
     WORLDWIDE = "WORDLWIDE", "Worldwide"
 
 
-class JobTypes(models.TextChoices):
-    FULL_TIME = "FULL_TIME", "Full Time"
-    PART_TIME = "PART_TIME", "Part Time"
-    CONTRACT = "CONTRACT", "Contract"
-    PERMANENT = "PERMANENT", "Permanent"
-    TEMPORARY = "TEMPORARY", "Temporary"
-    APPRENTICESHIP = "APPRENTICESHIP", "Apprenticeship"
-    VOLUNTEER = "VOLUNTEER", "Volunteer"
-
-
-class JobLocations(models.TextChoices):
-    ON_SITE = "ON_SITE", "On Site"
-    REMOTE = "REMOTE", "Remote"
-    HYBRID = "HYBRID", "Hybrid"
-
-
-class JobPostStatus(models.TextChoices):
-    IN_REVIEW = "IN_REVIEW", "In Review"
-    ACTIVE = "ACTIVE", "Active"
-    WITHDRAWN = "WITHDRAWN", "Withdrawn"
-    CLOSED = "CLOSED", "Closed"
-
-
 class Vacancy(models.Model):
+
+    class JobTypes(models.TextChoices):
+        FULL_TIME = "FULL_TIME", "Full Time"
+        PART_TIME = "PART_TIME", "Part Time"
+        CONTRACT = "CONTRACT", "Contract"
+        PERMANENT = "PERMANENT", "Permanent"
+        TEMPORARY = "TEMPORARY", "Temporary"
+        APPRENTICESHIP = "APPRENTICESHIP", "Apprenticeship"
+        VOLUNTEER = "VOLUNTEER", "Volunteer"
+
+    class JobLocations(models.TextChoices):
+        ON_SITE = "ON_SITE", "On Site"
+        REMOTE = "REMOTE", "Remote"
+        HYBRID = "HYBRID", "Hybrid"
+
+    class JobPostStatus(models.TextChoices):
+        IN_REVIEW = "IN_REVIEW", "In Review"
+        ACTIVE = "ACTIVE", "Active"
+        WITHDRAWN = "WITHDRAWN", "Withdrawn"
+        CLOSED = "CLOSED", "Closed"
+
     title = models.CharField(max_length=255, blank=False)
     """
     # TODO: add FKs to Employer and Company models
@@ -81,7 +79,7 @@ class Vacancy(models.Model):
     """
     body = models.TextField(blank=False)
     area = models.CharField(
-        choices=IrelandCounties.choices, max_length=50, blank=False
+        choices=IrelandAreas.choices, max_length=50, blank=False
     )
     job_location = models.CharField(
         max_length=50, choices=JobLocations.choices, blank=False

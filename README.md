@@ -63,6 +63,7 @@ The main goal of the app is to deliver a solution that creates real value for th
     - As a Jobseeker I want to be able to go back to the list of jobs from the detailed job page so that I can continue searching for jobs.
     - As a Jobseeker I want to be able to have access to the search bar on the navigation panel so that I can easily search for jobs at any time.
     - As a Jobseeker I want to be able to delete my account so that I can remove my data from the app.
+    - As a Jobseeker I want to be able to see the date when the job was posted so that I can see how old the job post is.
 
 #### Employer Goals
 - ##### First Time Visitor:
