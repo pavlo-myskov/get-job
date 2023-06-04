@@ -17,9 +17,8 @@
     {% if user.is_authenticated %}
     <ul class="nav nav-pills">
       <li class="d-none d-lg-flex aligns-items-center py-1">
-        <form class="input-group input-group-sm">
-          <input type="search" id="search" class="form-control purple-input" placeholder="search job"
-            aria-label="Search">
+        <form class="input-group input-group-sm" action="{% url 'job_search' %}" method="get">
+          {{ navbar_form }}
           <button type="submit" class="btn btn-royalpurple">
             <i class="fas fa-search"></i>
           </button>
@@ -37,9 +36,8 @@
         </a>
         <ul class="dropdown-menu jobseeker-dm dropdown-menu-end" aria-labelledby="jobseeker profile dropdown menu">
           <li class="d-lg-none mx-3 my-2">
-            <form class="input-group input-group-sm">
-              <input type="search" id="search" class="form-control purple-input" placeholder="search job"
-                aria-label="Search">
+            <form class="input-group input-group-sm" action="{% url 'job_search' %}" method="get">
+              {{ navbar_form }}
               <button type="submit" class="btn btn-royalpurple">
                 <i class="fas fa-search"></i>
               </button>
@@ -92,9 +90,9 @@
         <h5 class="lead">Type your desired Job Title</h4>
       </div>
       <div class="container px-md-5 pt-4 pt-lg-5 pb-1 pb-md-3 pb-lg-5 mx-auto">
-        <form class="input-group" action="{% url 'vacancy_list' %}" method="GET">
-          {{ form }}
-          <button class="btn btn-royalpurple" type="submit">Find Job</button>
+        <form class="input-group" action="{% url 'job_search' %}" method="GET">
+          {{ main_form }}
+          <button class="btn btn-royalpurple ms-2" type="submit">Find Job</button>
         </form>
       </div>
     </section>
