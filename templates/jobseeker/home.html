@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% load time_filters %}
 
 {% block content %}
 <nav class="navbar smart-scroll navbar-expand-lg navbar-light bg-light border-bottom">
@@ -118,7 +119,7 @@
                   </a>
               </h5>
               <p class="col days-counter text-muted">
-                <small>{{ vacancy.created_on }} ago</small>
+                <small>{{ vacancy.created_on|timeago }} ago</small>
               </p>
               <div class="row company-body my-2">
                 <ul class="col-8 list-group borderless">
