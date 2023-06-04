@@ -55,9 +55,10 @@ JOB_LOCATIONS = (
 )
 
 JOB_POST_STATUS = (
-    (0, "IN_REVIEW"),
-    (1, "ACTIVE"),
-    (2, "CLOSED"),
+    ("R", "In review"),
+    ("A", "Active"),
+    ("W", "Withdrawn"),
+    ("C", "Closed"),
 )
 
 
@@ -83,7 +84,9 @@ class Vacancy(models.Model):
     salary = models.CharField(max_length=50, default="Negotiable", blank=False)
     experience = models.CharField(max_length=50, blank=True, null=True)
     created_on = models.DateTimeField(auto_now_add=True)
-    status = models.IntegerField(choices=JOB_POST_STATUS, default=0)
+    status = models.CharField(
+        choices=JOB_POST_STATUS, max_length=50, default="R"
+    )
 
     class Meta:
         # the vaccancies will be ordered by the date they were created,
