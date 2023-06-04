@@ -1,7 +1,7 @@
-from django.shortcuts import render
 from django.views.generic import ListView
 
 from jobs.models import Vacancy
+from jobs.forms import SearchForm
 
 
 class HomeView(ListView):
@@ -10,3 +10,11 @@ class HomeView(ListView):
     # get only first 4 active vacancies
     queryset = Vacancy.objects.filter(status=Vacancy.JobPostStatus.ACTIVE)[:4]
     template_name = 'jobseeker/home.html'
+
+    def get_context_data(self, **kwargs):
+        '''Add search form to the context'''
+        # the method allows to avoid overriding get() method
+        # and adding the form to the context there
+        context = super(HomeView, self).get_context_data(**kwargs)
+        context['form'] = SearchForm()
+        return context
