@@ -244,6 +244,7 @@ The app uses the [Cloudinary](https://cloudinary.com/) cloud service to store st
 
 ## Testing
 See [TESTING.md]() for an overview of the app testing and debugging.
+<!-- TODO Add screenshots of the coverage report -->
 
 ## Deployment, CI/CD
 The Get Job platform is deployed on the [Heroku](https://www.heroku.com/) cloud platform and can be accessed here https://get-job.herokuapp.com or here http://get-job.live.

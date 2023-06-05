@@ -9,6 +9,7 @@ class HomeView(ListView):
     context_object_name = "job_list"
     # get only first 4 active vacancies
     queryset = Vacancy.objects.filter(status=Vacancy.JobPostStatus.ACTIVE)[:4]
+
     template_name = "jobseeker/home.html"
 
     def get_context_data(self, **kwargs):
