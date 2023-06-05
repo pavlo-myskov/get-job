@@ -10,7 +10,8 @@ class JobListView(ListView):
     def get_queryset(self):
         # get the query parameter from the URL
         # e.g. /jobs?search=developer, then query = developer
-        query = self.request.GET.get("search")
+        query = self.request.GET.get("search").strip()
+        # TODO add test empty string
         # filter titles that contain the search query
         # icontains allows lookup is case insensitive
         if query:

@@ -64,6 +64,7 @@ The main goal of the app is to deliver a solution that creates real value for th
     - As a Jobseeker I want to be able to have access to the search bar on the navigation panel so that I can easily search for jobs at any time.
     - As a Jobseeker I want to be able to delete my account so that I can remove my data from the app.
     - As a Jobseeker I want to be able to see the date when the job was posted so that I can see how old the job post is.
+    - As a Jobseeker I want to be able to see all jobs of the particular company so that I can find a job in the company I like.
 
 #### Employer Goals
 - ##### First Time Visitor:
@@ -244,6 +245,7 @@ The app uses the [Cloudinary](https://cloudinary.com/) cloud service to store st
 
 ## Testing
 See [TESTING.md]() for an overview of the app testing and debugging.
+<!-- TODO Add screenshots of the coverage report -->
 
 ## Deployment, CI/CD
 The Get Job platform is deployed on the [Heroku](https://www.heroku.com/) cloud platform and can be accessed here https://get-job.herokuapp.com or here http://get-job.live.

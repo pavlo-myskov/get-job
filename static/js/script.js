@@ -1,8 +1,8 @@
 $(document).ready(function () {
     let windowWidth = $(window).width();
 
-    // init dropdown
-    let dropdown = new bootstrap.Dropdown(document.querySelector('.dropdown-toggle'))
+    // init dropdown menu
+    let dropdown = initDropdown();
 
     hideShowNavbar(windowWidth, dropdown);
     fixDaysCounterPosition(windowWidth);
@@ -15,6 +15,26 @@ $(document).ready(function () {
     });
 });
 
+
+/**
+ * Init dropdown menu if it exists.
+ * Add event listener to dropdown menu that adds 'shown' class to dropdown element
+ * when dropdown menu is shown.
+ * @returns {bootstrap.Dropdown}
+ */
+function initDropdown() {
+    let dropdown;
+    let dropdownEl = document.getElementById('navbar--dropdown');
+    let dropdownToggle = document.querySelector('#navbar--dropdown .dropdown-toggle');
+    if (dropdownToggle) {
+        dropdown = new bootstrap.Dropdown(dropdownToggle);
+        dropdownEl.addEventListener('show.bs.dropdown', function() {
+            this.classList.add('shown');
+        })
+    }
+
+    return dropdown;
+}
 
 /**
  * - Hide/show navbar on scroll up/down if screen width is less than 768px.
@@ -42,8 +62,11 @@ function hideShowNavbar(windowWidth, dropdown) {
             else {
                 // add scrolled-down class that hides the navbar
                 $('.smart-scroll').removeClass('scrolled-up').addClass('scrolled-down');
-                // hide dropdown menu if it is open
-                dropdown.hide();
+                // hide dropdown menu if it exists and is open
+                if (dropdown && $('#navbar--dropdown').hasClass('shown')) {
+                    dropdown.hide();
+                    $('#navbar--dropdown').removeClass('shown');
+                }
             }
             last_scroll_top = scroll_top;
         });
