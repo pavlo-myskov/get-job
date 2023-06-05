@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
-{% load crispy_forms_tags %}
+{% load time_filters %}
 
 {% block content %}
 <nav class="navbar smart-scroll navbar-expand-lg navbar-light bg-light border-bottom">
@@ -14,12 +14,11 @@
       <a href="#" class="btn btn-outline-royalpurple active py-1" aria-current="Jobseeker">Jobseeker</a>
       <a href="#" class="btn btn-outline-royalpurple py-1">Employer</a>
     </div>
-    {% if not user.is_authenticated %}
+    {% if user.is_authenticated %}
     <ul class="nav nav-pills">
       <li class="d-none d-lg-flex aligns-items-center py-1">
-        <form class="input-group input-group-sm">
-          <input type="search" id="search" class="form-control purple-input" placeholder="search job"
-            aria-label="Search">
+        <form class="input-group input-group-sm" action="{% url 'job_search' %}" method="get">
+          {{ navbar_form }}
           <button type="submit" class="btn btn-royalpurple">
             <i class="fas fa-search"></i>
           </button>
@@ -37,9 +36,8 @@
         </a>
         <ul class="dropdown-menu jobseeker-dm dropdown-menu-end" aria-labelledby="jobseeker profile dropdown menu">
           <li class="d-lg-none mx-3 my-2">
-            <form class="input-group input-group-sm">
-              <input type="search" id="search" class="form-control purple-input" placeholder="search job"
-                aria-label="Search">
+            <form class="input-group input-group-sm" action="{% url 'job_search' %}" method="get">
+              {{ navbar_form }}
               <button type="submit" class="btn btn-royalpurple">
                 <i class="fas fa-search"></i>
               </button>
@@ -74,8 +72,9 @@
         <h1 class="fs-2 pb-0 pb-lg-1 text-center text-sm-start text-muted">Stand Out From the Crowd</h1>
         <h2 class="fs-4 lead text-center text-md-start">Create a Resume that Gets Noticed</h2>
       </div>
-      <a href="#" class="btn btn-outline-royalpurple mt-2 mt-md-0 py-1 align-self-end align-self-md-start">Create
-        Resume</a>
+      <a href="#" class="btn btn-outline-royalpurple mt-2 mt-md-0 py-1 align-self-end align-self-md-start">
+        Create Resume
+      </a>
     </div>
     <div class="col-md-5 my-3 px-5 px-md-1 my-md-auto order-0 order-md-1">
       <img class="img-fluid" src="{% static 'images/jobseeker_hero.png' %}"
@@ -91,44 +90,58 @@
         <h5 class="lead">Type your desired Job Title</h4>
       </div>
       <div class="container px-md-5 pt-4 pt-lg-5 pb-1 pb-md-3 pb-lg-5 mx-auto">
-        <form class="input-group">
-          <input class="form-control search-bar purple-input me-2" type="search" placeholder="e.g. Software Developer"
-            aria-label="search job">
-          <button class="btn btn-royalpurple" type="submit">Find Job</button>
+        <form class="input-group" action="{% url 'job_search' %}" method="GET">
+          {{ main_form }}
+          <button class="btn btn-royalpurple ms-2" type="submit">Find Job</button>
         </form>
       </div>
     </section>
 
     <!-- Vacancies section -->
     <section class="container vaccancy-container g-1 g-sm-2 g-md-4">
-      <h2 class="text-muted ps-3">Latest Vacancies</h2>
+      <h2 class="text-muted ps-3 mb-2 mb-md-3">Latest Vacancies</h2>
       <div class="row row-cols-1 row-cols-xl-2 g-2">
-        <!-- ______card______ -->
+        {% for vacancy in job_list %}
+        <!-- ______vacancy card______ -->
         <div class="col">
           <div class="card h-100 vaccancy-card">
             <div class="card-body position-relative">
-              <h5 class="card-title py-mb-1 pb-lg-2 pb-xl-0">
-                <a href="#" class="text-decoration-none stretched-link text-dark">Digital Operations Assistant</a>
+              <h5 class="card-title col-12 col-cb-8 py-mb-1 pb-lg-2 pb-xl-0">
+                {% comment %}
+                <!-- TODO  -->
+                <a href="{% url 'job_detail' id=vacancy.id %}" class="text-decoration-none stretched-link text-dark">
+                  {% endcomment %}
+                  <a href="#" class="text-decoration-none stretched-link text-dark">
+                    {{ vacancy.title }}
+                  </a>
               </h5>
-              <p class="days-counter text-muted"><small>5 days ago</small></p>
+              <p class="col days-counter text-muted">
+                <small>{{ vacancy.created_on|timeago }} ago</small>
+              </p>
               <div class="row company-body my-2">
                 <ul class="col-8 list-group borderless">
                   <li class="list-group-item">
                     <div class="row d-flex align-items-center">
                       <i class="col-2 col-md-1 col-xl-2 text-center text-royalpurple pe-0 fa fa-building-user"></i>
-                      <span class="col-10 col-md-11 col-xl-10 ps-1-custom ps-lg-0">TechWave Innovations</span>
+                      <span class="col-10 col-md-11 col-xl-10 ps-1-custom ps-lg-0">
+                        <!-- TODO --> Company Name
+                      </span>
                     </div>
                   </li>
                   <li class="list-group-item">
                     <div class="row d-flex align-items-center">
                       <i class="col-2 col-md-1 col-xl-2 text-center text-royalpurple pe-0 fa fa-location-dot"></i>
-                      <span class="col-10 col-md-11 col-xl-10 ps-1-custom ps-lg-0">co. Cork</span>
+                      <span class="col-10 col-md-11 col-xl-10 ps-1-custom ps-lg-0">
+                        {{ vacancy.get_area_display }}
+                      </span>
                     </div>
                   </li>
                   <li class="list-group-item">
                     <div class="row d-flex align-items-center">
                       <i class="col-2 col-md-1 col-xl-2 text-center text-royalpurple pe-0 fa fa-money-bills"></i>
-                      <span class="col-10 col-md-11 col-xl-10 ps-1-custom ps-lg-0">45000</span>
+                      <span class="col-10 col-md-11 col-xl-10 ps-1-custom ps-lg-0">
+                        {{ vacancy.salary }}
+                      </span>
                     </div>
                   </li>
                 </ul>
@@ -138,13 +151,7 @@
                 </div>
               </div>
               <p class="card-text custom-text-truncate">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptatum. Lorem ipsum dolor sit
-                amet
-                consectetur adipisicing elit. Nesciunt aut omnis cupiditate voluptatum eius doloremque facilis deserunt
-                excepturi quaerat consequuntur nobis iste, repudiandae debitis soluta? Blanditiis sint atque explicabo
-                illo. Lorem ipsum dolor sit amet consectetur, adipisicing elit. Natus nisi laboriosam corrupti accusamus
-                consectetur exercitationem fugit repellat placeat asperiores, maiores culpa! Voluptas sint nisi esse
-                officiis eveniet eligendi temporibus doloribus?
+                {{ vacancy.body }}
               </p>
 
             </div>
@@ -156,129 +163,16 @@
                   -->
                   Save
                 </a>
+                <!-- TODO -->
                 <a href="#" class="btn btn-outline-royalpurple card-link py-0 my-1">Apply</a>
               </div>
             </div>
           </div>
         </div>
-
-        <!-- ______card______ -->
-        <div class="col">
-          <div class="card h-100 vaccancy-card">
-            <div class="card-body position-relative">
-              <h5 class="card-title py-mb-1 pb-lg-2 pb-xl-0">
-                <a href="#" class="text-decoration-none stretched-link text-dark">Android App Developer</a>
-              </h5>
-              <p class="days-counter text-muted"><small>7 days ago</small></p>
-              <div class="row company-body my-2">
-                <ul class="col-8 list-group borderless">
-                  <li class="list-group-item">
-                    <div class="row d-flex align-items-center">
-                      <i class="col-2 col-md-1 col-xl-2 text-center text-royalpurple pe-0 fa fa-building-user"></i>
-                      <span class="col-10 col-md-11 col-xl-10 ps-1-custom ps-lg-0">MobileEdge Solutions</span>
-                    </div>
-                  </li>
-                  <li class="list-group-item">
-                    <div class="row d-flex align-items-center">
-                      <i class="col-2 col-md-1 col-xl-2 text-center text-royalpurple pe-0 fa fa-location-dot"></i>
-                      <span class="col-10 col-md-11 col-xl-10 ps-1-custom ps-lg-0">co. Dublin</span>
-                    </div>
-                  </li>
-                  <li class="list-group-item">
-                    <div class="row d-flex align-items-center">
-                      <i class="col-2 col-md-1 col-xl-2 text-center text-royalpurple pe-0 fa fa-money-bills"></i>
-                      <span class="col-10 col-md-11 col-xl-10 ps-1-custom ps-lg-0">64000</span>
-                    </div>
-                  </li>
-                </ul>
-                <div class="col-4 mx-auto my-auto text-center">
-                  <img src="{% static 'images/company-placeholder.png' %}" class="img-thumbnail" alt="company logo"
-                    style="max-height: 90px;">
-                </div>
-              </div>
-              <p class="card-text custom-text-truncate">
-                Natus nisi laboriosam corrupti accusamus
-                consectetur exercitationem fugit repellat placeat asperiores, maiores culpa! Voluptas sint nisi esse
-                officiis eveniet eligendi temporibus doloribus. Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Excepturi debitis laudantium cupiditate harum aperiam temporibus ratione inventore, nihil placeat porro
-                assumenda voluptates corrupti ipsam eum sint perferendis dolorem pariatur? Minus.
-              </p>
-
-            </div>
-            <div class="card-footer border-top-0">
-              <div class="d-flex justify-content-between px-3">
-                <a href="#" class="btn-save card-link">
-                  <!-- TODO saved
-                  <i class="fa fa-heart"></i>
-                  -->
-                  Save
-                </a>
-                <a href="#" class="btn btn-outline-royalpurple card-link py-0 my-1">Apply</a>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- ______card______ -->
-        <div class="col">
-          <div class="card h-100 vaccancy-card">
-            <div class="card-body position-relative">
-              <h5 class="card-title py-mb-1 pb-lg-2 pb-xl-0">
-                <a href="#" class="text-decoration-none stretched-link text-dark">Cloud Solutions Architect</a>
-              </h5>
-              <p class="days-counter text-muted"><small>10 days ago</small></p>
-              <div class="row company-body my-2">
-                <ul class="col-8 list-group borderless">
-                  <li class="list-group-item">
-                    <div class="row d-flex align-items-center">
-                      <i class="col-2 col-md-1 col-xl-2 text-center text-royalpurple pe-0 fa fa-building-user"></i>
-                      <span class="col-10 col-md-11 col-xl-10 ps-1-custom ps-lg-0">Nimbus Synergy Solutions</span>
-                    </div>
-                  </li>
-                  <li class="list-group-item">
-                    <div class="row d-flex align-items-center">
-                      <i class="col-2 col-md-1 col-xl-2 text-center text-royalpurple pe-0 fa fa-location-dot"></i>
-                      <span class="col-10 col-md-11 col-xl-10 ps-1-custom ps-lg-0">co. Limerick</span>
-                    </div>
-                  </li>
-                  <li class="list-group-item">
-                    <div class="row d-flex align-items-center">
-                      <i class="col-2 col-md-1 col-xl-2 text-center text-royalpurple pe-0 fa fa-money-bills"></i>
-                      <span class="col-10 col-md-11 col-xl-10 ps-1-custom ps-lg-0">Not Disclosed</span>
-                    </div>
-                  </li>
-                </ul>
-                <div class="col-4 mx-auto my-auto text-center">
-                  <img src="{% static 'images/company-placeholder.png' %}" class="img-thumbnail" alt="company logo"
-                    style="max-height: 90px;">
-                </div>
-              </div>
-              <p class="card-text custom-text-truncate">
-                Natus nisi laboriosam corrupti accusamus
-                consectetur exercitationem fugit repellat placeat asperiores, maiores culpa! Voluptas sint nisi esse
-                officiis eveniet eligendi temporibus doloribus. Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Excepturi debitis laudantium cupiditate harum aperiam temporibus ratione inventore, nihil placeat porro
-                assumenda voluptates corrupti ipsam eum sint perferendis dolorem pariatur? Minus.
-              </p>
-
-            </div>
-            <div class="card-footer border-top-0">
-              <div class="d-flex justify-content-between px-3">
-                <a href="#" class="btn-save card-link">
-                  <!-- TODO saved
-                  <i class="fa fa-heart"></i>
-                  -->
-                  Save
-                </a>
-                <a href="#" class="btn btn-outline-royalpurple card-link py-0 my-1">Apply</a>
-              </div>
-            </div>
-          </div>
-        </div>
-
+        {% endfor %}
       </div>
-  </div>
-  </section>
+      <!-- TODO: Add Link "More" to redirect to /jobs -->
+    </section>
   </div>
 </main>
 {% endblock content %}

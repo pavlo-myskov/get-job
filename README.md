@@ -41,10 +41,10 @@ The main goal of the app is to deliver a solution that creates real value for th
 
 - ##### Frequent Visitor:
     - As a Jobseeker I want to be able to see the navigation bar when I scroll the page up so that I can access the navigation bar at any time.
+    - As a Jobseeker I want see the dropdown menu so that I can access the most important features of the app.
     - As a Jobseeker I want to be able to log in to my account so that I can manage my data and apply for jobs.
     - As a Jobseeker I want to be able to update my profile so that I can keep my data up to date.
     - As a Jobseeker I want to be able to get notifications so that I can be informed about my applications.
-    - As a Jobseeker I want to be able to search for jobs so that I can select the appropriate job.
     - As a Jobseeker I want to be able to open the appropriate job so that I can see the full job description.
     - As a Jobseeker I want to be able to see a full detailed view of the job so that I can decide if the job is appropriate for me.
     - As a Jobseeker I want to be able to apply for a job so that I can get a job.
@@ -63,6 +63,7 @@ The main goal of the app is to deliver a solution that creates real value for th
     - As a Jobseeker I want to be able to go back to the list of jobs from the detailed job page so that I can continue searching for jobs.
     - As a Jobseeker I want to be able to have access to the search bar on the navigation panel so that I can easily search for jobs at any time.
     - As a Jobseeker I want to be able to delete my account so that I can remove my data from the app.
+    - As a Jobseeker I want to be able to see the date when the job was posted so that I can see how old the job post is.
 
 #### Employer Goals
 - ##### First Time Visitor:
@@ -101,6 +102,7 @@ The main goal of the app is to deliver a solution that creates real value for th
     - As an Employer I want to be able to delete the job so that I can remove it from the list of my jobs.
     - As an Employer I want to be able to update the job details so that I can keep the job information up to date.
     - As an Employer I want to be able to delete my account so that I can remove my data from the app.
+    - As an Employer I want to be able to style the job description so that I can make it more readable and attractive.
 
 #### Moderator Goals
 - As a Moderator I want to be able to review and approve the posted jobs so that I can protect the app from inappropriate content.
@@ -238,7 +240,6 @@ The app uses the [Cloudinary](https://cloudinary.com/) cloud service to store st
 - [django-allauth](https://django-allauth.readthedocs.io/en/latest/)
 - [django-compressor](https://django-compressor.readthedocs.io/en/stable/)
 - [django-sass-processor](https://pypi.org/project/django-sass-processor/)
-
 
 
 ## Testing

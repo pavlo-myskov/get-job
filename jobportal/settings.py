@@ -67,6 +67,7 @@ INSTALLED_APPS = [
     'compressor',
     'core',
     'jobseeker',
+    'jobs',
 ]
 
 MIDDLEWARE = [

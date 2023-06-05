@@ -4,6 +4,7 @@ from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from .models import User
 
 
+@admin.register(User)
 class UserAdmin(BaseUserAdmin):
     '''Define admin model for custom User model with no username field.'''
 
@@ -39,6 +40,3 @@ class UserAdmin(BaseUserAdmin):
     ordering = ('email',)
 
     filter_horizontal = ('groups', 'user_permissions',)
-
-
-admin.site.register(User, UserAdmin)
