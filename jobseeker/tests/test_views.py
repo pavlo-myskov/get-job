@@ -3,6 +3,7 @@ from random import randint
 from django.test import TestCase
 
 from jobs.models import Vacancy
+from jobs.forms import SearchForm
 
 
 def get_random_date():
@@ -70,3 +71,16 @@ class TestJobseekerHomeView(TestCase):
             if i == 3:
                 break
             self.assertGreaterEqual(vac.created_on, job_list[i + 1].created_on)
+
+    def test_search_form_in_context(self):
+        """Test that search form is in the context"""
+        response = self.client.get("/")
+        self.assertEqual(response.status_code, 200)
+
+        context = response.context
+
+        self.assertIn("main_form", context)
+        self.assertIn("navbar_form", context)
+
+        self.assertIsInstance(context["main_form"], SearchForm)
+        self.assertIsInstance(context["navbar_form"], SearchForm)
