@@ -14,6 +14,7 @@ class HomeView(ListView):
 
     def get_context_data(self, **kwargs):
         """Add search form to the context"""
+        # TODO: Add testing 
         # the method allows to avoid overriding get() method
         # and adding the form to the context there
         context = super(HomeView, self).get_context_data(**kwargs)
