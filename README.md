@@ -1,6 +1,6 @@
 # Get Job
 
-[![Django CI](https://github.com/FlashDrago/get-job/actions/workflows/production.yml/badge.svg?branch=master)](https://github.com/FlashDrag/get-job/actions/workflows/production.yml)
+[![Django CI](https://github.com/FlashDrag/get-job/actions/workflows/production.yml/badge.svg?branch=master)](https://github.com/FlashDrag/get-job/actions/workflows/production.yml)
 
 
 ## Overview
