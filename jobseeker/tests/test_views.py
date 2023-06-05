@@ -16,17 +16,17 @@ def get_random_date():
 
 
 class TestJobseekerHomeView(TestCase):
-    def setUp(self):
+    @classmethod
+    def setUpTestData(cls):
         """Create 5 active and 5 inactive vacancies"""
-
-        self.active_vacancies = [
+        cls.active_vacancies = [
             Vacancy.objects.create(
                 title=f"Active {i}",
                 status=Vacancy.JobPostStatus.ACTIVE,
             )
             for i in range(5)
         ]
-        self.inactive_vacancies = [
+        cls.inactive_vacancies = [
             Vacancy.objects.create(
                 title=f"In Review {i}",
                 status=Vacancy.JobPostStatus.IN_REVIEW,
@@ -35,7 +35,7 @@ class TestJobseekerHomeView(TestCase):
         ]
 
         # set random created_on date for all vacancies
-        for vac in self.active_vacancies + self.inactive_vacancies:
+        for vac in cls.active_vacancies + cls.inactive_vacancies:
             vac.created_on = get_random_date()
             vac.save()
 
