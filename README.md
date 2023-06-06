@@ -1,7 +1,20 @@
 # Get Job
 
-[![Django CI](https://github.com/FlashDrag/get-job/actions/workflows/production.yml/badge.svg?branch=master)](https://github.com/FlashDrag/get-job/actions/workflows/production.yml)
+[![Tests](https://img.shields.io/github/actions/workflow/status/FlashDrag/get-job/production.yml?branch=master&label=Django%20CI&logo=github)](https://github.com/FlashDrag/get-job/actions)
+[![Heroku](https://img.shields.io/badge/Heroku-430098?style=flat&logo=heroku&logoColor=white&labelColor=575757&label=Live%20Demo)](https://get-job.herokuapp.com)
 
+![Python](https://img.shields.io/badge/v.3.11-575757?style=flat&logo=python&logoColor=white&labelColor=3776AB&label=Heroku)
+![Django](https://img.shields.io/badge/v.3.2-575757?style=flat&logo=django&logoColor=white&labelColor=092E20&label=Django)
+![Bootstrap](https://img.shields.io/badge/v.5-575757?style=flat&logo=bootstrap&logoColor=white&labelColor=7952B3&label=Bootstrap)
+![PostgreSQL](https://img.shields.io/badge/ElephantSQL-575757?style=flat&logo=postgresql&logoColor=white&labelColor=4169E1&label=PostgreSQL)
+
+
+<!-- TODO Add coverage -->
+<!-- [![Codecov](https://img.shields.io/codecov/c/github/FlashDrag/get-job?label=Coverage&logo=codecov)](https://codecov.io/gh/FlashDrag/get-job)
+
+https://github.com/aiogram/aiogram/blob/dev-3.x/.github/workflows/tests.yml
+https://about.codecov.io/blog/python-code-coverage-using-github-actions-and-codecov/
+-->
 
 ## Overview
 The relevance of job search in our time constantly increases. [Get Job](http://get-job.live) is an online Job Platform that helps Jobseekers to get desirable jobs and Employers to find the right candidates. The app includes two modes: _Jobseeker Mode_ and _Employer Mode_. _Jobseeker Mode_ allows users to search for jobs and apply for jobs as well as create their resumes and manage their applications. And _Employer Mode_ allows users to post jobs, search for candidates and hire them. The *Get Job* portal is designed to be simple and intuitive so that users can easily navigate the app and perform the desired actions.
