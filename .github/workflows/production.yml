@@ -13,6 +13,21 @@ jobs:
       matrix:
         python-version: [3.11]
 
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: github_actions
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
     steps:
     - uses: actions/checkout@v3
     - name: Set up Python ${{ matrix.python-version }}
@@ -27,10 +42,16 @@ jobs:
       run: |
         pip install flake8
         flake8 .
-    - name: Run Tests
+    - name: Migrate Database
+      run: python manage.py migrate
       env:
         SECRET_KEY: ${{ secrets.SECRET_KEY }}
-        DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        DATABASE_URL: postgres://postgres:postgres@localhost:5432/github_actions
         CLOUDINARY_URL: ${{ secrets.CLOUDINARY_URL }}
+    - name: Run Tests
       run: |
         python manage.py test
+      env:
+        SECRET_KEY: ${{ secrets.SECRET_KEY }}
+        DATABASE_URL: postgres://postgres:postgres@localhost:5432/github_actions
+        CLOUDINARY_URL: ${{ secrets.CLOUDINARY_URL }}
