@@ -3,10 +3,9 @@
 [![Tests](https://img.shields.io/github/actions/workflow/status/FlashDrag/get-job/production.yml?branch=master&label=Django%20CI&logo=github)](https://github.com/FlashDrag/get-job/actions)
 [![Heroku](https://img.shields.io/badge/Heroku-430098?style=flat&logo=heroku&logoColor=white&labelColor=575757&label=Live%20Demo)](https://get-job.herokuapp.com)
 
-![Python](https://img.shields.io/badge/v.3.11-575757?style=flat&logo=python&logoColor=white&labelColor=3776AB&label=Heroku)
-![Django](https://img.shields.io/badge/v.3.2-575757?style=flat&logo=django&logoColor=white&labelColor=092E20&label=Django)
-![Bootstrap](https://img.shields.io/badge/v.5-575757?style=flat&logo=bootstrap&logoColor=white&labelColor=7952B3&label=Bootstrap)
-![PostgreSQL](https://img.shields.io/badge/ElephantSQL-575757?style=flat&logo=postgresql&logoColor=white&labelColor=4169E1&label=PostgreSQL)
+[![Django](https://img.shields.io/badge/v.3.2-575757?style=flat&logo=django&logoColor=white&labelColor=092E20&label=Django)]()
+[![Bootstrap](https://img.shields.io/badge/v.5-575757?style=flat&logo=bootstrap&logoColor=white&labelColor=7952B3&label=Bootstrap)](https://docs.djangoproject.com/en/3.2/)
+[![PostgreSQL](https://img.shields.io/badge/ElephantSQL-575757?style=flat&logo=postgresql&logoColor=white&labelColor=4169E1&label=PostgreSQL)](https://www.elephantsql.com/)
 
 
 <!-- TODO Add coverage -->
@@ -190,14 +189,19 @@ The Hero section contains call-to-action headings and a button to encourage user
 ![hero]()
 
 - #### Jobseeker's Search bar
-One of the important features of the app is the search bar. It is placed in the center of the page to be easily found and allows users to achieve their main goal - to find a job quickly and easily.
+One of the important features of the app is the search bar. It is placed in the center of the page to be easily found and allows users to achieve their main goal - to find a job quickly and easily. The functionality of the search bar is the same as the search bar of the Navbar. It takes the user input and searches for the jobs that match the input.
 ![search_bar]()
 
 - #### Latest Jobs
 The Latest Jobs section is a list of the latest vacancies posted by Employers. Each Vacancy represented by a Bootstrap Card component. The Card contains the Job Title, Days ago, the Company Name, the Location, the Salary and the main section of the Job Description. The card title is clickable and redirects the user to the Job Details page. Also a user can save the job to the Favorites or directly Apply for the Job escaping the Job Details page. The section is fully responsive. On small screens, the cards are arranged in one column and on extra large screens in two columns to be easily readable.
 ![latest_jobs]()
 
-![top_icon]()
+### Jobseeker's Job Search page
+The user can access the Job Search page by using the search bar on the Home page. When the user submits the search query, the app redirects him to the Job Search page and displays the search results.
+The page contains the search results represented by the Bootstrap Cards, the same as the Latest Jobs section on the Home page. Each card is clickable and redirects the user to the Job Details page.
+...
+
+![back_to_top_button]()
 
 ### Development Features
 - #### Django Authentication and Authorization System
