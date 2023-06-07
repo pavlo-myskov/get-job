@@ -77,6 +77,8 @@ The main goal of the app is to deliver a solution that creates real value for th
     - As a Jobseeker I want to be able to delete my account so that I can remove my data from the app.
     - As a Jobseeker I want to be able to see the date when the job was posted so that I can see how old the job post is.
     - As a Jobseeker I want to be able to see all jobs of the particular company so that I can find a job in the company I like.
+    - As a Jobseeker I want to be able to see buttons for pagination so that I can navigate through the list of jobs.
+    - As a Jobseeker I want to be able to return to the home page from the list of jobs so that I can access the home page at any time.
 
 #### Employer Goals
 - ##### First Time Visitor:
@@ -116,6 +118,8 @@ The main goal of the app is to deliver a solution that creates real value for th
     - As an Employer I want to be able to update the job details so that I can keep the job information up to date.
     - As an Employer I want to be able to delete my account so that I can remove my data from the app.
     - As an Employer I want to be able to style the job description so that I can make it more readable and attractive.
+    - As an Employer I want to be able to see the button for pagination so that I can navigate through the list of resumes.
+    - As an Employer I want to be able to return to the home page from the list of resumes so that I can access the home page at any time.
 
 #### Moderator Goals
 - As a Moderator I want to be able to review and approve the posted jobs so that I can protect the app from inappropriate content.

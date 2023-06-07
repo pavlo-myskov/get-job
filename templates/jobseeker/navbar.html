@@ -1,0 +1,63 @@
+{% load static %}
+
+<nav class="navbar smart-scroll navbar-expand-lg navbar-light bg-light border-bottom">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">
+      <img class="d-inline-block align-text-top" src="{% static 'images/icons8-job-seeker.png' %}" alt="briefcase logo"
+        width="36" height="30">
+      <span class="d-none d-sm-inline fs-6">Get Job</span>
+    </a>
+    <div class="btn-group btn-group-sm col-6 col-sm-4" role="group" aria-label="user role">
+      <a href="#" class="btn btn-outline-royalpurple active py-1" aria-current="Jobseeker">Jobseeker</a>
+      <a href="#" class="btn btn-outline-royalpurple py-1">Employer</a>
+    </div>
+    {% if user.is_authenticated %}
+    <ul class="nav nav-pills">
+      <li class="d-none d-lg-flex aligns-items-center py-1">
+        <form class="input-group input-group-sm" action="{% url 'job_search' %}" method="get">
+          {{ navbar_form }}
+          <button type="submit" class="btn btn-royalpurple">
+            <i class="fas fa-search"></i>
+          </button>
+        </form>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link text-royalpurple px-2 px-sm-4" href="#" aria-label="notifications">
+          <i class="fa-regular fa-bell fs-5"></i>
+        </a>
+      </li>
+      <li class="nav-item dropdown" id="navbar--dropdown">
+        <a class="nav-link dropdown-toggle text-royalpurple px-1 pe-sm-2" aria-label="profile dropdown menu"
+          data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">
+          <i class="fa-solid fa-user fs-5"></i>
+        </a>
+        <ul class="dropdown-menu jobseeker-dm dropdown-menu-end" aria-labelledby="jobseeker profile dropdown menu">
+          <li class="d-lg-none mx-3 my-2">
+            <form class="input-group input-group-sm" action="{% url 'job_search' %}" method="get">
+              {{ navbar_form }}
+              <button type="submit" class="btn btn-royalpurple">
+                <i class="fas fa-search"></i>
+              </button>
+            </form>
+          </li>
+          <li><a class="dropdown-item" href="#">My Profile</a></li>
+          <li><a class="dropdown-item" href="#">Search for Jobs</a></li>
+          <li><a class="dropdown-item" href="#">Create a Resume</a></li>
+          <li><a class="dropdown-item" href="#">My Applications</a></li>
+          <li>
+            <hr class="dropdown-divider">
+          </li>
+          <li><a class="dropdown-item" href="#">LogOut</a></li>
+        </ul>
+      </li>
+    </ul>
+    {% else %}
+    <div class="nav-item">
+      <a class="nav-link text-royalpurple" href="#" aria-label="Sign In/Sign Up">
+        <i class="fa-solid fa-right-to-bracket fs-5"></i>
+        <span class="d-none d-sm-inline align-text-bottom">Sign In/Sign Up</span>
+      </a>
+    </div>
+    {% endif %}
+  </div>
+</nav>

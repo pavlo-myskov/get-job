@@ -45,12 +45,13 @@ class TestJobListView(TestCase):
 
     def test_case_insensitive_active_job_search(self):
         """
-        Test that search query is case insensitive and returns only active jobs
+        Test that title search query is case insensitive
+        and returns only active jobs
         with the search query in the title
         """
         search_query = "JoB"
         url = "{url}?{filter}={value}".format(
-            url=reverse("job_search"), filter="search", value=search_query
+            url=reverse("job_search"), filter="title", value=search_query
         )
         response = self.client.get(url)
         job_list = response.context["job_list"]
@@ -66,7 +67,7 @@ class TestJobListView(TestCase):
         Test that the search query returns exactly
         one job with the specified title.
         """
-        search_query = {"search": "2"}
+        search_query = {"title": "2"}
         response = self.client.get(reverse("job_search"), search_query)
         job_list = response.context["job_list"]
 
@@ -78,7 +79,7 @@ class TestJobListView(TestCase):
         Test that if search query is not in the title of any active job,
         no jobs are returned
         """
-        search_query = {"search": "InactiveJob"}
+        search_query = {"title": "InactiveJob"}
         response = self.client.get(reverse("job_search"), search_query)
         job_list = response.context["job_list"]
 
@@ -91,7 +92,7 @@ class TestJobListView(TestCase):
         """
         search_query = " "
         url = "{url}?{filter}={value}".format(
-            url=reverse("job_search"), filter="search", value=search_query
+            url=reverse("job_search"), filter="title", value=search_query
         )
         response = self.client.get(url)
         job_list = response.context["job_list"]

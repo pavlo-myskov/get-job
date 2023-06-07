@@ -16,7 +16,7 @@ class JobListView(ListView):
         form = SearchForm(self.request.GET)
 
         if form.is_valid():
-            query = form.cleaned_data["search"]
+            query = form.cleaned_data["title"]
             job_list = Vacancy.objects.filter(
                 title__icontains=query,
                 status=Vacancy.JobPostStatus.ACTIVE,
@@ -29,3 +29,11 @@ class JobListView(ListView):
             )
 
         return job_list
+
+    def get_context_data(self, **kwargs):
+        """Add search form to the context"""
+        kwargs["main_form"] = SearchForm(
+            placeholder="e.g. full stack software developer"
+        )
+        kwargs["navbar_form"] = SearchForm(placeholder="search job")
+        return super().get_context_data(**kwargs)

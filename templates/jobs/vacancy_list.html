@@ -3,30 +3,101 @@
 {% load time_filters %}
 
 {% block content %}
+{% include 'jobseeker/navbar.html' %}
+<main class="container my-3 py-2 bg-light rounded">
+  <div class="row">
+    <!-- Search panel -->
+    <div class="col-lg-5">
+      <div class="card sticky-top">
+        <div class="card-body">
+          <form action="{% url 'job_search' %}" method="get">
+            {{ main_form }}
+            <div class="d-flex justify-content-center">
+              <button class="btn btn-royalpurple" type="submit">Find Job</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <!-- Vacancies column -->
+    <div class="col-lg-7">
+      <div class="row row-cols-1 g-2">
+        {% for vacancy in job_list %}
+        <!-- ______vacancy card______ -->
+        <div class="col">
+          <div class="card h-100 vaccancy-card">
+            <div class="card-body position-relative">
+              <h5 class="card-title col-12 col-cb-8 py-mb-1 pb-lg-2 pb-xl-0">
+                {% comment %}
+                <!-- TODO  -->
+                <a href="{% url 'job_detail' id=vacancy.id %}" class="text-decoration-none stretched-link text-dark">
+                  {% endcomment %}
+                  <a href="#" class="text-decoration-none stretched-link text-dark">
+                    {{ vacancy.title }}
+                  </a>
+              </h5>
+              <p class="col days-counter text-muted">
+                <small>{{ vacancy.created_on|timeago }} ago</small>
+              </p>
+              <div class="row company-body my-2">
+                <ul class="col-8 list-group borderless">
+                  <li class="list-group-item">
+                    <div class="row d-flex align-items-center">
+                      <i class="col-2 col-md-1 col-xl-2 text-center text-royalpurple pe-0 fa fa-building-user"></i>
+                      <span class="col-10 col-md-11 col-xl-10 ps-1-custom ps-lg-0">
+                        <!-- TODO --> Company Name
+                      </span>
+                    </div>
+                  </li>
+                  <li class="list-group-item">
+                    <div class="row d-flex align-items-center">
+                      <i class="col-2 col-md-1 col-xl-2 text-center text-royalpurple pe-0 fa fa-location-dot"></i>
+                      <span class="col-10 col-md-11 col-xl-10 ps-1-custom ps-lg-0">
+                        {{ vacancy.get_area_display }}
+                      </span>
+                    </div>
+                  </li>
+                  <li class="list-group-item">
+                    <div class="row d-flex align-items-center">
+                      <i class="col-2 col-md-1 col-xl-2 text-center text-royalpurple pe-0 fa fa-money-bills"></i>
+                      <span class="col-10 col-md-11 col-xl-10 ps-1-custom ps-lg-0">
+                        {{ vacancy.salary }}
+                      </span>
+                    </div>
+                  </li>
+                </ul>
+                <div class="col-4 mx-auto my-auto text-center">
+                  <img src="{% static 'images/company-placeholder.png' %}" class="img-thumbnail" alt="company logo"
+                    style="max-height: 90px;">
+                </div>
+              </div>
+              <p class="card-text custom-text-truncate">
+                {{ vacancy.body }}
+              </p>
 
-<table class="table table-striped">
-  <thead>
-    <tr>
-      <th scope="col">#</th>
-      <th scope="col">Title</th>
-      <th scope="col">Time ago</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% if job_list %}
-    {% for vacancy in job_list%}
-      <tr>
-        <th scope="row">{{ vacancy.id }}</th>
-        <td>{{ vacancy }}</td>
-        <td>{{ vacancy.created_on|timeago }} ago</td>
-      </tr>
-    {% endfor %}
-    {% else %}
-      <tr>
-        <td colspan="3">No vacancies found</td>
-      </tr>
-    {% endif %}
-  </tbody>
-</table>
-
+            </div>
+            <div class="card-footer border-top-0">
+              <div class="d-flex justify-content-between px-3">
+                <a href="#" class="btn-save card-link">
+                  <!-- TODO saved
+                  <i class="fa fa-heart"></i>
+                  -->
+                  Save
+                </a>
+                <!-- TODO -->
+                <a href="#" class="btn btn-outline-royalpurple card-link py-0 my-1">Apply</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</main>
 {% endblock %}
+
+<!-- if job_list
+....
+else
+No vacancies found -->
