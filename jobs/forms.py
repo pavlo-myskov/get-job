@@ -7,9 +7,9 @@ class SearchForm(forms.Form):
         # on the search bar: in navbar or in home page
         placeholder = kwargs.pop("placeholder", "search job")
         super(SearchForm, self).__init__(*args, **kwargs)
-        self.fields["search"].widget.attrs["placeholder"] = placeholder
+        self.fields["title"].widget.attrs["placeholder"] = placeholder
 
-    search = forms.CharField(
+    title = forms.CharField(
         label=False,
         max_length=255,
         widget=forms.TextInput(

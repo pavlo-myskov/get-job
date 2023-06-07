@@ -16,7 +16,7 @@ class JobListView(ListView):
         form = SearchForm(self.request.GET)
 
         if form.is_valid():
-            query = form.cleaned_data["search"]
+            query = form.cleaned_data["title"]
             job_list = Vacancy.objects.filter(
                 title__icontains=query,
                 status=Vacancy.JobPostStatus.ACTIVE,
