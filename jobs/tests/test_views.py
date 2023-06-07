@@ -66,11 +66,8 @@ class TestJobListView(TestCase):
         Test that the search query returns exactly
         one job with the specified title.
         """
-        search_query = "2"
-        url = "{url}?{filter}={value}".format(
-            url=reverse("job_search"), filter="search", value=search_query
-        )
-        response = self.client.get(url)
+        search_query = {"search": "2"}
+        response = self.client.get(reverse("job_search"), search_query)
         job_list = response.context["job_list"]
 
         self.assertEqual(len(job_list), 1)
@@ -81,11 +78,8 @@ class TestJobListView(TestCase):
         Test that if search query is not in the title of any active job,
         no jobs are returned
         """
-        search_query = "InactiveJob"
-        url = "{url}?{filter}={value}".format(
-            url=reverse("job_search"), filter="search", value=search_query
-        )
-        response = self.client.get(url)
+        search_query = {"search": "InactiveJob"}
+        response = self.client.get(reverse("job_search"), search_query)
         job_list = response.context["job_list"]
 
         self.assertEqual(len(job_list), 0)

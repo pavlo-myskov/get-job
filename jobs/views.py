@@ -1,6 +1,7 @@
 from django.views.generic import ListView
 
 from .models import Vacancy
+from .forms import SearchForm
 
 
 class JobListView(ListView):
@@ -8,15 +9,14 @@ class JobListView(ListView):
     model = Vacancy
 
     def get_queryset(self):
-        '''
+        """
         Search for aproved jobs by title if search query is provided,
         otherwise return all approved jobs (even if empty query is provided)
-        '''
-        # get the query parameter from the URL
-        # e.g. /jobs?search=developer, then query = developer
-        query = self.request.GET.get("search")
-        # icontains allows lookup is case insensitive
-        if query and query.strip():
+        """
+        form = SearchForm(self.request.GET)
+
+        if form.is_valid():
+            query = form.cleaned_data["search"]
             job_list = Vacancy.objects.filter(
                 title__icontains=query,
                 status=Vacancy.JobPostStatus.ACTIVE,
@@ -27,4 +27,5 @@ class JobListView(ListView):
             job_list = Vacancy.objects.filter(
                 status=Vacancy.JobPostStatus.ACTIVE,
             )
+
         return job_list
