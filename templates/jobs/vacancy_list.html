@@ -8,7 +8,16 @@
   <div class="row">
     <!-- Search panel -->
     <div class="col-lg-5">
-
+      <div class="card sticky-top">
+        <div class="card-body">
+          <form action="{% url 'job_search' %}" method="get">
+            {{ main_form }}
+            <div class="d-flex justify-content-center">
+              <button class="btn btn-royalpurple" type="submit">Find Job</button>
+            </div>
+          </form>
+        </div>
+      </div>
     </div>
     <!-- Vacancies column -->
     <div class="col-lg-7">
