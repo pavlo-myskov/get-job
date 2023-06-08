@@ -34,4 +34,6 @@ class JobListView(ListView):
         """Add search form to the context"""
         context = super().get_context_data(**kwargs)
         context["form"] = self.form
+        # create a new instance of the form to be used in the navbar
+        context["nav_form"] = SearchForm(auto_id=False)
         return context
