@@ -13,10 +13,10 @@ class JobListView(ListView):
         Search for aproved jobs by title if search query is provided,
         otherwise return all approved jobs (even if empty query is provided)
         """
-        form = SearchForm(self.request.GET)
+        self.form = SearchForm(self.request.GET)
 
-        if form.is_valid():
-            query = form.cleaned_data["title"]
+        if self.form.is_valid():
+            query = self.form.cleaned_data["title"]
             job_list = Vacancy.objects.filter(
                 title__icontains=query,
                 status=Vacancy.JobPostStatus.ACTIVE,
@@ -32,8 +32,6 @@ class JobListView(ListView):
 
     def get_context_data(self, **kwargs):
         """Add search form to the context"""
-        kwargs["main_form"] = SearchForm(
-            placeholder="e.g. full stack software developer"
-        )
-        kwargs["navbar_form"] = SearchForm(placeholder="search job")
-        return super().get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
+        context["form"] = self.form
+        return context

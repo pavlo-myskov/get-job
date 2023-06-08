@@ -2,7 +2,7 @@
 
 <nav class="navbar smart-scroll navbar-expand-lg navbar-light bg-light border-bottom">
   <div class="container-fluid">
-    <a class="navbar-brand" href="#">
+    <a class="navbar-brand" href="/">
       <img class="d-inline-block align-text-top" src="{% static 'images/icons8-job-seeker.png' %}" alt="briefcase logo"
         width="36" height="30">
       <span class="d-none d-sm-inline fs-6">Get Job</span>
@@ -15,7 +15,7 @@
     <ul class="nav nav-pills">
       <li class="d-none d-lg-flex aligns-items-center py-1">
         <form class="input-group input-group-sm" action="{% url 'job_search' %}" method="get">
-          {{ navbar_form }}
+          {{ form.title }}
           <button type="submit" class="btn btn-royalpurple">
             <i class="fas fa-search"></i>
           </button>
