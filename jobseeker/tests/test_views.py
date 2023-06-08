@@ -79,8 +79,8 @@ class TestJobseekerHomeView(TestCase):
 
         context = response.context
 
-        self.assertIn("main_form", context)
-        self.assertIn("navbar_form", context)
+        self.assertIn("form", context)
+        self.assertIn("nav_form", context)
 
-        self.assertIsInstance(context["main_form"], SearchForm)
-        self.assertIsInstance(context["navbar_form"], SearchForm)
+        self.assertIsInstance(context["form"], SearchForm)
+        self.assertIsInstance(context["nav_form"], SearchForm)

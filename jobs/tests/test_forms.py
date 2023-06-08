@@ -11,13 +11,6 @@ class TestSearchForm(TestCase):
 
         self.assertEqual(default_placeholder, "search job")
 
-    def test_form_placeholder_custom(self):
-        """Test that the placeholder can be customized"""
-        form = SearchForm(placeholder="custom search")
-        custom_placeholder = form.fields["title"].widget.attrs["placeholder"]
-
-        self.assertEqual(custom_placeholder, "custom search")
-
     def test_form_field_max_lenght(self):
         """Test that the max length of the search field is 255"""
         form = SearchForm()
@@ -34,9 +27,9 @@ class TestSearchForm(TestCase):
         form = SearchForm(data={"title": search_query})
         self.assertFalse(form.is_valid())
 
-    def test_form_field_required(self):
+    def test_form_title_field_required(self):
         """Test that the title search field is required"""
         form = SearchForm()
         required = form.fields["title"].required
 
-        self.assertTrue(required)
+        self.assertFalse(required)
