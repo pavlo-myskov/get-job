@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% load form_filters %}
 {% load time_filters %}
 
 {% block content %}
@@ -32,7 +33,7 @@
       </div>
       <div class="container px-md-5 pt-4 pt-lg-5 pb-1 pb-md-3 pb-lg-5 mx-auto">
         <form class="input-group" action="{% url 'job_search' %}" method="GET">
-          {{ form.title }}
+          {{ form.title|update_placeholder:"e.g. software developer" }}
           <button class="btn btn-royalpurple ms-2" type="submit">Find Job</button>
         </form>
       </div>

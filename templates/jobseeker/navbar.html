@@ -1,4 +1,5 @@
 {% load static %}
+{% load form_filters %}
 
 <nav class="navbar smart-scroll navbar-expand-lg navbar-light bg-light border-bottom">
   <div class="container-fluid">
@@ -15,7 +16,7 @@
     <ul class="nav nav-pills">
       <li class="d-none d-lg-flex aligns-items-center py-1">
         <form class="input-group input-group-sm" action="{% url 'job_search' %}" method="get">
-          {{ form.title }}
+          {{ form.title|update_placeholder:"enter job title" }}
           <button type="submit" class="btn btn-royalpurple">
             <i class="fas fa-search"></i>
           </button>
