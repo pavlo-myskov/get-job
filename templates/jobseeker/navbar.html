@@ -35,7 +35,7 @@
         <ul class="dropdown-menu jobseeker-dm dropdown-menu-end" aria-labelledby="jobseeker profile dropdown menu">
           <li class="d-lg-none mx-3 my-2">
             <form class="input-group input-group-sm" action="{% url 'job_search' %}" method="get">
-              {{ navbar_form }}
+              {{ nav_form.title|update_placeholder:"enter job title" }}
               <button type="submit" class="btn btn-royalpurple">
                 <i class="fas fa-search"></i>
               </button>

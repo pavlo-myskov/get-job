@@ -30,18 +30,21 @@ class SearchForm(forms.ModelForm):
 
         self.fields["area"].widget.attrs.update(
             {
-                "class": "purple-input",
+                "class": "purple-input form-select",
+                "aria-label": "Select area",
             }
         )
 
         self.fields["job_location"].widget.attrs.update(
             {
-                "class": "purple-input",
+                "class": "purple-input form-select",
+                "aria-label": "Select job location",
             }
         )
 
         self.fields["job_type"].widget.attrs.update(
             {
-                "class": "purple-input",
+                "class": "purple-input form-select",
+                "aria-label": "Select job type",
             }
         )

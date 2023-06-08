@@ -8336,11 +8336,15 @@ textarea.form-control-lg {
     .btn-save:hover::before {
       font-weight: 900; }
 
-.hero-container .btn {
+.inset-shadow-purple {
   box-shadow: inset 0 0 10px -6px #874c87 !important; }
 
 .vaccancy-card:hover {
   box-shadow: 0 0 20px -10px #874c87;
   transition: all 0.3s ease-in-out; }
+
+#expand-search-btn {
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0; }
 
 /*# sourceMappingURL=main.css.map */
