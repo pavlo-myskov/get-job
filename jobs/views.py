@@ -1,6 +1,6 @@
 from django.views.generic import ListView
 
-from .models import Vacancy
+from .models import Vacancy, Areas, IRELAND_AREAS
 from .forms import SearchForm
 
 
@@ -26,8 +26,15 @@ class JobListView(ListView):
             }
 
             # change title to title__icontains
-            if 'title' in search_data:
+            # to search for case insensitive title
+            if search_data.get('title'):
                 search_data['title__icontains'] = search_data.pop('title')
+
+            # change area to area__in if Areas.IRELAND is provided
+            # to search in by irish areas only
+            if search_data.get('area') == Areas.IRELAND:
+                search_data['area__in'] = IRELAND_AREAS
+                del search_data['area']
 
             # search for vacancies with the provided search data
             job_list = Vacancy.objects.filter(

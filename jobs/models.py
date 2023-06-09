@@ -46,6 +46,18 @@ class Areas(models.TextChoices):
     WORLDWIDE = "WORDLWIDE", "Worldwide"
 
 
+EXCLUDED_AREAS = [
+    Areas.NORTHERN_IRELAND,
+    Areas.UK,
+    Areas.EUROPE,
+    Areas.WORLDWIDE
+]
+# list of irish areas to be used in the search form
+IRELAND_AREAS = [
+    area[0] for area in Areas.choices if area[0] not in EXCLUDED_AREAS
+]
+
+
 class Vacancy(models.Model):
 
     class JobTypes(models.TextChoices):
