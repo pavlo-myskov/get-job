@@ -15,18 +15,28 @@ class JobListView(ListView):
         """
         self.form = SearchForm(self.request.GET)
 
+        search_fields = ('title', 'area', 'job_location', 'job_type')
+
         if self.form.is_valid():
-            query = self.form.cleaned_data["title"]
+            # get search fields from form if they are not empty
+            search_data = {
+                field: self.form.cleaned_data[field]
+                for field in search_fields
+                if self.form.cleaned_data.get(field)
+            }
+
+            # change title to title__icontains
+            if 'title' in search_data:
+                search_data['title__icontains'] = search_data.pop('title')
+
+            # search for vacancies with the provided search data
             job_list = Vacancy.objects.filter(
-                title__icontains=query,
+                **search_data,
                 status=Vacancy.JobPostStatus.ACTIVE,
             )
-            # TODO: add search by area using Q objects
-            # (Q(title__icontains=query) | Q(area__icontains=query))
         else:
-            job_list = Vacancy.objects.filter(
-                status=Vacancy.JobPostStatus.ACTIVE,
-            )
+            # if form is not valid, return an empty queryset
+            job_list = Vacancy.objects.none()
 
         return job_list
 
