@@ -160,6 +160,42 @@ class TestJobListView(TestCase):
         self.assertEqual(len(job_list), 2)
         self.assertNotIn(uk_job, job_list)
 
+    def test_search_by_dublin_area(self):
+        """
+        Test that search by Areas.DUBLIN_CITY returns all jobs in Dublin City
+        """
+        Vacancy.objects.create(
+            title="City Centre Job",
+            status=Vacancy.JobPostStatus.ACTIVE,
+            area=Areas.DUBLIN_CITY_CENTRE
+        )
+        Vacancy.objects.create(
+            title="North Dublin Job",
+            status=Vacancy.JobPostStatus.ACTIVE,
+            area=Areas.DUBLIN_NORTH
+        )
+        Vacancy.objects.create(
+            title="South Dublin Job",
+            status=Vacancy.JobPostStatus.ACTIVE,
+            area=Areas.DUBLIN_SOUTH
+        )
+        Vacancy.objects.create(
+            title="West Dublin Job",
+            status=Vacancy.JobPostStatus.ACTIVE,
+            area=Areas.DUBLIN_WEST
+        )
+        Vacancy.objects.create(
+            title="Dublin County Job",
+            status=Vacancy.JobPostStatus.ACTIVE,
+            area=Areas.DUBLIN_COUNTY
+        )
+
+        search_query = {"area": Areas.DUBLIN_CITY}
+        response = self.client.get(reverse("job_search"), search_query)
+        job_list = response.context["job_list"]
+        self.assertEqual(len(job_list), 4)
+        self.assertNotIn(Areas.DUBLIN_COUNTY, job_list)
+
     def test_search_by_area_and_title(self):
         """
         Test that search by title and area returns job if they both match
