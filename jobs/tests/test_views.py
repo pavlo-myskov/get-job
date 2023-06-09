@@ -260,7 +260,7 @@ class TestJobListView(TestCase):
         Test that search by title, area and job location returns job
         if they all match
         """
-        job_1 = Vacancy.objects.create(
+        Vacancy.objects.create(
             title="Remote Job 1",
             status=Vacancy.JobPostStatus.ACTIVE,
             area=Areas.OFFALY,
@@ -272,7 +272,7 @@ class TestJobListView(TestCase):
             area=Areas.OFFALY,
             job_location=Vacancy.JobLocations.REMOTE,
         )
-        job_2 = Vacancy.objects.create(
+        Vacancy.objects.create(
             title="Remote Job 2",
             status=Vacancy.JobPostStatus.ACTIVE,
             area=Areas.OFFALY,
@@ -322,7 +322,7 @@ class TestJobListView(TestCase):
         Test that search by job title and job type returns job
         if they both match
         """
-        job_1 = Vacancy.objects.create(
+        Vacancy.objects.create(
             title="Full Time Job 1",
             status=Vacancy.JobPostStatus.ACTIVE,
             job_location=Vacancy.JobLocations.HYBRID,
@@ -334,7 +334,7 @@ class TestJobListView(TestCase):
             job_location=Vacancy.JobLocations.ON_SITE,
             job_type=Vacancy.JobTypes.FULL_TIME,
         )
-        job_2 = Vacancy.objects.create(
+        Vacancy.objects.create(
             title="Full Time Job 2",
             status=Vacancy.JobPostStatus.ACTIVE,
             job_location=Vacancy.JobLocations.REMOTE,
