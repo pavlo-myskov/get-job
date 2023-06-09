@@ -9,7 +9,7 @@
       <span class="d-none d-sm-inline fs-6">Get Job</span>
     </a>
     <div class="btn-group btn-group-sm col-6 col-sm-4" role="group" aria-label="user role">
-      <a href="#" class="btn btn-outline-royalpurple active py-1" aria-current="Jobseeker">Jobseeker</a>
+      <a href="/" class="btn btn-outline-royalpurple active py-1" aria-current="Jobseeker">Jobseeker</a>
       <a href="#" class="btn btn-outline-royalpurple py-1">Employer</a>
     </div>
     {% if user.is_authenticated %}
@@ -35,7 +35,7 @@
         <ul class="dropdown-menu jobseeker-dm dropdown-menu-end" aria-labelledby="jobseeker profile dropdown menu">
           <li class="d-lg-none mx-3 my-2">
             <form class="input-group input-group-sm" action="{% url 'job_search' %}" method="get">
-              {{ navbar_form }}
+              {{ nav_form.title|update_placeholder:"enter job title" }}
               <button type="submit" class="btn btn-royalpurple">
                 <i class="fas fa-search"></i>
               </button>

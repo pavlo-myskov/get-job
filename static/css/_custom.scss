@@ -71,13 +71,6 @@
   text-overflow: ellipsis;
 }
 
-// change padding of company items text in front of icons
-@include media-breakpoint-between(cb, md) {
-  .ps-1-custom {
-    padding-left: 0.25rem !important;
-  }
-}
-
 // override list-group-item padding
 .vaccancy-card {
   @include media-breakpoint-down(md) {
@@ -130,10 +123,16 @@
 }
 
 // clickable card
-.hero-container .btn {
+.inset-shadow-purple {
   box-shadow: inset 0 0 10px -6px $royalpurple !important;
 }
 .vaccancy-card:hover {
   box-shadow: 0 0 20px -10px $royalpurple;
   transition: all 0.3s ease-in-out;
+}
+
+// Collapsible search bar
+#expand-search-btn {
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
 }

@@ -6,12 +6,14 @@ $(document).ready(function () {
 
     hideShowNavbar(windowWidth, dropdown);
     fixDaysCounterPosition(windowWidth);
+    addRemoveCollapseClass(windowWidth);
 
     // restart functions on windows resize
     $(window).resize(function () {
         windowWidth = $(window).width();
         hideShowNavbar(windowWidth, dropdown);
         fixDaysCounterPosition(windowWidth);
+        addRemoveCollapseClass(windowWidth);
     });
 });
 
@@ -28,7 +30,7 @@ function initDropdown() {
     let dropdownToggle = document.querySelector('#navbar--dropdown .dropdown-toggle');
     if (dropdownToggle) {
         dropdown = new bootstrap.Dropdown(dropdownToggle);
-        dropdownEl.addEventListener('show.bs.dropdown', function() {
+        dropdownEl.addEventListener('show.bs.dropdown', function () {
             this.classList.add('shown');
         })
     }
@@ -90,5 +92,17 @@ function fixDaysCounterPosition(windowWidth) {
         $('.days-counter').removeClass('card-subtitle').addClass('position-absolute top-0 end-0 pt-2 pe-3')
     } else {
         $('.days-counter').removeClass('position-absolute top-0 end-0 pt-2 pe-3').addClass('card-subtitle')
+    }
+}
+
+
+/**
+ * Add/remove collapse class to search panel based on screen width.
+ */
+function addRemoveCollapseClass(windowWidth) {
+    if (windowWidth < 992) {
+        $('#search-panel').addClass('collapse');
+    } else {
+        $('#search-panel').removeClass('collapse');
     }
 }

@@ -2,7 +2,8 @@ from django.db import models
 from django.urls import reverse
 
 
-class IrelandAreas(models.TextChoices):
+class Areas(models.TextChoices):
+    IRELAND = "IRELAND", "Ireland"
     DUBLIN_CITY = "DUBLIN_CITY", "Dublin"
     DUBLIN_CITY_CENTRE = "DUBLIN_CITY_CENTRE", "Dublin City Centre"
     DUBLIN_NORTH = "DUBLIN_NORTH", "Dublin North"
@@ -45,6 +46,26 @@ class IrelandAreas(models.TextChoices):
     WORLDWIDE = "WORDLWIDE", "Worldwide"
 
 
+EXCLUDED_AREAS = [
+    Areas.NORTHERN_IRELAND,
+    Areas.UK,
+    Areas.EUROPE,
+    Areas.WORLDWIDE
+]
+# list of irish areas to be used in the search form
+IRELAND_AREAS = [
+    area[0] for area in Areas.choices if area[0] not in EXCLUDED_AREAS
+]
+
+DUBLIN_AREAS = [
+    Areas.DUBLIN_CITY,
+    Areas.DUBLIN_CITY_CENTRE,
+    Areas.DUBLIN_NORTH,
+    Areas.DUBLIN_SOUTH,
+    Areas.DUBLIN_WEST,
+]
+
+
 class Vacancy(models.Model):
 
     class JobTypes(models.TextChoices):
@@ -79,7 +100,7 @@ class Vacancy(models.Model):
     """
     body = models.TextField(blank=False)
     area = models.CharField(
-        choices=IrelandAreas.choices, max_length=50, blank=False
+        choices=Areas.choices, max_length=50, blank=False
     )
     job_location = models.CharField(
         max_length=50, choices=JobLocations.choices, blank=False

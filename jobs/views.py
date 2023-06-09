@@ -1,6 +1,6 @@
 from django.views.generic import ListView
 
-from .models import Vacancy
+from .models import Vacancy, Areas, IRELAND_AREAS, DUBLIN_AREAS
 from .forms import SearchForm
 
 
@@ -15,18 +15,40 @@ class JobListView(ListView):
         """
         self.form = SearchForm(self.request.GET)
 
+        search_fields = ('title', 'area', 'job_location', 'job_type')
+
         if self.form.is_valid():
-            query = self.form.cleaned_data["title"]
+            # get search fields from form if they are not empty
+            search_data = {
+                field: self.form.cleaned_data[field]
+                for field in search_fields
+                if self.form.cleaned_data.get(field)
+            }
+
+            # change title to title__icontains
+            # to search for case insensitive title
+            if search_data.get('title'):
+                search_data['title__icontains'] = search_data.pop('title')
+
+            area = search_data.get('area')
+            # change area to area__in if Areas.IRELAND is provided
+            # to search in by irish areas only
+            if area == Areas.IRELAND:
+                search_data['area__in'] = IRELAND_AREAS
+                del search_data['area']
+            # search in dublin areas only if DUBLIN_CITY is provided
+            elif area == Areas.DUBLIN_CITY:
+                search_data['area__in'] = DUBLIN_AREAS
+                del search_data['area']
+
+            # search for vacancies with the provided search data
             job_list = Vacancy.objects.filter(
-                title__icontains=query,
+                **search_data,
                 status=Vacancy.JobPostStatus.ACTIVE,
             )
-            # TODO: add search by area using Q objects
-            # (Q(title__icontains=query) | Q(area__icontains=query))
         else:
-            job_list = Vacancy.objects.filter(
-                status=Vacancy.JobPostStatus.ACTIVE,
-            )
+            # if form is not valid, return an empty queryset
+            job_list = Vacancy.objects.none()
 
         return job_list
 
