@@ -14,7 +14,8 @@
         <h1 class="fs-2 pb-0 pb-lg-1 text-center text-sm-start text-muted">Stand Out From the Crowd</h1>
         <h2 class="fs-4 lead text-center text-md-start">Create a Resume that Gets Noticed</h2>
       </div>
-      <a href="#" class="btn btn-outline-royalpurple inset-shadow-purple mt-2 mt-md-0 py-1 align-self-end align-self-md-start">
+      <a href="#"
+        class="btn btn-outline-royalpurple inset-shadow-purple mt-2 mt-md-0 py-1 align-self-end align-self-md-start">
         Create Resume
       </a>
     </div>
@@ -63,25 +64,31 @@
               <div class="row company-body my-2">
                 <ul class="col-8 list-group borderless">
                   <li class="list-group-item">
-                    <div class="row d-flex align-items-center">
-                      <i class="col-2 col-md-1 col-xl-2 text-center text-royalpurple pe-0 fa fa-building-user"></i>
-                      <span class="col-10 col-md-11 col-xl-10 ps-1-custom ps-lg-0">
+                    <div class="d-flex align-items-center">
+                      <span class="text-center" style="width: 35px;">
+                        <i class="text-royalpurple fa fa-building-user"></i>
+                      </span>
+                      <span>
                         <!-- TODO --> Company Name
                       </span>
                     </div>
                   </li>
                   <li class="list-group-item">
-                    <div class="row d-flex align-items-center">
-                      <i class="col-2 col-md-1 col-xl-2 text-center text-royalpurple pe-0 fa fa-location-dot"></i>
-                      <span class="col-10 col-md-11 col-xl-10 ps-1-custom ps-lg-0">
+                    <div class="d-flex align-items-center">
+                      <span class="text-center" style="width: 35px;">
+                        <i class="text-royalpurple fa fa-location-dot"></i>
+                      </span>
+                      <span>
                         {{ vacancy.get_area_display }}
                       </span>
                     </div>
                   </li>
                   <li class="list-group-item">
-                    <div class="row d-flex align-items-center">
-                      <i class="col-2 col-md-1 col-xl-2 text-center text-royalpurple pe-0 fa fa-money-bills"></i>
-                      <span class="col-10 col-md-11 col-xl-10 ps-1-custom ps-lg-0">
+                    <div class="d-flex align-items-center">
+                      <span class="text-center" style="width: 35px;">
+                        <i class="text-royalpurple fa fa-money-bills"></i>
+                      </span>
+                      <span>
                         {{ vacancy.salary }}
                       </span>
                     </div>

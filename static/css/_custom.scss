@@ -71,13 +71,6 @@
   text-overflow: ellipsis;
 }
 
-// change padding of company items text in front of icons
-@include media-breakpoint-between(cb, md) {
-  .ps-1-custom {
-    padding-left: 0.25rem !important;
-  }
-}
-
 // override list-group-item padding
 .vaccancy-card {
   @include media-breakpoint-down(md) {
