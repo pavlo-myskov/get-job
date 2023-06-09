@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.urls import reverse
 
-from jobs.models import Vacancy, IrelandAreas
+from jobs.models import Vacancy, Areas
 
 
 class TestJobListView(TestCase):
@@ -110,10 +110,10 @@ class TestJobListView(TestCase):
         valid_job = Vacancy.objects.create(
             title="Galway City Job",
             status=Vacancy.JobPostStatus.ACTIVE,
-            area=IrelandAreas.GALWAY_CITY,
+            area=Areas.GALWAY_CITY,
         )
 
-        search_query = {"area": IrelandAreas.GALWAY_CITY}
+        search_query = {"area": Areas.GALWAY_CITY}
         response = self.client.get(reverse("job_search"), search_query)
         job_list = response.context["job_list"]
         self.assertEqual(len(job_list), 1)
@@ -141,20 +141,20 @@ class TestJobListView(TestCase):
         job_1 = Vacancy.objects.create(
             title="Limerick City Job 1",
             status=Vacancy.JobPostStatus.ACTIVE,
-            area=IrelandAreas.LIMERICK_CITY,
+            area=Areas.LIMERICK_CITY,
         )
         job_11 = Vacancy.objects.create(
             title="Limerick City Job 11",
             status=Vacancy.JobPostStatus.ACTIVE,
-            area=IrelandAreas.LIMERICK_CITY,
+            area=Areas.LIMERICK_CITY,
         )
         job_2 = Vacancy.objects.create(
             title="Limerick City Job 2",
             status=Vacancy.JobPostStatus.ACTIVE,
-            area=IrelandAreas.LIMERICK_CITY,
+            area=Areas.LIMERICK_CITY,
         )
 
-        search_query = {"area": IrelandAreas.LIMERICK_CITY, "title": "1"}
+        search_query = {"area": Areas.LIMERICK_CITY, "title": "1"}
         response = self.client.get(reverse("job_search"), search_query)
         job_list = response.context["job_list"]
         self.assertEqual(len(job_list), 2)
@@ -201,25 +201,25 @@ class TestJobListView(TestCase):
         job_1 = Vacancy.objects.create(
             title="Remote Job 1",
             status=Vacancy.JobPostStatus.ACTIVE,
-            area=IrelandAreas.OFFALY,
+            area=Areas.OFFALY,
             job_location=Vacancy.JobLocations.REMOTE,
         )
         job_21 = Vacancy.objects.create(
             title="Remote Job 21",
             status=Vacancy.JobPostStatus.ACTIVE,
-            area=IrelandAreas.OFFALY,
+            area=Areas.OFFALY,
             job_location=Vacancy.JobLocations.REMOTE,
         )
         job_2 = Vacancy.objects.create(
             title="Remote Job 2",
             status=Vacancy.JobPostStatus.ACTIVE,
-            area=IrelandAreas.OFFALY,
+            area=Areas.OFFALY,
             job_location=Vacancy.JobLocations.ON_SITE,
         )
 
         search_query = {
             "title": "2",
-            "area": IrelandAreas.OFFALY,
+            "area": Areas.OFFALY,
             "job_location": Vacancy.JobLocations.REMOTE,
         }
         response = self.client.get(reverse("job_search"), search_query)
@@ -294,12 +294,12 @@ class TestJobListView(TestCase):
         """
         search_query = {
             "title": "job test",
-            "area": IrelandAreas.WEXFORD,
+            "area": Areas.WEXFORD,
         }
         response = self.client.get(reverse("job_search"), search_query)
         response_form = response.context["form"]
         self.assertEqual(response_form["title"].value(), "job test")
-        self.assertEqual(response_form["area"].value(), IrelandAreas.WEXFORD)
+        self.assertEqual(response_form["area"].value(), Areas.WEXFORD)
         self.assertFalse(response_form["job_type"].value())
         self.assertFalse(response_form["job_location"].value())
 

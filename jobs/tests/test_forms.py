@@ -1,7 +1,7 @@
 from django.test import TestCase
 
 from ..forms import SearchForm
-from ..models import IrelandAreas, Vacancy
+from ..models import Areas, Vacancy
 
 
 class TestSearchForm(TestCase):
@@ -54,7 +54,7 @@ class TestSearchForm(TestCase):
         invalid_form = SearchForm(data={"area": invalid_search_query})
         self.assertFalse(invalid_form.is_valid())
 
-        valid_search_query = IrelandAreas.GALWAY_CITY
+        valid_search_query = Areas.GALWAY_CITY
         valid_form = SearchForm(data={"area": valid_search_query})
         self.assertTrue(valid_form.is_valid())
 

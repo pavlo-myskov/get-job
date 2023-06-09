@@ -2,8 +2,8 @@ from django.db import models
 from django.urls import reverse
 
 
-class IrelandAreas(models.TextChoices):
-    REPUBLIC_OF_IRELAND = "REPUBLIC_OF_IRELAND", "Republic of Ireland"
+class Areas(models.TextChoices):
+    IRELAND = "IRELAND", "Ireland"
     DUBLIN_CITY = "DUBLIN_CITY", "Dublin"
     DUBLIN_CITY_CENTRE = "DUBLIN_CITY_CENTRE", "Dublin City Centre"
     DUBLIN_NORTH = "DUBLIN_NORTH", "Dublin North"
@@ -80,7 +80,7 @@ class Vacancy(models.Model):
     """
     body = models.TextField(blank=False)
     area = models.CharField(
-        choices=IrelandAreas.choices, max_length=50, blank=False
+        choices=Areas.choices, max_length=50, blank=False
     )
     job_location = models.CharField(
         max_length=50, choices=JobLocations.choices, blank=False
