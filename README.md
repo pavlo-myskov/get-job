@@ -249,6 +249,7 @@ The app uses the [Cloudinary](https://cloudinary.com/) cloud service to store st
     - [Font Awesome 6.4](https://fontawesome.com/)
     - [Google Fonts](https://fonts.google.com/)
     - [libsass](https://pypi.org/project/libsass/)
+    - [coverage](https://coverage.readthedocs.io/en/7.2.7/)
 
 - ### Tools
     - [Git](https://git-scm.com/)
