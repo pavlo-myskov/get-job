@@ -57,6 +57,14 @@ IRELAND_AREAS = [
     area[0] for area in Areas.choices if area[0] not in EXCLUDED_AREAS
 ]
 
+DUBLIN_AREAS = [
+    Areas.DUBLIN_CITY,
+    Areas.DUBLIN_CITY_CENTRE,
+    Areas.DUBLIN_NORTH,
+    Areas.DUBLIN_SOUTH,
+    Areas.DUBLIN_WEST,
+]
+
 
 class Vacancy(models.Model):
 

@@ -1,6 +1,6 @@
 from django.views.generic import ListView
 
-from .models import Vacancy, Areas, IRELAND_AREAS
+from .models import Vacancy, Areas, IRELAND_AREAS, DUBLIN_AREAS
 from .forms import SearchForm
 
 
@@ -30,10 +30,15 @@ class JobListView(ListView):
             if search_data.get('title'):
                 search_data['title__icontains'] = search_data.pop('title')
 
+            area = search_data.get('area')
             # change area to area__in if Areas.IRELAND is provided
             # to search in by irish areas only
-            if search_data.get('area') == Areas.IRELAND:
+            if area == Areas.IRELAND:
                 search_data['area__in'] = IRELAND_AREAS
+                del search_data['area']
+            # search in dublin areas only if DUBLIN_CITY is provided
+            elif area == Areas.DUBLIN_CITY:
+                search_data['area__in'] = DUBLIN_AREAS
                 del search_data['area']
 
             # search for vacancies with the provided search data
