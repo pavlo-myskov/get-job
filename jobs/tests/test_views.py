@@ -134,6 +134,32 @@ class TestJobListView(TestCase):
         job_list = response.context["job_list"]
         self.assertEqual(len(job_list), 0)
 
+    def test_search_by_irish_area_only(self):
+        """
+        Test that search by Area.IRELAND returns only irish jobs
+        """
+        Vacancy.objects.create(
+            title="Irish Job",
+            status=Vacancy.JobPostStatus.ACTIVE,
+            area=Areas.CORK_CITY
+        )
+        Vacancy.objects.create(
+            title="Irish Job",
+            status=Vacancy.JobPostStatus.ACTIVE,
+            area=Areas.DONEGAL
+        )
+        uk_job = Vacancy.objects.create(
+            title="Non Irish Job",
+            status=Vacancy.JobPostStatus.ACTIVE,
+            area=Areas.UK
+        )
+
+        search_query = {"area": Areas.IRELAND}
+        response = self.client.get(reverse("job_search"), search_query)
+        job_list = response.context["job_list"]
+        self.assertEqual(len(job_list), 2)
+        self.assertNotIn(uk_job, job_list)
+
     def test_search_by_area_and_title(self):
         """
         Test that search by title and area returns job if they both match
