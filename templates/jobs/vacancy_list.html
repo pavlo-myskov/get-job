@@ -20,7 +20,9 @@
   <div class="row">
     <!-- Search panel -->
     <div class="col-lg-5">
-      <div class="card sticky-lg-top mb-3 inset-shadow-purple" id="search-panel">
+      <div class="card sticky-lg-top mb-3 inset-shadow-purple
+      {% if form.errors %} show" id="search-panel" area-expanded="true">
+      {% else %}" id="search-panel">{% endif %}
         <div class="card-body">
           <form action="{% url 'job_search' %}" method="get">
             {{ form|crispy }}
