@@ -14,7 +14,7 @@
       </a>
       <h4 class="text-muted">
         {% if job_list %}
-        {{ job_list|length }} Jobs found
+        {{ job_list|length }} Job{{ job_list|length|pluralize }} found
         {% else %}
         No Jobs found
         {% endif %}
