@@ -45,6 +45,18 @@ ALLOWED_HOSTS = ['127.0.0.1', 'localhost',
                  'get-job.live',
                  'www.get-job.live']
 
+if development:
+    SECURE_SSL_REDIRECT = False
+    SESSION_COOKIE_SECURE = False
+    CSRF_COOKIE_SECURE = False
+else:
+    # redirect from http to https on heroku
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+    SECURE_SSL_REDIRECT = True
+    # set session and csrf cookies to secure
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+
 
 # Application definition
 
