@@ -163,17 +163,17 @@
           <div class="col-6 text-end">
             {% if page_obj.has_previous %}
             <a href="?page=1" class="btn btn-outline-secondary">
-              <i class="fa fa-angles-left"></i></a>
+              <i class="fa fa-angles-left text-royalpurple"></i></a>
             <a href="?page={{ page_obj.previous_page_number }}" class="btn btn-outline-secondary">
-              <i class="fa fa-angle-left"></i></a>
+              <i class="fa fa-angle-left text-royalpurple"></i></a>
             {% endif %}
           </div>
           <div class="col-6">
             {% if page_obj.has_next %}
             <a href="?page={{ page_obj.next_page_number }}" class="btn btn-outline-secondary">
-              <i class="fa fa-angle-right"></i></a>
+              <i class="fa fa-angle-right text-royalpurple"></i></a>
             <a href="?page={{ page_obj.paginator.num_pages }}" class="btn btn-outline-secondary">
-              <i class="fa fa-angles-right"></i>
+              <i class="fa fa-angles-right text-royalpurple"></i>
             </a>
             {% endif %}
           </div>
