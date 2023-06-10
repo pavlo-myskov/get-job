@@ -6,6 +6,7 @@ from .forms import SearchForm
 
 class JobListView(ListView):
     context_object_name = "job_list"
+    paginate_by = 4
     model = Vacancy
 
     def get_queryset(self):

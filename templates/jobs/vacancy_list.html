@@ -6,6 +6,8 @@
 {% block content %}
 {% include 'jobseeker/navbar.html' %}
 <main class="container-fluid py-3">
+
+  <!-- Job search header -->
   <div class="container px-0">
     <div class="card-header px-4 d-flex align-items-center justify-content-between">
       <!-- arrow font awesome icon back to the home page -->
@@ -13,14 +15,15 @@
         <i class="fa fa-arrow-left text-muted fs-4"></i>
       </a>
       <h4 class="text-muted">
-        {% if job_list %}
-        {{ job_list|length }} Job{{ job_list|length|pluralize }} found
+        {% if paginator.count %}
+        {{ paginator.count }} Job{{ paginator.count|pluralize }} Found
         {% else %}
-        No Jobs found
+        No Jobs Found
         {% endif %}
       </h4>
     </div>
   </div>
+
   <!-- Main block content -->
   <div class="container bg-light py-3 rounded">
     <!-- Btn to expand search panel -->
@@ -129,6 +132,36 @@
           {% endfor %}
         </div>
       </div>
+    </div>
+  </div>
+
+  <!-- Pagination -->
+  <div class="container px-0">
+    <div class="card-footer d-flex align-items-center justify-content-center">
+      <nav class="w-100" aria-label="Job List Page navigation">
+
+        <!-- step links -->
+        <div class="row">
+          <div class="col-6 text-end">
+            {% if page_obj.has_previous %}
+            <a href="?page=1" class="btn btn-outline-secondary">
+              <i class="fa fa-angles-left"></i></a>
+            <a href="?page={{ page_obj.previous_page_number }}" class="btn btn-outline-secondary">
+              <i class="fa fa-angle-left"></i></a>
+            {% endif %}
+          </div>
+          <div class="col-6">
+            {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}" class="btn btn-outline-secondary">
+              <i class="fa fa-angle-right"></i></a>
+            <a href="?page={{ page_obj.paginator.num_pages }}" class="btn btn-outline-secondary">
+              <i class="fa fa-angles-right"></i>
+            </a>
+            {% endif %}
+          </div>
+        </div>
+
+      </nav>
     </div>
   </div>
 </main>
