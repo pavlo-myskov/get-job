@@ -1,20 +1,42 @@
 $(document).ready(function () {
     let windowWidth = $(window).width();
 
-    // init dropdown
-    let dropdown = new bootstrap.Dropdown(document.querySelector('.dropdown-toggle'))
+    // init dropdown menu
+    let dropdown = initDropdown();
 
     hideShowNavbar(windowWidth, dropdown);
     fixDaysCounterPosition(windowWidth);
+    addRemoveCollapseClass(windowWidth);
 
     // restart functions on windows resize
     $(window).resize(function () {
         windowWidth = $(window).width();
         hideShowNavbar(windowWidth, dropdown);
         fixDaysCounterPosition(windowWidth);
+        addRemoveCollapseClass(windowWidth);
     });
 });
 
+
+/**
+ * Init dropdown menu if it exists.
+ * Add event listener to dropdown menu that adds 'shown' class to dropdown element
+ * when dropdown menu is shown.
+ * @returns {bootstrap.Dropdown}
+ */
+function initDropdown() {
+    let dropdown;
+    let dropdownEl = document.getElementById('navbar--dropdown');
+    let dropdownToggle = document.querySelector('#navbar--dropdown .dropdown-toggle');
+    if (dropdownToggle) {
+        dropdown = new bootstrap.Dropdown(dropdownToggle);
+        dropdownEl.addEventListener('show.bs.dropdown', function () {
+            this.classList.add('shown');
+        })
+    }
+
+    return dropdown;
+}
 
 /**
  * - Hide/show navbar on scroll up/down if screen width is less than 768px.
@@ -42,8 +64,11 @@ function hideShowNavbar(windowWidth, dropdown) {
             else {
                 // add scrolled-down class that hides the navbar
                 $('.smart-scroll').removeClass('scrolled-up').addClass('scrolled-down');
-                // hide dropdown menu if it is open
-                dropdown.hide();
+                // hide dropdown menu if it exists and is open
+                if (dropdown && $('#navbar--dropdown').hasClass('shown')) {
+                    dropdown.hide();
+                    $('#navbar--dropdown').removeClass('shown');
+                }
             }
             last_scroll_top = scroll_top;
         });
@@ -67,5 +92,17 @@ function fixDaysCounterPosition(windowWidth) {
         $('.days-counter').removeClass('card-subtitle').addClass('position-absolute top-0 end-0 pt-2 pe-3')
     } else {
         $('.days-counter').removeClass('position-absolute top-0 end-0 pt-2 pe-3').addClass('card-subtitle')
+    }
+}
+
+
+/**
+ * Add/remove collapse class to search panel based on screen width.
+ */
+function addRemoveCollapseClass(windowWidth) {
+    if (windowWidth < 992) {
+        $('#search-panel').addClass('collapse');
+    } else {
+        $('#search-panel').removeClass('collapse');
     }
 }

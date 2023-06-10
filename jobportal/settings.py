@@ -65,8 +65,9 @@ INSTALLED_APPS = [
     'crispy_bootstrap5',
     'sass_processor',
     'compressor',
-    'core',
+    'users',
     'jobseeker',
+    'jobs',
 ]
 
 MIDDLEWARE = [
@@ -208,7 +209,7 @@ SASS_PROCESSOR_ROOT = os.path.join(BASE_DIR, 'static')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Set custom user model as default
-AUTH_USER_MODEL = "core.User"
+AUTH_USER_MODEL = "users.User"
 
 
 # ___Allauth___

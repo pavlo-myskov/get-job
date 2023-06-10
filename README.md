@@ -1,14 +1,25 @@
 # Get Job
 
-[![Django CI](https://github.com/FlashDrago/get-job/actions/workflows/production.yml/badge.svg?branch=master)](https://github.com/FlashDrag/get-job/actions/workflows/production.yml)
+[![Tests](https://img.shields.io/github/actions/workflow/status/FlashDrag/get-job/production.yml?branch=master&label=Django%20CI&logo=github)](https://github.com/FlashDrag/get-job/actions)
+[![Heroku](https://img.shields.io/badge/Heroku-430098?style=flat&logo=heroku&logoColor=white&labelColor=575757&label=Live%20Demo)](https://get-job.herokuapp.com)
 
+[![Django](https://img.shields.io/badge/v.3.2-575757?style=flat&logo=django&logoColor=white&labelColor=092E20&label=Django)]()
+[![Bootstrap](https://img.shields.io/badge/v.5-575757?style=flat&logo=bootstrap&logoColor=white&labelColor=7952B3&label=Bootstrap)](https://docs.djangoproject.com/en/3.2/)
+[![PostgreSQL](https://img.shields.io/badge/ElephantSQL-575757?style=flat&logo=postgresql&logoColor=white&labelColor=4169E1&label=PostgreSQL)](https://www.elephantsql.com/)
+
+
+<!-- TODO Add coverage -->
+<!-- [![Codecov](https://img.shields.io/codecov/c/github/FlashDrag/get-job?label=Coverage&logo=codecov)](https://codecov.io/gh/FlashDrag/get-job)
+
+https://github.com/aiogram/aiogram/blob/dev-3.x/.github/workflows/tests.yml
+https://about.codecov.io/blog/python-code-coverage-using-github-actions-and-codecov/
+-->
 
 ## Overview
-The relevance of job search in our time constantly increases. [Get Job](http://get-job.live) is an online Job Platform that helps Jobseekers to get desirable jobs and Employers to find the right candidates. The app includes two modes: _Jobseeker Mode_ and _Employer Mode_. _Jobseeker Mode_ allows users to search for jobs and apply for jobs as well as create their resumes and manage their applications. And _Employer Mode_ allows users to post jobs, search for candidates and hire them. The *Get Job* portal is designed to be simple and intuitive so that users can easily navigate the app and perform the desired actions.
+The relevance of job search in our time constantly increases. [Get Job](https://get-job.live) is an online Job Platform that helps Jobseekers to get desirable jobs and Employers to find the right candidates. The app includes two modes: _Jobseeker Mode_ and _Employer Mode_. _Jobseeker Mode_ allows users to search for jobs and apply for jobs as well as create their resumes and manage their applications. And _Employer Mode_ allows users to post jobs, search for candidates and hire them. The *Get Job* portal is designed to be simple and intuitive so that users can easily navigate the app and perform the desired actions.
 
-[Heroku Deployment](https://get-job.herokuapp.com)
-_or_
-http://get-job.live (_non secure http protocol_)
+Live Demo: https://get-job.live
+Heroku: https://get-job.herokuapp.com
 
 
 
@@ -41,10 +52,10 @@ The main goal of the app is to deliver a solution that creates real value for th
 
 - ##### Frequent Visitor:
     - As a Jobseeker I want to be able to see the navigation bar when I scroll the page up so that I can access the navigation bar at any time.
+    - As a Jobseeker I want see the dropdown menu so that I can access the most important features of the app.
     - As a Jobseeker I want to be able to log in to my account so that I can manage my data and apply for jobs.
     - As a Jobseeker I want to be able to update my profile so that I can keep my data up to date.
     - As a Jobseeker I want to be able to get notifications so that I can be informed about my applications.
-    - As a Jobseeker I want to be able to search for jobs so that I can select the appropriate job.
     - As a Jobseeker I want to be able to open the appropriate job so that I can see the full job description.
     - As a Jobseeker I want to be able to see a full detailed view of the job so that I can decide if the job is appropriate for me.
     - As a Jobseeker I want to be able to apply for a job so that I can get a job.
@@ -63,6 +74,11 @@ The main goal of the app is to deliver a solution that creates real value for th
     - As a Jobseeker I want to be able to go back to the list of jobs from the detailed job page so that I can continue searching for jobs.
     - As a Jobseeker I want to be able to have access to the search bar on the navigation panel so that I can easily search for jobs at any time.
     - As a Jobseeker I want to be able to delete my account so that I can remove my data from the app.
+    - As a Jobseeker I want to be able to see the date when the job was posted so that I can see how old the job post is.
+    - As a Jobseeker I want to be able to see all jobs of the particular company so that I can find a job in the company I like.
+    - As a Jobseeker I want to be able to see buttons for pagination so that I can navigate through the list of jobs.
+    - As a Jobseeker I want to be able to return to the home page from the list of jobs so that I can access the home page at any time.
+    - As a Jobseeker I want to be able to see the number of jobs found in the list of jobs so that I can see how many jobs are available based on my search criteria.
 
 #### Employer Goals
 - ##### First Time Visitor:
@@ -101,6 +117,10 @@ The main goal of the app is to deliver a solution that creates real value for th
     - As an Employer I want to be able to delete the job so that I can remove it from the list of my jobs.
     - As an Employer I want to be able to update the job details so that I can keep the job information up to date.
     - As an Employer I want to be able to delete my account so that I can remove my data from the app.
+    - As an Employer I want to be able to style the job description so that I can make it more readable and attractive.
+    - As an Employer I want to be able to see the button for pagination so that I can navigate through the list of resumes.
+    - As an Employer I want to be able to return to the home page from the list of resumes so that I can access the home page at any time.
+    - As an Employer I want to be able to see the number of resumes found in the list of resumes so that I can see how many resumes are available based on my search criteria.
 
 #### Moderator Goals
 - As a Moderator I want to be able to review and approve the posted jobs so that I can protect the app from inappropriate content.
@@ -174,14 +194,21 @@ The Hero section contains call-to-action headings and a button to encourage user
 ![hero]()
 
 - #### Jobseeker's Search bar
-One of the important features of the app is the search bar. It is placed in the center of the page to be easily found and allows users to achieve their main goal - to find a job quickly and easily.
+One of the important features of the app is the search bar. It is placed in the center of the page to be easily found and allows users to achieve their main goal - to find a job quickly and easily. The functionality of the search bar is the same as the search bar of the Navbar. It takes the user input and searches for the jobs that match the input.
 ![search_bar]()
 
 - #### Latest Jobs
 The Latest Jobs section is a list of the latest vacancies posted by Employers. Each Vacancy represented by a Bootstrap Card component. The Card contains the Job Title, Days ago, the Company Name, the Location, the Salary and the main section of the Job Description. The card title is clickable and redirects the user to the Job Details page. Also a user can save the job to the Favorites or directly Apply for the Job escaping the Job Details page. The section is fully responsive. On small screens, the cards are arranged in one column and on extra large screens in two columns to be easily readable.
 ![latest_jobs]()
 
-![top_icon]()
+### Job Search page
+The user can access the Job Search page by using the search bar on the Home page. When the user submits the search query, the app redirects them to the Job Search page and displays the search results.
+The search results represented by the Bootstrap Cards, the same as the Latest Jobs section on the Home page. Each card is clickable and redirects the user to the Job Details page.
+Also, the page contains the full search panel with the search filters including _Job Title_, _Area_, _Job Location_ and _Job Type_. Each filter has a dropdown menu with the list of options. The user can select the options and combine the filters to narrow the search results. The panel is sticky on large screens and always available when the user scrolls the page. On small screens, the search panel is collapsible to save space. The user can expand it by clicking on the `Tap to Expand Search Panel` button. This panel is collapsed by default and also collapsed when user submit the valid search query to leave the more space for the search results. If the user submits the invalid search query, the panel is expanded and the user can see the form validation errors under the input fields.
+On the top of the page, the user can see the number of search results by the search query and return to the Home page by clicking on the arrow icon.
+...
+
+![back_to_top_button]()
 
 ### Development Features
 - #### Django Authentication and Authorization System
@@ -223,6 +250,7 @@ The app uses the [Cloudinary](https://cloudinary.com/) cloud service to store st
     - [Font Awesome 6.4](https://fontawesome.com/)
     - [Google Fonts](https://fonts.google.com/)
     - [libsass](https://pypi.org/project/libsass/)
+    - [coverage](https://coverage.readthedocs.io/en/7.2.7/)
 
 - ### Tools
     - [Git](https://git-scm.com/)
@@ -240,13 +268,13 @@ The app uses the [Cloudinary](https://cloudinary.com/) cloud service to store st
 - [django-sass-processor](https://pypi.org/project/django-sass-processor/)
 
 
-
 ## Testing
 See [TESTING.md]() for an overview of the app testing and debugging.
+<!-- TODO Add screenshots of the coverage report -->
 
 ## Deployment, CI/CD
-The Get Job platform is deployed on the [Heroku](https://www.heroku.com/) cloud platform and can be accessed here https://get-job.herokuapp.com or here http://get-job.live.
-The _get-job.live_ domain name is not secure as the Heroku free dyno plan does not support [SSL certificates for custom domains](https://devcenter.heroku.com/articles/ssl#dynos-and-certificate-options). The apps using Eco dynos can only use the built-in certificate associated with _appname.herokuapp.com_.
+The Get Job platform is deployed on the [Heroku](https://www.heroku.com/) cloud platform and can be accessed here https://get-job.live.
+The _get-job.live_ domain name uses the [Heroku DNS service](https://devcenter.heroku.com/articles/custom-domains) to point to the Heroku app. Usually Heroku free dyno plan does not support [SSL certificates for custom domains](https://devcenter.heroku.com/articles/ssl#dynos-and-certificate-options). But they provides a free ssl certificate for the _herokuapp.com_ domain. So the dyno is upgraded to the Hobby plan to enable the ssl certificate for the custom domain.
 
 The build, test, and deployment processes of the app are _automated_ using Continuous Integration based on [GitHub Actions](https://docs.github.com/en/actions) and Continuous Deployment based on [Heroku Pipelines](https://devcenter.heroku.com/articles/pipelines).
 
