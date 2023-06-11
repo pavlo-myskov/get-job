@@ -6,7 +6,7 @@ from .forms import SearchForm
 
 class JobListView(ListView):
     context_object_name = "job_list"
-    paginate_by = 4
+    paginate_by = 6
     model = Vacancy
 
     def get_queryset(self):
@@ -59,4 +59,12 @@ class JobListView(ListView):
         context["form"] = self.form
         # create a new instance of the form to be used in the navbar
         context["nav_form"] = SearchForm(auto_id=False)
+
+        # elided pagination
+        # https://docs.djangoproject.com/en/3.2/_modules/django/core/paginator/#Paginator.get_elided_page_range
+        page_obj = context["page_obj"]
+        custom_page_range = page_obj.paginator.get_elided_page_range(
+            number=page_obj.number, on_each_side=1, on_ends=1
+        )
+        context["custom_page_range"] = custom_page_range
         return context

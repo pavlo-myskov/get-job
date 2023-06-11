@@ -383,3 +383,22 @@ class TestJobListView(TestCase):
         self.assertFalse(response_form["title"].errors)
         self.assertFalse(response_form["job_type"].errors)
         self.assertFalse(response_form["job_location"].errors)
+
+    def test_pagination(self):
+        """
+        Test that pagination is working
+        """
+        for i in range(12):
+            Vacancy.objects.create(
+                title=f"Job {i}",
+                status=Vacancy.JobPostStatus.ACTIVE,
+            )
+
+        response = self.client.get(reverse("job_search"))
+        page_obj = response.context["page_obj"]
+        job_list = response.context["job_list"]
+
+        self.assertEqual(len(job_list), 6)
+        self.assertEqual(page_obj.paginator.count, 18)
+        self.assertEqual(page_obj.paginator.num_pages, 3)
+        self.assertEqual(page_obj.number, 1)
