@@ -136,38 +136,39 @@
   </div>
 
   <!-- Pagination -->
-  <!-- TODO: put page links between step links on large screeens -->
   {% if page_obj.paginator.num_pages > 1 %}
   <div class="container px-0">
-    <div class="card-footer d-flex align-items-center justify-content-center">
+    <div class="card-footer py-3 d-flex align-items-center justify-content-center">
       <nav class="w-100" aria-label="Job List Page navigation">
 
-        <!-- page links with elided pagination -->
-        <ul class="pagination justify-content-center">
-          {% for page_num in custom_page_range %}
-          {% if page_num == page_obj.number %}
-          <li class="page-item active" aria-current="page">
-            <span class="page-link">{{ page_num }}</span>
-          </li>
-          {% else %}
-            {% if  page_num == paginator.ELLIPSIS %}
-              <li class="page-item">
-                <span class="page-link">{{ paginator.ELLIPSIS }}</span>
+        <div class="row d-flex align-items-center">
+          <!-- page links with elided pagination -->
+          <div class="col-12 col-md-4">
+            <ul class="pagination mb-md-0 justify-content-center">
+              {% for page_num in custom_page_range %}
+              {% if page_num == page_obj.number %}
+              <li class="page-item active" aria-current="page">
+                <span class="page-link">{{ page_num }}</span>
               </li>
-            {% else %}
-              <li class="page-item">
-                <a class="page-link" href="?page={{ page_num }}">
-                  {{ page_num }}
-                </a>
-              </li>
+              {% else %}
+                {% if  page_num == paginator.ELLIPSIS %}
+                  <li class="page-item">
+                    <span class="page-link">{{ paginator.ELLIPSIS }}</span>
+                  </li>
+                {% else %}
+                  <li class="page-item">
+                    <a class="page-link" href="?page={{ page_num }}">
+                      {{ page_num }}
+                    </a>
+                  </li>
+                  {% endif %}
               {% endif %}
-          {% endif %}
-          {% endfor %}
-        </ul>
+              {% endfor %}
+            </ul>
+          </div>
 
         <!-- step links -->
-        <div class="row">
-          <div class="col-6 text-end">
+          <div class="col-6 col-md-4 order-md-first text-end">
             {% if page_obj.has_previous %}
             <a href="?page=1" class="btn btn-outline-secondary">
               <i class="fa fa-angles-left text-royalpurple"></i></a>
@@ -175,7 +176,7 @@
               <i class="fa fa-angle-left text-royalpurple"></i></a>
             {% endif %}
           </div>
-          <div class="col-6">
+          <div class="col-6 col-md-4">
             {% if page_obj.has_next %}
             <a href="?page={{ page_obj.next_page_number }}" class="btn btn-outline-secondary">
               <i class="fa fa-angle-right text-royalpurple"></i></a>
