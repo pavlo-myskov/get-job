@@ -52,6 +52,7 @@ jobs:
       run: |
         python manage.py test
       env:
+        DEVELOPMENT: "True"
         SECRET_KEY: ${{ secrets.SECRET_KEY }}
         DATABASE_URL: postgres://postgres:postgres@localhost:5432/github_actions
         CLOUDINARY_URL: ${{ secrets.CLOUDINARY_URL }}

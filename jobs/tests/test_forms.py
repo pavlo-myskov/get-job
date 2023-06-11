@@ -90,4 +90,4 @@ class TestSearchForm(TestCase):
         """Test that the default placeholder is 'search job'"""
         form = SearchForm()
         default_placeholder = form.fields["title"].widget.attrs["placeholder"]
-        self.assertEqual(default_placeholder, "search job")
+        self.assertEqual(default_placeholder, "search keywords")

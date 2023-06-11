@@ -5,115 +5,193 @@
 
 {% block content %}
 {% include 'jobseeker/navbar.html' %}
-<main class="container my-3 py-2 bg-light rounded">
+<main class="container-fluid py-3">
 
-  <!-- Btn to expand search panel -->
-  <div class="d-lg-none text-center mt-1">
-    <button class="btn btn-outline-royalpurple shadow-sm inset-shadow-purple" id="expand-search-btn" type="button" data-bs-toggle="collapse" data-bs-target="#search-panel"
-      aria-expanded="false" aria-controls="search-panel">
-      <i class="fa fa-caret-down"></i>
-      Tap to Expand Search Panel
-      <i class="fa fa-caret-down"></i>
-    </button>
+  <!-- Job search header -->
+  <div class="container px-0">
+    <div class="card-header px-4 d-flex align-items-center justify-content-between">
+      <!-- arrow font awesome icon back to the home page -->
+      <a href="{% url 'jobseeker_home' %}" class="text-decoration-none" area-label="back to home page">
+        <i class="fa fa-arrow-left text-muted fs-4"></i>
+      </a>
+      <h4 class="text-muted">
+        {% if page_obj.paginator.count %}
+        {{ page_obj.paginator.count }} Job{{ page_obj.paginator.count|pluralize }} Found
+        {% else %}
+        No Jobs Found
+        {% endif %}
+      </h4>
+    </div>
   </div>
 
-  <div class="row">
-    <!-- Search panel -->
-    <div class="col-lg-5">
-      <div class="card sticky-lg-top mb-3 inset-shadow-purple
-      {% if form.errors %} show" id="search-panel" area-expanded="true">
-      {% else %}" id="search-panel">{% endif %}
-        <div class="card-body">
-          <form action="{% url 'job_search' %}" method="get">
-            {{ form|crispy }}
-            <div class="d-flex justify-content-center">
-              <button class="btn btn-success" type="submit">Find Job</button>
-            </div>
-          </form>
+  <!-- Main block content -->
+  <div class="container bg-light py-3 rounded">
+    <!-- Btn to expand search panel -->
+    <div class="d-lg-none text-center">
+      <button class="btn btn-outline-royalpurple shadow-sm inset-shadow-purple" id="expand-search-btn" type="button"
+        data-bs-toggle="collapse" data-bs-target="#search-panel" aria-expanded="false" aria-controls="search-panel">
+        <i class="fa fa-caret-down"></i>
+        Tap to Expand Search Panel
+        <i class="fa fa-caret-down"></i>
+      </button>
+    </div>
+
+    <div class="row">
+      <!-- Search panel -->
+      <div class="col-lg-5">
+        <div class="card sticky-lg-top mb-3 inset-shadow-purple
+        {% if form.errors %} show" id="search-panel" area-expanded="true">
+          {% else %}" id="search-panel">{% endif %}
+          <div class="card-body">
+            <form action="{% url 'job_search' %}" method="get">
+              {{ form|crispy }}
+              <div class="d-flex justify-content-center">
+                <button class="btn btn-success" type="submit">Find Job</button>
+              </div>
+            </form>
+          </div>
         </div>
       </div>
-    </div>
-    <!-- Vacancies column -->
-    <div class="col-lg-7 mt-3 mt-lg-0">
-      <div class="row row-cols-1 g-2">
-        {% for vacancy in job_list %}
-        <!-- ______vacancy card______ -->
-        <div class="col">
-          <div class="card h-100 vaccancy-card">
-            <div class="card-body position-relative">
-              <h5 class="card-title col-12 col-cb-8 py-mb-1 pb-lg-2 pb-xl-0">
-                {% comment %}
-                <!-- TODO  -->
-                <a href="{% url 'job_detail' id=vacancy.id %}" class="text-decoration-none stretched-link text-dark">
-                  {% endcomment %}
-                  <a href="#" class="text-decoration-none stretched-link text-dark">
-                    {{ vacancy.title }}
-                  </a>
-              </h5>
-              <p class="col days-counter text-muted">
-                <small>{{ vacancy.created_on|timeago }} ago</small>
-              </p>
-              <div class="row company-body my-2">
-                <ul class="col-8 list-group borderless">
-                  <li class="list-group-item">
-                    <div class="d-flex align-items-center">
-                      <span class="text-center" style="width: 35px;">
-                        <i class="text-royalpurple fa fa-building-user"></i>
-                      </span>
-                      <span>
-                        <!-- TODO --> Company Name
-                      </span>
-                    </div>
-                  </li>
-                  <li class="list-group-item">
-                    <div class="d-flex align-items-center">
-                      <span class="text-center" style="width: 35px;">
-                        <i class="text-royalpurple fa fa-location-dot"></i>
-                      </span>
-                      <span>
-                        {{ vacancy.get_area_display }}
-                      </span>
-                    </div>
-                  </li>
-                  <li class="list-group-item">
-                    <div class="d-flex align-items-center">
-                      <span class="text-center" style="width: 35px;">
-                        <i class="text-royalpurple fa fa-money-bills"></i>
-                      </span>
-                      <span>
-                        {{ vacancy.salary }}
-                      </span>
-                    </div>
-                  </li>
-                </ul>
-                <div class="col-4 mx-auto my-auto text-center">
-                  <img src="{% static 'images/company-placeholder.png' %}" class="img-thumbnail" alt="company logo"
-                    style="max-height: 90px;">
+      <!-- Vacancies column -->
+      <div class="col-lg-7 mt-3 mt-lg-0">
+        <div class="row row-cols-1 g-2">
+          {% for vacancy in job_list %}
+          <!-- ______vacancy card______ -->
+          <div class="col">
+            <div class="card h-100 vaccancy-card">
+              <div class="card-body position-relative">
+                <h5 class="card-title col-12 col-cb-8 py-mb-1 pb-lg-2 pb-xl-0">
+                  {% comment %}
+                  <!-- TODO  -->
+                  <a href="{% url 'job_detail' id=vacancy.id %}" class="text-decoration-none stretched-link text-dark">
+                    {% endcomment %}
+                    <a href="#" class="text-decoration-none stretched-link text-dark">
+                      {{ vacancy.title }}
+                    </a>
+                </h5>
+                <p class="col days-counter text-muted">
+                  <small>{{ vacancy.created_on|timeago }} ago</small>
+                </p>
+                <div class="row company-body my-2">
+                  <ul class="col-8 list-group borderless">
+                    <li class="list-group-item">
+                      <div class="d-flex align-items-center">
+                        <span class="text-center" style="width: 35px;">
+                          <i class="text-royalpurple fa fa-building-user"></i>
+                        </span>
+                        <span>
+                          <!-- TODO --> Company Name
+                        </span>
+                      </div>
+                    </li>
+                    <li class="list-group-item">
+                      <div class="d-flex align-items-center">
+                        <span class="text-center" style="width: 35px;">
+                          <i class="text-royalpurple fa fa-location-dot"></i>
+                        </span>
+                        <span>
+                          {{ vacancy.get_area_display }}
+                        </span>
+                      </div>
+                    </li>
+                    <li class="list-group-item">
+                      <div class="d-flex align-items-center">
+                        <span class="text-center" style="width: 35px;">
+                          <i class="text-royalpurple fa fa-money-bills"></i>
+                        </span>
+                        <span>
+                          {{ vacancy.salary }}
+                        </span>
+                      </div>
+                    </li>
+                  </ul>
+                  <div class="col-4 mx-auto my-auto text-center">
+                    <img src="{% static 'images/company-placeholder.png' %}" class="img-thumbnail" alt="company logo"
+                      style="max-height: 90px;">
+                  </div>
                 </div>
-              </div>
-              <p class="card-text custom-text-truncate">
-                {{ vacancy.body }}
-              </p>
+                <p class="card-text custom-text-truncate">
+                  {{ vacancy.body }}
+                </p>
 
-            </div>
-            <div class="card-footer border-top-0">
-              <div class="d-flex justify-content-between px-3">
-                <a href="#" class="btn-save card-link">
-                  <!-- TODO saved
-                  <i class="fa fa-heart"></i>
-                  -->
-                  Save
-                </a>
-                <!-- TODO -->
-                <a href="#" class="btn btn-outline-royalpurple card-link py-0 my-1">Apply</a>
+              </div>
+              <div class="card-footer border-top-0">
+                <div class="d-flex justify-content-between px-3">
+                  <a href="#" class="btn-save card-link">
+                    <!-- TODO saved
+                    <i class="fa fa-heart"></i>
+                    -->
+                    Save
+                  </a>
+                  <!-- TODO -->
+                  <a href="#" class="btn btn-outline-royalpurple card-link py-0 my-1">Apply</a>
+                </div>
               </div>
             </div>
           </div>
+          {% endfor %}
         </div>
-        {% endfor %}
       </div>
     </div>
   </div>
+
+  <!-- Pagination -->
+  {% if page_obj.paginator.num_pages > 1 %}
+  <div class="container px-0">
+    <div class="card-footer py-3 d-flex align-items-center justify-content-center">
+      <nav class="w-100" aria-label="Job List Page navigation">
+
+        <div class="row d-flex align-items-center">
+          <!-- page links with elided pagination -->
+          <div class="col-12 col-md-4">
+            <ul class="pagination mb-md-0 justify-content-center">
+              {% for page_num in custom_page_range %}
+              {% if page_num == page_obj.number %}
+              <li class="page-item active" aria-current="page">
+                <span class="page-link">{{ page_num }}</span>
+              </li>
+              {% else %}
+                {% if  page_num == paginator.ELLIPSIS %}
+                  <li class="page-item">
+                    <span class="page-link">{{ paginator.ELLIPSIS }}</span>
+                  </li>
+                {% else %}
+                  <li class="page-item">
+                    <a class="page-link" href="?page={{ page_num }}">
+                      {{ page_num }}
+                    </a>
+                  </li>
+                  {% endif %}
+              {% endif %}
+              {% endfor %}
+            </ul>
+          </div>
+
+        <!-- step links -->
+          <div class="col-6 col-md-4 order-md-first text-end">
+            {% if page_obj.has_previous %}
+            <a href="?page=1" class="btn btn-outline-secondary">
+              <i class="fa fa-angles-left text-royalpurple"></i></a>
+            <a href="?page={{ page_obj.previous_page_number }}" class="btn btn-outline-secondary">
+              <i class="fa fa-angle-left text-royalpurple"></i></a>
+            {% endif %}
+          </div>
+          <div class="col-6 col-md-4">
+            {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}" class="btn btn-outline-secondary">
+              <i class="fa fa-angle-right text-royalpurple"></i></a>
+            <a href="?page={{ page_obj.paginator.num_pages }}" class="btn btn-outline-secondary">
+              <i class="fa fa-angles-right text-royalpurple"></i>
+            </a>
+            {% endif %}
+          </div>
+        </div>
+
+      </nav>
+    </div>
+  </div>
+  {% endif %}
+
 </main>
 {% endblock %}
 

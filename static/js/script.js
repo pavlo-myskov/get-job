@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    let windowWidth = $(window).width();
+    let windowWidth = window.innerWidth;
 
     // init dropdown menu
     let dropdown = initDropdown();
@@ -10,7 +10,7 @@ $(document).ready(function () {
 
     // restart functions on windows resize
     $(window).resize(function () {
-        windowWidth = $(window).width();
+        windowWidth = window.innerWidth;
         hideShowNavbar(windowWidth, dropdown);
         fixDaysCounterPosition(windowWidth);
         addRemoveCollapseClass(windowWidth);

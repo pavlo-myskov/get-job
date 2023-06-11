@@ -36,6 +36,13 @@ $custom-breakpoints: (
 // Merge the custom breakpoints with the default breakpoints
 $grid-breakpoints: map-merge($grid-breakpoints, $custom-breakpoints);
 
+// Pagination
+$pagination-color: $royalpurple;
+$pagination-active-bg: $secondary;
+$pagination-active-border-color: $secondary;
+$pagination-hover-color: $royalpurple;
+$pagination-focus-color: $royalpurple;
+$pagination-focus-box-shadow: 0 0 0 0.2rem rgba($royalpurple, 0.25);
 
 // Create a map of custom utilities
 @import "../bootstrap/scss/utilities";
