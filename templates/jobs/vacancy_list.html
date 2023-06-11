@@ -136,24 +136,31 @@
   </div>
 
   <!-- Pagination -->
+  <!-- TODO: put page links between step links on large screeens -->
   {% if page_obj.paginator.num_pages > 1 %}
   <div class="container px-0">
     <div class="card-footer d-flex align-items-center justify-content-center">
       <nav class="w-100" aria-label="Job List Page navigation">
 
-        <!-- page links -->
+        <!-- page links with elided pagination -->
         <ul class="pagination justify-content-center">
-          {% for page_num in page_obj.paginator.page_range %}
+          {% for page_num in custom_page_range %}
           {% if page_num == page_obj.number %}
           <li class="page-item active" aria-current="page">
             <span class="page-link">{{ page_num }}</span>
           </li>
           {% else %}
-          <li class="page-item">
-            <a class="page-link" href="?page={{ page_num }}">
-              {{ page_num }}
-            </a>
-          </li>
+            {% if  page_num == paginator.ELLIPSIS %}
+              <li class="page-item">
+                <span class="page-link">{{ paginator.ELLIPSIS }}</span>
+              </li>
+            {% else %}
+              <li class="page-item">
+                <a class="page-link" href="?page={{ page_num }}">
+                  {{ page_num }}
+                </a>
+              </li>
+              {% endif %}
           {% endif %}
           {% endfor %}
         </ul>

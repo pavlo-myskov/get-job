@@ -203,11 +203,17 @@ The Latest Jobs section is a list of the latest vacancies posted by Employers. E
 ![latest_jobs]()
 
 ### Job Search page
+- #### Search results
 The user can access the Job Search page by using the search bar on the Home page. When the user submits the search query, the app redirects them to the Job Search page and displays the search results.
 The search results represented by the Bootstrap Cards, the same as the Latest Jobs section on the Home page. Each card is clickable and redirects the user to the Job Details page.
+- #### Search panel
 Also, the page contains the full search panel with the search filters including _Job Title_, _Area_, _Job Location_ and _Job Type_. Each filter has a dropdown menu with the list of options. The user can select the options and combine the filters to narrow the search results. The panel is sticky on large screens and always available when the user scrolls the page. On small screens, the search panel is collapsible to save space. The user can expand it by clicking on the `Tap to Expand Search Panel` button. This panel is collapsed by default and also collapsed when user submit the valid search query to leave the more space for the search results. If the user submits the invalid search query, the panel is expanded and the user can see the form validation errors under the input fields.
+- #### Number of found jobs and Back to Home button
 On the top right side of the page's main container, the user can see the number of found jobs by the search query and return to the Home page by clicking on the arrow icon that is on the left top side of the container.
-...
+- #### Pagination
+The search results are paginated to improve the UX and make the page more user-friendly. Implemented two types of pagination - with the page numbers and with the Previous and Next buttons to give the user the choice:
+- The Previous and Next buttons respresented by the Font Awesome icons. Also the user can jump to the first or the last page by using the appropriate buttons with the double arrows.
+- The pagination with the page numbers is implemented as _Elided Pagination_, so the user can see the first and the last page at the start and the end of the pagination bar respectively, the current highlighted page at the center and the previous and the next pages on the left and the right sides of the current page. The other pages are hidden with the ellipsis.
 
 ![back_to_top_button]()
 

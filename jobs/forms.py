@@ -31,7 +31,7 @@ class SearchForm(forms.ModelForm):
                 "class": "form-control search-bar purple-input",
                 "type": "search",
                 "aria-label": "Search job",
-                "placeholder": "search job",
+                "placeholder": "search keywords",
             }
         )
         self.fields["area"].widget.attrs.update(
