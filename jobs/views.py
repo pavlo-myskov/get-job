@@ -1,4 +1,4 @@
-from django.views.generic import ListView
+from django.views.generic import ListView, DetailView
 
 from .models import Vacancy, Areas, IRELAND_AREAS, DUBLIN_AREAS
 from .forms import SearchForm
@@ -67,4 +67,15 @@ class JobListView(ListView):
             number=page_obj.number, on_each_side=1, on_ends=1
         )
         context["custom_page_range"] = custom_page_range
+        return context
+
+
+class JobDetailView(DetailView):
+    model = Vacancy
+
+    def get_context_data(self, **kwargs):
+        """Add search form to the context"""
+        context = super().get_context_data(**kwargs)
+        # create a new instance of the form to be used in the navbar
+        context["nav_form"] = SearchForm(auto_id=False)
         return context

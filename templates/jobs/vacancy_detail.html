@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% load static %}
+{% load time_filters %}
+
+{% block content %}
+{% include 'jobseeker/navbar.html' %}
+<main class="container">
+  <h1>{{ vacancy.title }}</h1>
+</main>
+{% endblock %}
