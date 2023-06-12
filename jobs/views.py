@@ -71,7 +71,8 @@ class JobListView(ListView):
 
 
 class JobDetailView(DetailView):
-    model = Vacancy
+    # get only active vacancies
+    queryset = Vacancy.objects.active()
 
     def get_context_data(self, **kwargs):
         """Add search form to the context"""

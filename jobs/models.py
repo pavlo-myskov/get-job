@@ -66,6 +66,14 @@ DUBLIN_AREAS = [
 ]
 
 
+class JobsManager(models.Manager):
+    """Custom manager for the Vacancy model"""
+
+    def active(self):
+        """Return only active vacancies"""
+        return self.get_queryset().filter(status=Vacancy.JobPostStatus.ACTIVE)
+
+
 class Vacancy(models.Model):
 
     class JobTypes(models.TextChoices):
@@ -116,6 +124,8 @@ class Vacancy(models.Model):
         max_length=50,
         default=JobPostStatus.IN_REVIEW,
     )
+
+    objects = JobsManager()
 
     class Meta:
         # the vaccancies will be ordered by the date they were created,
