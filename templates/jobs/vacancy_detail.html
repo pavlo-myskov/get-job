@@ -56,7 +56,7 @@
         {% endif %}
         <li class="list-group-item">
           <h5>Description:</h5>
-          <p class="card-text">{{ vacancy.body }}</p>
+          <div class="card-text">{{ vacancy.body|linebreaks }}</div>
         </li>
       </ul>
 
