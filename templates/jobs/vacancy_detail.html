@@ -25,12 +25,41 @@
     </div>
 
     <!-- Job detail body -->
-    <div class="card-body bg-light py-4 px-5">
-      <div class="card-title">
-        <h2>{{ vacancy.title }}</h2>
-      </div>
-    </div>
+    <div class="card-body py-4 px-5">
+      <h2 class="card-title">{{ vacancy.title }}</h2>
+      <ul class="list-group" id="job-detail-list">
+        <li class="list-group-item d-flex align-items-end">
+          <h5 class="my-auto me-4">Company:</h4>
+            <p class="my-0">Company Name</p>
+        </li>
+        <li class="list-group-item d-flex align-items-end">
+          <h5 class="my-auto me-4">Area:</h4>
+            <p class="my-0">{{ vacancy.get_area_display }}</p>
+        </li>
+        <li class="list-group-item d-flex align-items-end">
+          <h5 class="my-auto me-4">Salary:</h4>
+            <p class="my-0">{{ vacancy.salary }}</p>
+        </li>
+        <li class="list-group-item d-flex align-items-end">
+          <h5 class="my-auto me-4">Job type:</h4>
+            <p class="my-0">{{ vacancy.get_job_type_display }}</p>
+        </li>
+        <li class="list-group-item d-flex align-items-end">
+          <h5 class="my-auto me-4">Job location:</h4>
+            <p class="my-0">{{ vacancy.get_job_location_display }}</p>
+        </li>
+        {% if vacancy.experience %}
+        <li class="list-group-item d-flex align-items-end">
+          <h5 class="my-auto me-4">Experience:</h4>
+            <p class="my-0">{{ vacancy.experience }}</p>
+        </li>
+        {% endif %}
+        <li class="list-group-item">
+          <h5>Description:</h5>
+          <p class="card-text">{{ vacancy.body }}</p>
+        </li>
+      </ul>
 
-  </div>
+    </div>
 </main>
 {% endblock %}
