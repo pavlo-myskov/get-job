@@ -110,8 +110,10 @@
   text-decoration: none;
   vertical-align: middle;
   cursor: pointer;
-  padding: 0.375rem 0.75rem;
-  font-size: 1rem;
+  padding: 0.375rem 0.5rem;
+  @include media-breakpoint-up(sm) {
+    padding: 0.375rem 0.75rem;
+  }
 
   &:hover {
     &::before {
