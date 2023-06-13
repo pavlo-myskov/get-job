@@ -8334,6 +8334,13 @@ textarea.form-control-lg {
     .btn-save:hover::before {
       font-weight: 900; }
 
+.royalpurple-border {
+  border-color: #874c87 !important; }
+  .royalpurple-border:focus {
+    outline: none;
+    border-color: #874c87;
+    box-shadow: 0 0 0 0.25rem rgba(135, 76, 135, 0.3); }
+
 .inset-shadow-purple {
   box-shadow: inset 0 0 10px -6px #874c87 !important; }
 

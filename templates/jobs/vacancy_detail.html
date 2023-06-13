@@ -4,7 +4,29 @@
 
 {% block content %}
 {% include 'jobseeker/navbar.html' %}
-<main class="container">
-  <h1>{{ vacancy.title }}</h1>
+<main class="container-fluid py-3">
+
+  <!-- Job detail header -->
+  <div class="container px-0">
+    <div class="card-header px-4 d-flex align-items-center justify-content-between">
+      <!-- arrow font awesome icon back to the home page -->
+      <a href="{% url 'job_search' %}" class="text-decoration-none d-flex align-items-center text-muted fs-4"
+        area-label="back to search results">
+        <i class="fa fa-arrow-left"></i>
+        <span class="mx-2">Back</span>
+      </a>
+      <div class="">
+        <button class="btn btn-royalpurple btn-sm px-sm-3 py-1 me-2">Apply</button>
+        <button class="btn btn-save btn-sm border royalpurple-border px-sm-3 py-1">
+          Save
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <h1>{{ vacancy.title }}</h1>
+  </div>
+
 </main>
 {% endblock %}

@@ -124,6 +124,15 @@
   }
 }
 
+.royalpurple-border {
+  border-color: $royalpurple !important;
+  &:focus {
+    outline: none;
+    border-color: $royalpurple;
+    box-shadow: 0 0 0 $input-btn-focus-width rgba($royalpurple, 0.3);
+  }
+}
+
 // clickable card
 .inset-shadow-purple {
   box-shadow: inset 0 0 10px -6px $royalpurple !important;
