@@ -31,30 +31,30 @@
       <!-- List Group -->
       <div class="row">
         <div class="col-8">
-          <ul class="list-group pb-2 borderless">
+          <ul class="list-group pb-2 borderless" id="job-detail-list">
             <li class="list-group-item d-flex align-items-end">
-              <h5 class="my-auto me-4">Company:</h5>
+              <h5 class="list-item-heading my-auto me-4">Company:</h5>
               <p class="my-0">Company Name</p>
             </li>
             <li class="list-group-item d-flex align-items-end">
-              <h5 class="my-auto me-4">Area:</h5>
+              <h5 class="list-item-heading my-auto me-4">Area:</h5>
               <p class="my-0">{{ vacancy.get_area_display }}</p>
             </li>
             <li class="list-group-item d-flex align-items-end">
-              <h5 class="my-auto me-4">Salary:</h5>
+              <h5 class="list-item-heading my-auto me-4">Salary:</h5>
               <p class="my-0">{{ vacancy.salary }}</p>
             </li>
             <li class="list-group-item d-flex align-items-end">
-              <h5 class="my-auto me-4">Job type:</h5>
+              <h5 class="list-item-heading my-auto me-4">Job type:</h5>
               <p class="my-0">{{ vacancy.get_job_type_display }}</p>
             </li>
             <li class="list-group-item d-flex align-items-end">
-              <h5 class="my-auto me-4">Job location:</h5>
+              <h5 class="list-item-heading my-auto me-4">Job location:</h5>
               <p class="my-0">{{ vacancy.get_job_location_display }}</p>
             </li>
             {% if vacancy.experience %}
             <li class="list-group-item d-flex align-items-end">
-              <h5 class="my-auto me-4">Experience:</h5>
+              <h5 class="list-item-heading my-auto me-4">Experience:</h5>
               <p class="my-0">{{ vacancy.experience }}</p>
             </li>
             {% endif %}

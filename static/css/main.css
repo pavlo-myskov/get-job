@@ -8352,6 +8352,9 @@ textarea.form-control-lg {
   border-bottom-right-radius: 0;
   border-bottom-left-radius: 0; }
 
+#job-detail-list .list-item-heading {
+  width: 8rem; }
+
 /* Divider https://codepen.io/isabelc/pen/MmrJgx*/
 .astrodivider {
   margin: auto;
