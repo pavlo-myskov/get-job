@@ -10,7 +10,7 @@
     <!-- Job detail header -->
     <div class="card-header">
       <div class="d-flex align-items-center justify-content-between">
-        <a href="{% url 'job_search' %}" class="text-decoration-none d-flex align-items-center text-muted fs-4"
+        <a href="{% url 'job_search' %}?{{ search_query }}" class="text-decoration-none d-flex align-items-center text-muted fs-4"
           area-label="back to search results">
           <i class="fa fa-arrow-left"></i>
           <span class="mx-2">Back</span>
@@ -44,6 +44,7 @@
           <div class="col-12 col-sm-8 px-0">
             <ul class="list-group pb-2 borderless" id="job-detail-list">
               <li class="list-group-item d-flex align-items-end">
+                <!-- TODO Clickable with link to detail company info page -->
                 <h5 class="list-item-heading my-auto me-sm-4">Company:</h5>
                 <p class="my-0">Company Name</p>
               </li>

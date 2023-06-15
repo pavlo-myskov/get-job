@@ -19,6 +19,11 @@ class JobListView(ListView):
         search_fields = ('title', 'area', 'job_location', 'job_type')
 
         if self.form.is_valid():
+            # get query string from request with all the search data
+            query_string = self.request.META['QUERY_STRING']
+            # save query string to session
+            self.request.session['search_query'] = query_string
+
             # get search fields from form if they are not empty
             search_data = {
                 field: self.form.cleaned_data[field]
@@ -77,6 +82,10 @@ class JobDetailView(DetailView):
     def get_context_data(self, **kwargs):
         """Add search form to the context"""
         context = super().get_context_data(**kwargs)
+
+        # get search query from session
+        context['search_query'] = self.request.session.get('search_query', '')
         # create a new instance of the form to be used in the navbar
         context["nav_form"] = SearchForm(auto_id=False)
+
         return context
