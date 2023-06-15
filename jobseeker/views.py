@@ -15,7 +15,16 @@ class HomeView(ListView):
     def get_context_data(self, **kwargs):
         """Add search form to the context"""
         context = super().get_context_data(**kwargs)
-        form = SearchForm(auto_id=False)
+
+        # prepopulate the search form with the session data
+        search_query = self.request.session.get("search_query")
+        if search_query and search_query.get("title"):
+            form = SearchForm(
+                {"title": search_query.get("title")}, auto_id=False
+            )
+        else:
+            form = SearchForm(auto_id=False)
+
         context["form"] = form
-        context["nav_form"] = form
+        context["nav_form"] = SearchForm(auto_id=False)
         return context
