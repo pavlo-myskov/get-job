@@ -1,4 +1,5 @@
 from django.views.generic import ListView, DetailView
+from django.urls import reverse
 
 from .models import Vacancy, Areas, IRELAND_AREAS, DUBLIN_AREAS
 from .forms import SearchForm
@@ -19,10 +20,8 @@ class JobListView(ListView):
         search_fields = ('title', 'area', 'job_location', 'job_type')
 
         if self.form.is_valid():
-            # get query string from request with all the search data
-            query_string = self.request.META['QUERY_STRING']
-            # save query string to session
-            self.request.session['search_query'] = query_string
+            # save search query in session
+            self.request.session['search_query'] = self.form.cleaned_data
 
             # get search fields from form if they are not empty
             search_data = {
@@ -84,7 +83,13 @@ class JobDetailView(DetailView):
         context = super().get_context_data(**kwargs)
 
         # get search query from session
-        context['search_query'] = self.request.session.get('search_query', '')
+        search_query = self.request.session.get('search_query', {})
+        # build url from search query to be used in the back button
+        search_url = reverse('job_search') + '?' + '&'.join(
+            f'{key}={value}' for key, value in search_query.items()
+        )
+        context["search_url"] = search_url
+
         # create a new instance of the form to be used in the navbar
         context["nav_form"] = SearchForm(auto_id=False)
 
