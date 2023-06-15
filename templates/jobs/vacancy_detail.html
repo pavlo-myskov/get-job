@@ -26,45 +26,51 @@
 
     <!-- Job detail body -->
     <div class="card-body position-relative py-4 px-3">
-      <h2 class="card-title mb-1 mb-sm-2">{{ vacancy.title }}</h2>
+      <h2 class="card-title col-8 mb-1 mb-sm-2">{{ vacancy.title }}</h2>
       <p class="col days-counter text-muted">
         <small>{{ vacancy.created_on|timeago }} ago</small>
       </p>
 
+      <!-- Company Image for small screens -->
+      <div class="d-sm-none position-absolute top-0 end-0 me-4 mt-3">
+        <img src="{% static 'images/company-placeholder.png' %}" class="img-thumbnail" alt="company logo"
+          style="max-height: 60px;">
+      </div>
+
       <!-- List Group -->
       <div class="row">
-        <div class="col-8">
+        <div class="col-12 col-sm-8">
           <ul class="list-group pb-2 borderless" id="job-detail-list">
             <li class="list-group-item d-flex align-items-end">
-              <h5 class="list-item-heading my-auto me-4">Company:</h5>
+              <h5 class="list-item-heading my-auto me-sm-4">Company:</h5>
               <p class="my-0">Company Name</p>
             </li>
             <li class="list-group-item d-flex align-items-end">
-              <h5 class="list-item-heading my-auto me-4">Area:</h5>
+              <h5 class="list-item-heading my-auto me-sm-4">Area:</h5>
               <p class="my-0">{{ vacancy.get_area_display }}</p>
             </li>
             <li class="list-group-item d-flex align-items-end">
-              <h5 class="list-item-heading my-auto me-4">Salary:</h5>
+              <h5 class="list-item-heading my-auto me-sm-4">Salary:</h5>
               <p class="my-0">{{ vacancy.salary }}</p>
             </li>
             <li class="list-group-item d-flex align-items-end">
-              <h5 class="list-item-heading my-auto me-4">Job type:</h5>
+              <h5 class="list-item-heading my-auto me-sm-4">Job type:</h5>
               <p class="my-0">{{ vacancy.get_job_type_display }}</p>
             </li>
             <li class="list-group-item d-flex align-items-end">
-              <h5 class="list-item-heading my-auto me-4">Job location:</h5>
+              <h5 class="list-item-heading my-auto me-sm-4">Job location:</h5>
               <p class="my-0">{{ vacancy.get_job_location_display }}</p>
             </li>
             {% if vacancy.experience %}
             <li class="list-group-item d-flex align-items-end">
-              <h5 class="list-item-heading my-auto me-4">Experience:</h5>
+              <h5 class="list-item-heading my-auto me-sm-4">Experience:</h5>
               <p class="my-0">{{ vacancy.experience }}</p>
             </li>
             {% endif %}
           </ul>
         </div>
-        <!-- Company Image -->
-        <div class="col-4 mx-auto my-auto text-center">
+        <!-- Company Image for large screens -->
+        <div class="d-none d-sm-block col-4 mx-auto my-auto text-center">
           <img src="{% static 'images/company-placeholder.png' %}" class="img-thumbnail" alt="company logo"
             style="max-height: 130px;">
         </div>
