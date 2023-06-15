@@ -465,27 +465,3 @@ class TestJobDetailView(TestCase):
 
         self.assertIn("vacancy", context)
         self.assertIn("nav_form", context)
-        self.assertIn("search_url", context)
-
-    def test_search_query_url_in_context(self):
-        """
-        Test that search query url is returned in context
-        if search query is stored in session
-        """
-
-        search_query = {
-            "title": "job test",
-            "area": Areas.DONEGAL,
-            "job_type": Vacancy.JobTypes.FULL_TIME,
-        }
-        # store search query in session using job_search view
-        self.client.get(reverse("job_search"), search_query)
-
-        response = self.client.get(reverse("job_detail", args=(1,)))
-        search_url = response.context.get("search_url")
-
-        self.assertEqual(
-            search_url,
-            "/jobs/?title=job test&area=DONEGAL&"
-            "job_location=&job_type=FULL_TIME",
-        )

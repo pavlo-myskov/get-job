@@ -17,10 +17,14 @@ class JobListView(ListView):
         """
         # get search query from search panel if it is provided,
         # otherwise prepopulate the search form with the session data
+        # if session data is also not provided return all approved jobs
         if self.request.GET:
             self.form = SearchForm(self.request.GET)
-        else:
+        elif self.request.session.get('search_query'):
             self.form = SearchForm(self.request.session.get('search_query'))
+        else:
+            self.form = SearchForm()
+            return Vacancy.objects.filter(status=Vacancy.JobPostStatus.ACTIVE)
 
         # if form is valid, search for vacancies
         if self.form.is_valid():
