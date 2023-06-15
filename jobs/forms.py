@@ -19,11 +19,19 @@ class SearchForm(forms.ModelForm):
         self.fields["title"].label = "Job Title"
 
         # set first area choice to 'All' instead of '---------'
-        if hasattr(self.fields['area'], 'choices'):
-            choices = self.fields['area'].choices
-            if isinstance(choices, list):
-                choices[0] = ('', 'All')
-                self.fields['area'].choices = choices
+        area_choices = self.fields['area'].choices
+        area_choices[0] = ('', 'All')
+        self.fields['area'].choices = area_choices
+
+        # set first job_location choice to 'All' instead of '---------'
+        job_location_choices = self.fields['job_location'].choices
+        job_location_choices[0] = ('', 'All')
+        self.fields['job_location'].choices = job_location_choices
+
+        # set first job_type choice to 'All' instead of '---------'
+        job_type_choices = self.fields['job_type'].choices
+        job_type_choices[0] = ('', 'All')
+        self.fields['job_type'].choices = job_type_choices
 
         # set custom widget attributes
         self.fields["title"].widget.attrs.update(
