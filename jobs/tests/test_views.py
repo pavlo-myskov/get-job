@@ -402,3 +402,67 @@ class TestJobListView(TestCase):
         self.assertEqual(page_obj.paginator.count, 18)
         self.assertEqual(page_obj.paginator.num_pages, 3)
         self.assertEqual(page_obj.number, 1)
+
+
+class TestJobDetailView(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.vacancies = [
+            Vacancy.objects.create(
+                title=f"ActiveJob {i}",
+                status=Vacancy.JobPostStatus.ACTIVE,
+            )
+            for i in range(4)
+        ]
+        cls.inactive_vacancies = [
+            Vacancy.objects.create(
+                title=f"InactiveJob {i}",
+                status=Vacancy.JobPostStatus.IN_REVIEW,
+            )
+            for i in range(1)
+        ]
+
+    def test_load_job_detail_template(self):
+        """
+        Test that vacancy detail template is loaded
+        """
+        response = self.client.get(reverse("job_detail", args=(1,)))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "jobs/vacancy_detail.html")
+
+    def test_get_job_detail(self):
+        """
+        Test that job detail is returned
+        """
+        response = self.client.get(reverse("job_detail", args=(4,)))
+        vacancy = response.context["vacancy"]
+
+        self.assertEqual(vacancy, self.vacancies[3])
+
+    def test_get_inactive_job_detail(self):
+        """
+        Test that inactive job detail is not returned
+        """
+        response = self.client.get(reverse("job_detail", args=(5,)))
+
+        self.assertEqual(response.status_code, 404)
+
+    def test_get_job_detail_with_invalid_id(self):
+        """
+        Test that invalid job id returns 404
+        """
+        response = self.client.get(reverse("job_detail", args=(10,)))
+
+        self.assertEqual(response.status_code, 404)
+
+    def test_get_context(self):
+        """
+        Test that context is returned with vacancy
+        """
+        response = self.client.get(reverse("job_detail", args=(1,)))
+        context = response.context
+
+        self.assertIn("vacancy", context)
+        self.assertIn("nav_form", context)
+        self.assertIn("search_query", context)
