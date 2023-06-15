@@ -8356,4 +8356,24 @@ textarea.form-control-lg {
   background-color: transparent;
   border: none; }
 
+/* Divider https://codepen.io/isabelc/pen/MmrJgx*/
+.astrodivider {
+  margin: auto;
+  width: 600px;
+  max-width: 100%;
+  position: relative; }
+
+.astrodividermask {
+  overflow: hidden;
+  height: 10px; }
+
+.astrodividermask:after {
+  content: '';
+  display: block;
+  margin: -25px auto 0;
+  width: 100%;
+  height: 25px;
+  border-radius: 125px / 12px;
+  box-shadow: 0 0 3px #874c87; }
+
 /*# sourceMappingURL=main.css.map */

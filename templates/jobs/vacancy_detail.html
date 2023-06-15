@@ -25,9 +25,9 @@
     </div>
 
     <!-- Job detail body -->
-    <div class="card-body py-4 px-5">
+    <div class="card-body py-4 px-3">
       <h2 class="card-title">{{ vacancy.title }}</h2>
-      <ul class="list-group" id="job-detail-list">
+      <ul class="list-group pb-2" id="job-detail-list">
         <li class="list-group-item d-flex align-items-end">
           <h5 class="my-auto me-4">Company:</h4>
             <p class="my-0">Company Name</p>
@@ -54,11 +54,14 @@
             <p class="my-0">{{ vacancy.experience }}</p>
         </li>
         {% endif %}
-        <li class="list-group-item">
-          <h5>Description:</h5>
-          <div class="card-text">{{ vacancy.body|linebreaks }}</div>
-        </li>
       </ul>
+      <div class="astrodivider">
+        <div class="astrodividermask"></div>
+      </div>
+      <div class="pt-2 px-3">
+        <h5>Description:</h5>
+        <div class="">{{ vacancy.body|linebreaks }}</div>
+      </div>
 
     </div>
 </main>
