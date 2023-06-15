@@ -25,8 +25,11 @@
     </div>
 
     <!-- Job detail body -->
-    <div class="card-body py-4 px-3">
-      <h2 class="card-title">{{ vacancy.title }}</h2>
+    <div class="card-body position-relative py-4 px-3">
+      <h2 class="card-title mb-1 mb-sm-2">{{ vacancy.title }}</h2>
+      <p class="col days-counter text-muted">
+        <small>{{ vacancy.created_on|timeago }} ago</small>
+      </p>
 
       <!-- List Group -->
       <div class="row">

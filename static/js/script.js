@@ -88,7 +88,7 @@ function hideShowNavbar(windowWidth, dropdown) {
  * Days counter is located on every card.
  */
 function fixDaysCounterPosition(windowWidth) {
-    if (windowWidth > 440) {
+    if (windowWidth > 575) {
         $('.days-counter').removeClass('card-subtitle').addClass('position-absolute top-0 end-0 pt-2 pe-3')
     } else {
         $('.days-counter').removeClass('position-absolute top-0 end-0 pt-2 pe-3').addClass('card-subtitle')
