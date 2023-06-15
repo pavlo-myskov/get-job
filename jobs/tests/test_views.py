@@ -141,17 +141,17 @@ class TestJobListView(TestCase):
         Vacancy.objects.create(
             title="Irish Job",
             status=Vacancy.JobPostStatus.ACTIVE,
-            area=Areas.CORK_CITY
+            area=Areas.CORK_CITY,
         )
         Vacancy.objects.create(
             title="Irish Job",
             status=Vacancy.JobPostStatus.ACTIVE,
-            area=Areas.DONEGAL
+            area=Areas.DONEGAL,
         )
         uk_job = Vacancy.objects.create(
             title="Non Irish Job",
             status=Vacancy.JobPostStatus.ACTIVE,
-            area=Areas.UK
+            area=Areas.UK,
         )
 
         search_query = {"area": Areas.IRELAND}
@@ -167,27 +167,27 @@ class TestJobListView(TestCase):
         Vacancy.objects.create(
             title="City Centre Job",
             status=Vacancy.JobPostStatus.ACTIVE,
-            area=Areas.DUBLIN_CITY_CENTRE
+            area=Areas.DUBLIN_CITY_CENTRE,
         )
         Vacancy.objects.create(
             title="North Dublin Job",
             status=Vacancy.JobPostStatus.ACTIVE,
-            area=Areas.DUBLIN_NORTH
+            area=Areas.DUBLIN_NORTH,
         )
         Vacancy.objects.create(
             title="South Dublin Job",
             status=Vacancy.JobPostStatus.ACTIVE,
-            area=Areas.DUBLIN_SOUTH
+            area=Areas.DUBLIN_SOUTH,
         )
         Vacancy.objects.create(
             title="West Dublin Job",
             status=Vacancy.JobPostStatus.ACTIVE,
-            area=Areas.DUBLIN_WEST
+            area=Areas.DUBLIN_WEST,
         )
         Vacancy.objects.create(
             title="Dublin County Job",
             status=Vacancy.JobPostStatus.ACTIVE,
-            area=Areas.DUBLIN_COUNTY
+            area=Areas.DUBLIN_COUNTY,
         )
 
         search_query = {"area": Areas.DUBLIN_CITY}
@@ -402,3 +402,90 @@ class TestJobListView(TestCase):
         self.assertEqual(page_obj.paginator.count, 18)
         self.assertEqual(page_obj.paginator.num_pages, 3)
         self.assertEqual(page_obj.number, 1)
+
+
+class TestJobDetailView(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.vacancies = [
+            Vacancy.objects.create(
+                title=f"ActiveJob {i}",
+                status=Vacancy.JobPostStatus.ACTIVE,
+            )
+            for i in range(4)
+        ]
+        cls.inactive_vacancies = [
+            Vacancy.objects.create(
+                title=f"InactiveJob {i}",
+                status=Vacancy.JobPostStatus.IN_REVIEW,
+            )
+            for i in range(1)
+        ]
+
+    def test_load_job_detail_template(self):
+        """
+        Test that vacancy detail template is loaded
+        """
+        response = self.client.get(reverse("job_detail", args=(1,)))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "jobs/vacancy_detail.html")
+
+    def test_get_job_detail(self):
+        """
+        Test that job detail is returned
+        """
+        response = self.client.get(reverse("job_detail", args=(4,)))
+        vacancy = response.context["vacancy"]
+
+        self.assertEqual(vacancy, self.vacancies[3])
+
+    def test_get_inactive_job_detail(self):
+        """
+        Test that inactive job detail is not returned
+        """
+        response = self.client.get(reverse("job_detail", args=(5,)))
+
+        self.assertEqual(response.status_code, 404)
+
+    def test_get_job_detail_with_invalid_id(self):
+        """
+        Test that invalid job id returns 404
+        """
+        response = self.client.get(reverse("job_detail", args=(10,)))
+
+        self.assertEqual(response.status_code, 404)
+
+    def test_get_context(self):
+        """
+        Test that context is returned with vacancy
+        """
+        response = self.client.get(reverse("job_detail", args=(1,)))
+        context = response.context
+
+        self.assertIn("vacancy", context)
+        self.assertIn("nav_form", context)
+        self.assertIn("search_url", context)
+
+    def test_search_query_url_in_context(self):
+        """
+        Test that search query url is returned in context
+        if search query is stored in session
+        """
+
+        search_query = {
+            "title": "job test",
+            "area": Areas.DONEGAL,
+            "job_type": Vacancy.JobTypes.FULL_TIME,
+        }
+        # store search query in session using job_search view
+        self.client.get(reverse("job_search"), search_query)
+
+        response = self.client.get(reverse("job_detail", args=(1,)))
+        search_url = response.context.get("search_url")
+
+        self.assertEqual(
+            search_url,
+            "/jobs/?title=job test&area=DONEGAL&"
+            "job_location=&job_type=FULL_TIME",
+        )
