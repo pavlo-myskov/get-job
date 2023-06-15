@@ -15,13 +15,24 @@ class JobListView(ListView):
         Search for aproved jobs by title if search query is provided,
         otherwise return all approved jobs (even if empty query is provided)
         """
-        self.form = SearchForm(self.request.GET)
+        # get search query from search panel if it is provided,
+        # otherwise prepopulate the search form with the session data
+        # if session data is also not provided return all approved jobs
+        if self.request.GET:
+            self.form = SearchForm(self.request.GET)
+        elif self.request.session.get('search_query'):
+            self.form = SearchForm(self.request.session.get('search_query'))
+        else:
+            self.form = SearchForm()
+            return Vacancy.objects.filter(status=Vacancy.JobPostStatus.ACTIVE)
 
-        search_fields = ('title', 'area', 'job_location', 'job_type')
-
+        # if form is valid, search for vacancies
         if self.form.is_valid():
-            # save search query in session
-            self.request.session['search_query'] = self.form.cleaned_data
+            search_fields = ("title", "area", "job_location", "job_type")
+
+            # update session with the search query
+            if self.request.GET:
+                self.request.session["search_query"] = self.form.cleaned_data
 
             # get search fields from form if they are not empty
             search_data = {
@@ -32,19 +43,19 @@ class JobListView(ListView):
 
             # change title to title__icontains
             # to search for case insensitive title
-            if search_data.get('title'):
-                search_data['title__icontains'] = search_data.pop('title')
+            if search_data.get("title"):
+                search_data["title__icontains"] = search_data.pop("title")
 
-            area = search_data.get('area')
+            area = search_data.get("area")
             # change area to area__in if Areas.IRELAND is provided
             # to search in by irish areas only
             if area == Areas.IRELAND:
-                search_data['area__in'] = IRELAND_AREAS
-                del search_data['area']
+                search_data["area__in"] = IRELAND_AREAS
+                del search_data["area"]
             # search in dublin areas only if DUBLIN_CITY is provided
             elif area == Areas.DUBLIN_CITY:
-                search_data['area__in'] = DUBLIN_AREAS
-                del search_data['area']
+                search_data["area__in"] = DUBLIN_AREAS
+                del search_data["area"]
 
             # search for vacancies with the provided search data
             job_list = Vacancy.objects.filter(
@@ -81,15 +92,6 @@ class JobDetailView(DetailView):
     def get_context_data(self, **kwargs):
         """Add search form to the context"""
         context = super().get_context_data(**kwargs)
-
-        # get search query from session
-        search_query = self.request.session.get('search_query', {})
-        # build url from search query to be used in the back button
-        search_url = reverse('job_search') + '?' + '&'.join(
-            f'{key}={value}' for key, value in search_query.items()
-        )
-        context["search_url"] = search_url
-
         # create a new instance of the form to be used in the navbar
         context["nav_form"] = SearchForm(auto_id=False)
 
