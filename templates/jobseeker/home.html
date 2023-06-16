@@ -35,7 +35,11 @@
       <div class="container px-md-5 pt-4 pt-lg-5 pb-1 pb-md-3 pb-lg-5 mx-auto">
         <form class="input-group" action="{% url 'job_search' %}" method="GET">
           {{ form.title|update_placeholder:"e.g. software developer" }}
-          <button class="btn btn-royalpurple ms-2" type="submit">Find Job</button>
+          <a class="btn btn-outline-royalpurple" href="{% url 'job_search' %}" aria-label="job filter">
+            <i class="fa-solid fa-sliders"></i>
+            <span class="d-none d-sm-inline">Filter</span>
+          </a>
+          <button class="btn btn-royalpurple" type="submit">Find Job</button>
         </form>
       </div>
     </section>
@@ -103,12 +107,8 @@
             <div class="card-footer border-top-0">
               <div class="d-flex justify-content-between px-3">
                 <a href="#" class="btn-save card-link">
-                  <!-- TODO saved
-                  <i class="fa fa-heart"></i>
-                  -->
                   Save
                 </a>
-                <!-- TODO -->
                 <a href="#" class="btn btn-outline-royalpurple card-link py-0 my-1">Apply</a>
               </div>
             </div>
