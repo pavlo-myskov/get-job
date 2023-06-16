@@ -2,6 +2,7 @@
 
 $light: #f5f7f8;
 $royalpurple: #874c87;
+$cyan-blue: #2d7f9b;
 
 @import "../bootstrap/scss/variables";
 @import "../bootstrap/scss/mixins";
@@ -9,6 +10,7 @@ $royalpurple: #874c87;
 // Create a map of custom colors
 $custom-colors: (
   "royalpurple": $royalpurple,
+  "cyan-blue": $cyan-blue,
   "light": $light,
   "gray-200": $gray-200
 );

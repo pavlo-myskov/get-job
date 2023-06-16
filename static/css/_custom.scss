@@ -1,16 +1,4 @@
-// ___Jobseeker Navbar___
-
-// jobseeker dropdown menu
-
-.jobseeker-dm {
-  // change color of active dropdown item
-  .dropdown-item {
-    &.active,
-    &:active {
-      @include gradient-bg($royalpurple);
-    }
-  }
-}
+// ___Navbar___
 
 // expand dropdown menu to full width on small screens
 @media screen and (max-width: 992px) {
@@ -21,15 +9,6 @@
     box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
     margin-top: 0px !important;
     width: 100%;
-  }
-}
-
-// change color of search bar input on focus
-.purple-input {
-  &:focus {
-    outline: none;
-    border-color: $royalpurple;
-    box-shadow: 0 0 0 $input-btn-focus-width rgba($royalpurple, 0.3);
   }
 }
 
@@ -55,8 +34,53 @@
   transition: all 0.3s ease-in-out;
 }
 
-// ______Vacansies cards______
 
+// ___Jobseeker Navbar___
+
+// jobseeker dropdown menu
+.jobseeker-dm {
+  // change color of active dropdown item
+  .dropdown-item {
+    &.active,
+    &:active {
+      @include gradient-bg($royalpurple);
+    }
+  }
+}
+
+// change color of search bar input on focus
+.purple-input {
+  &:focus {
+    outline: none;
+    border-color: $royalpurple;
+    box-shadow: 0 0 0 $input-btn-focus-width rgba($royalpurple, 0.3);
+  }
+}
+
+
+// ___Employer Navbar___
+
+// employer dropdown menu
+.employer-dm {
+  // change color of active dropdown item
+  .dropdown-item {
+    &.active,
+    &:active {
+      @include gradient-bg($cyan-blue);
+    }
+  }
+}
+
+// change color of search bar input on focus
+.cyan-input {
+  &:focus {
+    outline: none;
+    border-color: $cyan-blue;
+    box-shadow: 0 0 0 $input-btn-focus-width rgba($cyan-blue, 0.3);
+  }
+}
+
+// ______CARDS______
 // remove list borders
 .borderless li {
   border: none;
@@ -72,7 +96,7 @@
 }
 
 // override list-group-item padding
-.vaccancy-card {
+.vaccancy-card, .resume-card {
   @include media-breakpoint-down(md) {
     .list-group-item {
       padding: 0.2rem $list-group-item-padding-x;
@@ -94,6 +118,8 @@
 .text-justify {
   text-align: justify !important;
 }
+
+// ______Vacansies cards______
 
 // save button
 .btn-save {
@@ -139,6 +165,25 @@
 }
 .vaccancy-card:hover {
   box-shadow: 0 0 20px -10px $royalpurple;
+  transition: all 0.3s ease-in-out;
+}
+
+// ___Resume cards___
+.cyan-border {
+  border-color: $cyan-blue !important;
+  &:focus {
+    outline: none;
+    border-color: $cyan-blue;
+    box-shadow: 0 0 0 $input-btn-focus-width rgba($cyan-blue, 0.3);
+  }
+}
+
+// clickable card
+.inset-shadow-cyan {
+  box-shadow: inset 0 0 10px -6px $cyan-blue !important;
+}
+.resume-card:hover {
+  box-shadow: 0 0 20px -10px $cyan-blue;
   transition: all 0.3s ease-in-out;
 }
 
