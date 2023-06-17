@@ -99,7 +99,11 @@ class JobseekerProfile(models.Model):
     # use name instead of first_name and last_name,
     # as they don't cover global name patterns
     name = models.CharField(max_length=254, blank=True)
-    avatar = CloudinaryField("image", default="placeholder")
+    avatar = models.ImageField(
+        upload_to="jobseeker_avatars",
+        blank=True,
+        default="profile_placeholder",
+    )
     gender = models.CharField(
         choices=GENDER_TYPES, max_length=10, blank=True, null=True
     )
