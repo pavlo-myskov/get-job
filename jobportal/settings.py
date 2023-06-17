@@ -196,17 +196,17 @@ if not development:
         'StaticHashedCloudinaryStorage'
 
     # cloudinary media settings
-    MEDIA_URL = '/media/get-job/'
     DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 else:
     # URL path for your static files where they
     # will be served from during development
     STATIC_URL = '/static/'
 
-    # URL path for media files where they will be served from
-    MEDIA_URL = '/media/get-job/'
-    # Dir where media files are stored during development
-    MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# URL path for media files where they will be served from
+MEDIA_URL = '/media/get-job/'
+# Dir where media files are stored during development
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Dir where your static files are stored during development
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "static"), ]
