@@ -48,10 +48,6 @@ class User(AbstractBaseUser, PermissionsMixin):
         EMPLOYER = ("EMPLOYER", 'Employer')
         MODERATOR = ("MODERATOR", 'Moderator')
 
-    # _table fields_
-    # use name instead of first_name and last_name,
-    # as they don't cover global name patterns
-    name = models.CharField(max_length=254, blank=True)
     email = models.EmailField(max_length=254, unique=True)
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)

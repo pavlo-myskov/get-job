@@ -1,3 +1,12 @@
 from django.contrib import admin
 
-# Register your models here.
+from .models import JobseekerProfile
+
+
+@admin.register(JobseekerProfile)
+class JobseekerProfileAdmin(admin.ModelAdmin):
+    '''Define admin model for JobseekerProfile model.'''
+
+    list_display = ['user', 'name', 'gender', 'dob']
+    list_filter = ['gender']
+    search_fields = ['user__email', 'name']
