@@ -96,6 +96,9 @@ class JobseekerProfile(models.Model):
     )
 
     user = models.OneToOneField(Jobseeker, on_delete=models.CASCADE)
+    # use name instead of first_name and last_name,
+    # as they don't cover global name patterns
+    name = models.CharField(max_length=254, blank=True)
     avatar = CloudinaryField("image", default="placeholder")
     gender = models.CharField(
         choices=GENDER_TYPES, max_length=10, blank=True, null=True
@@ -109,6 +112,9 @@ class JobseekerProfile(models.Model):
     favorites = models.ManyToManyField(
         Vacancy, blank=True, related_name="favoriters"
     )
+
+    def __str__(self):
+        return self.user.email
 
 
 @receiver(post_save, sender=Jobseeker)
