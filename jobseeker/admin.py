@@ -9,4 +9,4 @@ class JobseekerProfileAdmin(admin.ModelAdmin):
 
     list_display = ['user', 'name', 'gender', 'dob']
     list_filter = ['gender']
-    search_fields = ['user', 'name']
+    search_fields = ['user__email', 'name']
