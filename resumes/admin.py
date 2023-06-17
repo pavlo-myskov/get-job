@@ -11,9 +11,10 @@ class ResumeAdmin(admin.ModelAdmin):
         "jobseeker",
         "status",
         "occupation",
+        "experience_duration",
         "created_on",
     ]
-    list_filter = ("status",)
+    list_filter = ("status", "experience_duration",)
     search_fields = ["jobseeker__email", "occupation", "skills"]
     # Sorted by resumes that are in review and with the oldest created date
     ordering = ("status", "created_on")
