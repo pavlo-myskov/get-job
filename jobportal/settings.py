@@ -204,7 +204,7 @@ else:
     STATIC_URL = '/static/'
 
     # URL path for media files where they will be served from
-    MEDIA_URL = '/media/'
+    MEDIA_URL = '/media/get-job/'
     # Dir where media files are stored during development
     MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
