@@ -102,7 +102,7 @@ class JobseekerProfile(models.Model):
     avatar = models.ImageField(
         upload_to="jobseeker_avatars",
         blank=True,
-        default="profile_placeholder",
+        default="profile_placeholder.png",
     )
     gender = models.CharField(
         choices=GENDER_TYPES, max_length=10, blank=True, null=True
