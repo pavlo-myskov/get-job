@@ -19,8 +19,7 @@
         <h1 class="fs-2 pb-0 pb-lg-1 text-center text-sm-start text-md-end text-muted">Hire Faster, Hire Smarter</h1>
         <h2 class="fs-4 lead text-center text-md-end">List Your Job Opening Here</h2>
       </div>
-      <a href="#"
-        class="btn btn-outline-cyan-blue inset-shadow-cyan mt-2 mt-md-0 py-1 px-4 align-self-end">
+      <a href="#" class="btn btn-outline-cyan-blue inset-shadow-cyan mt-2 mt-md-0 py-1 px-4 align-self-end">
         Post Job
       </a>
     </div>
@@ -48,7 +47,6 @@
     </section>
 
     <!-- Vacancies section -->
-    {% comment %}
     <section class="container resume-container g-1 g-sm-2 g-md-4">
       <h2 class="text-muted ps-3 mb-2 mb-md-3">Latest Resumes</h2>
       <div class="row row-cols-1 row-cols-xl-2 g-2">
@@ -58,9 +56,13 @@
           <div class="card h-100 resume-card">
             <div class="card-body position-relative">
               <h5 class="card-title col-12 col-cb-8 py-mb-1 pb-lg-2 pb-xl-0">
+                {% comment %}
+                TODO: Add
                 <a href="{% url 'resume_detail' resume.id %}" class="text-decoration-none stretched-link text-dark">
-                  {{ resume.title }}
-                </a>
+                  {% endcomment %}
+                  <a href="#" class="text-decoration-none stretched-link text-dark">
+                    {{ resume.occupation }}
+                  </a>
               </h5>
               <p class="col days-counter text-muted">
                 <small>{{ resume.created_on|timeago }} ago</small>
@@ -73,7 +75,7 @@
                         <i class="text-cyan-blue fa fa-building-user"></i>
                       </span>
                       <span>
-                        <!-- TODO --> Company Name
+                        {{ resume.jobseeker.profile.name }}
                       </span>
                     </div>
                   </li>
@@ -83,7 +85,7 @@
                         <i class="text-cyan-blue fa fa-location-dot"></i>
                       </span>
                       <span>
-                        {{ resume.get_area_display }}
+                        {{ resume.get_experience_duration_display }}
                       </span>
                     </div>
                   </li>
@@ -93,14 +95,15 @@
                         <i class="text-cyan-blue fa fa-money-bills"></i>
                       </span>
                       <span>
-                        {{ resume.salary }}
+                        <!-- TODO: Truncate to one sentence -->
+                        {{ resume.skills }}
                       </span>
                     </div>
                   </li>
                 </ul>
                 <div class="col-4 mx-auto my-auto text-center">
-                  <img src="{% static 'images/company-placeholder.png' %}" class="img-thumbnail" alt="company logo"
-                    style="max-height: 90px;">
+                  <img src="{{ resume.jobseeker.profile.avatar.url }}" class="img-thumbnail"
+                    alt="{{ resume.jobseeker.profile.avatar.name }}">
                 </div>
               </div>
               <p class="card-text custom-text-truncate">
@@ -122,7 +125,6 @@
       </div>
       <!-- TODO: Add Link "More" to redirect to /resumes -->
     </section>
-    {% endcomment %}
   </div>
 </main>
 {% endblock content %}
