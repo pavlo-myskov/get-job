@@ -86,13 +86,15 @@
   border: none;
 }
 
-// Truncate card text to 3 lines
-.custom-text-truncate {
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
+// Custom truncation
+@for $i from 2 through 5 {
+  .text-truncate--#{$i} {
+    display: -webkit-box;
+    -webkit-line-clamp: $i;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 }
 
 // override list-group-item padding
@@ -122,6 +124,25 @@
 // ______Vacansies cards______
 
 // save button
+$btn-colors: (
+  "royalpurple": $royalpurple,
+  "cyan-blue": $cyan-blue,
+);
+
+// create save custom button color
+@each $btn-name, $btn-color in $btn-colors {
+  .btn--#{$btn-name} {
+    color: $btn-color;
+    &:hover {
+      &::before {
+        // filled heart icon
+        font-weight: 900;
+      }
+      color: $btn-color;
+    }
+  }
+}
+
 .btn-save {
   &::before {
     // heart icon
@@ -131,7 +152,6 @@
   display: inline-block;
   font-weight: 400;
   line-height: 1.5;
-  color: #874c87;
   text-align: center;
   text-decoration: none;
   vertical-align: middle;
@@ -139,14 +159,6 @@
   padding: 0.375rem 0.5rem;
   @include media-breakpoint-up(sm) {
     padding: 0.375rem 0.75rem;
-  }
-
-  &:hover {
-    &::before {
-      // filled heart icon
-      font-weight: 900;
-    }
-    color: #874c87;
   }
 }
 

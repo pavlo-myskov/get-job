@@ -6,6 +6,7 @@ $(document).ready(function () {
 
     hideShowNavbar(windowWidth, dropdown);
     fixDaysCounterPosition(windowWidth);
+    fixCardImagePosition(windowWidth);
     addRemoveCollapseClass(windowWidth);
 
     // restart functions on windows resize
@@ -13,6 +14,7 @@ $(document).ready(function () {
         windowWidth = window.innerWidth;
         hideShowNavbar(windowWidth, dropdown);
         fixDaysCounterPosition(windowWidth);
+        fixCardImagePosition(windowWidth);
         addRemoveCollapseClass(windowWidth);
     });
 });
@@ -84,7 +86,7 @@ function hideShowNavbar(windowWidth, dropdown) {
 }
 
 /**
- * Fix absolute position of days counter on screens larger than 400px.
+ * Fix absolute position of days counter for mobile devices
  * Days counter is located on every card.
  */
 function fixDaysCounterPosition(windowWidth) {
@@ -92,6 +94,17 @@ function fixDaysCounterPosition(windowWidth) {
         $('.days-counter').removeClass('card-subtitle').addClass('position-absolute top-0 end-0 pt-2 pe-3')
     } else {
         $('.days-counter').removeClass('position-absolute top-0 end-0 pt-2 pe-3').addClass('card-subtitle')
+    }
+}
+
+/**
+ * Fix absolute position of card image for mobile devices
+ */
+function fixCardImagePosition(windowWidth) {
+    if (windowWidth < 576) {
+        $('.resume-card--img').css('max-height', '50px').addClass('position-absolute top-0 end-0 pt-2')
+    } else {
+        $('.resume-card--img').css('max-height', '70px').removeClass('position-absolute top-0 end-0 pt-2')
     }
 }
 
