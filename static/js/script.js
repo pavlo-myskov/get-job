@@ -134,18 +134,29 @@ function ageSlider() {
         slide: function (event, ui) {
             let minValue = ui.values[0];
             let maxValue = ui.values[1];
-            // display 65+ if max value is 66
+
+            // update input hidden form fields
+            $("#min-age").val(minValue);
+            $("#max-age").val(maxValue);
+
+            // update input decorative field
             if (maxValue === 66) {
+            // set decorative value to "65+" if max value is 66
                 maxValue = "65+";
             }
             $("#age-amount").val(minValue + " - " + maxValue);
         }
     });
 
+    // set initial values
     let minValue = $("#slider-range").slider("values", 0);
     let maxValue = $("#slider-range").slider("values", 1);
-    // display 65+ if max value is 66
+
+    $("#min-age").val(minValue);
+    $("#max-age").val(maxValue);
+
     if (maxValue === 66) {
+    // set decorative value to "65+" if max value is 66
         maxValue = "65+";
     }
     $("#age-amount").val(minValue + " - " + maxValue);
