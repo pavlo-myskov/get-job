@@ -86,13 +86,15 @@
   border: none;
 }
 
-// Truncate card text to 3 lines
-.custom-text-truncate {
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
+// Custom truncation
+@for $i from 2 through 5 {
+  .text-truncate--#{$i} {
+    display: -webkit-box;
+    -webkit-line-clamp: $i;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 }
 
 // override list-group-item padding
