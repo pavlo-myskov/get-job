@@ -1,0 +1,72 @@
+{% load static %}
+{% load time_filters %}
+
+<div class="col">
+  <div class="card h-100 resume-card">
+    <div class="card-body position-relative">
+      <h5 class="card-title col-12 col-cb-8 py-mb-1 pb-lg-2 pb-xl-0 text-truncate">
+        {% comment %}
+        TODO: Add
+        <a href="{% url 'resume_detail' resume.id %}" class="text-decoration-none stretched-link text-dark">
+          {% endcomment %}
+          <a href="#" class="text-decoration-none stretched-link text-dark">
+            {{ resume.occupation }}
+          </a>
+      </h5>
+      <p class="col days-counter text-muted">
+        <small>{{ resume.created_on|timeago }} ago</small>
+      </p>
+      <div class="row company-body my-2">
+        <ul class="col-8 list-group borderless">
+          <li class="list-group-item">
+            <div class="d-flex align-items-center">
+              <span class="text-center flex-shrink-0" style="width: 35px;">
+                <i class="text-cyan-blue fa fa-building-user"></i>
+              </span>
+              <span class="text-truncate">
+                {{ resume.jobseeker.profile.name }}
+              </span>
+            </div>
+          </li>
+          <li class="list-group-item">
+            <div class="d-flex align-items-center">
+              <span class="text-center flex-shrink-0" style="width: 35px;">
+                <i class="text-cyan-blue fa fa-location-dot"></i>
+              </span>
+              <span>
+                {{ resume.get_experience_duration_display }}
+              </span>
+            </div>
+          </li>
+          <li class="list-group-item">
+            <div class="d-flex align-items-center">
+              <span class="text-center flex-shrink-0" style="width: 35px;">
+                <i class="text-cyan-blue fa fa-money-bills"></i>
+              </span>
+              <span class="text-truncate">
+                <!-- TODO: Truncate to two sentences -->
+                {{ resume.skills }}
+              </span>
+            </div>
+          </li>
+        </ul>
+        <div class="col-4 mx-auto my-auto text-center">
+          <img src="{{ resume.jobseeker.profile.avatar.url }}" class="img-thumbnail"
+            alt="{{ resume.jobseeker.profile.avatar.name }}" style="max-height: 80px;">
+        </div>
+      </div>
+      <p class="card-text custom-text-truncate">
+        {{ resume.body }}
+      </p>
+
+    </div>
+    <div class="card-footer border-top-0">
+      <div class="d-flex justify-content-between px-3">
+        <a href="#" class="btn-save card-link">
+          Save
+        </a>
+        <a href="#" class="btn btn-outline-cyan-blue card-link py-0 my-1">Hire</a>
+      </div>
+    </div>
+  </div>
+</div>
