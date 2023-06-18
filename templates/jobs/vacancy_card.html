@@ -1,0 +1,67 @@
+{% load static %}
+{% load time_filters %}
+
+<div class="col">
+  <div class="card h-100 vaccancy-card">
+    <div class="card-body position-relative">
+      <h5 class="card-title col-12 col-cb-8 py-mb-1 pb-lg-2 pb-xl-0 text-truncate">
+        <a href="{% url 'job_detail' vacancy.id %}" class="text-decoration-none stretched-link text-dark">
+          {{ vacancy.title }}
+        </a>
+      </h5>
+      <p class="col days-counter text-muted">
+        <small>{{ vacancy.created_on|timeago }} ago</small>
+      </p>
+      <div class="row company-body my-2">
+        <ul class="col-8 list-group borderless">
+          <li class="list-group-item">
+            <div class="d-flex align-items-center">
+              <span class="text-center flex-shrink-0" style="width: 35px;">
+                <i class="text-royalpurple fa fa-building-user"></i>
+              </span>
+              <span class="text-truncate">
+                <!-- TODO --> Company Name
+              </span>
+            </div>
+          </li>
+          <li class="list-group-item">
+            <div class="d-flex align-items-center">
+              <span class="text-center flex-shrink-0" style="width: 35px;">
+                <i class="text-royalpurple fa fa-location-dot"></i>
+              </span>
+              <span class="text-truncate">
+                {{ vacancy.get_area_display }}
+              </span>
+            </div>
+          </li>
+          <li class="list-group-item">
+            <div class="d-flex align-items-center">
+              <span class="text-center flex-shrink-0" style="width: 35px;">
+                <i class="text-royalpurple fa fa-money-bills"></i>
+              </span>
+              <span class="text-truncate">
+                {{ vacancy.salary }}
+              </span>
+            </div>
+          </li>
+        </ul>
+        <div class="col-4 mx-auto my-auto text-center">
+          <img src="{% static 'images/company-placeholder.png' %}" class="img-thumbnail" alt="company logo"
+            style="max-height: 90px;">
+        </div>
+      </div>
+      <p class="card-text custom-text-truncate">
+        {{ vacancy.body }}
+      </p>
+
+    </div>
+    <div class="card-footer border-top-0">
+      <div class="d-flex justify-content-between px-3">
+        <a href="#" class="btn-save card-link">
+          Save
+        </a>
+        <a href="#" class="btn btn-outline-royalpurple card-link py-0 my-1">Apply</a>
+      </div>
+    </div>
+  </div>
+</div>
