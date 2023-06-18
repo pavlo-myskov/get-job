@@ -53,7 +53,7 @@
         <div class="col">
           <div class="card h-100 vaccancy-card">
             <div class="card-body position-relative">
-              <h5 class="card-title col-12 col-cb-8 py-mb-1 pb-lg-2 pb-xl-0">
+              <h5 class="card-title col-12 col-cb-8 py-mb-1 pb-lg-2 pb-xl-0 text-truncate">
                 <a href="{% url 'job_detail' vacancy.id %}" class="text-decoration-none stretched-link text-dark">
                   {{ vacancy.title }}
                 </a>
@@ -65,30 +65,30 @@
                 <ul class="col-8 list-group borderless">
                   <li class="list-group-item">
                     <div class="d-flex align-items-center">
-                      <span class="text-center" style="width: 35px;">
+                      <span class="text-center flex-shrink-0" style="width: 35px;">
                         <i class="text-royalpurple fa fa-building-user"></i>
                       </span>
-                      <span>
+                      <span class="text-truncate">
                         <!-- TODO --> Company Name
                       </span>
                     </div>
                   </li>
                   <li class="list-group-item">
                     <div class="d-flex align-items-center">
-                      <span class="text-center" style="width: 35px;">
+                      <span class="text-center flex-shrink-0" style="width: 35px;">
                         <i class="text-royalpurple fa fa-location-dot"></i>
                       </span>
-                      <span>
+                      <span class="text-truncate">
                         {{ vacancy.get_area_display }}
                       </span>
                     </div>
                   </li>
                   <li class="list-group-item">
                     <div class="d-flex align-items-center">
-                      <span class="text-center" style="width: 35px;">
+                      <span class="text-center flex-shrink-0" style="width: 35px;">
                         <i class="text-royalpurple fa fa-money-bills"></i>
                       </span>
-                      <span>
+                      <span class="text-truncate">
                         {{ vacancy.salary }}
                       </span>
                     </div>
