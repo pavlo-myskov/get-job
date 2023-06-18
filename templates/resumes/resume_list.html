@@ -45,7 +45,8 @@
           <div class="card-body">
             <form action="{% url 'resume_search' %}" method="get">
               {{ form|crispy }}
-              <div class="d-flex justify-content-center">
+              <div id="slider-range"></div>
+              <div class="d-flex justify-content-center mt-4">
                 <button class="btn btn-success" type="submit">Find Resume</button>
               </div>
             </form>

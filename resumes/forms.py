@@ -42,33 +42,15 @@ class ResumeSearchForm(forms.Form):
         ),
     )
 
-    age_from = forms.IntegerField(
+    age = forms.CharField(
+        max_length=20,
         required=False,
-        widget=forms.NumberInput(
+        widget=forms.TextInput(
             attrs={
-                "class": "form-range cyan-blue-input",
-                "aria-label": "Age from",
-                "type": "range",
-                "min": "18",
-                "max": "65",
-                "step": "3",
+                "id": "age-amount",
+                "aria-label": "Age range",
+                "disabled": "",
+                "readonly": "",
             }
         ),
     )
-
-    age_to = forms.IntegerField(
-        required=False,
-        widget=forms.NumberInput(
-            attrs={
-                "class": "form-control cyan-blue-input",
-                "aria-label": "Age to",
-                "type": "range",
-                "min": "18",
-                "max": "65",
-                "step": "3",
-            }
-        ),
-    )
-
-
- 

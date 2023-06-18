@@ -8,6 +8,7 @@ $(document).ready(function () {
     fixDaysCounterPosition(windowWidth);
     fixCardImagePosition(windowWidth);
     addRemoveCollapseClass(windowWidth);
+    ageSlider();
 
     // restart functions on windows resize
     $(window).resize(function () {
@@ -17,6 +18,7 @@ $(document).ready(function () {
         fixCardImagePosition(windowWidth);
         addRemoveCollapseClass(windowWidth);
     });
+
 });
 
 
@@ -118,4 +120,33 @@ function addRemoveCollapseClass(windowWidth) {
     } else {
         $('#search-panel').removeClass('collapse');
     }
+}
+
+/**
+ * jQuery age range slider
+ */
+function ageSlider() {
+    $("#slider-range").slider({
+        range: true,
+        min: 18,
+        max: 66,
+        values: [18, 66],
+        slide: function (event, ui) {
+            let minValue = ui.values[0];
+            let maxValue = ui.values[1];
+            // display 65+ if max value is 66
+            if (maxValue === 66) {
+                maxValue = "65+";
+            }
+            $("#age-amount").val(minValue + " - " + maxValue);
+        }
+    });
+
+    let minValue = $("#slider-range").slider("values", 0);
+    let maxValue = $("#slider-range").slider("values", 1);
+    // display 65+ if max value is 66
+    if (maxValue === 66) {
+        maxValue = "65+";
+    }
+    $("#age-amount").val(minValue + " - " + maxValue);
 }
