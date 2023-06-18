@@ -42,15 +42,4 @@ class ResumeSearchForm(forms.Form):
         ),
     )
 
-    age = forms.CharField(
-        max_length=20,
-        required=False,
-        widget=forms.TextInput(
-            attrs={
-                "id": "age-amount",
-                "aria-label": "Age range",
-                "disabled": "",
-                "readonly": "",
-            }
-        ),
-    )
+    # TODO add hidden fileds: min-age and max-age

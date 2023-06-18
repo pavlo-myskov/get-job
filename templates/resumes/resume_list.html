@@ -45,7 +45,19 @@
           <div class="card-body">
             <form action="{% url 'resume_search' %}" method="get">
               {{ form|crispy }}
-              <div id="slider-range"></div>
+
+              <!-- age range -->
+              <div>
+                <!-- decorative block that shows selected range -->
+                <div class="mb-3">
+                  <label for="age-amount" class="form-label">Age</label>
+                  <input type="text" name="age" id="age-amount" aria-label="Age range" disabled readonly maxlength="20"
+                    class="textinput form-control">
+                </div>
+                <!-- jQuery slider -->
+                <div id="slider-range"></div>
+              </div>
+
               <div class="d-flex justify-content-center mt-4">
                 <button class="btn btn-success" type="submit">Find Resume</button>
               </div>
