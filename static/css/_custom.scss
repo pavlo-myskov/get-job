@@ -34,6 +34,19 @@
   transition: all 0.3s ease-in-out;
 }
 
+// Custom Inputs
+
+// inputs with custom color styles
+@each $color-name, $color in $custom-colors {
+  .#{$color-name}-input {
+    &:focus {
+      outline: none;
+      border-color: $color;
+      box-shadow: 0 0 0 $input-btn-focus-width rgba($color, 0.3);
+    }
+  }
+}
+
 
 // ___Jobseeker Navbar___
 
@@ -45,15 +58,6 @@
     &:active {
       @include gradient-bg($royalpurple);
     }
-  }
-}
-
-// change color of search bar input on focus
-.purple-input {
-  &:focus {
-    outline: none;
-    border-color: $royalpurple;
-    box-shadow: 0 0 0 $input-btn-focus-width rgba($royalpurple, 0.3);
   }
 }
 
@@ -124,13 +128,8 @@
 // ______Vacansies cards______
 
 // save button
-$btn-colors: (
-  "royalpurple": $royalpurple,
-  "cyan-blue": $cyan-blue,
-);
-
 // create save custom button color
-@each $btn-name, $btn-color in $btn-colors {
+@each $btn-name, $btn-color in $custom-colors {
   .btn--#{$btn-name} {
     color: $btn-color;
     &:hover {

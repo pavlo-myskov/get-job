@@ -36,7 +36,7 @@ class SearchForm(forms.ModelForm):
         # set custom widget attributes
         self.fields["title"].widget.attrs.update(
             {
-                "class": "form-control search-bar purple-input",
+                "class": "form-control search-bar royalpurple-input",
                 "type": "search",
                 "aria-label": "Search job",
                 "placeholder": "search keywords",
@@ -44,19 +44,19 @@ class SearchForm(forms.ModelForm):
         )
         self.fields["area"].widget.attrs.update(
             {
-                "class": "purple-input form-select",
+                "class": "royalpurple-input form-select",
                 "aria-label": "Select area",
             }
         )
         self.fields["job_location"].widget.attrs.update(
             {
-                "class": "purple-input form-select",
+                "class": "royalpurple-input form-select",
                 "aria-label": "Select job location",
             }
         )
         self.fields["job_type"].widget.attrs.update(
             {
-                "class": "purple-input form-select",
+                "class": "royalpurple-input form-select",
                 "aria-label": "Select job type",
             }
         )

@@ -8356,13 +8356,28 @@ textarea.form-control-lg {
   transform: translateY(0);
   transition: all 0.3s ease-in-out; }
 
-.jobseeker-dm .dropdown-item.active, .jobseeker-dm .dropdown-item:active {
-  background-color: #874c87; }
-
-.purple-input:focus {
+.royalpurple-input:focus {
   outline: none;
   border-color: #874c87;
   box-shadow: 0 0 0 0.25rem rgba(135, 76, 135, 0.3); }
+
+.cyan-blue-input:focus {
+  outline: none;
+  border-color: #2d7f9b;
+  box-shadow: 0 0 0 0.25rem rgba(45, 127, 155, 0.3); }
+
+.light-input:focus {
+  outline: none;
+  border-color: #f5f7f8;
+  box-shadow: 0 0 0 0.25rem rgba(245, 247, 248, 0.3); }
+
+.gray-200-input:focus {
+  outline: none;
+  border-color: #e9ecef;
+  box-shadow: 0 0 0 0.25rem rgba(233, 236, 239, 0.3); }
+
+.jobseeker-dm .dropdown-item.active, .jobseeker-dm .dropdown-item:active {
+  background-color: #874c87; }
 
 .employer-dm .dropdown-item.active, .employer-dm .dropdown-item:active {
   background-color: #2d7f9b; }
@@ -8430,6 +8445,20 @@ textarea.form-control-lg {
   .btn--cyan-blue:hover {
     color: #2d7f9b; }
     .btn--cyan-blue:hover::before {
+      font-weight: 900; }
+
+.btn--light {
+  color: #f5f7f8; }
+  .btn--light:hover {
+    color: #f5f7f8; }
+    .btn--light:hover::before {
+      font-weight: 900; }
+
+.btn--gray-200 {
+  color: #e9ecef; }
+  .btn--gray-200:hover {
+    color: #e9ecef; }
+    .btn--gray-200:hover::before {
       font-weight: 900; }
 
 .btn-save {
