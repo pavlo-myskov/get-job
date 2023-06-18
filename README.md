@@ -256,6 +256,7 @@ The app uses the [Cloudinary](https://cloudinary.com/) cloud service to store st
     - [Django 4.2](https://docs.djangoproject.com/en/4.2/)
     - [Bootstrap 5](https://getbootstrap.com/docs/5.3/getting-started/introduction/)
     - [jQuery 3.6.4](https://releases.jquery.com/)
+    - [jQuery UI 1.13.2](https://jqueryui.com/)
     - [Font Awesome 6.4](https://fontawesome.com/)
     - [Google Fonts](https://fonts.google.com/)
     - [libsass](https://pypi.org/project/libsass/)
@@ -268,6 +269,7 @@ The app uses the [Cloudinary](https://cloudinary.com/) cloud service to store st
     - [Microsoft Visio](https://www.microsoft.com/en-ie/microsoft-365/visio/)
     - [Cloudinary](https://cloudinary.com/)
     - [Balsamiq](https://balsamiq.com/)
+    - [Sass](https://sass-lang.com/)
 
 - ### Django packages
 - [django-crispy-forms](https://django-crispy-forms.readthedocs.io/en/latest/)
