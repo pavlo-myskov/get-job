@@ -52,7 +52,9 @@
                 <div class="mb-3">
                   <label for="age-amount" class="form-label">Age</label>
                   <input type="text" name="age" id="age-amount" aria-label="Age range" disabled readonly maxlength="20"
-                    class="textinput form-control">
+                    class="textinput form-control {% if age_error %} is-invalid">
+                    <p id="error_1_id_min_age" class="invalid-feedback"><strong>{{ age_error }}</strong></p>
+                    {% else %}">{% endif %}
                 </div>
                 <!-- jQuery slider -->
                 <div id="slider-range"></div>

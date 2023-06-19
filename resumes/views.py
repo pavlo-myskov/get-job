@@ -90,6 +90,11 @@ class ResumeListView(ListView):
         """Add search form to the context"""
         context = super().get_context_data(**kwargs)
         context["form"] = self.form
+
+        # add age error messages to the context if they exist
+        if 'min_age' in self.form.errors or 'max_age' in self.form.errors:
+            context["age_error"] = "Age must be between 18 and 66 years"
+
         # create a new instance of the form to be used in the navbar
         context["nav_form"] = ResumeSearchForm(auto_id=False)
 
