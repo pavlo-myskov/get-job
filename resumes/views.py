@@ -98,7 +98,11 @@ class ResumeListView(ListView):
         #         status=Resume.ResumePublishStatus.ACTIVE
         #     )
 
-        self.form = ResumeSearchForm(self.request.GET)
+        if self.request.GET:
+            self.form = ResumeSearchForm(self.request.GET)
+        else:
+            self.form = ResumeSearchForm()
+            return Resume.objects.active()
 
         # if form is valid, search for resumes
         if self.form.is_valid():
