@@ -99,7 +99,6 @@ def filter_resumes(search_data: dict) -> QuerySet:
         )
     if search_data.get("min_age") or search_data.get("max_age"):
         query.add(get_age_lookup(search_data), query.connector)
-
     # filter active resumes by search query
     # distinct() removes duplicate results
     resume_list = Resume.objects.active().filter(query).distinct()
@@ -132,11 +131,7 @@ class ResumeListView(ListView):
         #         status=Resume.ResumePublishStatus.ACTIVE
         #     )
 
-        if self.request.GET:
-            self.form = ResumeSearchForm(self.request.GET)
-        else:
-            self.form = ResumeSearchForm()
-            return Resume.objects.active()
+        self.form = ResumeSearchForm(self.request.GET)
 
         # if form is valid, search for resumes
         if self.form.is_valid():
@@ -155,7 +150,6 @@ class ResumeListView(ListView):
         else:
             # if form is not valid, return an empty queryset
             resume_list = Resume.objects.none()
-        print(resume_list)
         return resume_list
 
     def get_context_data(self, **kwargs):
