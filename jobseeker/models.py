@@ -93,6 +93,7 @@ class JobseekerProfile(models.Model):
     GENDER_TYPES = (
         ("F", "Female"),
         ("M", "Male"),
+        ("O", "Other"),
     )
 
     user = models.OneToOneField(Jobseeker, on_delete=models.CASCADE)
