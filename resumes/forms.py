@@ -44,14 +44,14 @@ class ResumeSearchForm(forms.Form):
 
     min_age = forms.IntegerField(
         required=False,
-        widget=forms.HiddenInput(attrs={"id": "min-age"}),
+        widget=forms.HiddenInput(attrs={"id": "min-age", 'value': 18}),
         max_value=66,
         min_value=18,
     )
 
     max_age = forms.IntegerField(
         required=False,
-        widget=forms.HiddenInput(attrs={"id": "max-age"}),
+        widget=forms.HiddenInput(attrs={"id": "max-age", 'value': 66}),
         max_value=66,
         min_value=18,
     )

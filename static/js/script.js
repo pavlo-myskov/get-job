@@ -130,7 +130,7 @@ function ageSlider() {
         range: true,
         min: 18,
         max: 66,
-        values: [18, 66],
+        values: [$("#min-age").val(), $("#max-age").val()],
         slide: function (event, ui) {
             let minValue = ui.values[0];
             let maxValue = ui.values[1];
