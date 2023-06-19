@@ -3,6 +3,7 @@ from datetime import datetime
 from dateutil.relativedelta import relativedelta
 from django.views.generic import ListView
 from django.db.models import Q
+from django.db.models import QuerySet
 
 from .models import Resume
 from .forms import ResumeSearchForm
@@ -35,7 +36,7 @@ def get_keywords(search_data: dict) -> Q:
     return keywords_obj
 
 
-def get_age_lookup(search_data: dict):
+def get_age_lookup(search_data: dict) -> Q:
     """Return lookup for age range from search data"""
     today = datetime.today()
     max_age = search_data.get("max_age", 66)
@@ -47,30 +48,63 @@ def get_age_lookup(search_data: dict):
         # get all ages that are equal or older than 66
         if min_age == 66:
             dob_val = today - relativedelta(years=max_age)
-            lookup = {"jobseeker__jobseekerprofile__dob__lte": dob_val}
+            lookup = Q(jobseeker__jobseekerprofile__dob__lte=dob_val)
         else:
             # if min_age and max_age are equal, search for exact age
             dob_val = today - relativedelta(years=min_age)
-            lookup = {
-                "jobseeker__jobseekerprofile__dob__range": [
+            lookup = Q(
+                jobseeker__jobseekerprofile__dob__range=[
                     dob_val - relativedelta(years=1),
                     dob_val,
                 ]
-            }
+            )
 
     # if max_age is 66, search for all ages from min_age to 66 and older
     elif max_age == 66:
         startdate = today - relativedelta(years=min_age)
-        lookup = {"jobseeker__jobseekerprofile__dob__lte": startdate}
+        lookup = Q(jobseeker__jobseekerprofile__dob__lte=startdate)
 
     else:
         # search for all ages from min_age to max_age(not including max_age)
         startdate = today - relativedelta(years=max_age)
         enddate = today - relativedelta(years=min_age)
-        lookup = {
-            "jobseeker__jobseekerprofile__dob__range": [startdate, enddate]
-        }
+        lookup = Q(
+            jobseeker__jobseekerprofile__dob__range=[startdate, enddate]
+        )
     return lookup
+
+
+def filter_resumes(search_data: dict) -> QuerySet:
+    """
+    Filter resumes by search data using Q objects
+    """
+    query = Q()
+    # add Q objects to query if it is exist in search data
+    if search_data.get("keywords"):
+        query.add(get_keywords(search_data), query.connector)
+    if search_data.get("experience"):
+        query.add(
+            Q(experience_duration__contains=search_data["experience"]),
+            query.connector,
+        )
+    if search_data.get("gender"):
+        # Lookups that span relationships
+        query.add(
+            Q(
+                jobseeker__jobseekerprofile__gender__contains=search_data[  # noqa
+                    "gender"
+                ]
+            ),
+            query.connector,
+        )
+    if search_data.get("min_age") or search_data.get("max_age"):
+        query.add(get_age_lookup(search_data), query.connector)
+
+    # filter active resumes by search query
+    # distinct() removes duplicate results
+    resume_list = Resume.objects.active().filter(query).distinct()
+
+    return resume_list
 
 
 class ResumeListView(ListView):
@@ -117,24 +151,11 @@ class ResumeListView(ListView):
                 if value
             }
 
-            get_age_lookup(search_data)
-
-            resume_list = Resume.objects.filter(
-                get_keywords(search_data),
-                experience_duration__contains=search_data.get(
-                    "experience", ""
-                ),
-                # Lookups that span relationships
-                jobseeker__jobseekerprofile__gender__contains=search_data.get(
-                    "gender", ""
-                ),
-                **get_age_lookup(search_data),
-                status=Resume.ResumePublishStatus.ACTIVE,
-            )
+            resume_list = filter_resumes(search_data)
         else:
             # if form is not valid, return an empty queryset
             resume_list = Resume.objects.none()
-
+        print(resume_list)
         return resume_list
 
     def get_context_data(self, **kwargs):
