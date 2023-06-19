@@ -1,9 +1,76 @@
 import re
+from datetime import datetime
+from dateutil.relativedelta import relativedelta
 from django.views.generic import ListView
 from django.db.models import Q
 
 from .models import Resume
 from .forms import ResumeSearchForm
+
+
+def get_keywords(search_data: dict) -> Q:
+    """Extract keywords from search data with regex
+    and return Q object with keywords"""
+
+    # extract keywords from string using regex
+    keywords_string = search_data.get("keywords", "").strip()
+    keywords_list = re.findall(r"\w+", keywords_string)
+
+    # "Search for multiple keywords over multiple columns in Django"
+    # code snippet based on stackoverflow answer:
+    # https://stackoverflow.com/a/43552495/20143678
+    if keywords_list:
+        keywords_obj = Q(occupation__icontains=keywords_list[0]) | Q(
+            skills__icontains=keywords_list[0]
+        )
+        for keyword in keywords_list[1:]:
+            keywords_obj.add(
+                Q(occupation__icontains=keyword)
+                | Q(skills__icontains=keyword),
+                keywords_obj.connector,
+            )
+    else:
+        keywords_obj = Q()
+
+    return keywords_obj
+
+
+def get_age_lookup(search_data: dict):
+    """Return lookup for age range from search data"""
+    today = datetime.today()
+    max_age = search_data.get("max_age", 66)
+    min_age = search_data.get("min_age", 18)
+    if min_age > max_age:
+        min_age, max_age = max_age, min_age
+
+    if min_age == max_age:
+        # get all ages that are equal or older than 66
+        if min_age == 66:
+            dob_val = today - relativedelta(years=max_age)
+            lookup = {"jobseeker__jobseekerprofile__dob__lte": dob_val}
+        else:
+            # if min_age and max_age are equal, search for exact age
+            dob_val = today - relativedelta(years=min_age)
+            lookup = {
+                "jobseeker__jobseekerprofile__dob__range": [
+                    dob_val - relativedelta(years=1),
+                    dob_val,
+                ]
+            }
+
+    # if max_age is 66, search for all ages from min_age to 66 and older
+    elif max_age == 66:
+        startdate = today - relativedelta(years=min_age)
+        lookup = {"jobseeker__jobseekerprofile__dob__lte": startdate}
+
+    else:
+        # search for all ages from min_age to max_age(not including max_age)
+        startdate = today - relativedelta(years=max_age)
+        enddate = today - relativedelta(years=min_age)
+        lookup = {
+            "jobseeker__jobseekerprofile__dob__range": [startdate, enddate]
+        }
+    return lookup
 
 
 class ResumeListView(ListView):
@@ -15,7 +82,7 @@ class ResumeListView(ListView):
         Search for aproved jobs by title if search query is provided,
         otherwise return all approved jobs (even if empty query is provided)
         """
-        # TODO:
+        # TODO session data:
         # get search query from search panel if it is provided,
         # otherwise prepopulate the search form with the session data
         # if session data is also not provided return all approved jobs
@@ -33,44 +100,23 @@ class ResumeListView(ListView):
 
         self.form = ResumeSearchForm(self.request.GET)
 
-        # if form is valid, search for vacancies
+        # if form is valid, search for resumes
         if self.form.is_valid():
-
             # update session with the search query
             if self.request.GET:
                 self.request.session["search_query"] = self.form.cleaned_data
 
             # filter only non-empty fields
-            search_data = dict(
-                filter(
-                    lambda item: item[1],
-                    self.form.cleaned_data.items(),
-                )
-            )
-            # extract keywords from string using regex
-            keywords_string = search_data.get("keywords", "").strip()
-            keywords = re.findall(r"\w+", keywords_string)
+            search_data = {
+                key: value
+                for key, value in self.form.cleaned_data.items()
+                if value
+            }
 
-            # "Search for multiple keywords over multiple columns in Django"
-            # code snippet based on stackoverflow answer:
-            # https://stackoverflow.com/a/43552495/20143678
-            if keywords:
-                keywords_obj = Q(occupation__icontains=keywords[0]) | Q(
-                    skills__icontains=keywords[0]
-                )
-                for keyword in keywords[1:]:
-                    keywords_obj.add(
-                        Q(occupation__icontains=keyword)
-                        | Q(skills__icontains=keyword),
-                        keywords_obj.connector,
-                    )
-            else:
-                keywords_obj = Q()
-
-            # print(search_data.get("experience", None))
+            get_age_lookup(search_data)
 
             resume_list = Resume.objects.filter(
-                keywords_obj,
+                get_keywords(search_data),
                 experience_duration__contains=search_data.get(
                     "experience", ""
                 ),
@@ -78,6 +124,7 @@ class ResumeListView(ListView):
                 jobseeker__jobseekerprofile__gender__contains=search_data.get(
                     "gender", ""
                 ),
+                **get_age_lookup(search_data),
                 status=Resume.ResumePublishStatus.ACTIVE,
             )
         else:
@@ -92,7 +139,7 @@ class ResumeListView(ListView):
         context["form"] = self.form
 
         # add age error messages to the context if they exist
-        if 'min_age' in self.form.errors or 'max_age' in self.form.errors:
+        if "min_age" in self.form.errors or "max_age" in self.form.errors:
             context["age_error"] = "Age must be between 18 and 66 years"
 
         # create a new instance of the form to be used in the navbar
