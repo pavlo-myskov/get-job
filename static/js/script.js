@@ -139,12 +139,24 @@ function ageSlider() {
             $("#min-age").val(minValue);
             $("#max-age").val(maxValue);
 
-            // update input decorative field
-            if (maxValue === 66) {
-            // set decorative value to "65+" if max value is 66
-                maxValue = "65+";
+            // if min and max values are equal, leave only one value
+            if (minValue == maxValue) {
+                // update input decorative field
+                if (maxValue === 66) {
+                    // set decorative value to "65+" if max value is 66
+                    maxValue = "65+";
+                }
+
+                $("#age-amount").val(maxValue);
+            } else {
+                // update input decorative field
+                if (maxValue === 66) {
+                    // set decorative value to "65+" if max value is 66
+                    maxValue = "65+";
+                }
+
+                $("#age-amount").val(minValue + " - " + maxValue);
             }
-            $("#age-amount").val(minValue + " - " + maxValue);
         }
     });
 
@@ -152,12 +164,26 @@ function ageSlider() {
     let minValue = $("#slider-range").slider("values", 0);
     let maxValue = $("#slider-range").slider("values", 1);
 
+    // update input hidden form fields
     $("#min-age").val(minValue);
     $("#max-age").val(maxValue);
 
-    if (maxValue === 66) {
-    // set decorative value to "65+" if max value is 66
-        maxValue = "65+";
+    // if min and max values are equal, leave only one value
+    if (minValue == maxValue) {
+        // update input decorative field
+        if (maxValue === 66) {
+            // set decorative value to "65+" if max value is 66
+            maxValue = "65+";
+        }
+
+        $("#age-amount").val(maxValue);
+    } else {
+        // update input decorative field
+        if (maxValue === 66) {
+            // set decorative value to "65+" if max value is 66
+            maxValue = "65+";
+        }
+
+        $("#age-amount").val(minValue + " - " + maxValue);
     }
-    $("#age-amount").val(minValue + " - " + maxValue);
 }
