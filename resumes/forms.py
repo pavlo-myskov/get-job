@@ -1,15 +1,10 @@
 from django import forms
-from django.core.validators import MinValueValidator, MaxValueValidator
 
 from .models import Resume
 from jobseeker.models import JobseekerProfile
 
 
 class ResumeSearchForm(forms.Form):
-    AGE_VALIDATORS = [
-        MinValueValidator(18, message="Minimum age can't be less than 18"),
-        MaxValueValidator(66, message="Maximum age can't exceed 66"),
-    ]
 
     keywords = forms.CharField(
         max_length=254,
@@ -50,11 +45,13 @@ class ResumeSearchForm(forms.Form):
     min_age = forms.IntegerField(
         required=False,
         widget=forms.HiddenInput(attrs={"id": "min-age"}),
-        validators=AGE_VALIDATORS,
+        max_value=66,
+        min_value=18,
     )
 
     max_age = forms.IntegerField(
         required=False,
         widget=forms.HiddenInput(attrs={"id": "max-age"}),
-        validators=AGE_VALIDATORS,
+        max_value=66,
+        min_value=18,
     )

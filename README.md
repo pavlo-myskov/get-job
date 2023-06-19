@@ -224,7 +224,7 @@ The search results are paginated to improve the UX and make the page more user-f
 
 - #### Age range selector
 As the multiple sliders are not supported by the Bootstrap, I used the [jQuery UI Slider](https://jqueryui.com/slider/) to implement the Age range selector. The user can select the age range by dragging the slider handles or by clicking on the slider bar. The selected range is displayed in the Age range decorative input field. The input field is read-only and disabled. To capture the slider state and insert it into the form I implemented the hidden input fields that are part
-of the Django Form. It allows me to validate the inputed age range using `MinValueValidator` and `MaxValueValidator` server side django validators if the malicious user tries to change the values of the hidden input fields or set an invalid value into the search query in the url.
+of the Django Form. It allows me to validate the inputed by the user age range using server side django validation if the malicious user is trying to force a value change of the hidden input fields or set an invalid value into the search query in the url.
 
 
 ### Development Features
