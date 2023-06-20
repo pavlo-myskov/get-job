@@ -1,9 +1,23 @@
 from django.db import models
 
-from cloudinary.models import CloudinaryField
 from cloudinary_storage.storage import RawMediaCloudinaryStorage
 
 from jobseeker.models import Jobseeker
+
+
+class ResumeManager(models.Manager):
+    """Custom manager for the Resume model"""
+
+    def active(self):
+        """
+        Return only active resumes.
+        Example:
+        >>> from resumes.models import Resume
+        >>> Resume.objects.active()
+        """
+        return self.get_queryset().filter(
+            status=Resume.ResumePublishStatus.ACTIVE
+        )
 
 
 class Resume(models.Model):
@@ -40,6 +54,8 @@ class Resume(models.Model):
         max_length=50,
         default=ResumePublishStatus.IN_REVIEW,
     )
+
+    objects = ResumeManager()
 
     class Meta:
         # ordered by the date they were created,

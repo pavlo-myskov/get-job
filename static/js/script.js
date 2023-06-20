@@ -8,6 +8,7 @@ $(document).ready(function () {
     fixDaysCounterPosition(windowWidth);
     fixCardImagePosition(windowWidth);
     addRemoveCollapseClass(windowWidth);
+    ageSlider();
 
     // restart functions on windows resize
     $(window).resize(function () {
@@ -17,6 +18,7 @@ $(document).ready(function () {
         fixCardImagePosition(windowWidth);
         addRemoveCollapseClass(windowWidth);
     });
+
 });
 
 
@@ -117,5 +119,71 @@ function addRemoveCollapseClass(windowWidth) {
         $('#search-panel').addClass('collapse');
     } else {
         $('#search-panel').removeClass('collapse');
+    }
+}
+
+/**
+ * jQuery age range slider
+ */
+function ageSlider() {
+    $("#slider-range").slider({
+        range: true,
+        min: 18,
+        max: 66,
+        values: [$("#min-age").val(), $("#max-age").val()],
+        slide: function (event, ui) {
+            let minValue = ui.values[0];
+            let maxValue = ui.values[1];
+
+            // update input hidden form fields
+            $("#min-age").val(minValue);
+            $("#max-age").val(maxValue);
+
+            // if min and max values are equal, leave only one value
+            if (minValue == maxValue) {
+                // update input decorative field
+                if (maxValue === 66) {
+                    // set decorative value to "65+" if max value is 66
+                    maxValue = "65+";
+                }
+
+                $("#age-amount").val(maxValue);
+            } else {
+                // update input decorative field
+                if (maxValue === 66) {
+                    // set decorative value to "65+" if max value is 66
+                    maxValue = "65+";
+                }
+
+                $("#age-amount").val(minValue + " - " + maxValue);
+            }
+        }
+    });
+
+    // set initial values
+    let minValue = $("#slider-range").slider("values", 0);
+    let maxValue = $("#slider-range").slider("values", 1);
+
+    // update input hidden form fields
+    $("#min-age").val(minValue);
+    $("#max-age").val(maxValue);
+
+    // if min and max values are equal, leave only one value
+    if (minValue == maxValue) {
+        // update input decorative field
+        if (maxValue === 66) {
+            // set decorative value to "65+" if max value is 66
+            maxValue = "65+";
+        }
+
+        $("#age-amount").val(maxValue);
+    } else {
+        // update input decorative field
+        if (maxValue === 66) {
+            // set decorative value to "65+" if max value is 66
+            maxValue = "65+";
+        }
+
+        $("#age-amount").val(minValue + " - " + maxValue);
     }
 }

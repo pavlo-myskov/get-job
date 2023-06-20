@@ -4,7 +4,7 @@ from django.urls import reverse
 from .models import Vacancy, Areas, IRELAND_AREAS, DUBLIN_AREAS
 from .forms import SearchForm
 
-
+# TODO: Refactor filtering with Q objects
 class JobListView(ListView):
     context_object_name = "job_list"
     paginate_by = 6

@@ -105,7 +105,7 @@ The main goal of the app is to deliver a solution that creates real value for th
     - As an Employer I want to be able to open the list of all resumes.
     - As an Employer I want to be able to select the sort order for the list of resumes so that I can see the most relevant resumes first.
     - As an Employer I want to be able to reset my password so that I can restore access to my account.
-    - As an Employer I want to be able to select the search area in the list of resumes so that I can find candidates in the desired area.
+    - As an Employer I want to be able to use search filters on the list of resumes so that I can find the right candidate.
     - As an Employer I want to be able to use the search bar on the page of the full list of resumes.
     - As an Employer I want to be able to see the search panel all the time when I scroll the page so that I can easily search for resumes.
     - As an Employer I want to be able to hire a jobseeker so that I can get the right candidate.
@@ -219,6 +219,14 @@ The search results are paginated to improve the UX and make the page more user-f
 
 ![back_to_top_button]()
 
+### Resume Search
+...
+
+- #### Age range selector
+As the multiple sliders are not supported by the Bootstrap, I used the [jQuery UI Slider](https://jqueryui.com/slider/) to implement the Age range selector. The user can select the age range by dragging the slider handles or by clicking on the slider bar. The selected range is displayed in the Age range decorative input field. The input field is read-only and disabled. To capture the slider state and insert it into the form I implemented the hidden input fields that are part
+of the Django Form. It allows me to validate the inputed by the user age range using server side django validation if the malicious user is trying to force a value change of the hidden input fields or set an invalid value into the search query in the url.
+
+
 ### Development Features
 - #### Django Authentication and Authorization System
 The app uses the Django Allauth package that is built on top of the built-in Django Authentication and Authorization System. The system provides a secure way to manage user accounts and allows users to create an account, login, logout, reset password, and update their profile. Also, the package is used to provide additional features such as email verification, social authentication, and password reset.
@@ -256,6 +264,7 @@ The app uses the [Cloudinary](https://cloudinary.com/) cloud service to store st
     - [Django 4.2](https://docs.djangoproject.com/en/4.2/)
     - [Bootstrap 5](https://getbootstrap.com/docs/5.3/getting-started/introduction/)
     - [jQuery 3.6.4](https://releases.jquery.com/)
+    - [jQuery UI 1.13.2](https://jqueryui.com/)
     - [Font Awesome 6.4](https://fontawesome.com/)
     - [Google Fonts](https://fonts.google.com/)
     - [libsass](https://pypi.org/project/libsass/)
@@ -268,6 +277,7 @@ The app uses the [Cloudinary](https://cloudinary.com/) cloud service to store st
     - [Microsoft Visio](https://www.microsoft.com/en-ie/microsoft-365/visio/)
     - [Cloudinary](https://cloudinary.com/)
     - [Balsamiq](https://balsamiq.com/)
+    - [Sass](https://sass-lang.com/)
 
 - ### Django packages
 - [django-crispy-forms](https://django-crispy-forms.readthedocs.io/en/latest/)

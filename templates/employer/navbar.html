@@ -15,17 +15,14 @@
     <!-- TODO  if user.is_authenticated and user.role == employer-->
     {% if user.is_authenticated %}
     <ul class="nav nav-pills">
-      {% comment %}
-      <!-- TODO -->
       <li class="d-none d-lg-flex aligns-items-center py-1">
         <form class="input-group input-group-sm" action="{% url 'resume_search' %}" method="get">
-          {{ nav_form.title|update_placeholder:"occupation keywords" }}
+          {{ nav_form.keywords|update_placeholder:"occupation, skills" }}
           <button type="submit" class="btn btn-cyan-blue">
             <i class="fas fa-search"></i>
           </button>
         </form>
       </li>
-      {% endcomment %}
       <li class="nav-item">
         <a class="nav-link text-cyan-blue px-2 px-sm-4" href="#" aria-label="notifications">
           <i class="fa-regular fa-bell fs-5"></i>
@@ -37,21 +34,16 @@
           <i class="fa-solid fa-user fs-5"></i>
         </a>
         <ul class="dropdown-menu employer-dm dropdown-menu-end" aria-labelledby="employer profile dropdown menu">
-          {% comment %}
-          <!-- TODO -->
           <li class="d-lg-none mx-3 my-2">
             <form class="input-group input-group-sm" action="{% url 'resume_search' %}" method="get">
-              {{ nav_form.title|update_placeholder:"enter occupation keywords" }}
+              {{ nav_form.keywords|update_placeholder:"enter occupation or skills" }}
               <button type="submit" class="btn btn-cyan-blue">
                 <i class="fas fa-search"></i>
               </button>
             </form>
           </li>
-          {% endcomment %}
           <li><a class="dropdown-item" href="#">My Profile</a></li>
-          {% comment %}
           <li><a class="dropdown-item" href="{% url 'resume_search' %}">Search for Resumes</a></li>
-          {% endcomment %}
           <li><a class="dropdown-item" href="#">Post a Job</a></li>
           <li><a class="dropdown-item" href="#">My Jobs</a></li>
           <li>

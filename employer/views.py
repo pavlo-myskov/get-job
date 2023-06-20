@@ -1,8 +1,7 @@
 from django.views.generic import ListView
 
 from resumes.models import Resume
-
-# from resumes.forms import SearchForm
+from resumes.forms import ResumeSearchForm
 
 
 class HomeView(ListView):
@@ -19,8 +18,8 @@ class HomeView(ListView):
         """Add search form to the context"""
         context = super().get_context_data(**kwargs)
 
-        # form = SearchForm(auto_id=False)
+        form = ResumeSearchForm(auto_id=False)
 
-        # context["form"] = form
-        # context["nav_form"] = SearchForm(auto_id=False)
+        context["form"] = form
+        context["nav_form"] = ResumeSearchForm(auto_id=False)
         return context

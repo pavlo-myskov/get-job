@@ -33,16 +33,14 @@
         <h5 class="lead">Enter Keywords, Desired Skills or Occupation</h4>
       </div>
       <div class="container px-md-5 pt-4 pt-lg-5 pb-1 pb-md-3 pb-lg-5 mx-auto">
-        {% comment %}
         <form class="input-group" action="{% url 'resume_search' %}" method="GET">
-          {{ form.title|update_placeholder:"e.g. ux design" }}
+          {{ form.keywords|update_placeholder:"e.g. ux design" }}
           <a class="btn btn-outline-cyan-blue" href="{% url 'resume_search' %}" aria-label="resume filter">
             <i class="fa-solid fa-sliders"></i>
             <span class="d-none d-sm-inline">Filter</span>
           </a>
           <button class="btn btn-cyan-blue" type="submit">Find Resume</button>
         </form>
-        {% endcomment %}
       </div>
     </section>
 
