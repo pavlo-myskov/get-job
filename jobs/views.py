@@ -9,7 +9,6 @@ from .forms import SearchForm
 class JobListView(ListView):
     context_object_name = "job_list"
     paginate_by = 6
-    model = Vacancy
 
     def get_queryset(self):
         """
@@ -21,8 +20,10 @@ class JobListView(ListView):
         # if session data is also not provided return all approved jobs
         if self.request.GET:
             self.form = SearchForm(self.request.GET)
-        elif self.request.session.get('search_query'):
-            self.form = SearchForm(self.request.session.get('search_query'))
+        elif self.request.session.get("job_search_query"):
+            self.form = SearchForm(
+                self.request.session.get("job_search_query")
+            )
         else:
             self.form = SearchForm()
             return Vacancy.objects.filter(status=Vacancy.JobPostStatus.ACTIVE)
@@ -33,7 +34,9 @@ class JobListView(ListView):
 
             # update session with the search query
             if self.request.GET:
-                self.request.session["search_query"] = self.form.cleaned_data
+                self.request.session[
+                    "job_search_query"
+                ] = self.form.cleaned_data
 
             # get search fields from form if they are not empty
             search_data = {

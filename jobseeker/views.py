@@ -8,7 +8,7 @@ class HomeView(ListView):
     # object name that will be used in the template
     context_object_name = "job_list"
     # get only first 4 active vacancies
-    queryset = Vacancy.objects.filter(status=Vacancy.JobPostStatus.ACTIVE)[:4]
+    queryset = Vacancy.objects.active()[:4]
 
     template_name = "jobseeker/home.html"
 
@@ -17,7 +17,7 @@ class HomeView(ListView):
         context = super().get_context_data(**kwargs)
 
         # prepopulate the search form with the session data
-        search_query = self.request.session.get("search_query")
+        search_query = self.request.session.get("job_search_query")
         if search_query and search_query.get("title"):
             form = SearchForm(
                 {"title": search_query.get("title")}, auto_id=False
