@@ -127,26 +127,32 @@ class ResumeListView(ListView):
             )
         else:
             self.form = ResumeSearchForm()
-            return Resume.objects.filter(
-                status=Resume.ResumePublishStatus.ACTIVE
-            )
+            return Resume.objects.active()
 
         # if form is valid, search for resumes
         if self.form.is_valid():
-            # update session with the search query
-            if self.request.GET:
-                self.request.session[
-                    "resume_search_query"
-                ] = self.form.cleaned_data
-
             # filter only non-empty fields
             search_data = {
                 key: value
                 for key, value in self.form.cleaned_data.items()
                 if value
             }
+            # if search data is empty:
+            # - return unboud form
+            # - update session with empty search query
+            # - return all approved resumes
+            if not search_data:
+                self.form = ResumeSearchForm()
+                self.request.session["resume_search_query"] = {}
+                resume_list = Resume.objects.active()
+            else:
+                # update session with the new search query if it is provided
+                if self.request.GET:
+                    self.request.session[
+                        "resume_search_query"
+                    ] = self.form.cleaned_data
 
-            resume_list = filter_resumes(search_data)
+                resume_list = filter_resumes(search_data)
         else:
             # if form is not valid, return an empty queryset
             resume_list = Resume.objects.none()
