@@ -45,27 +45,42 @@ class JobListView(ListView):
                 if self.form.cleaned_data.get(field)
             }
 
-            # change title to title__icontains
-            # to search for case insensitive title
-            if search_data.get("title"):
-                search_data["title__icontains"] = search_data.pop("title")
+            # if search data is empty:
+            # - return unboud form
+            # - update session with empty search query
+            # - return all approved jobs
+            if not search_data:
+                self.form = SearchForm()
+                self.request.session["job_search_query"] = {}
+                job_list = Vacancy.objects.active()
+            else:
+                # update session with the new search query if it is provided
+                if self.request.GET:
+                    self.request.session[
+                        "job_search_query"
+                    ] = self.form.cleaned_data
 
-            area = search_data.get("area")
-            # change area to area__in if Areas.IRELAND is provided
-            # to search in by irish areas only
-            if area == Areas.IRELAND:
-                search_data["area__in"] = IRELAND_AREAS
-                del search_data["area"]
-            # search in dublin areas only if DUBLIN_CITY is provided
-            elif area == Areas.DUBLIN_CITY:
-                search_data["area__in"] = DUBLIN_AREAS
-                del search_data["area"]
+                # change title to title__icontains
+                # to search for case insensitive title
+                if search_data.get("title"):
+                    search_data["title__icontains"] = search_data.pop("title")
 
-            # search for vacancies with the provided search data
-            job_list = Vacancy.objects.filter(
-                **search_data,
-                status=Vacancy.JobPostStatus.ACTIVE,
-            )
+                area = search_data.get("area")
+                # change area to area__in if Areas.IRELAND is provided
+                # to search in by irish areas only
+                if area == Areas.IRELAND:
+                    search_data["area__in"] = IRELAND_AREAS
+                    del search_data["area"]
+                # search in dublin areas only if DUBLIN_CITY is provided
+                elif area == Areas.DUBLIN_CITY:
+                    search_data["area__in"] = DUBLIN_AREAS
+                    del search_data["area"]
+
+                # search for vacancies with the provided search data
+                job_list = Vacancy.objects.filter(
+                    **search_data,
+                    status=Vacancy.JobPostStatus.ACTIVE,
+                )
         else:
             # if form is not valid, return an empty queryset
             job_list = Vacancy.objects.none()
