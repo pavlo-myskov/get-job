@@ -1,11 +1,43 @@
+from django.db.models import Q
+from django.db.models import QuerySet
 from django.views.generic import ListView, DetailView
-from django.urls import reverse
 
 from .models import Vacancy, Areas, IRELAND_AREAS, DUBLIN_AREAS
 from .forms import SearchForm
 
 
-# TODO: Refactor filtering with Q objects
+def filter_jobs(search_data) -> QuerySet:
+    """Search for vacancies with the provided search data with Q objects"""
+    query = Q()
+    # change title to title__icontains
+    # to search for case insensitive title
+    if search_data.get("title"):
+        query &= Q(title__icontains=search_data["title"])
+
+    if search_data.get("area"):
+        area = search_data["area"]
+        # change area to area__in if Areas.IRELAND is provided
+        # to search in by irish areas only
+        if area == Areas.IRELAND:
+            query &= Q(area__in=IRELAND_AREAS)
+        # search in dublin areas only if DUBLIN_CITY is provided
+        elif area == Areas.DUBLIN_CITY:
+            query &= Q(area__in=DUBLIN_AREAS)
+        else:
+            query &= Q(area=area)
+
+    if search_data.get("job_location"):
+        query &= Q(job_location=search_data["job_location"])
+
+    if search_data.get("job_type"):
+        query &= Q(job_type=search_data["job_type"])
+
+    # search for vacancies with the provided search data
+    job_list = Vacancy.objects.active().filter(query).distinct()
+
+    return job_list
+
+
 class JobListView(ListView):
     context_object_name = "job_list"
     paginate_by = 6
@@ -30,19 +62,11 @@ class JobListView(ListView):
 
         # if form is valid, search for vacancies
         if self.form.is_valid():
-            search_fields = ("title", "area", "job_location", "job_type")
-
-            # update session with the search query
-            if self.request.GET:
-                self.request.session[
-                    "job_search_query"
-                ] = self.form.cleaned_data
-
-            # get search fields from form if they are not empty
+            # get search fields from cleaned_data if they are not empty
             search_data = {
-                field: self.form.cleaned_data[field]
-                for field in search_fields
-                if self.form.cleaned_data.get(field)
+                key: value
+                for key, value in self.form.cleaned_data.items()
+                if value
             }
 
             # if search data is empty:
@@ -60,27 +84,7 @@ class JobListView(ListView):
                         "job_search_query"
                     ] = self.form.cleaned_data
 
-                # change title to title__icontains
-                # to search for case insensitive title
-                if search_data.get("title"):
-                    search_data["title__icontains"] = search_data.pop("title")
-
-                area = search_data.get("area")
-                # change area to area__in if Areas.IRELAND is provided
-                # to search in by irish areas only
-                if area == Areas.IRELAND:
-                    search_data["area__in"] = IRELAND_AREAS
-                    del search_data["area"]
-                # search in dublin areas only if DUBLIN_CITY is provided
-                elif area == Areas.DUBLIN_CITY:
-                    search_data["area__in"] = DUBLIN_AREAS
-                    del search_data["area"]
-
-                # search for vacancies with the provided search data
-                job_list = Vacancy.objects.filter(
-                    **search_data,
-                    status=Vacancy.JobPostStatus.ACTIVE,
-                )
+                job_list = filter_jobs(search_data)
         else:
             # if form is not valid, return an empty queryset
             job_list = Vacancy.objects.none()
