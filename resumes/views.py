@@ -110,36 +110,34 @@ def filter_resumes(search_data: dict) -> QuerySet:
 
 class ResumeListView(ListView):
     paginate_by = 6
-    model = Resume
 
     def get_queryset(self):
         """
-        Search for aproved jobs by title if search query is provided,
-        otherwise return all approved jobs (even if empty query is provided)
+        Search for aproved resumes by title if search query is provided,
+        otherwise return all approved resumes (even if empty query is provided)
         """
-        # TODO session data:
         # get search query from search panel if it is provided,
         # otherwise prepopulate the search form with the session data
-        # if session data is also not provided return all approved jobs
-        # if self.request.GET:
-        #     self.form = ResumeSearchForm(self.request.GET)
-        # elif self.request.session.get("search_query"):
-        #     self.form = ResumeSearchForm(
-        #         self.request.session.get("search_query")
-        #     )
-        # else:
-        #     self.form = ResumeSearchForm()
-        #     return Resume.objects.filter(
-        #         status=Resume.ResumePublishStatus.ACTIVE
-        #     )
-
-        self.form = ResumeSearchForm(self.request.GET)
+        # if session data is also not provided return all approved resumes
+        if self.request.GET:
+            self.form = ResumeSearchForm(self.request.GET)
+        elif self.request.session.get("resume_search_query"):
+            self.form = ResumeSearchForm(
+                self.request.session.get("resume_search_query")
+            )
+        else:
+            self.form = ResumeSearchForm()
+            return Resume.objects.filter(
+                status=Resume.ResumePublishStatus.ACTIVE
+            )
 
         # if form is valid, search for resumes
         if self.form.is_valid():
             # update session with the search query
             if self.request.GET:
-                self.request.session["search_query"] = self.form.cleaned_data
+                self.request.session[
+                    "resume_search_query"
+                ] = self.form.cleaned_data
 
             # filter only non-empty fields
             search_data = {
