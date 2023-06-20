@@ -43,7 +43,7 @@
         {% if form.errors or form.is_bound %} show" id="search-panel" area-expanded="true">
           {% else %}" id="search-panel">{% endif %}
           <div class="position-absolute end-0 me-3 mt-2">
-            <a href="{% url 'resume_search' %}?all" type="button" class="btn-close" aria-label="Reset search form"></a>
+            <a href="{% url 'resume_search' %}?all" type="button" class="btn-close" data-bs-toggle="tooltip" title="Reset" aria-label="Reset search form"></a>
           </div>
           <div class="card-body">
             <form action="{% url 'resume_search' %}" method="get">
