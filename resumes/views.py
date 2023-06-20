@@ -1,5 +1,5 @@
 import re
-from datetime import datetime
+from django.utils import timezone
 from dateutil.relativedelta import relativedelta
 from django.views.generic import ListView
 from django.db.models import Q
@@ -38,16 +38,16 @@ def get_keywords(search_data: dict) -> Q:
 
 def get_age_lookup(search_data: dict) -> Q:
     """Return lookup for age range from search data"""
-    today = datetime.today()
+    today = timezone.now().date()
     max_age = search_data.get("max_age", 66)
     min_age = search_data.get("min_age", 18)
     if min_age > max_age:
         min_age, max_age = max_age, min_age
 
     if min_age == max_age:
-        # get all ages that are equal or older than 66
+        # get all ages that are equal or older than 65
         if min_age == 66:
-            dob_val = today - relativedelta(years=max_age)
+            dob_val = today - relativedelta(years=max_age-1)
             lookup = Q(jobseeker__jobseekerprofile__dob__lte=dob_val)
         else:
             # if min_age and max_age are equal, search for exact age
@@ -66,7 +66,9 @@ def get_age_lookup(search_data: dict) -> Q:
 
     else:
         # search for all ages from min_age to max_age(not including max_age)
-        startdate = today - relativedelta(years=max_age)
+        startdate = today - relativedelta(years=max_age) + relativedelta(
+            days=1
+        )
         enddate = today - relativedelta(years=min_age)
         lookup = Q(
             jobseeker__jobseekerprofile__dob__range=[startdate, enddate]
