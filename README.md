@@ -68,6 +68,7 @@ The main goal of the app is to deliver a solution that creates real value for th
     - As a Jobseeker I want to be able to reset my password so that I can restore access to my account.
     - As a Jobseeker I want to be able to select the searching area in the list of jobs so that I can find jobs in the desired area.
     - As a Jobseeker I want to be able to use the search bar on the page of the full list of jobs.
+    - As a Jobseeker I want to be able to reset search parameters so that I can see the full list of jobs.
     - As a Jobseeker I want to be able to see the search panel all the time when I scroll the page so that I can easily search for jobs.
     - As a Jobseeker I want to be able to save a job so that I can apply for it later.
     - As a Jobseeker I want to be able to see my favorite jobs so that I can apply for them later.
@@ -107,6 +108,7 @@ The main goal of the app is to deliver a solution that creates real value for th
     - As an Employer I want to be able to reset my password so that I can restore access to my account.
     - As an Employer I want to be able to use search filters on the list of resumes so that I can find the right candidate.
     - As an Employer I want to be able to use the search bar on the page of the full list of resumes.
+    - As an Employer I want to be able to reset search parameters so that I can see the full list of resumes.
     - As an Employer I want to be able to see the search panel all the time when I scroll the page so that I can easily search for resumes.
     - As an Employer I want to be able to hire a jobseeker so that I can get the right candidate.
     - As an Employer I want to be able to save a resume so that I can hire the candidate later.

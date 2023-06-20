@@ -8376,6 +8376,11 @@ textarea.form-control-lg {
   border-color: #e9ecef;
   box-shadow: 0 0 0 0.25rem rgba(233, 236, 239, 0.3); }
 
+.btn-close:focus {
+  outline: 0;
+  box-shadow: 0 0 0 0.25rem rgba(108, 117, 125, 0.25);
+  opacity: 1; }
+
 .jobseeker-dm .dropdown-item.active, .jobseeker-dm .dropdown-item:active {
   background-color: #874c87; }
 
