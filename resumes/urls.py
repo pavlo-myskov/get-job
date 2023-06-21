@@ -4,4 +4,9 @@ from . import views
 
 urlpatterns = [
     path("resumes/", views.ResumeListView.as_view(), name="resume_search"),
+    path(
+        "resume/<int:pk>",
+        views.ResumeDetailView.as_view(),
+        name="resume_detail",
+    ),
 ]
