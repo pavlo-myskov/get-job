@@ -7,9 +7,13 @@ from django.db.models.signals import post_save
 from django.contrib.auth.models import BaseUserManager
 from django.contrib.auth import get_user_model
 
+from jobportal.validators import FileValidator
 from jobs.models import Vacancy
 
 User = get_user_model()
+img_validator = FileValidator(
+    max_size=5*1024*1024,  # 5 MB
+)
 
 
 class JobseekerManager(BaseUserManager):
@@ -105,6 +109,7 @@ class JobseekerProfile(models.Model):
         upload_to="jobseeker_avatars",
         blank=True,
         default="profile_placeholder.png",
+        validators=[img_validator],
     )
     gender = models.CharField(
         choices=GENDER_TYPES, max_length=10, blank=True, null=True
