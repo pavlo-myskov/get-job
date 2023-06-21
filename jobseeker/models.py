@@ -1,10 +1,11 @@
+import os
+from PIL import Image
+
 from django.db import models
 from django.dispatch import receiver
 from django.db.models.signals import post_save
 from django.contrib.auth.models import BaseUserManager
 from django.contrib.auth import get_user_model
-
-from cloudinary.models import CloudinaryField
 
 from jobs.models import Vacancy
 
@@ -117,6 +118,37 @@ class JobseekerProfile(models.Model):
     favorites = models.ManyToManyField(
         Vacancy, blank=True, related_name="favoriters"
     )
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+
+        # if avatar is not set, use the default avatar
+        if not self.avatar:
+            self.avatar = "profile_placeholder.png"
+            self.save()
+        # optimize image size
+        else:
+            img = Image.open(self.avatar.path)
+            if img.height > 200:
+                img.thumbnail((200, 200), Image.ANTIALIAS)
+                img.save(self.avatar.path, optimize=True)
+
+                # limit the photo file size to 10kb
+                # if the file size is still big,
+                # reduce the quality
+                size = os.path.getsize(self.avatar.path)
+                counter = 0
+                while size > 10000 and counter < 5:
+                    counter += 1
+                    img.save(self.avatar.path, optimize=True, quality=70)
+                    size = os.path.getsize(self.avatar.path)
+
+                # if the file size is still big return the default avatar
+                # and delete the uploaded image to save space
+                if size > 10000:
+                    os.remove(self.avatar.path)
+                    self.avatar = "profile_placeholder.png"
+                    self.save()
 
     def __str__(self):
         return self.user.email
