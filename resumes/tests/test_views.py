@@ -440,3 +440,74 @@ class TestResumeListView(TestCase):
         self.assertEqual(page_obj.paginator.count, 12)
         self.assertEqual(page_obj.paginator.num_pages, 2)
         self.assertEqual(page_obj.number, 1)
+
+
+class TestResumeDetailView(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        for i in range(1, 5):
+            Jobseeker.objects.create_user(
+                email=f"jobseeker{i}@email.com",
+                password="12345678",
+            )
+        # Create 5 active and 5 inactive resumes
+        cls.resumes = [
+            Resume.objects.create(
+                jobseeker=Jobseeker.objects.get(id=i),
+                occupation=f"Active {i}",
+                status=Resume.ResumePublishStatus.ACTIVE,
+            )
+            for i in range(1, 5)
+        ]
+        cls.inactive_resumes = [
+            Resume.objects.create(
+                jobseeker=Jobseeker.objects.get(id=i),
+                occupation=f"In Review {i}",
+                status=Resume.ResumePublishStatus.IN_REVIEW,
+            )
+            for i in range(1, 2)
+        ]
+
+    def test_load_job_detail_template(self):
+        """
+        Test that resume detail template is loaded
+        """
+        response = self.client.get(reverse("resume_detail", args=(1,)))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "resumes/resume_detail.html")
+
+    def test_get_resume_detail(self):
+        """
+        Test that resume detail is returned
+        """
+        response = self.client.get(reverse("resume_detail", args=(4,)))
+        resume = response.context["resume"]
+
+        self.assertEqual(resume, self.resumes[3])
+
+    def test_get_inactive_resume_detail(self):
+        """
+        Test that inactive resume detail is not returned
+        """
+        response = self.client.get(reverse("resume_detail", args=(5,)))
+
+        self.assertEqual(response.status_code, 404)
+
+    def test_get_resume_detail_with_invalid_id(self):
+        """
+        Test that invalid resume id returns 404
+        """
+        response = self.client.get(reverse("resume_detail", args=(10,)))
+
+        self.assertEqual(response.status_code, 404)
+
+    def test_get_context(self):
+        """
+        Test that context is returned with resume and nav_form
+        """
+        response = self.client.get(reverse("resume_detail", args=(1,)))
+        context = response.context
+
+        self.assertIn("resume", context)
+        self.assertIn("nav_form", context)
