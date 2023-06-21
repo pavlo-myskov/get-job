@@ -47,12 +47,15 @@
     <section class="container vaccancy-container g-1 g-sm-2 g-md-4">
       <h2 class="text-muted ps-3 mb-2 mb-md-3">Latest Vacancies</h2>
       <div class="row row-cols-1 row-cols-xl-2 g-2">
+        {% if job_list %}
         {% for vacancy in job_list %}
         <!-- ______vacancy card______ -->
         {% include "jobs/vacancy_card.html" %}
         {% endfor %}
       </div>
-      <!-- TODO: Add Link "More" to redirect to /jobs -->
+      {% else %}
+        <h3 class="text-center text-muted">No Vacancies Found</h3>
+      {% endif %}
     </section>
   </div>
 </main>
