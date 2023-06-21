@@ -54,7 +54,6 @@
   opacity: 1;
 }
 
-
 // ___Jobseeker Navbar___
 
 // jobseeker dropdown menu
@@ -67,7 +66,6 @@
     }
   }
 }
-
 
 // ___Employer Navbar___
 
@@ -109,7 +107,8 @@
 }
 
 // override list-group-item padding
-.vaccancy-card, .resume-card {
+.vaccancy-card,
+.resume-card {
   @include media-breakpoint-down(md) {
     .list-group-item {
       padding: 0.2rem $list-group-item-padding-x;
@@ -212,7 +211,7 @@
 }
 
 // Job details page
-#job-detail-list .list-item-heading{
+#job-detail-list .list-item-heading {
   width: 8rem;
 }
 
@@ -221,19 +220,33 @@
   margin: auto;
   width: 600px;
   max-width: 100%;
-  position:relative;
+  position: relative;
 }
 
 .astrodividermask {
-    overflow:hidden; height:10px;
+  overflow: hidden;
+  height: 10px;
 }
 
 .astrodividermask:after {
-  content:'';
+  content: "";
   display: block;
   margin: -25px auto 0;
   width: 100%;
   height: 25px;
   border-radius: 125px / 12px;
-  box-shadow:0 0 3px $gray-600;
+  box-shadow: 0 0 3px $gray-600;
+}
+
+// age slider
+.ui-state-active,
+.ui-widget-content .ui-state-active,
+.ui-widget-header .ui-state-active,
+a.ui-button:active,
+.ui-button:active,
+.ui-button.ui-state-active:hover {
+  border: 1px solid #003eff;
+  background: $cyan-blue;
+  font-weight: normal;
+  color: #ffffff;
 }
