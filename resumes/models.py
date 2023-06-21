@@ -1,8 +1,15 @@
-from django.db import models
-
 from cloudinary_storage.storage import RawMediaCloudinaryStorage
 
+from django.db import models
+from django.urls import reverse
+
+from jobportal.validators import FileValidator, CV_TYPES
 from jobseeker.models import Jobseeker
+
+file_validator = FileValidator(
+    max_size=512*1024,  # 500 KB
+    content_types=CV_TYPES,
+)
 
 
 class ResumeManager(models.Manager):
@@ -46,7 +53,10 @@ class Resume(models.Model):
     skills = models.TextField(blank=True)
     body = models.TextField(blank=True)
     cv = models.FileField(
-        upload_to="cv/", blank=True, storage=RawMediaCloudinaryStorage()
+        upload_to="cv/",
+        blank=True,
+        storage=RawMediaCloudinaryStorage(),
+        validators=[file_validator],
     )
     created_on = models.DateTimeField(auto_now_add=True)
     status = models.CharField(
@@ -65,6 +75,5 @@ class Resume(models.Model):
     def __str__(self) -> str:
         return f"{self.occupation} - {self.jobseeker}"
 
-    # TODO:
-    # def get_absolute_url(self):
-    #     return reverse("resumes:resume_detail", args=[str(self.id)])
+    def get_absolute_url(self):
+        return reverse("resumes:resume_detail", args=[str(self.id)])

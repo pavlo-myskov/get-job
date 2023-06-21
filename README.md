@@ -20,6 +20,7 @@ https://about.codecov.io/blog/python-code-coverage-using-github-actions-and-code
 The relevance of job search in our time constantly increases. [Get Job](https://get-job.live) is an online Job Platform that helps Jobseekers to get desirable jobs and Employers to find the right candidates. The app includes two modes: _Jobseeker Mode_ and _Employer Mode_. _Jobseeker Mode_ allows users to search for jobs and apply for jobs as well as create their resumes and manage their applications. And _Employer Mode_ allows users to post jobs, search for candidates and hire them. The *Get Job* portal is designed to be simple and intuitive so that users can easily navigate the app and perform the desired actions.
 
 Live Demo: https://get-job.live
+
 Heroku: https://get-job.herokuapp.com
 
 
@@ -228,6 +229,10 @@ The search results are paginated to improve the UX and make the page more user-f
 As the multiple sliders are not supported by the Bootstrap, I used the [jQuery UI Slider](https://jqueryui.com/slider/) to implement the Age range selector. The user can select the age range by dragging the slider handles or by clicking on the slider bar. The selected range is displayed in the Age range decorative input field. The input field is read-only and disabled. To capture the slider state and insert it into the form I implemented the hidden input fields that are part
 of the Django Form. It allows me to validate the inputed by the user age range using server side django validation if the malicious user is trying to force a value change of the hidden input fields or set an invalid value into the search query in the url.
 
+
+<!--
+TODO: Tell about the Reducing the photo size of the uploaded images to improve the performance of the app and save the storage space.
+ -->
 
 ### Development Features
 - #### Django Authentication and Authorization System
