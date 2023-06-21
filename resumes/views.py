@@ -1,7 +1,7 @@
 import re
 from django.utils import timezone
 from dateutil.relativedelta import relativedelta
-from django.views.generic import ListView
+from django.views.generic import ListView, DetailView
 from django.db.models import Q
 from django.db.models import QuerySet
 
@@ -177,4 +177,15 @@ class ResumeListView(ListView):
             number=page_obj.number, on_each_side=1, on_ends=1
         )
         context["custom_page_range"] = custom_page_range
+        return context
+
+
+class ResumeDetailView(DetailView):
+    # get only active resumes
+    queryset = Resume.objects.active()
+
+    def get_context_data(self, **kwargs):
+        '''Add search form to the context for navbar search bar'''
+        context = super().get_context_data(**kwargs)
+        context['nav_form'] = ResumeSearchForm(auto_id=False)
         return context

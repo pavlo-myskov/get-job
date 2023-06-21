@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+{% load static %}
+{% load time_filters %}
+
+{% block content %}
+{% include 'employer/navbar.html' %}
+<main class="container py-3">
+  <div class="card shadow">
+
+    <!-- Job detail header -->
+    <div class="card-header">
+      <div class="d-flex align-items-center justify-content-between">
+        <a href="{% url 'resume_search' %}" class="text-decoration-none d-flex align-items-center text-muted fs-4"
+          area-label="back to search results">
+          <i class="fa fa-arrow-left"></i>
+          <span class="mx-2">Back</span>
+        </a>
+        <div>
+          <button class="btn btn-cyan-blue btn-sm px-3 px-sm-3 py-1 me-2">Hire</button>
+          <button class="btn btn-save btn-sm btn--cyan-blue border cyan-border px-sm-2 py-1">
+            Save
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Job detail body -->
+    <div class="card-body position-relative py-4 px-3">
+      <h2 class="card-title col-8 mb-1 mb-sm-2">{{ resume.occupation }}</h2>
+      <p class="col days-counter text-muted">
+        <small>{{ resume.created_on|timeago }} ago</small>
+      </p>
+
+      <!-- Profile Image for small screens -->
+      <div class="d-sm-none position-absolute top-0 end-0 me-4 mt-3">
+        <img src="{{ resume.jobseeker.profile.avatar.url }}" class="img-thumbnail" alt="profile picture"
+          style="max-height: 60px;">
+      </div>
+
+      <!-- Main contant -->
+      <div class="px-sm-2">
+        <!-- List Group -->
+        <div class="row">
+          <div class="col-12 col-sm-8 px-0">
+            <ul class="list-group pb-2 borderless" id="job-detail-list">
+              <li class="list-group-item d-flex align-items-end">
+                <h6 class="list-item-heading my-auto me-sm-4 flex-shrink-0">Name:</h6>
+                <p class="my-0 overflow-auto text-truncate">{{ resume.jobseeker.profile.name }}</p>
+              </li>
+              <li class="list-group-item d-flex align-items-end">
+                <h6 class="list-item-heading my-auto me-sm-4 flex-shrink-0">Gender:</h6>
+                <p class="my-0 overflow-auto">{{ resume.jobseeker.profile.get_gender_display }}</p>
+              </li>
+              <li class="list-group-item d-flex align-items-end">
+                <h6 class="list-item-heading my-auto me-sm-4 flex-shrink-0">Experience Duration:</h6>
+                <p class="my-0 overflow-auto">{{ resume.get_experience_duration_display }}</p>
+              </li>
+              <li class="list-group-item d-flex align-items-end">
+                <h6 class="list-item-heading my-auto me-sm-4 flex-shrink-0">Phone:</h6>
+                <p class="my-0 overflow-auto">{{ resume.jobseeker.profile.phone }}</p>
+              </li>
+              <li class="list-group-item d-flex align-items-end">
+                <h6 class="list-item-heading my-auto me-sm-4 flex-shrink-0">Email:</h6>
+                <p class="my-0 overflow-auto">{{ resume.jobseeker.email }}</p>
+              </li>
+            </ul>
+          </div>
+          <!-- Profile Image for large screens -->
+          <div class="d-none d-sm-block col-4 mx-auto my-auto text-center">
+            <img src="{{ resume.jobseeker.profile.avatar.url }}" class="img-thumbnail" alt="profile picture"
+              style="max-height: 130px;">
+          </div>
+        </div>
+
+        <!-- Experience -->
+        {% if resume.experience %}
+        <div class="pt-2 px-0">
+          <h5>Experience:</h5>
+          <div>{{ resume.experience|linebreaks }}</div>
+        </div>
+        {% endif %}
+        <!-- Education -->
+        {% if resume.education %}
+        <div class="pt-2 px-0">
+          <h5>Education:</h5>
+          <div>{{ resume.education|linebreaks }}</div>
+        </div>
+        {% endif %}
+        <!-- Skills -->
+        {% if resume.skills %}
+        <div class="pt-2 px-0">
+          <h5>Skills:</h5>
+          <div>{{ resume.skills|linebreaks }}</div>
+        </div>
+        {% endif %}
+        <!-- Description -->
+        {% if resume.body %}
+        <div class="pt-2 px-0">
+          <h5>Description:</h5>
+          <div>{{ resume.body|linebreaks }}</div>
+        </div>
+        {% endif %}
+      </div>
+
+      <div class="astrodivider">
+        <div class="astrodividermask"></div>
+      </div>
+
+      <!-- Bottom buttons panel -->
+      <div class="d-flex align-items-center justify-content-between px-3 px-sm-4">
+        <button class="btn btn-cyan-blue px-3 px-sm-4 py-1 rounded-1">Hire</button>
+        <div class="d-flex fs-3">
+          <!-- TODO add link to save -->
+          <a href="#" class="btn-save btn--cyan-blue card-link me-4"></a>
+          <a id="back-to-top" href="#" class="text-decoration-none d-flex align-items-center text-cyan-blue"
+            area-label="scroll to top">
+            <i class="fa fa-arrow-up"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+
+</main>
+{% endblock %}
