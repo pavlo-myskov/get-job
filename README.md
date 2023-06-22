@@ -224,6 +224,13 @@ The search results are paginated to improve the UX and make the page more user-f
 
 ![back_to_top_button]()
 
+### Job Details page
+
+#### Sections:
+...
+
+### Apply for the Job page
+...
 
 ### Employer's Home page
 
@@ -250,6 +257,22 @@ For the Jobseekers profile avatars, I used the `gravity` AI feature to crop the 
 - #### Age range selector
 As the multiple sliders are not supported by the Bootstrap, I used the [jQuery UI Slider](https://jqueryui.com/slider/) to implement the Age range selector. The user can select the age range by dragging the slider handles or by clicking on the slider bar. The selected range is displayed in the Age range decorative input field. The input field is read-only and disabled. To capture the slider state and insert it into the form I implemented the hidden input fields that are part
 of the Django Form. It allows me to validate the inputed by the user age range using server side django validation if the malicious user is trying to force a value change of the hidden input fields or set an invalid value into the search query in the url.
+
+
+### Resume Details
+
+#### Sections:
+...
+
+### Hiring page
+...
+
+### Register page
+- #### Sign Up form
+The Sign Up form is implemented based on the Django Allauth package. The form contains the role, email, password and password confirmation fields and the Sign Up button.
+- The role field is a choice field with two options - Jobseeker and Employer. The role set automatically and depends where user is coming from. If the user is coming from the main Home page which is Jobseeker's Home page, the role is set to Jobseeker. If the user is coming from the Employer's Home page, the role is set to Employer. Also the user can change the role by selecting the appropriate option. The field is required and the user can not submit the form without selecting the role, as the role tied to the user account and can not be changed later.
+- The email field is a unique identifier of the user and the system does not allow users to register multiple accounts with the same email address. So the Jobseeker and the Employer can not have the same email address.
+- The password field as also required and the user can not submit the form without setting the password. The validation of the password is implemented on the client side and on the server side based on the Django Allauth package. 
 
 
 ### Development Features

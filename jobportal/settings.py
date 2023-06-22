@@ -223,6 +223,8 @@ SASS_PROCESSOR_ROOT = os.path.join(BASE_DIR, 'static')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+ACCOUNT_FORMS = {'signup': 'users.forms.CustomSignupForm'}
+
 # Set custom user model as default
 AUTH_USER_MODEL = "users.User"
 
