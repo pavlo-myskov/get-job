@@ -49,13 +49,13 @@
           <li>
             <hr class="dropdown-divider">
           </li>
-          <li><a class="dropdown-item" href="#">LogOut</a></li>
+          <li><a class="dropdown-item" href="{% url 'account_logout' %}">LogOut</a></li>
         </ul>
       </li>
     </ul>
     {% else %}
     <div class="nav-item">
-      <a class="nav-link text-cyan-blue" href="#" aria-label="Sign In/Sign Up">
+      <a class="nav-link text-cyan-blue" href="{% url 'account_signup' role='EMPLOYER' %}?next={{request.path}}" aria-label="Sign In/Sign Up">
         <i class="fa-solid fa-right-to-bracket fs-5"></i>
         <span class="d-none d-sm-inline align-text-bottom">Sign In/Sign Up</span>
       </a>
