@@ -19,6 +19,8 @@ $(document).ready(function () {
         addRemoveCollapseClass(windowWidth);
     });
 
+    backToTop();
+
 });
 
 
@@ -186,4 +188,18 @@ function ageSlider() {
 
         $("#age-amount").val(minValue + " - " + maxValue);
     }
+}
+
+/**
+ * Back to top button.
+ * Triggered by click event on `.back-to-top` element
+ */
+function backToTop() {
+    // scroll body to 0px on click
+    $('.back-to-top').click(function () {
+        $('body,html').animate({
+            scrollTop: 0
+        }, 200);
+        return false;
+    });
 }
