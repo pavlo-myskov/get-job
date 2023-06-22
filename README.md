@@ -190,6 +190,7 @@ Since the User always visits the site for some content and some purpose, the Fea
 The Jobseeker's Home page is designed to help Jobseekers to find a job quickly and easily. The page divided into 5 sections: Navbar, Hero, Search panel, Latest Jobs, and Footer.
 ![jobseeker_home]()
 
+#### Sections:
 - #### Navbar
 The navigation bar is designed to be simple and intuitive. It includes the app logo, the toggle button to switch between the Jobseeker's and Employer's Home pages, the Sign-Up / Sign-In buttons if the user is not logged in and the Search bar, a Notification icon and the Profile dropdown menu if the user is logged in. The Navbar is fully responsive and the text of the Logo and Sign Up / Sign In buttons as well as the Search bar is hidden on small screens to save space. The Dropdown menu expands to full width on small screens to make it easier to use. In addition, the search bar of the Navbar is moved to the Dropdown menu on small screens to be easily found as it is the main feature of the app.
 The Navbar is flexible and always available when the user needs. It hides on scroll down and shows on scroll up.
@@ -208,6 +209,7 @@ The Latest Jobs section is a list of the latest vacancies posted by Employers. E
 ![latest_jobs]()
 
 ### Job Search page
+#### Sections:
 - #### Search results
 The user can access the Job Search page by using the search bar on the Home page. When the user submits the search query, the app redirects them to the Job Search page and displays the search results.
 The search results represented by the Bootstrap Cards, the same as the Latest Jobs section on the Home page. Each card is clickable and redirects the user to the Job Details page.
@@ -222,17 +224,33 @@ The search results are paginated to improve the UX and make the page more user-f
 
 ![back_to_top_button]()
 
+
+### Employer's Home page
+
+#### Sections:
+- #### Navbar
+
+- #### Hero
+
+- #### Employer's Search bar
+
+- #### Latest Resumes
+
+
+##### Card Image
+To store the images of the Jobseekers, I used the [Cloudinary](https://cloudinary.com/) service.
+The Cloudinary field uses the Cloudinary API to upload the images to the Cloudinary server and store the image URL in the database. The Cloudinary API provides a lot of functionality to manipulate the images.
+For the Jobseekers profile avatars, I used the `gravity` AI feature to crop the images to the square shape based on the face detection. Also, I set `public_ids` based on the user email addresses as the unique identifiers of the images. The names generated from the email addresses using the regex pattern to replace the all non-alphanumeric characters with the underscore. The images resized to the 200x200 pixels and changed the format to the WebP to improve the performance of the app and save the Cloudinary storage space.
+
 ### Resume Search
+
+#### Sections:
 ...
 
 - #### Age range selector
 As the multiple sliders are not supported by the Bootstrap, I used the [jQuery UI Slider](https://jqueryui.com/slider/) to implement the Age range selector. The user can select the age range by dragging the slider handles or by clicking on the slider bar. The selected range is displayed in the Age range decorative input field. The input field is read-only and disabled. To capture the slider state and insert it into the form I implemented the hidden input fields that are part
 of the Django Form. It allows me to validate the inputed by the user age range using server side django validation if the malicious user is trying to force a value change of the hidden input fields or set an invalid value into the search query in the url.
 
-
-<!--
-TODO: Tell about the Reducing the photo size of the uploaded images to improve the performance of the app and save the storage space.
- -->
 
 ### Development Features
 - #### Django Authentication and Authorization System

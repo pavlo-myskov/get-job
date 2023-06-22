@@ -1,5 +1,5 @@
-import os
-from PIL import Image
+import re
+from cloudinary.models import CloudinaryField as BaseCloudinaryField
 
 from django.db import models
 from django.dispatch import receiver
@@ -12,8 +12,75 @@ from jobs.models import Vacancy
 
 User = get_user_model()
 img_validator = FileValidator(
-    max_size=5*1024*1024,  # 5 MB
+    max_size=5 * 1024 * 1024,  # 5 MB
+    content_types=[
+        "image/jpeg",
+        "image/png",
+        "image/webp",
+        "image/svg+xml",
+        "image/gif",
+        "image/tiff",
+        "image/bmp",
+        "image/jpg",
+    ],
 )
+
+
+def generate_filename_from_email(email: str):
+    """
+    Generate a filename from the user's email.
+    Replace all non-alphanumeric characters to underscores.
+    """
+    pattern = r"[^a-zA-Z0-9]"
+    return re.sub(pattern, "_", email)
+
+
+class CloudinaryField(BaseCloudinaryField):
+    """
+    Custom CloudinaryField that allows to set upload options
+    and generate a filename from the user's email
+
+    Usage in templates instead of standart img tag:
+    {% load cloudinary %}
+    {% cloudinary resume.jobseeker.profile.avatar style="max-height: 130px"
+     crop="thumb" class="img-thumbnail" alt="profile picture" %}
+    """
+
+    def upload_options(self, model_instance):
+        """
+        Custom upload options for CloudinaryField
+        """
+        filename = generate_filename_from_email(model_instance.user.email)
+        return {
+            "public_id": filename,
+            "unique_filename": True,
+            "overwrite": True,
+            "format": "webp",
+            "resource_type": "image",
+            "default": "media/get-job/profile_placehoder.png",
+            "folder": "media/get-job/jobseeker_avatars",
+            "validators": [img_validator],
+            "transformation": [
+                {
+                    "width": 200,
+                    "height": 200,
+                    "crop": "thumb",
+                    "gravity": "face",
+                    "quality": "auto:eco",
+                    "zoom": 0.8,
+                }
+            ],
+        }
+
+    def pre_save(self, model_instance, add):
+        """
+        Override pre_save method to add custom upload options
+        """
+        self.options = dict(
+            list(self.options.items())
+            + list(self.upload_options(model_instance).items())
+        )
+        return super().pre_save(model_instance, add)
 
 
 class JobseekerManager(BaseUserManager):
@@ -105,12 +172,7 @@ class JobseekerProfile(models.Model):
     # use name instead of first_name and last_name,
     # as they don't cover global name patterns
     name = models.CharField(max_length=254, blank=True)
-    avatar = models.ImageField(
-        upload_to="jobseeker_avatars",
-        blank=True,
-        default="profile_placeholder.png",
-        validators=[img_validator],
-    )
+    avatar = CloudinaryField("avatar", blank=True, null=True)
     gender = models.CharField(
         choices=GENDER_TYPES, max_length=10, blank=True, null=True
     )
@@ -131,29 +193,6 @@ class JobseekerProfile(models.Model):
         if not self.avatar:
             self.avatar = "profile_placeholder.png"
             self.save()
-        # optimize image size
-        else:
-            img = Image.open(self.avatar.path)
-            if img.height > 200:
-                img.thumbnail((200, 200), Image.ANTIALIAS)
-                img.save(self.avatar.path, optimize=True)
-
-                # limit the photo file size to 10kb
-                # if the file size is still big,
-                # reduce the quality
-                size = os.path.getsize(self.avatar.path)
-                counter = 0
-                while size > 10000 and counter < 5:
-                    counter += 1
-                    img.save(self.avatar.path, optimize=True, quality=70)
-                    size = os.path.getsize(self.avatar.path)
-
-                # if the file size is still big return the default avatar
-                # and delete the uploaded image to save space
-                if size > 10000:
-                    os.remove(self.avatar.path)
-                    self.avatar = "profile_placeholder.png"
-                    self.save()
 
     def __str__(self):
         return self.user.email

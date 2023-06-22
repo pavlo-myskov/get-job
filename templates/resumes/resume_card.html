@@ -1,5 +1,6 @@
 {% load static %}
 {% load time_filters %}
+{% load cloudinary %}
 
 <div class="col">
   <div class="card h-100 resume-card">
@@ -46,8 +47,7 @@
           </li>
         </ul>
         <div class="col-3 mx-auto my-auto text-center resume-card--img">
-          <img src="{{ resume.jobseeker.profile.avatar.url }}" class="img-thumbnail"
-            alt="profile picture" style="max-height: 70px;">
+          {% cloudinary  resume.jobseeker.profile.avatar style="max-height: 70px" class="img-thumbnail" alt="profile picture" %}
         </div>
       </div>
       <div class="d-flex">
