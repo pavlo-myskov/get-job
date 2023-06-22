@@ -1,6 +1,8 @@
 {% extends "base.html" %}
 {% load static %}
 {% load time_filters %}
+{% load cloudinary %}
+
 
 {% block content %}
 {% include 'employer/navbar.html' %}
@@ -37,8 +39,7 @@
 
       <!-- Profile Image for small screens -->
       <div class="d-sm-none position-absolute top-0 end-0 me-4 mt-3">
-        <img src="{{ resume.jobseeker.profile.avatar.url }}" class="img-thumbnail" alt="profile picture"
-          style="max-height: 60px;">
+        {% cloudinary  resume.jobseeker.profile.avatar style="max-height: 60px" class="img-thumbnail" alt="profile picture" %}
       </div>
 
       <!-- Main contant -->
@@ -71,8 +72,7 @@
           </div>
           <!-- Profile Image for large screens -->
           <div class="d-none d-sm-block col-4 mx-auto my-auto text-center">
-            <img src="{{ resume.jobseeker.profile.avatar.url }}" class="img-thumbnail" alt="profile picture"
-              style="max-height: 130px;">
+            {% cloudinary  resume.jobseeker.profile.avatar style="max-height: 130px" class="img-thumbnail" alt="profile picture" %}
           </div>
         </div>
 

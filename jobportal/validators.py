@@ -38,6 +38,8 @@ class FileValidator(object):
         self.content_types = content_types
 
     def __call__(self, data):
+        if not data:
+            return
         if self.max_size is not None and data.size > self.max_size:
             params = {
                 "max_size": filesizeformat(self.max_size),
