@@ -1,21 +1,60 @@
-{% extends "account/base.html" %}
-
+{% extends "base.html" %}
 {% load i18n %}
+{% load crispy_forms_tags %}
 
-{% block head_title %}{% trans "Signup" %}{% endblock %}
+{% block head_title %}{% trans "Signup Get-Job" %}{% endblock %}
 
 {% block content %}
-<h1>{% trans "Sign Up" %}</h1>
 
-<p>{% blocktrans %}Already have an account? Then please <a href="{{ login_url }}">sign in</a>.{% endblocktrans %}</p>
+<!-- my-auto - centers the container vertically -->
+<div class="container-fluid">
+  <div class="card shadow mx-auto mt-2 mt-sm-3 mt-md-4" style="max-width: 25rem;">
+    <div class="card-body">
+      <h3 class="card-title text-center">{% trans "Create your account" %}
+        <p id="role-title"></p>
+      </h3>
+      <p class="card-subtitle mb-2">
+        {% blocktrans %}
+            Do you already have an account?
+            <br>
+            Then please <a class="card-link"
+            href="{{ login_url }}">Sign In</a> instead.
+          </small>
+        {% endblocktrans %}
+      </p>
+      <div class="">
+        <form class="signup" id="signup_form" method="post">
+          {% csrf_token %}
+          <!-- Manually style the radio buttons -->
+          <div class="btn-group my-3 w-100" role="group" aria-label="Role Toggle">
+            {% for choice in form.role %}
+              <input type="radio" class="btn-check" name="role" value="{{ choice.data.value }}" id="{{ choice.id_for_label }}" required
+              {% if choice.data.value == form.role.value %} checked {% endif %} autocomplete="off">
+              <label for="{{ choice.id_for_label }}"
+              {% if choice.data.value == "JOBSEEKER" %}class="btn btn-outline-royalpurple py-1"{% endif %}
+              {% if choice.data.value == "EMPLOYER" %}class="btn btn-outline-cyan-blue py-1"{% endif %}
+              {% if form.role.errors %} style="border-color: red;" {% endif %}>
+                {{ choice.choice_label }}
+              </label>
+            {% endfor %}
+          </div>
+          {% if form.role.errors %}
+            <p class="d-block invalid-feedback">
+              <strong>{{ form.role.errors|striptags }}</strong>
+            </p>
+          {% endif %}
 
-<form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}">
-  {% csrf_token %}
-  {{ form.as_p }}
-  {% if redirect_field_value %}
-  <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
-  {% endif %}
-  <button type="submit">{% trans "Sign Up" %} &raquo;</button>
-</form>
+          {{ form.email|as_crispy_field }}
+          {{ form.password1|as_crispy_field }}
+          {{ form.password2|as_crispy_field }}
 
+          {% if redirect_field_value %}
+          <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+          {% endif %}
+          <button type="submit" class="btn btn-success w-100 my-3 py-1">{% trans "Sign Up" %} &raquo;</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}

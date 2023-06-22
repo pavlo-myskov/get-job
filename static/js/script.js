@@ -21,6 +21,11 @@ $(document).ready(function () {
 
     backToTop();
 
+    insertRoleToTitle();
+    $("#signup_form input:radio").on('change', function () {
+        insertRoleToTitle();
+    }
+    );
 });
 
 
@@ -202,4 +207,20 @@ function backToTop() {
         }, 200);
         return false;
     });
+}
+
+/**
+ * Insert selected role to the title of the Sign Up form.
+ */
+function insertRoleToTitle() {
+    selected_value = $("input[name='role']:checked").val();
+    let jobseeker = `as a
+    <span class="text-royalpurple">Jobseeker</span>`;
+    let employer = `as an
+    <span class="text-cyan-blue">Employer</span>`;
+    if (selected_value == "JOBSEEKER") {
+        $('#role-title').html(jobseeker);
+    } else if (selected_value == "EMPLOYER") {
+        $('#role-title').html(employer);
+    }
 }
