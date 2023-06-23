@@ -2,11 +2,10 @@
 {% load i18n %}
 {% load crispy_forms_tags %}
 
-{% block head_title %}{% trans "Signup Get-Job" %}{% endblock %}
+{% block head_title %}{% trans "Sign Up" %}{% endblock %}
 
 {% block content %}
 
-<!-- my-auto - centers the container vertically -->
 <div class="container-fluid">
   <div class="card shadow mx-auto mt-2 mt-sm-3 mt-md-4" style="max-width: 25rem;">
     <div class="card-body">
@@ -19,11 +18,9 @@
             <br>
             Then please <a class="card-link"
             href="{{ login_url }}">Sign In</a> instead.
-          </small>
         {% endblocktrans %}
       </p>
-      <div class="">
-        <form class="signup" id="signup_form" method="post">
+      <form class="signup" id="signup_form" method="post">
           {% csrf_token %}
           <!-- Manually style the radio buttons -->
           <div class="btn-group my-3 w-100" role="group" aria-label="Role Toggle">
@@ -52,8 +49,7 @@
           <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
           {% endif %}
           <button type="submit" class="btn btn-success w-100 my-3 py-1">{% trans "Sign Up" %} &raquo;</button>
-        </form>
-      </div>
+      </form>
     </div>
   </div>
 </div>
