@@ -256,7 +256,24 @@ a.ui-button:active,
   float: left;
 }
 
-// toast notification opacity
+// set toast color
 .toast {
-  opacity: 0.9 !important;
+  --toast-bg-color: $light;
+}
+
+// set toast opacity withouth affecting child text
+.toast::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--toast-bg-color);
+  opacity: 0.1;
+}
+
+.toast > :first-child {
+  position: relative;
+  z-index: 1;
 }
