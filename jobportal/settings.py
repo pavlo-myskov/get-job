@@ -45,6 +45,10 @@ ALLOWED_HOSTS = ['127.0.0.1', 'localhost',
                  'get-job.live',
                  'www.get-job.live']
 
+# Clickjacking protection. Means that you can
+# only embed your site in an iframe on your own domain.
+X_FRAME_OPTIONS = 'SAMEORIGIN'
+
 if development:
     SECURE_SSL_REDIRECT = False
     SESSION_COOKIE_SECURE = False
