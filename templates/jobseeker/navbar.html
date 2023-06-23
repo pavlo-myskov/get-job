@@ -54,11 +54,26 @@
       </li>
     </ul>
     {% else %}
-    <div class="nav-item">
-      <a class="nav-link text-royalpurple" href="{% url 'account_signup' role='JOBSEEKER' %}?next={{request.path}}" aria-label="Sign In/Sign Up">
+    <div class="nav-item dropdown" id="navbar--dropdown">
+      <a class="nav-link dropdown-toggle text-royalpurple" href="#" role="button" 
+        aria-expanded="false" aria-label="Sign In/Sign Up Dropdown menu">
         <i class="fa-solid fa-right-to-bracket fs-5"></i>
         <span class="d-none d-sm-inline align-text-bottom">Sign In/Sign Up</span>
       </a>
+      <ul class="dropdown-menu jobseeker-dm dropdown-menu-end"
+        aria-labelledby="Sign In/Sign Up Options">
+        <li>
+          <!-- TODO Add role to login -->
+          <a class="dropdown-item" href="{% url 'account_login' %}?next={{request.path}}">
+            Login as a Jobseeker
+          </a>
+        </li>
+        <li>
+          <a class="dropdown-item" href="{% url 'account_signup' role='JOBSEEKER' %}?next={{request.path}}">
+            Register new Jobseeker
+          </a>
+        </li>
+      </ul>
     </div>
     {% endif %}
   </div>
