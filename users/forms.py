@@ -1,7 +1,7 @@
 from django.db import models
 from django import forms
 from django.db import transaction
-from allauth.account.forms import SignupForm
+from allauth.account.forms import SignupForm, LoginForm
 
 from jobseeker.models import JobseekerProfile
 # TODO add employer profile
@@ -49,3 +49,9 @@ class CustomSignupForm(SignupForm):
                 raise forms.ValidationError("Invalid role")
 
         return user
+
+
+class CustomLoginForm(LoginForm):
+    remember = forms.BooleanField(
+        label="Remember Me", required=False, initial=True,
+    )
