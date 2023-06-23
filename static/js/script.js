@@ -26,6 +26,8 @@ $(document).ready(function () {
         insertRoleToTitle();
     }
     );
+
+    showToast();
 });
 
 
@@ -223,4 +225,18 @@ function insertRoleToTitle() {
     } else if (selected_value == "EMPLOYER") {
         $('#role-title').html(employer);
     }
+}
+
+/**
+ * Initialize Bootstrap toast.
+ */
+function showToast() {
+
+    var toastElList = [].slice.call(document.querySelectorAll('.toast'))
+    var toastList = toastElList.map(function(toastEl) {
+
+      return new bootstrap.Toast(toastEl)
+    })
+    // show toast by default
+    toastList.forEach(toast => toast.show())
 }

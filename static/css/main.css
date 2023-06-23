@@ -7990,4 +7990,7 @@ a.ui-button:active,
 #div_id_remember {
   float: left; }
 
+.toast {
+  opacity: 0.9 !important; }
+
 /*# sourceMappingURL=main.css.map */
