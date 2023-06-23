@@ -1,4 +1,5 @@
 from django.http import Http404
+from django.urls import reverse
 
 from allauth.account.views import SignupView
 from allauth.account.utils import get_next_redirect_url
@@ -55,9 +56,9 @@ class CustomSignupView(SignupView):
         # redirect to the homepage of the selected role
         if initial_role != role:
             if role == self.form_class.Role.JOBSEEKER:
-                ret = '/'
+                ret = reverse('jobseeker_home')
             elif role == self.form_class.Role.EMPLOYER:
-                ret = '/employer/'
+                ret = reverse('employer_home')
             else:
                 raise Http404
         return ret

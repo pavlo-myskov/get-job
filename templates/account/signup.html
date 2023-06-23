@@ -8,18 +8,23 @@
 
 <div class="container-fluid flex-shrink-0 my-auto">
   <div class="card shadow mx-auto my-3" style="max-width: 25rem;">
+        <!-- Sign up card header -->
+    <div class="card-header">
+      <div class="d-flex align-items-center justify-content-between">
+        {% if redirect_field_value %}
+        <a href="{{ redirect_field_value }}"{% else %}<a href="{% url 'jobseeker_home' %}"
+        {% endif %}
+        class="text-decoration-none d-flex align-items-center text-muted fs-4"
+          area-label="return to previous page">
+          <i class="fa fa-arrow-left"></i>
+        </a>
+        <a href="{{ login_url }}" class="btn btn-outline-success btn-sm px-3 px-sm-3 py-1">Sign In</a>
+      </div>
+    </div>
     <div class="card-body">
       <h3 class="card-title text-center">{% trans "Create your account" %}
-        <p id="role-title"></p>
+        <span class="d-block" id="role-title"></span>
       </h3>
-      <p class="card-subtitle mb-2">
-        {% blocktrans %}
-            Do you already have an account?
-            <br>
-            Then please <a class="card-link"
-            href="{{ login_url }}">Sign In</a> instead.
-        {% endblocktrans %}
-      </p>
       <form class="signup" id="signup_form" method="post">
           {% csrf_token %}
           <!-- Manually style the radio buttons -->
@@ -48,8 +53,16 @@
           {% if redirect_field_value %}
           <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
           {% endif %}
-          <button type="submit" class="btn btn-success w-100 my-3 py-1">{% trans "Sign Up" %} &raquo;</button>
+          <button type="submit" class="btn btn-success w-100 mt-1 mb-3 py-1">{% trans "Sign Up" %} &raquo;</button>
       </form>
+      <p class="card-text">
+        {% blocktrans %}
+            Do you already have an account?
+            <br>
+            Then please <a class="card-link"
+            href="{{ login_url }}">Sign In</a> instead.
+        {% endblocktrans %}
+      </p>
     </div>
   </div>
 </div>
