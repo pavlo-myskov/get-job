@@ -18,7 +18,7 @@
           area-label="return to previous page">
           <i class="fa fa-arrow-left"></i>
         </a>
-        <a href="{{ login_url }}" class="btn btn-outline-success btn-sm px-3 px-sm-3 py-0">Sign In</a>
+        <a href="{{ login_url }}" class="btn btn-outline-info btn-sm px-3 px-sm-3 py-0">Sign In</a>
       </div>
     </div>
     <div class="card-body">
@@ -55,14 +55,6 @@
           {% endif %}
           <button type="submit" class="btn btn-success w-100 mt-1 mb-3 py-1">{% trans "Sign Up" %} &raquo;</button>
       </form>
-      <p class="card-text">
-        {% blocktrans %}
-            Do you already have an account?
-            <br>
-            Then please <a class="card-link"
-            href="{{ login_url }}">Sign In</a> instead.
-        {% endblocktrans %}
-      </p>
     </div>
   </div>
 </div>
