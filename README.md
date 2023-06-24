@@ -270,10 +270,11 @@ of the Django Form. It allows me to validate the inputed by the user age range u
 ### Register page
 - #### Sign Up form
 The Sign Up form is implemented based on the Django Allauth package. The form contains the role, email, password and password confirmation fields and the Sign Up button.
-- The role field is a choice field with two options - Jobseeker and Employer. The role set automatically and depends where user is coming from. If the user is coming from the main Home page which is Jobseeker's Home page, the role is set to Jobseeker. If the user is coming from the Employer's Home page, the role is set to Employer. Also the user can change the role by selecting the appropriate option. The field is required and the user can not submit the form without selecting the role, as the role tied to the user account and can not be changed later.
+- The role field is a choice field with two options - Jobseeker and Employer. The initial role set automatically and depends where user is coming from. If the user is coming from the page related to Jobseeker, the role is set to Jobseeker. If the user is coming from Employer's page, the role is set to Employer appropriately. But the user can change the role by selecting the appropriate option based on radio buttons. The role field is mandatory and the user can not submit the form without selecting the role, as the role tied to the user account and can not be changed later.
 - The email field is a unique identifier of the user and the system does not allow users to register multiple accounts with the same email address. So the Jobseeker and the Employer can not have the same email address.
-- The password field as also required and the user can not submit the form without setting the password. The validation of the password is implemented on the client side and on the server side based on the Django Allauth package. 
+- The password field as also required and the user can not submit the form without setting the password. The validation of the password is implemented on the client side and on the server side based on the Django Allauth package.
 
+After successful registration, the user is redirected to the Profile page appropriate to the selected role to complete the profile.
 
 ### Development Features
 - #### Django Authentication and Authorization System

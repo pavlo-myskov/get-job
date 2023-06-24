@@ -55,7 +55,7 @@
     </ul>
     {% else %}
     <div class="nav-item dropdown" id="navbar--dropdown">
-      <a class="nav-link dropdown-toggle text-royalpurple" href="#" role="button" 
+      <a class="nav-link dropdown-toggle text-royalpurple" href="#" role="button"
         aria-expanded="false" aria-label="Sign In/Sign Up Dropdown menu">
         <i class="fa-solid fa-right-to-bracket fs-5"></i>
         <span class="d-none d-sm-inline align-text-bottom">Sign In/Sign Up</span>
@@ -69,7 +69,7 @@
           </a>
         </li>
         <li>
-          <a class="dropdown-item" href="{% url 'account_signup' role='JOBSEEKER' %}?next={{request.path}}">
+          <a class="dropdown-item" href="{% url 'account_signup' role='JOBSEEKER' %}">
             Register new Jobseeker
           </a>
         </li>

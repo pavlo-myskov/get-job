@@ -39,11 +39,13 @@ class CustomSignupForm(SignupForm):
         user.role = self.cleaned_data['role']
         user.save()
 
+        # create a profile for the user based on the selected role
         match user.role:
             case self.Role.JOBSEEKER:
                 JobseekerProfile.objects.create(user=user)
+            case self.Role.EMPLOYER:
+                pass
             # TODO: add employer profile
-            # case self.Role.EMPLOYER:
             #     EmployerProfile.objects.create(user=user)
             case _:
                 raise forms.ValidationError("Invalid role")

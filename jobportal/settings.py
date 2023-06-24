@@ -228,11 +228,6 @@ SASS_PROCESSOR_ROOT = os.path.join(BASE_DIR, 'static')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-ACCOUNT_FORMS = {
-    "signup": "users.forms.CustomSignupForm",
-    "login": "users.forms.CustomLoginForm",
-}
-
 # Set custom user model as default
 AUTH_USER_MODEL = "users.User"
 
@@ -246,6 +241,14 @@ AUTHENTICATION_BACKENDS = [
     # `allauth` specific authentication methods, such as login by e-mail
     'allauth.account.auth_backends.AuthenticationBackend',
     ]
+
+ACCOUNT_FORMS = {
+    "signup": "users.forms.CustomSignupForm",
+    "login": "users.forms.CustomLoginForm",
+}
+
+# allows to specify Custom Redirects for signup, login, logout
+ACCOUNT_ADAPTER = "users.adapters.CustomAccountAdapter"
 
 SITE_ID = 1
 
@@ -262,16 +265,23 @@ ACCOUNT_USER_MODEL_USERNAME_FIELD = None
 ACCOUNT_EMAIL_REQUIRED = True
 # Removes the username field from the signup form.
 ACCOUNT_USERNAME_REQUIRED = False
-# Remembers the user’s session after closing the browser.
-ACCOUNT_SESSION_REMEMBER = True
 # Allows the user to log in using their e-mail address and password.
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
 # Prevents multiple signups with the same e-mail address.
 ACCOUNT_UNIQUE_EMAIL = True
 # Disables the e-mail verification when a user signs up.
 ACCOUNT_EMAIL_VERIFICATION = 'none'
-# asks the user to Remember Me at login.
+# asks the user to Remember Me at login to keep the user logged in
+# even after closing the browser.
 ACCOUNT_SESSION_REMEMBER = None
+
+# TODO: Add email verification:
+# email verification is mandatory to complete the signup process
+# prevents brute force attacks
+# ACCOUNT_EMAIL_VERIFICATION = "mandatory"
+
+# User gets blocked from logging back in until a timeout.
+ACCOUNT_LOGIN_ATTEMPTS_LIMIT = 5
 
 
 # ___Crispy bootstrap5___
