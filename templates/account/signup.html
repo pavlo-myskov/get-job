@@ -14,11 +14,11 @@
         {% if redirect_field_value %}
         <a href="{{ redirect_field_value }}"{% else %}<a href="{% url 'jobseeker_home' %}"
         {% endif %}
-        class="text-decoration-none d-flex align-items-center text-muted fs-4"
+        class="text-decoration-none d-flex align-items-center text-muted fs-5"
           area-label="return to previous page">
           <i class="fa fa-arrow-left"></i>
         </a>
-        <a href="{{ login_url }}" class="btn btn-outline-success btn-sm px-3 px-sm-3 py-1">Sign In</a>
+        <a href="{{ login_url }}" class="btn btn-outline-success btn-sm px-3 px-sm-3 py-0">Sign In</a>
       </div>
     </div>
     <div class="card-body">

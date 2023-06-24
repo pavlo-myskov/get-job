@@ -238,6 +238,21 @@
   box-shadow: 0 0 3px $gray-600;
 }
 
+
+// Sign up/in Form divider
+#divider::before {
+  content: '';
+  flex-grow: 1;
+  margin-right: 8px;
+  border-bottom: 1px solid $gray-300;
+}
+#divider::after {
+  content: '';
+  flex-grow: 1;
+  margin-left: 8px;
+  border-bottom: 1px solid $gray-300;
+}
+
 // age slider
 .ui-state-active,
 .ui-widget-content .ui-state-active,

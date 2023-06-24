@@ -7976,6 +7976,18 @@ textarea.form-control-lg {
   border-radius: 125px / 12px;
   box-shadow: 0 0 3px #6c757d; }
 
+#divider::before {
+  content: '';
+  flex-grow: 1;
+  margin-right: 8px;
+  border-bottom: 1px solid #dee2e6; }
+
+#divider::after {
+  content: '';
+  flex-grow: 1;
+  margin-left: 8px;
+  border-bottom: 1px solid #dee2e6; }
+
 .ui-state-active,
 .ui-widget-content .ui-state-active,
 .ui-widget-header .ui-state-active,
