@@ -40,6 +40,12 @@ $(document).ready(function () {
     );
 
     showToast();
+
+    // event listener for logout link
+    $('#logout-link').click(function (e) {
+        e.preventDefault();
+        $('#logoutModal').modal('show');
+    })
 });
 
 

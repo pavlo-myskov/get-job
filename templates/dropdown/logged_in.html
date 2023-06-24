@@ -10,7 +10,7 @@
         You are logged in as {{ user.get_role_display }}
     </li>
     <li>
-      <a class="dropdown-item" href="{% url 'account_logout' %}">
+      <a id="logout-link" class="dropdown-item" href="{% url 'account_logout' %}">
         Sign Out
       </a>
     </li>
