@@ -9,57 +9,60 @@
       <span class="d-none d-sm-inline fs-6">Get Job</span>
     </a>
     <div class="btn-group btn-group-sm col-6 col-sm-4" role="group" aria-label="user role">
-      <a href="/" class="btn btn-outline-cyan-blue py-1" aria-current="Jobseeker">Jobseeker</a>
+      <a href="{% url 'jobseeker_home' %}" class="btn btn-outline-cyan-blue py-1" aria-current="Jobseeker">Jobseeker</a>
       <a href="{% url 'employer_home' %}" class="btn btn-outline-cyan-blue active py-1">Employer</a>
     </div>
-    <!-- TODO  if user.is_authenticated and user.role == employer-->
     {% if user.is_authenticated %}
-    <ul class="nav nav-pills">
-      <li class="d-none d-lg-flex aligns-items-center py-1">
-        <form class="input-group input-group-sm" action="{% url 'resume_search' %}" method="get">
-          {{ nav_form.keywords|update_placeholder:"occupation, skills" }}
-          <button type="submit" class="btn btn-cyan-blue">
-            <i class="fas fa-search"></i>
-          </button>
-        </form>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link text-cyan-blue px-2 px-sm-4" href="#" aria-label="notifications">
-          <i class="fa-regular fa-bell fs-5"></i>
-        </a>
-      </li>
-      <li class="nav-item dropdown" id="navbar--dropdown">
-        <a class="nav-link dropdown-toggle text-cyan-blue px-1 pe-sm-2" aria-label="profile dropdown menu"
-          data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">
-          <i class="fa-solid fa-user fs-5"></i>
-        </a>
-        <ul class="dropdown-menu employer-dm dropdown-menu-end" aria-labelledby="employer profile dropdown menu">
-          <li class="d-lg-none mx-3 my-2">
+      {% if user.role == 'EMPLOYER' %}
+        <!-- if user authenticated as employer - display Employer dropdown -->
+        <ul class="nav nav-pills">
+          <li class="d-none d-lg-flex aligns-items-center py-1">
             <form class="input-group input-group-sm" action="{% url 'resume_search' %}" method="get">
-              {{ nav_form.keywords|update_placeholder:"enter occupation or skills" }}
+              {{ nav_form.keywords|update_placeholder:"occupation, skills" }}
               <button type="submit" class="btn btn-cyan-blue">
                 <i class="fas fa-search"></i>
               </button>
             </form>
           </li>
-          <li><a class="dropdown-item" href="#">My Profile</a></li>
-          <li><a class="dropdown-item" href="{% url 'resume_search' %}">Search for Resumes</a></li>
-          <li><a class="dropdown-item" href="#">Post a Job</a></li>
-          <li><a class="dropdown-item" href="#">My Jobs</a></li>
-          <li>
-            <hr class="dropdown-divider">
+          <li class="nav-item">
+            <a class="nav-link text-cyan-blue px-2 px-sm-4" href="#" aria-label="notifications">
+              <i class="fa-regular fa-bell fs-5"></i>
+            </a>
           </li>
-          <li><a class="dropdown-item" href="#">LogOut</a></li>
+          <li class="nav-item dropdown" id="navbar--dropdown">
+            <a class="nav-link dropdown-toggle text-cyan-blue px-1 pe-sm-2" aria-label="profile dropdown menu"
+              data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">
+              <i class="fa-solid fa-user fs-5"></i>
+            </a>
+            <ul class="dropdown-menu employer-dm dropdown-menu-end" aria-labelledby="employer profile dropdown menu">
+              <li class="d-lg-none mx-3 my-2">
+                <form class="input-group input-group-sm" action="{% url 'resume_search' %}" method="get">
+                  {{ nav_form.keywords|update_placeholder:"enter occupation or skills" }}
+                  <button type="submit" class="btn btn-cyan-blue">
+                    <i class="fas fa-search"></i>
+                  </button>
+                </form>
+              </li>
+              <li><a class="dropdown-item" href="#">My Profile</a></li>
+              <li><a class="dropdown-item" href="{% url 'resume_search' %}">Search for Resumes</a></li>
+              <li><a class="dropdown-item" href="#">Post a Job</a></li>
+              <li><a class="dropdown-item" href="#">My Jobs</a></li>
+              <li>
+                <hr class="dropdown-divider">
+              </li>
+              <li><a id="logout-link" class="dropdown-item" href="{% url 'account_logout' %}">LogOut</a></li>
+            </ul>
+          </li>
         </ul>
-      </li>
-    </ul>
+      {% else %}
+        <!-- if user authenticated but is not jobseeker display appropriate dropdown message -->
+        {% include "dropdown/logged_in.html" with role="EMPLOYER" color="cyan-blue" %}
+      {% endif %}
+
     {% else %}
-    <div class="nav-item">
-      <a class="nav-link text-cyan-blue" href="#" aria-label="Sign In/Sign Up">
-        <i class="fa-solid fa-right-to-bracket fs-5"></i>
-        <span class="d-none d-sm-inline align-text-bottom">Sign In/Sign Up</span>
-      </a>
-    </div>
+      <!-- if user is not authenticated display sign in/sign up dropdown menu -->
+      {% include "dropdown/sign-in-up-menu.html" with role="EMPLOYER" color="cyan-blue" %}
+
     {% endif %}
   </div>
 </nav>

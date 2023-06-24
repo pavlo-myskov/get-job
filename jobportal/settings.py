@@ -14,6 +14,7 @@ import os
 import sys
 from pathlib import Path
 from dotenv import load_dotenv
+from django.contrib.messages import constants as messages
 
 load_dotenv()
 
@@ -44,6 +45,10 @@ ALLOWED_HOSTS = ['127.0.0.1', 'localhost',
                  'get-job.herokuapp.com',
                  'get-job.live',
                  'www.get-job.live']
+
+# Clickjacking protection. Means that you can
+# only embed your site in an iframe on your own domain.
+X_FRAME_OPTIONS = 'SAMEORIGIN'
 
 if development:
     SECURE_SSL_REDIRECT = False
@@ -229,13 +234,21 @@ AUTH_USER_MODEL = "users.User"
 
 # ___Allauth___
 
-# AUTHENTICATION_BACKENDS = [
-#     # Needed to login by username in Django admin, regardless of `allauth`
-#     'django.contrib.auth.backends.ModelBackend',
+AUTHENTICATION_BACKENDS = [
+    # Needed to login by username in Django admin, regardless of `allauth`
+    'django.contrib.auth.backends.ModelBackend',
 
-#     # `allauth` specific authentication methods, such as login by e-mail
-#     'allauth.account.auth_backends.AuthenticationBackend',
-#     ]
+    # `allauth` specific authentication methods, such as login by e-mail
+    'allauth.account.auth_backends.AuthenticationBackend',
+    ]
+
+ACCOUNT_FORMS = {
+    "signup": "users.forms.CustomSignupForm",
+    "login": "users.forms.CustomLoginForm",
+}
+
+# allows to specify Custom Redirects for signup, login, logout
+ACCOUNT_ADAPTER = "users.adapters.CustomAccountAdapter"
 
 SITE_ID = 1
 
@@ -252,16 +265,35 @@ ACCOUNT_USER_MODEL_USERNAME_FIELD = None
 ACCOUNT_EMAIL_REQUIRED = True
 # Removes the username field from the signup form.
 ACCOUNT_USERNAME_REQUIRED = False
-# Remembers the user’s session after closing the browser.
-ACCOUNT_SESSION_REMEMBER = True
 # Allows the user to log in using their e-mail address and password.
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
 # Prevents multiple signups with the same e-mail address.
 ACCOUNT_UNIQUE_EMAIL = True
 # Disables the e-mail verification when a user signs up.
 ACCOUNT_EMAIL_VERIFICATION = 'none'
+# asks the user to Remember Me at login to keep the user logged in
+# even after closing the browser.
+ACCOUNT_SESSION_REMEMBER = None
+
+# TODO: Add email verification:
+# email verification is mandatory to complete the signup process
+# prevents brute force attacks
+# ACCOUNT_EMAIL_VERIFICATION = "mandatory"
+
+# User gets blocked from logging back in until a timeout.
+ACCOUNT_LOGIN_ATTEMPTS_LIMIT = 5
 
 
 # ___Crispy bootstrap5___
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = "bootstrap5"
+
+
+# Custom message tags for Bootstrap 4, 5
+MESSAGE_TAGS = {
+        messages.DEBUG: 'secondary',
+        messages.INFO: 'info',
+        messages.SUCCESS: 'success',
+        messages.WARNING: 'warning',
+        messages.ERROR: 'danger',
+ }

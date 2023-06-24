@@ -25,7 +25,7 @@
     </div>
   </section>
 
-  <div class="bg-light rounded pb-3">
+  <div class="bg-light rounded pb-3 mb-3">
     <!-- Search section -->
     <section class="py-5 search-container">
       <div class="text-center">
@@ -48,13 +48,18 @@
     <section class="container resume-container g-1 g-sm-2 g-md-4">
       <h2 class="text-muted ps-3 mb-2 mb-md-3">Latest Resumes</h2>
       <div class="row row-cols-1 row-cols-xl-2 g-2">
+        {% if resume_list %}
         {% for resume in resume_list %}
         <!-- ______resume card______ -->
         {% include "resumes/resume_card.html" %}
         {% endfor %}
       </div>
-      <!-- TODO: Add Link "More" to redirect to /resumes -->
+      {% else %}
+      <h3 class="text-center text-muted">No resumes found</h3>
+      {% endif %}
     </section>
   </div>
 </main>
+
+{% include 'footer.html' %}
 {% endblock content %}

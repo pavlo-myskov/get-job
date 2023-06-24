@@ -39,7 +39,7 @@
     <div class="row">
       <!-- Search panel -->
       <div class="col-lg-5">
-        <div class="card position-relative sticky-lg-top mb-3 inset-shadow-purple
+        <div class="card sticky-lg-top mb-3 inset-shadow-purple
         {% if form.errors or form.is_bound %} show" id="search-panel" area-expanded="true">
           {% else %}" id="search-panel">{% endif %}
           <div class="position-absolute end-0 me-3 mt-2">
@@ -125,4 +125,6 @@
   {% endif %}
 
 </main>
+
+{% include 'footer.html' %}
 {% endblock %}

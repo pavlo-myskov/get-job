@@ -13,16 +13,57 @@
 
   <link rel="stylesheet" type="text/css" href="{% sass_src 'css/main.scss' %}" />
 
-  <title>{% block title %}Get Job{% endblock %}</title>
+  <title>{% block head_title %}Get Job{% endblock %}</title>
+  {% block extra_head %}
+  {% endblock %}
 </head>
 
-<body>
+<body class="d-flex flex-column vh-100">
+  {% if messages %}
+  <!-- django notification styled with bootstrap toast -->
+  {% for message in messages %}
+  <div class="position-fixed top-0 end-0 p-3 mt-5 me-sm-2" style="z-index: 11">
+    <div class="toast shadow align-items-center position-relative" data-msg-tag="{{ message.tags }}" role="alert" aria-live="assertive" aria-atomic="true">
+      <div class="d-flex text-black">
+        <div class="toast-body w-100 d-flex justify-content-between">
+          <span>{{ message | safe }}</span>
+          <button type="button" class="btn-close ms-1 me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+  {% endif %}
+
   {% block content %}
   <!-- Content -->
   {% endblock content %}
-  <footer class="mt-2">
-    <div class="bg-light border-top" style="height: 100px;"></div>
-  </footer>
+
+  <!-- Logout modal -->
+  <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModal" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="logoutModalTitle">Sign Out</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>Are you sure you want to sign out?</p>
+        </div>
+        <div class="modal-footer">
+          <form method="post" action="{% url 'account_logout' %}">
+            {% csrf_token %}
+            {% if redirect_field_value %}
+            <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
+            {% endif %}
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Dismiss</button>
+            <button type="submit" class="btn btn-outline-danger">Logout</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script src="{% static 'js/jquery-3.7.0.min.js' %}"></script>
   <script src="{% static 'jquery-ui/jquery-ui.min.js' %}"></script>
   <script src="{% static 'jquery-ui-touch-punch/jquery.ui.touch-punch.min.js' %}"></script>

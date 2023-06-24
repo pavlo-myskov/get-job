@@ -1,3 +1,15 @@
+// Bootstrap colors in RGB
+const bootstrapColors = {
+    primary: 'rgb(13, 110, 253)',
+    secondary: 'rgb(108, 117, 125)',
+    success: 'rgb(25, 135, 84)',
+    danger: 'rgb(220, 53, 69)',
+    warning: 'rgb(255, 193, 7)',
+    info: 'rgb(13, 202, 240)',
+    light: 'rgb(248, 249, 250)',
+}
+
+
 $(document).ready(function () {
     let windowWidth = window.innerWidth;
 
@@ -19,6 +31,21 @@ $(document).ready(function () {
         addRemoveCollapseClass(windowWidth);
     });
 
+    backToTop();
+
+    insertRoleToTitle();
+    $("#signup_form input:radio").on('change', function () {
+        insertRoleToTitle();
+    }
+    );
+
+    showToast();
+
+    // event listener for logout link
+    $('#logout-link').click(function (e) {
+        e.preventDefault();
+        $('#logoutModal').modal('show');
+    })
 });
 
 
@@ -186,4 +213,67 @@ function ageSlider() {
 
         $("#age-amount").val(minValue + " - " + maxValue);
     }
+}
+
+/**
+ * Back to top button.
+ * Triggered by click event on `.back-to-top` element
+ */
+function backToTop() {
+    // scroll body to 0px on click
+    $('.back-to-top').click(function () {
+        $('body,html').animate({
+            scrollTop: 0
+        }, 200);
+        return false;
+    });
+}
+
+/**
+ * Insert selected role to the title of the Sign Up form.
+ */
+function insertRoleToTitle() {
+    selected_value = $("input[name='role']:checked").val();
+    let jobseeker = `as a
+    <span class="text-royalpurple">Jobseeker</span>`;
+    let employer = `as an
+    <span class="text-cyan-blue">Employer</span>`;
+    if (selected_value == "JOBSEEKER") {
+        $('#role-title').html(jobseeker);
+    } else if (selected_value == "EMPLOYER") {
+        $('#role-title').html(employer);
+    }
+}
+
+/**
+ * Initialize Bootstrap toast.
+ */
+function showToast() {
+
+    var toastElList = [].slice.call(document.querySelectorAll('.toast'))
+    var toastList = toastElList.map(function (toastEl) {
+
+        return new bootstrap.Toast(toastEl)
+    })
+
+    changeToastColor(toastElList);
+    // show toast by default
+    toastList.forEach(toast => toast.show())
+}
+
+/**
+ * Change `toast::after` bg color based on `data-msg-tag` attribute
+ */
+function changeToastColor(toastElList) {
+    // change `toast::after` bg color based on `data-msg-tag` attribute
+    toastElList.forEach(toast => {
+        // get data-msg-tag attribute value
+        let msgTag = toast.getAttribute('data-msg-tag');
+        // get bootstrap color if exists or set default color as light
+        // ?? - Nullish coalescing operator
+        let rgbColor = bootstrapColors[msgTag] ?? bootstrapColors['light'];
+        // set css variable
+        toast.style.setProperty('--toast-bg-color', rgbColor);
+    }
+    );
 }

@@ -1,0 +1,20 @@
+<div class="nav-item dropdown" id="navbar--dropdown">
+  <a class="nav-link dropdown-toggle text-{{ color }}" href="#" role="button"
+    aria-expanded="false" aria-label="Sign In/Sign Up Dropdown menu">
+    <i class="fa-solid fa-right-to-bracket fs-5"></i>
+    <span class="d-none d-sm-inline align-text-bottom">Sign In/Sign Up</span>
+  </a>
+  <ul class="dropdown-menu {{ role|lower }}-dm dropdown-menu-end"
+    aria-labelledby="Sign In/Sign Up Options">
+    <li>
+      <a class="dropdown-item" href="{% url 'account_login' %}?next={{request.path}}">
+        Login as {{ role|title }}
+      </a>
+    </li>
+    <li>
+      <a class="dropdown-item" href="{% url 'account_signup' role=role %}">
+        Register new {{ role|title }}
+      </a>
+    </li>
+  </ul>
+</div>

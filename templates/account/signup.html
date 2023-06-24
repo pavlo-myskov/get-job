@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load crispy_forms_tags %}
+
+{% block head_title %}{% trans "Sign Up" %}{% endblock %}
+
+{% block content %}
+
+{% include "background.html" %}
+
+<div class="container-fluid flex-shrink-0 my-auto">
+  <div class="card shadow mx-auto my-3" style="max-width: 25rem;">
+        <!-- Sign up card header -->
+    <div class="card-header">
+      <div class="d-flex align-items-center justify-content-between">
+        {% if redirect_field_value %}
+        <a href="{{ redirect_field_value }}"{% else %}<a href="{% url 'jobseeker_home' %}"
+        {% endif %}
+        class="text-decoration-none d-flex align-items-center text-muted fs-5"
+          area-label="return to previous page">
+          <i class="fa fa-arrow-left"></i>
+        </a>
+        <a href="{{ login_url }}" class="btn btn-outline-info btn-sm px-3 px-sm-3 py-0">Sign In</a>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3 class="card-title text-center">{% trans "Create your account" %}
+        <span class="d-block" id="role-title"></span>
+      </h3>
+      <form class="signup" id="signup_form" method="post">
+          {% csrf_token %}
+          <!-- Manually style the radio buttons -->
+          <div class="btn-group my-3 w-100" role="group" aria-label="Role Toggle">
+            {% for choice in form.role %}
+              <input type="radio" class="btn-check" name="role" value="{{ choice.data.value }}" id="{{ choice.id_for_label }}" required
+              {% if choice.data.value == form.role.value %} checked {% endif %} autocomplete="off">
+              <label for="{{ choice.id_for_label }}"
+              {% if choice.data.value == "JOBSEEKER" %}class="btn btn-outline-royalpurple py-1"{% endif %}
+              {% if choice.data.value == "EMPLOYER" %}class="btn btn-outline-cyan-blue py-1"{% endif %}
+              {% if form.role.errors %} style="border-color: red;" {% endif %}>
+                {{ choice.choice_label }}
+              </label>
+            {% endfor %}
+          </div>
+          {% if form.role.errors %}
+            <p class="d-block invalid-feedback">
+              <strong>{{ form.role.errors|striptags }}</strong>
+            </p>
+          {% endif %}
+
+          {{ form.email|as_crispy_field }}
+          {{ form.password1|as_crispy_field }}
+          {{ form.password2|as_crispy_field }}
+
+          {% if redirect_field_value %}
+          <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+          {% endif %}
+          <button type="submit" class="btn btn-success w-100 mt-1 mb-3 py-1">{% trans "Sign Up" %} &raquo;</button>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
