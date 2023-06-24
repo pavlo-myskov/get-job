@@ -267,7 +267,9 @@ of the Django Form. It allows me to validate the inputed by the user age range u
 ### Hiring page
 ...
 
-### Register page
+### Login/Register
+The app allows users create an account and have additional features that are not available for the anonymous users. To get on the register or login page, the user can click on the `Sign Up/Sing In` button in the Navbar or they will be redirected automatically to the login page when they are trying to access the page that is available only for the logged in users, e.g. the Apply for the Job page or the Hiring page.
+
 - #### Sign Up form
 The Sign Up form is implemented based on the Django Allauth package. The form contains the role, email, password and password confirmation fields and the Sign Up button.
 - The role field is a choice field with two options - Jobseeker and Employer. The initial role set automatically and depends where user is coming from. If the user is coming from the page related to Jobseeker, the role is set to Jobseeker. If the user is coming from Employer's page, the role is set to Employer appropriately. But the user can change the role by selecting the appropriate option based on radio buttons. The role field is mandatory and the user can not submit the form without selecting the role, as the role tied to the user account and can not be changed later.
@@ -279,8 +281,18 @@ After successful registration, the user is redirected to the Profile page approp
 Additionaly for the user convenience, the form contains the header with the back to the previous page button that based on the next parameter in the url, and the Sign In link if the user already has an account.
 
 - #### Login form
-The Login form is also based on the Django Allauth. The user can login by email and password. The user does not have to select the role to login, as the role is tied to the user account. So the role (Jobseeker or Employer) is set automatically based on the user account. 
- So the user will be redirected to the appropriate page after successful login based on the next parameter in the url. If the next parameter is not set, the user will be redirected to the Home page appropriate to the role of an account. Although the user will be redirected to next parameter if it is set, the user can only access the page appropriate to the role. So if the unauthenticated user tries to apply for the job, they will be redirected to the Login page. After successful login, the user will be redirected to the Apply for the Job form if the role is Jobseeker, otherwise the user cannot access the Apply for the Job page and get appropriate feedback.
+The Login form is also based on the Django Allauth. The user can login by email and password. The user does not have to select the role to login, as the role is tied to the user account. So the role (Jobseeker or Employer) is set automatically based on the user account.
+So the user will be redirected to the appropriate page after successful login based on the next parameter in the url. If the next parameter is not set, the user will be redirected to the Home page appropriate to the role of an account. Although the user will be redirected to next parameter if it is set, the user can only access the page appropriate to the role. So if the unauthenticated user tries to apply for the job, they will be redirected to the Login page. After successful login, the user will be redirected to the Apply for the Job form if the role is Jobseeker, otherwise the user cannot access the Apply for the Job page and get appropriate feedback.
+When the user is logged in, the Sign Up/Sign button in the Navbar is replaced by the Profile button. The Profile button contains the dropdown menu. Each role has its own dropdown menu with the appropriate links:
+- **Jobseeker**:
+My Profile, Search for Jobs, Create Resume, My Applications, Favourite Jobs, Logout
+- **Employer**:
+My Profile, Search for Resumes, Add a Vacancy, My Jobs, Logout
+
+The authenticated user can have access only to the menu appropriate to the role. So the Jobseeker can not access the options related to the Employer and vice versa. Instead of the Profile button for an authenticated user not associated with his role, the user will see the specific message that the user is logged in as a Jobseeker/Employer and the Logout button.
+
+- #### Logout
+The Logout button is available for the authenticated users only and located in the Profile dropdown menu or Sign Up/Sign menu on the page that not associated with current role. When the user clicks on the Logout button, the modal window appears with the confirmation message. The user can confirm the logout by clicking on the Logout button or cancel the logout by clicking on the Dismiss button. After successful logout, the user will be redirected to the Home page.
 
 ### Development Features
 - #### Django Authentication and Authorization System
