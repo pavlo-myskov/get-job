@@ -276,6 +276,11 @@ The Sign Up form is implemented based on the Django Allauth package. The form co
 
 After successful registration, the user is redirected to the Profile page appropriate to the selected role to complete the profile.
 
+Additionaly for the user convenience, the form contains the header with the back to the previous page button that based on the next parameter in the url, and the Sign In link if the user already has an account.
+
+- #### Login form
+The Login form is also based on the Django Allauth. The user can login by email and password. The user does not have to select the role to login, as the role is tied to the user account. So the user will be redirected to the appropriate page after successful login based on the next parameter in the url. If the next parameter is not set, the user will be redirected to the Home page appropriate to the role of an account. Although the user will be redirected to next parameter if it is set, the user can only access the page appropriate to the role. So if the unauthenticated user tries to apply for the job, they will be redirected to the Login page. After successful login, the user will be redirected to the Apply for the Job form if the role is Jobseeker, otherwise the user cannot access the Apply for the Job page and get appropriate feedback.
+
 ### Development Features
 - #### Django Authentication and Authorization System
 The app uses the Django Allauth package that is built on top of the built-in Django Authentication and Authorization System. The system provides a secure way to manage user accounts and allows users to create an account, login, logout, reset password, and update their profile. Also, the package is used to provide additional features such as email verification, social authentication, and password reset.

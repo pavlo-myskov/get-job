@@ -25,3 +25,15 @@ class CustomAccountAdapter(DefaultAccountAdapter):
             return super().get_signup_redirect_url(request)
         print("redirect_url: ", redirect_url)
         return redirect_url
+
+    def get_login_redirect_url(self, request):
+        """
+        Redirect to the homepage of the selected role
+        if no next URL is provided
+        """
+        if request.user.role == CustomSignupForm.Role.JOBSEEKER:
+            return reverse('jobseeker_home')
+        elif request.user.role == CustomSignupForm.Role.EMPLOYER:
+            return reverse('employer_home')
+        else:
+            return super().get_login_redirect_url(request)
