@@ -1,0 +1,18 @@
+<div class="nav-item dropdown" id="navbar--dropdown">
+  <a class="nav-link dropdown-toggle text-{{ color }}" href="#" role="button"
+    aria-expanded="false" aria-label="Sign In/Sign Up Dropdown menu">
+    <i class="fa-solid fa-right-to-bracket fs-5"></i>
+    <span class="d-none d-sm-inline align-text-bottom">Sign In/Sign Up</span>
+  </a>
+  <ul class="dropdown-menu {{ role|lower }}-dm dropdown-menu-end"
+    aria-labelledby="Sign In/Sign Up Options">
+    <li class="dropdown-item disabled">
+        You are logged in as {{ user.get_role_display }}
+    </li>
+    <li>
+      <a class="dropdown-item" href="{% url 'account_logout' %}">
+        Sign Out
+      </a>
+    </li>
+  </ul>
+</div>
