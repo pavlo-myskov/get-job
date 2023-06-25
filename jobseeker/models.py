@@ -47,6 +47,10 @@ class CloudinaryField(BaseCloudinaryField):
      crop="thumb" class="img-thumbnail" alt="profile picture" %}
     """
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.validators.append(img_validator)
+
     def upload_options(self, model_instance):
         """
         Custom upload options for CloudinaryField
@@ -60,7 +64,6 @@ class CloudinaryField(BaseCloudinaryField):
             "resource_type": "image",
             "default": "media/get-job/profile_placehoder.png",
             "folder": "media/get-job/jobseeker_avatars",
-            "validators": [img_validator],
             "transformation": [
                 {
                     "width": 200,
