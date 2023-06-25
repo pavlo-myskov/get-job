@@ -1,7 +1,11 @@
 from django.views.generic import ListView
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic.edit import UpdateView, DeleteView
 
 from jobs.models import Vacancy
 from jobs.forms import SearchForm
+
+from .models import JobseekerProfile
 
 
 class HomeView(ListView):
@@ -28,3 +32,12 @@ class HomeView(ListView):
         context["form"] = form
         context["nav_form"] = SearchForm(auto_id=False)
         return context
+
+
+class JobseekerProfileUpdateView(LoginRequiredMixin, UpdateView):
+    model = JobseekerProfile
+    fields = ["name", "gender", "dob", "address", "phone", "avatar"]
+
+    def get_object(self, *args, **kwargs):
+        """Return the jobseeker profile for the current user"""
+        return self.request.user.jobseekerprofile
