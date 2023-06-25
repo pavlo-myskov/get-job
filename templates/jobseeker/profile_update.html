@@ -25,7 +25,7 @@
       <h3 class="card-title text-center">
         Edit Profile
       </h3>
-      <form method="POST">
+      <form method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form|crispy }}
         {% if redirect_field_value %}

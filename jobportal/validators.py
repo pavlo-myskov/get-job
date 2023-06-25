@@ -1,4 +1,5 @@
 import magic
+from mimetypes import guess_extension, guess_type
 
 from django.utils.deconstruct import deconstructible
 from django.template.defaultfilters import filesizeformat
@@ -63,7 +64,13 @@ class FileValidator(object):
             data.seek(0)
 
             if content_type not in self.content_types:
-                params = {"content_type": content_type}
+                # convert mime type to human readable format
+                try:
+                    res = guess_extension(content_type) or guess_type(content_type)[0]  # noqa
+                    readable_content_type = res or content_type
+                except Exception:
+                    readable_content_type = content_type
+                params = {"content_type": readable_content_type}
                 raise ValidationError(
                     self.error_messages["content_type"], "content_type", params
                 )
