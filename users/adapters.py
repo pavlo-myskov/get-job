@@ -5,7 +5,6 @@ from .forms import CustomSignupForm
 
 
 class CustomAccountAdapter(DefaultAccountAdapter):
-
     def get_signup_redirect_url(self, request):
         """
         Redirect to the profile page of the selected role
@@ -13,17 +12,14 @@ class CustomAccountAdapter(DefaultAccountAdapter):
         """
 
         # Get selected role
-        role = request.POST.get('role')
-        print("role: ", role)
+        role = request.POST.get("role")
         if role == CustomSignupForm.Role.JOBSEEKER:
-            # TODO: Change to jobseeker profile
-            redirect_url = reverse('job_search')
+            redirect_url = reverse("jobseeker_profile_update")
         elif role == CustomSignupForm.Role.EMPLOYER:
             # TODO: Change to employer profile
-            redirect_url = reverse('resume_search')
+            redirect_url = reverse("resume_search")
         else:
             return super().get_signup_redirect_url(request)
-        print("redirect_url: ", redirect_url)
         return redirect_url
 
     def get_login_redirect_url(self, request):
@@ -32,8 +28,8 @@ class CustomAccountAdapter(DefaultAccountAdapter):
         if no next URL is provided
         """
         if request.user.role == CustomSignupForm.Role.JOBSEEKER:
-            return reverse('jobseeker_home')
+            return reverse("jobseeker_home")
         elif request.user.role == CustomSignupForm.Role.EMPLOYER:
-            return reverse('employer_home')
+            return reverse("employer_home")
         else:
             return super().get_login_redirect_url(request)
