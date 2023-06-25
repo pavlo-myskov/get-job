@@ -1,6 +1,7 @@
 import re
 from cloudinary.models import CloudinaryField as BaseCloudinaryField
 
+from django.urls import reverse
 from django.db import models
 from django.dispatch import receiver
 from django.db.models.signals import post_save
@@ -46,6 +47,10 @@ class CloudinaryField(BaseCloudinaryField):
      crop="thumb" class="img-thumbnail" alt="profile picture" %}
     """
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.validators.append(img_validator)
+
     def upload_options(self, model_instance):
         """
         Custom upload options for CloudinaryField
@@ -59,7 +64,6 @@ class CloudinaryField(BaseCloudinaryField):
             "resource_type": "image",
             "default": "media/get-job/profile_placehoder.png",
             "folder": "media/get-job/jobseeker_avatars",
-            "validators": [img_validator],
             "transformation": [
                 {
                     "width": 200,
@@ -171,7 +175,7 @@ class JobseekerProfile(models.Model):
     user = models.OneToOneField(Jobseeker, on_delete=models.CASCADE)
     # use name instead of first_name and last_name,
     # as they don't cover global name patterns
-    name = models.CharField(max_length=254, blank=True)
+    name = models.CharField(max_length=254)
     avatar = CloudinaryField("avatar", blank=True, null=True)
     gender = models.CharField(
         choices=GENDER_TYPES, max_length=10, blank=True, null=True
@@ -196,6 +200,11 @@ class JobseekerProfile(models.Model):
 
     def __str__(self):
         return self.user.email
+
+    def get_absolute_url(self):
+        return reverse("jobseeker_home")
+        # TODO: create a profile page for Jobseeker
+        # return reverse("jobseeker_profile")
 
 
 @receiver(post_save, sender=Jobseeker)
