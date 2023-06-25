@@ -8,6 +8,7 @@ from jobs.models import Vacancy
 from jobs.forms import SearchForm
 
 from .models import JobseekerProfile
+from .forms import JobseekerProfileForm
 
 
 class HomeView(ListView):
@@ -38,6 +39,8 @@ class HomeView(ListView):
 
 class JobseekerProfileUpdateView(LoginRequiredMixin, UpdateView):
     model = JobseekerProfile
+    form_class = JobseekerProfileForm
+    template_name = "jobseeker/profile_update.html"
 
     def get_object(self, *args, **kwargs):
         """Return the jobseeker profile for the current user"""
