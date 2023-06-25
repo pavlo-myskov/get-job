@@ -1,5 +1,4 @@
-import re
-from cloudinary.models import CloudinaryField as BaseCloudinaryField
+from cloudinary.models import CloudinaryField
 
 from django.urls import reverse
 from django.db import models
@@ -8,83 +7,9 @@ from django.db.models.signals import post_save
 from django.contrib.auth.models import BaseUserManager
 from django.contrib.auth import get_user_model
 
-from jobportal.validators import FileValidator
 from jobs.models import Vacancy
 
 User = get_user_model()
-img_validator = FileValidator(
-    max_size=5 * 1024 * 1024,  # 5 MB
-    content_types=[
-        "image/jpeg",
-        "image/png",
-        "image/webp",
-        "image/svg+xml",
-        "image/gif",
-        "image/tiff",
-        "image/bmp",
-        "image/jpg",
-    ],
-)
-
-
-def generate_filename_from_email(email: str):
-    """
-    Generate a filename from the user's email.
-    Replace all non-alphanumeric characters to underscores.
-    """
-    pattern = r"[^a-zA-Z0-9]"
-    return re.sub(pattern, "_", email)
-
-
-class CloudinaryField(BaseCloudinaryField):
-    """
-    Custom CloudinaryField that allows to set upload options
-    and generate a filename from the user's email
-
-    Usage in templates instead of standart img tag:
-    {% load cloudinary %}
-    {% cloudinary resume.jobseeker.profile.avatar style="max-height: 130px"
-     crop="thumb" class="img-thumbnail" alt="profile picture" %}
-    """
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.validators.append(img_validator)
-
-    def upload_options(self, model_instance):
-        """
-        Custom upload options for CloudinaryField
-        """
-        filename = generate_filename_from_email(model_instance.user.email)
-        return {
-            "public_id": filename,
-            "unique_filename": True,
-            "overwrite": True,
-            "format": "webp",
-            "resource_type": "image",
-            "default": "media/get-job/profile_placehoder.png",
-            "folder": "media/get-job/jobseeker_avatars",
-            "transformation": [
-                {
-                    "width": 200,
-                    "height": 200,
-                    "crop": "thumb",
-                    "gravity": "face",
-                    "quality": "auto:eco",
-                    "zoom": 0.8,
-                }
-            ],
-        }
-
-    def pre_save(self, model_instance, add):
-        """
-        Override pre_save method to add custom upload options
-        """
-        self.options = dict(
-            list(self.options.items())
-            + list(self.upload_options(model_instance).items())
-        )
-        return super().pre_save(model_instance, add)
 
 
 class JobseekerManager(BaseUserManager):
