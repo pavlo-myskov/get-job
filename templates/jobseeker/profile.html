@@ -7,7 +7,7 @@
 
 <main class="container-fluid px-0 bg-light">
   <div class="container px-0 px-sm-3 my-4" style="max-width: 50rem;">
-    <h2 class="ms-4">My Profile</h2>
+    <h2 class="ms-4 mb-3">My Profile</h2>
 
     <!-- Nav header -->
     <nav class="card-header bg-white" aria-label="profile nav header">
@@ -56,13 +56,12 @@
             </ul>
           </div>
         </div>
-        <div class="col-sm-4 d-flex flex-column justify-content-center">
-          <h6>Profile Picture</h6>
-          <!-- <img src="{{ avatar.url }}" class="img-fluid rounded-start" alt="..."> -->
-          {% cloudinary  profile.avatar  class="img-fluid rounded-start" style="max-height:200px; max-width:200px;" alt="profile picture" %}
-        </div>
+        <figure class="col-sm-4 mt-2 d-flex flex-column align-items-center justify-content-center">
+          {% cloudinary  profile.avatar class="img-fluid rounded-start" style="height:180px; max-width:180px;" alt="profile picture" %}
+          <figcaption class="text-muted">Profile Picture</figcaption>
+        </figure>
       </div>
-        <div class="text-end text-sm-start mt-3 mx-3">
+        <div class="text-end text-sm-start mt-2 mx-3">
           <a href="{% url 'jobseeker_profile_update' %}" class="btn btn-outline-royalpurple">
             <i class="fa fa-edit"></i>
             <span class="mx-2">Edit</span>
