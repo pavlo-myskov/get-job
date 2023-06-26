@@ -83,6 +83,7 @@ The main goal of the app is to deliver a solution that creates real value for th
     - As a Jobseeker I want to be able to return to the home page from the list of jobs so that I can access the home page at any time.
     - As a Jobseeker I want to be able to see the number of jobs found in the list of jobs so that I can see how many jobs are available based on my search criteria.
     - As a Jobseeker I want to be able to see the footer with the navigation links so that I can easily navigate the app.
+    - As a Jobseeker I want to be able to change the password so that I can protect my account.
 
 #### Employer Goals
 - ##### First Time Visitor:
@@ -127,6 +128,7 @@ The main goal of the app is to deliver a solution that creates real value for th
     - As an Employer I want to be able to return to the home page from the list of resumes so that I can access the home page at any time.
     - As an Employer I want to be able to see the number of resumes found in the list of resumes so that I can see how many resumes are available based on my search criteria.
     - As an Employer I want to be able to see the footer with the navigation links so that I can easily navigate the app.
+    - As an Employer I want to be able to change the password so that I can protect my account.
 
 #### Moderator Goals
 - As a Moderator I want to be able to review and approve the posted jobs so that I can protect the app from inappropriate content.
