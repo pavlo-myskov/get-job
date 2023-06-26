@@ -27,12 +27,14 @@
       </a>
       </div>
     </nav>
+
+    <!-- Profile card -->
     <div class="card mx-auto border-0 my-3 mt-1 p-3" >
       <div class="row g-0">
         <div class="col-sm-8">
           <div class="card-body p-0">
             <h5 class="card-title">{{ profile.name }}</h5>
-            <ul class="list-group pb-2 borderless" id="job-detail-list">
+            <ul class="list-group card-list pb-2 borderless">
               <li class="list-group-item d-flex align-items-end">
                 <h6 class="list-item-heading text-muted my-auto me-sm-4 flex-shrink-0">Gender:</h6>
                 <p class="my-0 overflow-auto text-truncate">{{ profile.get_gender_display }}</p>
@@ -56,6 +58,7 @@
             </ul>
           </div>
         </div>
+        <!-- Profile picture -->
         <figure class="col-sm-4 mt-2 d-flex flex-column align-items-center justify-content-center">
           {% cloudinary  profile.avatar class="img-fluid rounded-start" style="height:180px; max-width:180px;" alt="profile picture" %}
           <figcaption class="text-muted">Profile Picture</figcaption>
@@ -68,6 +71,7 @@
           </a>
         </div>
     </div>
+
   </div>
 </main>
 
