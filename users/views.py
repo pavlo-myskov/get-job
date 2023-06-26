@@ -1,5 +1,6 @@
 from django.http import Http404
-from allauth.account.views import SignupView
+from django.urls import reverse_lazy
+from allauth.account.views import SignupView, PasswordChangeView
 
 from .forms import CustomSignupForm
 
@@ -29,3 +30,7 @@ class CustomSignupView(SignupView):
         if role:
             initial['role'] = role
         return initial
+
+
+class CustomPasswordChangeView(PasswordChangeView):
+    success_url = reverse_lazy('jobseeker_profile')
