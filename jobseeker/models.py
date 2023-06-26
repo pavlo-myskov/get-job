@@ -127,9 +127,7 @@ class JobseekerProfile(models.Model):
         return self.user.email
 
     def get_absolute_url(self):
-        return reverse("jobseeker_home")
-        # TODO: create a profile page for Jobseeker
-        # return reverse("jobseeker_profile")
+        return f"/jobseeker/profile/{self.pk}/"
 
 
 @receiver(post_save, sender=Jobseeker)

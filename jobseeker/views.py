@@ -1,6 +1,8 @@
-from django.views.generic import ListView
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic import ListView, DetailView
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.messages.views import SuccessMessageMixin
 from django.views.generic.edit import UpdateView, DeleteView
+from django.urls import reverse
 
 from allauth.account.utils import get_next_redirect_url
 
@@ -37,14 +39,43 @@ class HomeView(ListView):
         return context
 
 
-class JobseekerProfileUpdateView(LoginRequiredMixin, UpdateView):
+class JobseekerProfileDetailView(
+    LoginRequiredMixin, UserPassesTestMixin, DetailView
+):
+    model = JobseekerProfile
+    template_name = "jobseeker/profile.html"
+    context_object_name = "profile"
+
+    def get_object(self, queryset=None):
+        """Return the jobseeker profile for the current user"""
+        return self.request.user.jobseekerprofile
+
+    def test_func(self):
+        """Allow only the owner to view the profile"""
+        return self.request.user == self.get_object().user
+
+    def get_context_data(self, **kwargs):
+        """Add search form to the context"""
+        context = super().get_context_data(**kwargs)
+        context["nav_form"] = SearchForm(auto_id=False)
+        return context
+
+
+class JobseekerProfileUpdateView(
+    LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMixin, UpdateView
+):
     model = JobseekerProfile
     form_class = JobseekerProfileForm
     template_name = "jobseeker/profile_update.html"
+    success_message = "Your profile has been updated successfully"
 
-    def get_object(self, *args, **kwargs):
+    def get_object(self, queryset=None):
         """Return the jobseeker profile for the current user"""
         return self.request.user.jobseekerprofile
+
+    def test_func(self):
+        """Allow only the owner to update the profile"""
+        return self.request.user == self.get_object().user
 
     def get_success_url(self):
         """
@@ -58,7 +89,7 @@ class JobseekerProfileUpdateView(LoginRequiredMixin, UpdateView):
         if next_url:
             return next_url
         else:
-            return self.object.get_absolute_url()
+            return reverse('jobseeker_profile')
 
 
 # class JobseekerProfileDeleteView(DeleteView):

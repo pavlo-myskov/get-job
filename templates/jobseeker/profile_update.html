@@ -9,7 +9,7 @@
     <div class="card-header">
       <div class="d-flex align-items-center justify-content-between">
         {% if redirect_field_value %}
-        <a href="{{ redirect_field_value }}"{% else %}<a href="{% url 'jobseeker_home' %}"
+        <a href="{{ redirect_field_value }}"{% else %}<a href="{% url 'jobseeker_profile' %}"
         {% endif %}
         class="text-decoration-none d-flex align-items-center text-muted fs-5"
           area-label="return to previous page">
@@ -32,7 +32,7 @@
         <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
         {% endif %}
         <button type="submit" class="btn btn-royalpurple float-end mx-2 mx-sm-3 py-1">Submit</button>
-        <a href="{% url 'jobseeker_home' %}" class="btn btn-outline-secondary float-end py-1">Cancel</a>
+        <a href="{% url 'jobseeker_profile' %}" class="btn btn-outline-secondary float-end py-1">Cancel</a>
       </form>
     </div>
   </div>

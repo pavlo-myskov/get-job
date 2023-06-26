@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% load static %}
+{% load cloudinary %}
+
+{% block content %}
+{% include 'jobseeker/navbar.html' %}
+
+<main class="container-fluid px-0 bg-light">
+  <div class="container px-0 px-sm-3 my-4" style="max-width: 50rem;">
+    <h2 class="ms-4">My Profile</h2>
+
+    <!-- Nav header -->
+    <nav class="card-header bg-white" aria-label="profile nav header">
+      <div class="d-flex align-items-center justify-content-between">
+        {% if request.META.HTTP_REFERER %}
+        <!-- return to previous page if REFERER is exists, otherwise go to jobseeker home -->
+        <a href="#" onClick="javascript:history.back();"{% else %}<a href="{% url 'jobseeker_home' %}"
+        {% endif %}
+        class="text-decoration-none d-flex align-items-center text-muted fs-4"
+          area-label="back to search results">
+          <i class="fa fa-arrow-left"></i>
+          <span class="mx-2">Back</span>
+        </a>
+        <a href="{% url 'jobseeker_home' %}" class="text-decoration-none d-flex align-items-center text-muted fs-4"
+        area-label="go to jobeeker home page">
+          <i class="fa fa-home"></i>
+      </a>
+      </div>
+    </nav>
+    <div class="card mx-auto border-0 my-3 mt-1 p-3" >
+      <div class="row g-0">
+        <div class="col-sm-8">
+          <div class="card-body p-0">
+            <h5 class="card-title">{{ profile.name }}</h5>
+            <ul class="list-group pb-2 borderless" id="job-detail-list">
+              <li class="list-group-item d-flex align-items-end">
+                <h6 class="list-item-heading text-muted my-auto me-sm-4 flex-shrink-0">Gender:</h6>
+                <p class="my-0 overflow-auto text-truncate">{{ profile.get_gender_display }}</p>
+              </li>
+              <li class="list-group-item d-flex align-items-end">
+                <h6 class="list-item-heading text-muted my-auto me-sm-4 flex-shrink-0">Date of Birth:</h6>
+                <p class="my-0 overflow-auto">{{ profile.dob }}</p>
+              </li>
+              <li class="list-group-item d-flex align-items-end">
+                <h6 class="list-item-heading text-muted my-auto me-sm-4 flex-shrink-0">Address:</h6>
+                <p class="my-0 overflow-auto">{{ profile.address }}</p>
+              </li>
+              <li class="list-group-item d-flex align-items-end">
+                <h6 class="list-item-heading text-muted my-auto me-sm-4 flex-shrink-0">Phone:</h6>
+                <p class="my-0 overflow-auto">{{ profile.phone }}</p>
+              </li>
+              <li class="list-group-item d-flex align-items-end">
+                <h6 class="list-item-heading text-muted my-auto me-sm-4 flex-shrink-0">Email:</h6>
+                <p class="my-0 overflow-auto">{{ profile.user.email }}</p>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-sm-4 d-flex flex-column justify-content-center">
+          <h6>Profile Picture</h6>
+          <!-- <img src="{{ avatar.url }}" class="img-fluid rounded-start" alt="..."> -->
+          {% cloudinary  profile.avatar  class="img-fluid rounded-start" style="max-height:200px; max-width:200px;" alt="profile picture" %}
+        </div>
+      </div>
+        <div class="text-end text-sm-start mt-3 mx-3">
+          <a href="{% url 'jobseeker_profile_update' %}" class="btn btn-outline-royalpurple">
+            <i class="fa fa-edit"></i>
+            <span class="mx-2">Edit</span>
+          </a>
+        </div>
+    </div>
+  </div>
+</main>
+
+{% endblock %}
