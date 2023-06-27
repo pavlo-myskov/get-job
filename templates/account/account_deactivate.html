@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% load crispy_forms_tags %}
+{% load static %}
+{% load i18n %}
+
+{% block head_title %}{% trans "Change Password" %}{% endblock %}
+
+{% block content %}
+<div class="container-fluid px-0 flex-shrink-0 my-auto">
+  <div class="card bg-light border-0 mx-auto" style="max-width: 40rem;">
+    <div class="card-header">
+      <div class="d-flex align-items-center justify-content-between">
+
+        <!-- set back and home buttons based on user role,
+        if user is not authenticated, set '/' to both buttons
+        -->
+        {% if request.user.role == 'JOBSEEKER' %}
+        {% url 'jobseeker_profile' as profile_url %}
+        {% url 'jobseeker_home' as home_url %}
+        {% elif request.user.role == 'EMPLOYER' %}
+        {% url 'employer_profile' as profile_url %}
+        {% url 'employer_home' as home_url %}
+        {% else %}
+        {% url 'jobseeker_home' as profile_url %}
+        {% url 'jobseeker_home' as home_url %}
+        {% endif %}
+
+        <a href="{{ profile_url }}" class="text-decoration-none d-flex align-items-center text-muted fs-5"
+          area-label="return to previous page">
+          <i class="fa fa-arrow-left"></i>
+        </a>
+        <a href="{{ home_url }}" class="text-decoration-none d-flex align-items-center text-muted fs-5"
+          area-label="go to jobeeker home page">
+          <i class="fa fa-home"></i>
+        </a>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3 class="card-title text-center">
+        Confirm Account Delete
+      </h3>
+      <form method="POST" action="{% url 'account_deactivate' %}" >
+        {% csrf_token %}
+        {{ form|crispy }}
+        <div>
+          <div class="float-end mt-3">
+            <a href="{{ profile_url }}" class="btn btn-secondary py-1">Cancel</a>
+            <button type="submit" name="action" class="btn btn-outline-danger mx-2 mx-sm-3 py-1">Confirm</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

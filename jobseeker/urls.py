@@ -14,9 +14,4 @@ urlpatterns = [
         views.JobseekerProfileUpdateView.as_view(),
         name="jobseeker_profile_update",
     ),
-    # path(
-    #     "jobseeker/<int:pk>/delete/",
-    #     views.HomeView.as_view(),
-    #     name="jobseeker_delete",
-    # ),
 ]

@@ -90,7 +90,3 @@ class JobseekerProfileUpdateView(
             return next_url
         else:
             return reverse('jobseeker_profile')
-
-
-# class JobseekerProfileDeleteView(DeleteView):
-#     model = JobseekerProfile
