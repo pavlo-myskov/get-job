@@ -55,6 +55,7 @@ class JobseekerProfileForm(ModelForm):
             "invalid": "Phone number must be entered in the format: "
             "'+1234567890'. At least 9 digits and maximum 15 digits allowed."
         },
+        required=False,
     )
 
     avatar = CloudinaryFileField(
