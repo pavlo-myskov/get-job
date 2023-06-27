@@ -72,7 +72,7 @@ class AccountDeactivateView(LoginRequiredMixin, View):
             logout(request)
 
             # Display success message.
-            messages.success(
+            messages.warning(
                 request,
                 "Your account has been deactivated"
                 " and will be deleted in 30 days.",

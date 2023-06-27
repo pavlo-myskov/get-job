@@ -1,5 +1,7 @@
+from django.http import HttpResponseRedirect
 from allauth.account.adapter import DefaultAccountAdapter
 from django.urls import reverse
+from django.contrib import messages
 
 from .forms import CustomSignupForm
 
@@ -33,3 +35,16 @@ class CustomAccountAdapter(DefaultAccountAdapter):
             return reverse("employer_home")
         else:
             return super().get_login_redirect_url(request)
+
+    def respond_user_inactive(self, request, user):
+        '''
+        Redirect to the signup page with an error message
+        if the user is inactive
+        '''
+        self.add_message(
+            request,
+            messages.ERROR,
+            "account/messages/account_inactive.txt",
+            {"user": user},
+        )
+        return HttpResponseRedirect(reverse("account_signup"))
