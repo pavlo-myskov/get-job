@@ -234,6 +234,12 @@ The search results are paginated to improve the UX and make the page more user-f
 ### Apply for the Job page
 ...
 
+### Jobseeker's Profile page
+...
+
+- #### Account Deleting
+The user can delete(in fact deactivate) their account by clicking on the `Delete` button in the _Delete account_ section of the Profile page. The button redirects the user to the `Confirm Account Delete` page where they must confirm the deletion by entering their password. If the user enters the correct password, the account is deactivated and the app redirects the user to the Home page and displays the message that the account is deactivated and will be deleted in 30 days. So if the user changes their mind, they can contact the app support and reactivate their account. The appropriate message is displayed when the user tries to log in with the deactivated account as well as the app redirects them to the Create Account page. 
+
 ### Employer's Home page
 
 #### Sections:
