@@ -33,23 +33,23 @@
       <div class="row g-0">
         <div class="col-sm-8">
           <div class="card-body p-0">
-            <h5 class="card-title">{{ profile.name }}</h5>
+            <h5 class="card-title">{{ profile.name|default:"Name: <small>&#8212;</small>" }}</h5>
             <ul class="list-group card-list pb-2 borderless">
               <li class="list-group-item d-flex align-items-end">
                 <h6 class="list-item-heading text-muted my-auto me-sm-4 flex-shrink-0">Gender:</h6>
-                <p class="my-0 overflow-auto text-truncate">{{ profile.get_gender_display }}</p>
+                <p class="my-0 overflow-auto text-truncate">{{ profile.get_gender_display|default:"&#8212;" }}</p>
               </li>
               <li class="list-group-item d-flex align-items-end">
                 <h6 class="list-item-heading text-muted my-auto me-sm-4 flex-shrink-0">Date of Birth:</h6>
-                <p class="my-0 overflow-auto">{{ profile.dob }}</p>
+                <p class="my-0 overflow-auto">{{ profile.dob|default:"&#8212;" }}</p>
               </li>
               <li class="list-group-item d-flex align-items-end">
                 <h6 class="list-item-heading text-muted my-auto me-sm-4 flex-shrink-0">Address:</h6>
-                <p class="my-0 overflow-auto">{{ profile.address }}</p>
+                <p class="my-0 overflow-auto">{{ profile.address|default:"&#8212;" }}</p>
               </li>
               <li class="list-group-item d-flex align-items-end">
                 <h6 class="list-item-heading text-muted my-auto me-sm-4 flex-shrink-0">Phone:</h6>
-                <p class="my-0 overflow-auto">{{ profile.phone }}</p>
+                <p class="my-0 overflow-auto">{{ profile.phone|default:"&#8212;" }}</p>
               </li>
               <li class="list-group-item d-flex align-items-end">
                 <h6 class="list-item-heading text-muted my-auto me-sm-4 flex-shrink-0">Email:</h6>
