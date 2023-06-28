@@ -5,6 +5,7 @@ from django.views.generic import ListView, DetailView
 from django.db.models import Q
 from django.db.models import QuerySet
 
+from users.models import User
 from .models import Resume
 from .forms import ResumeSearchForm
 
@@ -47,7 +48,7 @@ def get_age_lookup(search_data: dict) -> Q:
     if min_age == max_age:
         # get all ages that are equal or older than 65
         if min_age == 66:
-            dob_val = today - relativedelta(years=max_age-1)
+            dob_val = today - relativedelta(years=max_age - 1)
             lookup = Q(jobseeker__jobseekerprofile__dob__lte=dob_val)
         else:
             # if min_age and max_age are equal, search for exact age
@@ -66,8 +67,8 @@ def get_age_lookup(search_data: dict) -> Q:
 
     else:
         # search for all ages from min_age to max_age(not including max_age)
-        startdate = today - relativedelta(years=max_age) + relativedelta(
-            days=1
+        startdate = (
+            today - relativedelta(years=max_age) + relativedelta(days=1)
         )
         enddate = today - relativedelta(years=min_age)
         lookup = Q(
@@ -181,11 +182,25 @@ class ResumeListView(ListView):
 
 
 class ResumeDetailView(DetailView):
-    # get only active resumes
-    queryset = Resume.objects.active()
+
+    def get_queryset(self):
+        # TODO: add test
+        """Return all active resumes and all resumes of the owner
+        if the user is authenticated as a jobseeker"""
+        query = Q()
+        if (
+            self.request.user.is_authenticated
+            and self.request.user.role == User.Role.JOBSEEKER
+        ):
+            query = Q(jobseeker__id=self.request.user.pk)
+
+        queryset = Resume.objects.filter(
+            query | Q(status=Resume.ResumePublishStatus.ACTIVE)
+        )
+        return queryset
 
     def get_context_data(self, **kwargs):
-        '''Add search form to the context for navbar search bar'''
+        """Add search form to the context for navbar search bar"""
         context = super().get_context_data(**kwargs)
-        context['nav_form'] = ResumeSearchForm(auto_id=False)
+        context["nav_form"] = ResumeSearchForm(auto_id=False)
         return context
