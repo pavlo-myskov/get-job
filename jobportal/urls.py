@@ -2,8 +2,9 @@ from django.contrib import admin
 from django.urls import include, path
 from django.conf.urls.static import static
 from django.conf import settings
-from users.views import custom_permission_denied_view
+from users.views import custom_bad_request_view, custom_permission_denied_view
 
+handler400 = custom_bad_request_view
 handler403 = custom_permission_denied_view
 
 urlpatterns = [

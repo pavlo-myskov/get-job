@@ -4,7 +4,7 @@ from django.contrib import messages
 from django.contrib.auth import logout
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.defaults import permission_denied
+from django.views.defaults import permission_denied, bad_request
 from django.views.generic import View
 from allauth.account.views import SignupView, PasswordChangeView
 
@@ -12,6 +12,14 @@ from .forms import CustomSignupForm, PasswordConfirmationForm
 
 
 # ___Error Views___
+
+def custom_bad_request_view(
+    request, exception, template_name="errors/400.html"
+):
+    '''Override the default bad request view to display custom 400 page
+    on specific URL path'''
+    return bad_request(request, exception, template_name)
+
 
 def custom_permission_denied_view(
     request, exception, template_name="errors/403.html"
