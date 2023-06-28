@@ -4,11 +4,24 @@ from django.contrib import messages
 from django.contrib.auth import logout
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.defaults import permission_denied
 from django.views.generic import View
 from allauth.account.views import SignupView, PasswordChangeView
 
 from .forms import CustomSignupForm, PasswordConfirmationForm
 
+
+# ___Error Views___
+
+def custom_permission_denied_view(
+    request, exception, template_name="errors/403.html"
+):
+    '''Override the default permission denied view to display custom 403 page
+    on specific URL path'''
+    return permission_denied(request, exception, template_name)
+
+
+# ___Account Views___
 
 class CustomSignupView(SignupView):
     form_class = CustomSignupForm

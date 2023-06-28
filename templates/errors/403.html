@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block head_title %}403 Forbidden{% endblock %}
+
+{% block content %}
+
+<main class="container flex-shrink-0 my-auto text-center">
+  <h1>403</h1>
+  <h2 class="text-danger">Access Denied</h2>
+  <p>You are not authorized to access this page.</p>
+  <a href="{% url 'jobseeker_home' %}" class="btn btn-outline-royalpurple px-4 py-1">Jobs</a>
+  <a href="{% url 'employer_home' %}" class="btn btn-outline-cyan-blue py-1">Resumes</a>
+</main>
+
+{% endblock %}
