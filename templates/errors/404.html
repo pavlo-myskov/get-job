@@ -1,0 +1,8 @@
+{% extends 'base.html' %}
+
+{% block head_title %}404 Not Found{% endblock %}
+{% block content %}
+
+{% include 'errors/error.html' with error_number='404' error_title='Not Found' error_text='The page you are looking for does not exist.' %}
+
+{% endblock %}

@@ -4,7 +4,7 @@ from django.contrib import messages
 from django.contrib.auth import logout
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.defaults import permission_denied, bad_request
+from django.views.defaults import permission_denied, bad_request, page_not_found
 from django.views.generic import View
 from allauth.account.views import SignupView, PasswordChangeView
 
@@ -27,6 +27,14 @@ def custom_permission_denied_view(
     '''Override the default permission denied view to display custom 403 page
     on specific URL path'''
     return permission_denied(request, exception, template_name)
+
+
+def custom_page_not_found_view(
+    request, exception, template_name="errors/404.html"
+):
+    '''Override the default page not found view to display custom 404 page
+    on specific URL path'''
+    return page_not_found(request, exception, template_name)
 
 
 # ___Account Views___
