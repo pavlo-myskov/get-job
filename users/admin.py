@@ -31,7 +31,7 @@ class UserAdmin(BaseUserAdmin):
     )
 
     # The fields which displayed on "Users" page in admin panel
-    list_display = ('email', 'role', 'is_staff', 'last_login')
+    list_display = ('email', 'role', 'is_active', 'is_staff', 'last_login')
     # list of fields to generate filters in the right sidebar of admin panel
     list_filter = ('role', 'is_staff', 'is_superuser', 'is_active', 'groups')
     # Search fields to search in the search bar in the top of admin panel

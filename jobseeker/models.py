@@ -100,14 +100,14 @@ class JobseekerProfile(models.Model):
     user = models.OneToOneField(Jobseeker, on_delete=models.CASCADE)
     # use name instead of first_name and last_name,
     # as they don't cover global name patterns
-    name = models.CharField(max_length=254)
+    name = models.CharField(max_length=254, blank=True)
     avatar = CloudinaryField("avatar", blank=True, null=True)
     gender = models.CharField(
         choices=GENDER_TYPES, max_length=10, blank=True, null=True
     )
     dob = models.DateField(blank=True, null=True)
-    address = models.TextField(max_length=1000, blank=True, null=True)
-    phone = models.CharField(max_length=20, blank=True, null=True)
+    address = models.TextField(max_length=1000, blank=True)
+    phone = models.CharField(max_length=20, blank=True)
     applications = models.ManyToManyField(
         Vacancy, blank=True, related_name="applicants"
     )
@@ -127,9 +127,7 @@ class JobseekerProfile(models.Model):
         return self.user.email
 
     def get_absolute_url(self):
-        return reverse("jobseeker_home")
-        # TODO: create a profile page for Jobseeker
-        # return reverse("jobseeker_profile")
+        return f"/jobseeker/profile/{self.pk}/"
 
 
 @receiver(post_save, sender=Jobseeker)
