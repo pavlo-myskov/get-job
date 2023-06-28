@@ -2,6 +2,7 @@ from django.views.generic import ListView, DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.views.generic.edit import UpdateView
+from django.shortcuts import render
 from django.urls import reverse
 from django.utils.http import url_has_allowed_host_and_scheme
 
@@ -10,8 +11,20 @@ from allauth.account.utils import get_next_redirect_url
 from jobs.models import Vacancy
 from jobs.forms import SearchForm
 
+from users.models import User
+
 from .models import JobseekerProfile
 from .forms import JobseekerProfileForm
+
+
+class JobseekerRequiredMixin(UserPassesTestMixin):
+    def test_func(self):
+        """Check if the user is a Jobseeker"""
+        return self.request.user.role == User.Role.JOBSEEKER
+
+    def handle_no_permission(self):
+        """Display the 403 jobseeker page if the role is not JOBSEEKER."""
+        return render(self.request, "errors/jobseeker_403.html", status=403)
 
 
 class HomeView(ListView):
@@ -41,19 +54,20 @@ class HomeView(ListView):
 
 
 class JobseekerProfileDetailView(
-    LoginRequiredMixin, UserPassesTestMixin, DetailView
+    LoginRequiredMixin, JobseekerRequiredMixin, DetailView
 ):
     model = JobseekerProfile
     template_name = "jobseeker/profile.html"
     context_object_name = "profile"
 
+    def test_func(self):
+        """Allow only the owner to view the profile"""
+        jobseeker_test = super().test_func()
+        return jobseeker_test and self.request.user == self.get_object().user
+
     def get_object(self, queryset=None):
         """Return the jobseeker profile for the current user"""
         return self.request.user.jobseekerprofile
-
-    def test_func(self):
-        """Allow only the owner to view the profile"""
-        return self.request.user == self.get_object().user
 
     def get_context_data(self, **kwargs):
         """Add search form and back URL to the context"""
@@ -90,20 +104,21 @@ class JobseekerProfileDetailView(
 
 
 class JobseekerProfileUpdateView(
-    LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMixin, UpdateView
+    LoginRequiredMixin, JobseekerRequiredMixin, SuccessMessageMixin, UpdateView
 ):
     model = JobseekerProfile
     form_class = JobseekerProfileForm
     template_name = "jobseeker/profile_update.html"
     success_message = "Your profile has been updated successfully"
 
+    def test_func(self):
+        """Allow only the owner to update the profile"""
+        jobseeker_test = super().test_func()
+        return jobseeker_test and self.request.user == self.get_object().user
+
     def get_object(self, queryset=None):
         """Return the jobseeker profile for the current user"""
         return self.request.user.jobseekerprofile
-
-    def test_func(self):
-        """Allow only the owner to update the profile"""
-        return self.request.user == self.get_object().user
 
     def get_success_url(self):
         """

@@ -1,0 +1,15 @@
+<!-- jobseeker 403 error page -->
+{% extends 'base.html' %}
+
+{% block head_title %}403 Forbidden{% endblock %}
+
+{% block content %}
+
+<main class="container flex-shrink-0 my-auto text-center">
+  <h1>403</h1>
+  <h2>Access Denied</h2>
+  <p>Only jobseekers can access this page.</p>
+  <a href="{% url 'jobseeker_home' %}" class="btn btn-secondary">Go to Home</a>
+</main>
+
+{% endblock %}
