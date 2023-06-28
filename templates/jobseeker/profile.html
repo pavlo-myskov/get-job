@@ -12,10 +12,7 @@
     <!-- Nav header -->
     <nav class="card-header bg-white" aria-label="profile nav header">
       <div class="d-flex align-items-center justify-content-between">
-        {% if request.META.HTTP_REFERER %}
-        <!-- return to previous page if REFERER is exists, otherwise go to jobseeker home -->
-        <a href="#" onClick="javascript:history.back();"{% else %}<a href="{% url 'jobseeker_home' %}"
-        {% endif %}
+        <a href="{{ back_url }}"
         class="text-decoration-none d-flex align-items-center text-muted fs-4"
           area-label="back to search results">
           <i class="fa fa-arrow-left"></i>
