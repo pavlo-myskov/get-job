@@ -1,0 +1,8 @@
+{% extends 'base.html' %}
+
+{% block head_title %}500 Internal Server Error{% endblock %}
+{% block content %}
+
+{% include 'errors/error.html' with error_number='500' error_title='Internal Server Error' error_text='Something went wrong on our end. Please try again later.' %}
+
+{% endblock %}
