@@ -12,7 +12,7 @@ from django.db.models import QuerySet
 
 from users.models import User
 from .models import Resume
-from .forms import ResumeSearchForm
+from .forms import ResumeSearchForm, ResumeCreateForm
 from jobseeker.views import JobseekerRequiredMixin
 
 
@@ -215,15 +215,7 @@ class ResumeCreateView(
     LoginRequiredMixin, JobseekerRequiredMixin, SuccessMessageMixin, CreateView
 ):
     model = Resume
-    fields = [
-        "occupation",
-        "experience_duration",
-        "skills",
-        "education",
-        "experience",
-        "body",
-        "cv",
-    ]
+    form_class = ResumeCreateForm
     success_message = (
         "Your resume has been created and is "
         "<span class='text-info'>pending approval</span>"
