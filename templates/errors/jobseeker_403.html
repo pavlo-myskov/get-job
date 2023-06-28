@@ -2,14 +2,8 @@
 {% extends 'base.html' %}
 
 {% block head_title %}403 Forbidden{% endblock %}
-
 {% block content %}
 
-<main class="container flex-shrink-0 my-auto text-center">
-  <h1>403</h1>
-  <h2>Access Denied</h2>
-  <p>Only jobseekers can access this page.</p>
-  <a href="{% url 'jobseeker_home' %}" class="btn btn-secondary">Go to Home</a>
-</main>
+{% include 'errors/error.html' with error_number='403' error_title='Access Denied' error_text='Only jobseekers can access this page.' %}
 
 {% endblock %}
