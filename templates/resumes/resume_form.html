@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<div class="container-fluid px-0 flex-shrink-0 my-sm-auto">
+  <div class="card bg-light border-0 mx-auto" style="max-width: 40rem;">
+    <div class="card-header">
+      <div class="d-flex align-items-center justify-content-between">
+        {% if request.META.HTTP_REFERER %}
+        <a href="#" onClick="javascript:history.back();"{% else %}<a href="{% url 'jobseeker_home' %}"{% endif %}
+        class="text-decoration-none d-flex align-items-center text-muted fs-5"
+          area-label="return to previous page">
+          <i class="fa fa-arrow-left"></i>
+        </a>
+        <a href="{% url 'jobseeker_home' %}" class="text-decoration-none d-flex align-items-center text-muted fs-5"
+        area-label="go to jobeeker home page">
+          <i class="fa fa-home"></i>
+      </a>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3 class="card-title text-center text-royalpurple">
+        Create Resume
+      </h3>
+      <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form|crispy }}
+        {% if redirect_field_value %}
+        <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+        {% endif %}
+        <button type="submit" class="btn btn-royalpurple float-end mx-2 mx-sm-3 py-1 px-3">Save</button>
+        {% if request.META.HTTP_REFERER %}
+        <a href="#" onClick="javascript:history.back();"{% else %}<a href="{% url 'jobseeker_home' %}"{% endif %}
+         class="btn btn-outline-secondary float-end py-1">Cancel</a>
+      </form>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

@@ -76,4 +76,4 @@ class Resume(models.Model):
         return f"{self.occupation} - {self.jobseeker}"
 
     def get_absolute_url(self):
-        return reverse("resumes:resume_detail", args=[str(self.id)])
+        return reverse("resume_detail", args=[str(self.pk)])

@@ -1,13 +1,19 @@
 import re
+from django.forms.forms import BaseForm
+from django.http.response import HttpResponse
 from django.utils import timezone
 from dateutil.relativedelta import relativedelta
 from django.views.generic import ListView, DetailView
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.messages.views import SuccessMessageMixin
+from django.views.generic.edit import CreateView
 from django.db.models import Q
 from django.db.models import QuerySet
 
 from users.models import User
 from .models import Resume
 from .forms import ResumeSearchForm
+from jobseeker.views import JobseekerRequiredMixin
 
 
 def get_keywords(search_data: dict) -> Q:
@@ -182,7 +188,6 @@ class ResumeListView(ListView):
 
 
 class ResumeDetailView(DetailView):
-
     def get_queryset(self):
         # TODO: add test
         """Return all active resumes and all resumes of the owner
@@ -204,3 +209,26 @@ class ResumeDetailView(DetailView):
         context = super().get_context_data(**kwargs)
         context["nav_form"] = ResumeSearchForm(auto_id=False)
         return context
+
+
+class ResumeCreateView(
+    LoginRequiredMixin, JobseekerRequiredMixin, SuccessMessageMixin, CreateView
+):
+    model = Resume
+    fields = [
+        "occupation",
+        "experience_duration",
+        "skills",
+        "education",
+        "experience",
+        "body",
+        "cv",
+    ]
+    success_message = (
+        "Your resume has been created and is "
+        "<span class='text-info'>pending approval</span>"
+    )
+
+    def form_valid(self, form: BaseForm) -> HttpResponse:
+        form.instance.jobseeker = self.request.user
+        return super().form_valid(form)
