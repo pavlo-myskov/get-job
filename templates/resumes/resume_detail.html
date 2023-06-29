@@ -12,8 +12,7 @@
     <!-- Job detail header -->
     <div class="card-header">
       <div class="d-flex align-items-center justify-content-between">
-        {% url 'resume_search' as url_resume_search %}
-        {% if url_resume_search in request.META.HTTP_REFERER %}
+        {% if 'resume' in request.META.HTTP_REFERER %}
         <a href="#" onClick="javascript:history.back();"{% else %}<a href="{{ url_resume_search }}"
         {% endif %}
         class="text-decoration-none d-flex align-items-center text-muted fs-4"

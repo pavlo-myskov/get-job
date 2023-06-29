@@ -9,7 +9,7 @@
     <div class="card-header">
       <div class="d-flex align-items-center justify-content-between">
         {% if request.META.HTTP_REFERER %}
-        <a href="#" onClick="javascript:history.back();"{% else %}<a href="{% url 'jobseeker_home' %}"{% endif %}
+        <a href="#" onClick="javascript:history.back();"{% else %}<a href="{% url 'my_resumes' %}"{% endif %}
         class="text-decoration-none d-flex align-items-center text-muted fs-5"
           area-label="return to previous page">
           <i class="fa fa-arrow-left"></i>
@@ -32,7 +32,7 @@
         {% endif %}
         <button type="submit" class="btn btn-royalpurple float-end mx-2 mx-sm-3 py-1 px-3">Save</button>
         {% if request.META.HTTP_REFERER %}
-        <a href="#" onClick="javascript:history.back();"{% else %}<a href="{% url 'jobseeker_home' %}"{% endif %}
+        <a href="#" onClick="javascript:history.back();"{% else %}<a href="{% url 'my_resumes' %}"{% endif %}
          class="btn btn-outline-secondary float-end py-1">Cancel</a>
       </form>
     </div>

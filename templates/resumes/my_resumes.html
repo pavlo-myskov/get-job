@@ -1,13 +1,83 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
+{% load static %}
+{% load time_filters %}
 
 {% block head_title %}My Resumes{% endblock %}
 
 {% block content %}
+{% include 'jobseeker/navbar.html' %}
 
-<ul>
-  {% for resume in resume_list %}
-    <li>{{ resume }}</li>
-  {% endfor %}
-</ul>
+<main class="container-fluid bg-light px-0 flex-grow-1">
+  <div class="container px-0 px-sm-3 my-4" style="max-width: 50rem;">
+    <h2 class="ms-4 mb-3">My Resumes</h2>
 
+    <!-- Nav header -->
+    <nav class="card-header bg-white" aria-label="profile nav header">
+      <div class="d-flex align-items-center justify-content-between">
+        <a href="{{ back_url }}"
+        class="text-decoration-none d-flex align-items-center text-muted fs-4"
+          area-label="back to search results">
+          <i class="fa fa-arrow-left"></i>
+          <span class="mx-2">Back</span>
+        </a>
+        <a href="{% url 'jobseeker_home' %}" class="text-decoration-none d-flex align-items-center text-muted fs-4"
+        area-label="go to jobeeker home page">
+          <i class="fa fa-home"></i>
+      </a>
+      </div>
+    </nav>
+
+    <div class="card mx-auto border-0 my-3 mt-1 p-3" >
+      <div class="row g-0">
+        <div class="col-sm-8">
+          <div class="card-body p-0">
+            {% if resume_list %}
+              <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th scope="col"></th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Last Updated</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for resume in resume_list %}
+                  <!-- set row color based on status -->
+                  {% if resume.status == 'IN_REVIEW' %}
+                    <tr class="table-warning position-relative">
+                  {% elif resume.status == 'ACTIVE' %}
+                    <tr class="table-success position-relative">
+                  {% elif resume.status == 'REJECTED' %}
+                    <tr class="table-danger position-relative">
+                  {% elif resume.status == 'CLOSED' %}
+                    <tr class="table-secondary position-relative">
+                  {% endif %}
+                      <td>
+                        <a href="{% url 'resume_detail' resume.pk %}" class="stretched-link text-dark text-decoration-none">
+                          {{ resume.occupation }}
+                        </a>
+                      </td>
+                      <td>{{ resume.get_status_display }}</td>
+                      <td>{{ resume.updated_on|timeago }} ago</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+              </table>
+            {% else %}
+            <h5 class="card-title">You have not created any resumes yet.</h5>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+        <div class="text-end text-sm-start mt-2 mx-3">
+          <a href="{% url 'resume_create' %}" class="btn btn-outline-royalpurple py-1">
+            <i class="fa fa-edit"></i>
+            <span class="ms-2">Create New Resume</span>
+          </a>
+        </div>
+    </div>
+  </div>
+</main>
+
+{% include 'footer.html' %}
 {% endblock %}

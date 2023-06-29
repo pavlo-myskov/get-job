@@ -1,7 +1,8 @@
 import re
+from django.utils.http import url_has_allowed_host_and_scheme
 from django.forms.forms import BaseForm
 from django.http.response import HttpResponse
-from django.urls import reverse_lazy
+from django.urls import reverse, reverse_lazy
 from django.utils import timezone
 from dateutil.relativedelta import relativedelta
 from django.views.generic import ListView, DetailView
@@ -10,6 +11,7 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.views.generic.edit import CreateView
 from django.db.models import Q
 from django.db.models import QuerySet
+from jobs.forms import SearchForm
 
 from users.models import User
 from .models import Resume
@@ -244,5 +246,30 @@ class MyResumeListView(LoginRequiredMixin, JobseekerRequiredMixin, ListView):
     def get_context_data(self, **kwargs):
         """Add search form to the context for navbar search bar"""
         context = super().get_context_data(**kwargs)
-        context["nav_form"] = ResumeSearchForm(auto_id=False)
+        context["nav_form"] = SearchForm(auto_id=False)
+        context["back_url"] = self._get_back_url()
         return context
+
+    def _get_back_url(self):
+        """
+        Return the URL for the back button of the profile page.
+        If the refferer is a child page of the my resumes, return to home.
+        """
+        # child pages of the profile page
+        child_pages = [
+            reverse("resume_create"),
+        ]
+        home = reverse("jobseeker_home")
+        refferer = self.request.META.get("HTTP_REFERER")
+
+        # check if the refferer exists and is a safe URL
+        if refferer and url_has_allowed_host_and_scheme(
+            refferer, self.request.get_host()
+        ):
+            # return home url if the refferer is a child page of the my resumes
+            if any(page in refferer for page in child_pages):
+                return home
+            else:
+                return refferer
+        else:
+            return home
