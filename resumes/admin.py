@@ -12,12 +12,13 @@ class ResumeAdmin(admin.ModelAdmin):
         "status",
         "occupation",
         "experience_duration",
+        "updated_on",
         "created_on",
     ]
     list_filter = ("status", "experience_duration",)
     search_fields = ["jobseeker__email", "occupation", "skills"]
-    # Sorted by resumes that are in review and with the oldest created date
-    ordering = ("status", "created_on")
+    # Sorted by resumes that are in review and with the oldest updated_on date
+    ordering = ("status", "updated_on", "created_on")
 
     actions = ["approve_resumes", "withdraw_resumes", "close_resumes"]
 

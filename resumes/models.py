@@ -59,6 +59,7 @@ class Resume(models.Model):
         validators=[file_validator],
     )
     created_on = models.DateTimeField(auto_now_add=True)
+    updated_on = models.DateTimeField(auto_now=True)
     status = models.CharField(
         choices=ResumePublishStatus.choices,
         max_length=50,
