@@ -18,14 +18,14 @@ class ResumeAdmin(admin.ModelAdmin):
     list_filter = ("status", "experience_duration",)
     search_fields = ["jobseeker__email", "occupation", "skills"]
     # Sorted by resumes that are in review and with the oldest updated_on date
-    ordering = ("status", "updated_on", "created_on")
+    ordering = ("-status", "updated_on")
 
-    actions = ["approve_resumes", "withdraw_resumes", "close_resumes"]
+    actions = ["approve_resumes", "reject_resumes", "close_resumes"]
 
     def approve_resumes(self, request, queryset):
         queryset.update(status=Resume.ResumePublishStatus.ACTIVE)
 
-    def withdraw_resumes(self, request, queryset):
+    def reject_resumes(self, request, queryset):
         queryset.update(status=Resume.ResumePublishStatus.REJECTED)
 
     def close_resumes(self, request, queryset):

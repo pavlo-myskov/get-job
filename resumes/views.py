@@ -240,7 +240,7 @@ class MyResumeListView(LoginRequiredMixin, JobseekerRequiredMixin, ListView):
         ordered by status, updated_on and created_on.
         Example: IN_REVIEW on top and with the latest updated_on date"""
         return Resume.objects.filter(jobseeker=self.request.user).order_by(
-            "-status", "-updated_on", "-created_on"
+            "-status", "-updated_on",
         )
 
     def get_context_data(self, **kwargs):
