@@ -14,4 +14,9 @@ urlpatterns = [
         views.ResumeCreateView.as_view(),
         name="resume_create",
     ),
+    path(
+        "jobseeker/resumes",
+        views.MyResumeListView.as_view(),
+        name="my_resumes",
+    ),
 ]

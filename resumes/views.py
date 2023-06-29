@@ -1,6 +1,7 @@
 import re
 from django.forms.forms import BaseForm
 from django.http.response import HttpResponse
+from django.urls import reverse_lazy
 from django.utils import timezone
 from dateutil.relativedelta import relativedelta
 from django.views.generic import ListView, DetailView
@@ -220,7 +221,28 @@ class ResumeCreateView(
         "Your resume has been created and is "
         "<span class='text-info'>pending approval</span>"
     )
+    success_url = reverse_lazy("my_resumes")
 
     def form_valid(self, form: BaseForm) -> HttpResponse:
         form.instance.jobseeker = self.request.user
         return super().form_valid(form)
+
+
+class MyResumeListView(LoginRequiredMixin, JobseekerRequiredMixin, ListView):
+    model = Resume
+    template_name = "resumes/my_resumes.html"
+
+    def get_queryset(self):
+        # TODO: add test
+        """Return all resumes of the owner,
+        ordered by status, updated_on and created_on.
+        Example: IN_REVIEW on top and with the latest updated_on date"""
+        return Resume.objects.filter(jobseeker=self.request.user).order_by(
+            "-status", "-updated_on", "-created_on"
+        )
+
+    def get_context_data(self, **kwargs):
+        """Add search form to the context for navbar search bar"""
+        context = super().get_context_data(**kwargs)
+        context["nav_form"] = ResumeSearchForm(auto_id=False)
+        return context
