@@ -28,53 +28,76 @@
     </nav>
 
     <div class="card mx-auto border-0 my-3 mt-1 p-3" >
-      <div class="row g-0">
-        <div class="col-sm-8">
-          <div class="card-body p-0">
-            {% if resume_list %}
-              <table class="table table-hover">
-                <thead>
-                  <tr>
-                    <th scope="col"></th>
-                    <th scope="col">Status</th>
-                    <th scope="col">Last Updated</th>
+      <div class="card-body p-0">
+        {% if resume_list %}
+          <div class="table-responsive">
+            <table class="table table-hover align-middle">
+              <thead>
+                <tr>
+                  <th scope="col">Title</th>
+                  <th scope="col">Status</th>
+                  <th scope="col">Last Updated</th>
+                  <th colspan="3" class="text-center">Control</th
+                </tr>
+              </thead>
+              <tbody>
+                {% for resume in resume_list %}
+                <!-- set row color based on status -->
+                {% if resume.status == 'IN_REVIEW' %}
+                  <tr class="table-warning">
+                {% elif resume.status == 'ACTIVE' %}
+                  <tr class="table-success">
+                {% elif resume.status == 'REJECTED' %}
+                  <tr class="table-danger">
+                {% elif resume.status == 'CLOSED' %}
+                  <tr class="table-secondary">
+                {% endif %}
+                    <td class="position-relative">
+                      <a href="{% url 'resume_detail' resume.pk %}" class="stretched-link">
+                        {{ resume.occupation|truncatechars:30 }}
+                      </a>
+                    </td>
+                    <td>{{ resume.get_status_display }}</td>
+                    <td>{{ resume.updated_on|timeago }} ago</td>
+                    <td class="position-relative px-2">
+                      <!-- TODO: resume_edit -->
+                      <a href="{% url 'resume_detail' resume.pk %}" class="stretched-link d-flex flex-column align-items-center text-decoration-none"
+                          aria-label="edit resume">
+                        <i class="fa fa-edit text-royalpurple"></i>
+                        <small class="d-none d-sm-inline text-muted">Edit</small>
+                      </a>
+                    </td>
+                    <td class="position-relative px-2">
+                      <!-- TODO: resume_close -->
+                      <a href="{% url 'resume_detail' resume.pk %}" class="stretched-link d-flex flex-column align-items-center text-decoration-none"
+                          aria-label="close resume">
+                        <i class="fa fa-xmark text-royalpurple"></i>
+                        <small class="d-none d-sm-inline text-muted">Close</small>
+                      </a>
+                    </td>
+                    <td class="position-relative px-2">
+                      <!-- TODO: resume_delete -->
+                      <a href="{% url 'resume_detail' resume.pk %}" class="stretched-link d-flex flex-column align-items-center text-decoration-none"
+                          aria-label="delete resume">
+                        <i class="fa fa-trash text-royalpurple"></i>
+                        <small class="d-none d-sm-inline text-muted">Delete</small>
+                      </a>
+                    </td>
                   </tr>
-                </thead>
-                <tbody>
-                  {% for resume in resume_list %}
-                  <!-- set row color based on status -->
-                  {% if resume.status == 'IN_REVIEW' %}
-                    <tr class="table-warning position-relative">
-                  {% elif resume.status == 'ACTIVE' %}
-                    <tr class="table-success position-relative">
-                  {% elif resume.status == 'REJECTED' %}
-                    <tr class="table-danger position-relative">
-                  {% elif resume.status == 'CLOSED' %}
-                    <tr class="table-secondary position-relative">
-                  {% endif %}
-                      <td>
-                        <a href="{% url 'resume_detail' resume.pk %}" class="stretched-link text-dark text-decoration-none">
-                          {{ resume.occupation }}
-                        </a>
-                      </td>
-                      <td>{{ resume.get_status_display }}</td>
-                      <td>{{ resume.updated_on|timeago }} ago</td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-              </table>
-            {% else %}
-            <h5 class="card-title">You have not created any resumes yet.</h5>
-            {% endif %}
+              {% endfor %}
+              </tbody>
+            </table>
           </div>
-        </div>
+        {% else %}
+        <h5 class="card-title">You have not created any resumes yet.</h5>
+        {% endif %}
       </div>
-        <div class="text-end text-sm-start mt-2 mx-3">
-          <a href="{% url 'resume_create' %}" class="btn btn-outline-royalpurple py-1">
-            <i class="fa fa-edit"></i>
-            <span class="ms-2">Create New Resume</span>
-          </a>
-        </div>
+      <div class="text-end text-sm-start mt-2 mx-3">
+        <a href="{% url 'resume_create' %}" class="btn btn-outline-royalpurple py-1">
+          <i class="fa fa-plus"></i>
+          <span class="ms-2">Add New Resume</span>
+        </a>
+      </div>
     </div>
   </div>
 </main>
