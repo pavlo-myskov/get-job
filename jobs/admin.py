@@ -39,8 +39,8 @@ class VacancyAdmin(admin.ModelAdmin):
     def approve_job_posts(self, request, queryset):
         queryset.update(status=Vacancy.JobPostStatus.ACTIVE)
 
-    def withdraw_job_posts(self, request, queryset):
-        queryset.update(status=Vacancy.JobPostStatus.WITHDRAWN)
+    def reject_job_posts(self, request, queryset):
+        queryset.update(status=Vacancy.JobPostStatus.REJECTED)
 
     def close_job_posts(self, request, queryset):
         queryset.update(status=Vacancy.JobPostStatus.CLOSED)

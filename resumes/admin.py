@@ -26,7 +26,7 @@ class ResumeAdmin(admin.ModelAdmin):
         queryset.update(status=Resume.ResumePublishStatus.ACTIVE)
 
     def withdraw_resumes(self, request, queryset):
-        queryset.update(status=Resume.ResumePublishStatus.WITHDRAWN)
+        queryset.update(status=Resume.ResumePublishStatus.REJECTED)
 
     def close_resumes(self, request, queryset):
         queryset.update(status=Resume.ResumePublishStatus.CLOSED)

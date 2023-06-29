@@ -31,7 +31,7 @@ class Resume(models.Model):
     class ResumePublishStatus(models.TextChoices):
         IN_REVIEW = "IN_REVIEW", "In Review"
         ACTIVE = "ACTIVE", "Active"
-        WITHDRAWN = "WITHDRAWN", "Withdrawn"
+        REJECTED = "REJECTED", "Rejected"
         CLOSED = "CLOSED", "Closed"
 
     class Duration(models.TextChoices):
