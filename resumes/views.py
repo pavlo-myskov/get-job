@@ -287,6 +287,7 @@ class MyResumeListView(LoginRequiredMixin, JobseekerRequiredMixin, ListView):
         # child pages of the profile page
         child_pages = [
             reverse("resume_create"),
+            reverse("my_resumes"),
         ]
         home = reverse("jobseeker_home")
         refferer = self.request.META.get("HTTP_REFERER")
@@ -310,6 +311,7 @@ class MyResumeListView(LoginRequiredMixin, JobseekerRequiredMixin, ListView):
 class ResumeUpdateView(
     LoginRequiredMixin, JobseekerRequiredMixin, SuccessMessageMixin, UpdateView
 ):
+    # TODO: add test
     model = Resume
     form_class = ResumeCreateForm
     template_name_suffix = "_update_form"
@@ -346,8 +348,9 @@ class ResumeCloseView(
     SingleObjectMixin,
     View,
 ):
+    # TODO: add test
+    http_method_names = ["post"]  # only POST requests are allowed
     model = Resume
-    http_method_names = ["post"]   # only POST requests are allowed
 
     def test_func(self):
         """Allow only the owner to close the resume,
@@ -372,4 +375,43 @@ class ResumeCloseView(
         self.object.status = Resume.ResumePublishStatus.CLOSED
         self.object.save()
         messages.success(self.request, "Your resume has been closed")
+        return HttpResponseRedirect(reverse("my_resumes"))
+
+
+class ResumeOpenView(
+    LoginRequiredMixin,
+    JobseekerRequiredMixin,
+    SingleObjectMixin,
+    View,
+):
+    # TODO: add test
+    http_method_names = ["post"]  # only POST requests are allowed
+    model = Resume
+
+    def test_func(self):
+        """Allow only the owner to open the resume,
+        if the resume is closed"""
+        jobseeker_test = super().test_func()
+        return (
+            jobseeker_test
+            and self.request.user == self.get_object().jobseeker
+            and self.get_object().status == Resume.ResumePublishStatus.CLOSED
+        )
+
+    def handle_no_permission(self):
+        """Inherit the default handle_no_permission method
+        from UserPassesTestMixin that redirects to default 403 page"""
+        return super(UserPassesTestMixin, self).handle_no_permission()
+
+    # allows save object only if the transaction is successful
+    @transaction.atomic
+    def post(self, request, *args, **kwargs):
+        """Set the status of the resume to IN_REVIEW"""
+        self.object = self.get_object()
+        self.object.status = Resume.ResumePublishStatus.IN_REVIEW
+        self.object.save()
+        messages.success(
+            self.request,
+            "Your resume has been opened and is awaiting approval",
+        )
         return HttpResponseRedirect(reverse("my_resumes"))

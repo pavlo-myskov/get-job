@@ -19,6 +19,11 @@ urlpatterns = [
         name="resume_close",
     ),
     path(
+        "jobseeker/resume/<int:pk>/open",
+        views.ResumeOpenView.as_view(),
+        name="resume_open",
+    ),
+    path(
         "jobseeker/resumes",
         views.MyResumeListView.as_view(),
         name="my_resumes",
