@@ -1,11 +1,16 @@
 import re
+from django.contrib import messages
+from django.db import transaction
+from django.http import HttpResponseRedirect
 from django.utils.http import url_has_allowed_host_and_scheme
 from django.forms.forms import BaseForm
 from django.http.response import HttpResponse
 from django.urls import reverse, reverse_lazy
 from django.utils import timezone
 from dateutil.relativedelta import relativedelta
+from django.views import View
 from django.views.generic import ListView, DetailView
+from django.views.generic.detail import SingleObjectMixin
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.views.generic.edit import CreateView, UpdateView
@@ -333,3 +338,38 @@ class ResumeUpdateView(
         """Set the status of the resume to IN_REVIEW"""
         form.instance.status = Resume.ResumePublishStatus.IN_REVIEW
         return super().form_valid(form)
+
+
+class ResumeCloseView(
+    LoginRequiredMixin,
+    JobseekerRequiredMixin,
+    SingleObjectMixin,
+    View,
+):
+    model = Resume
+    http_method_names = ["post"]   # only POST requests are allowed
+
+    def test_func(self):
+        """Allow only the owner to close the resume,
+        if the resume is not closed yet"""
+        jobseeker_test = super().test_func()
+        return (
+            jobseeker_test
+            and self.request.user == self.get_object().jobseeker
+            and self.get_object().status != Resume.ResumePublishStatus.CLOSED
+        )
+
+    def handle_no_permission(self):
+        """Inherit the default handle_no_permission method
+        from UserPassesTestMixin that redirects to default 403 page"""
+        return super(UserPassesTestMixin, self).handle_no_permission()
+
+    # allows save object only if the transaction is successful
+    @transaction.atomic
+    def post(self, request, *args, **kwargs):
+        """Set the status of the resume to CLOSED"""
+        self.object = self.get_object()
+        self.object.status = Resume.ResumePublishStatus.CLOSED
+        self.object.save()
+        messages.success(self.request, "Your resume has been closed")
+        return HttpResponseRedirect(reverse("my_resumes"))

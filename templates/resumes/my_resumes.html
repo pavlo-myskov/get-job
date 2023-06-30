@@ -28,12 +28,12 @@
       </div>
     </nav>
 
-    <div class="card mx-auto border-0 my-3 mt-1 p-3" >
+    <div class="card mx-auto border-0 my-3 mt-1 p-sm-3" >
       <div class="card-body p-0">
         {% if resume_list %}
           <div class="table-responsive">
             <table id="my-resumes-table" class="table table-hover align-middle">
-              <caption>
+              <caption class="mx-2">
                 *<small>Only active resumes will be shown in search results and can be applied to jobs.</small>
               </caption>
               <thead>
@@ -91,7 +91,6 @@
                       {% endif %}
                     </td>
                     <td class="position-relative px-2">
-                      <!-- TODO: resume_close -->
                       {% if resume.status == 'CLOSED' %}
                       <a href="{% url 'resume_detail' resume.pk %}" class="stretched-link d-flex flex-column align-items-center text-decoration-none"
                           aria-label="open resume">
@@ -99,8 +98,8 @@
                         <small class="d-none d-sm-inline text-muted">Open</small>
                       </a>
                       {% else %}
-                      <a href="{% url 'resume_detail' resume.pk %}" class="stretched-link d-flex flex-column align-items-center text-decoration-none"
-                          aria-label="close resume">
+                      <a href="#" class="resume-close-btn stretched-link d-flex flex-column align-items-center text-decoration-none"
+                          aria-label="close resume" data-resume-close-url="{% url 'resume_close' resume.pk %}">
                         <i class="fa fa-xmark text-royalpurple"></i>
                         <small class="d-none d-sm-inline text-muted">Close</small>
                       </a>
@@ -132,6 +131,24 @@
     </div>
   </div>
 </main>
+
+<!-- Modal for close/delete resume -->
+<div class="modal fade" id="resumeModal" tabindex="-1" aria-labelledby="ResumeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-sm">
+    <div class="modal-content">
+      <div class="modal-body">
+        <p>Are you sure you want to <span id="modal-action"></span> this resume?</p>
+      </div>
+      <div class="modal-footer">
+        <form id="resume-modal-form" method="post" action="">
+          {% csrf_token %}
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-outline-danger">Confirm</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
 
 {% include 'footer.html' %}
 {% endblock %}

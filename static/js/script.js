@@ -9,7 +9,7 @@ const bootstrapColors = {
     light: 'rgb(248, 249, 250)',
 }
 
-
+// ___MAIN FUNCTIONALITY___
 $(document).ready(function () {
     let windowWidth = window.innerWidth;
 
@@ -45,7 +45,11 @@ $(document).ready(function () {
     $('#logout-link').click(function (e) {
         e.preventDefault();
         $('#logoutModal').modal('show');
-    })
+    });
+
+    // event listener for resume close button
+    setResumeModal();
+
 });
 
 
@@ -276,4 +280,18 @@ function changeToastColor(toastElList) {
         toast.style.setProperty('--toast-bg-color', rgbColor);
     }
     );
+}
+
+/**
+ * Set resume modal form action url and modal action text by
+ * clicking on `Close` button.
+ */
+function setResumeModal() {
+    $('.resume-close-btn').click(function (e) {
+        e.preventDefault();
+        let closeUrl = $(this).data('resume-close-url');
+        $('#modal-action').text('close');
+        $('#resume-modal-form').attr('action', closeUrl);
+        $('#resumeModal').modal('show');
+    })
 }
