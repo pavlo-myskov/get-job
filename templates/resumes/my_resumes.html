@@ -32,6 +32,9 @@
         {% if resume_list %}
           <div class="table-responsive">
             <table class="table table-hover align-middle">
+              <caption>
+                *<small>Only active resumes will be shown in search results and can be applied to jobs.</small>
+              </caption>
               <thead>
                 <tr>
                   <th scope="col">Title</th>
@@ -61,19 +64,34 @@
                     <td>{{ resume.updated_on|timeago }} ago</td>
                     <td class="position-relative px-2">
                       <!-- TODO: resume_edit -->
+                      {% if resume.status == 'CLOSED' %}
+                        <div class="d-flex flex-column align-items-center">
+                          <i class="fa fa-edit text-muted"></i>
+                          <small class="d-none d-sm-inline text-muted">Edit</small>
+                        </div>
+                      {% else %}
                       <a href="{% url 'resume_detail' resume.pk %}" class="stretched-link d-flex flex-column align-items-center text-decoration-none"
                           aria-label="edit resume">
                         <i class="fa fa-edit text-royalpurple"></i>
                         <small class="d-none d-sm-inline text-muted">Edit</small>
                       </a>
+                      {% endif %}
                     </td>
                     <td class="position-relative px-2">
                       <!-- TODO: resume_close -->
+                      {% if resume.status == 'CLOSED' %}
+                      <a href="{% url 'resume_detail' resume.pk %}" class="stretched-link d-flex flex-column align-items-center text-decoration-none"
+                          aria-label="open resume">
+                        <i class="fa fa-retweet text-royalpurple"></i>
+                        <small class="d-none d-sm-inline text-muted">Open</small>
+                      </a>
+                      {% else %}
                       <a href="{% url 'resume_detail' resume.pk %}" class="stretched-link d-flex flex-column align-items-center text-decoration-none"
                           aria-label="close resume">
                         <i class="fa fa-xmark text-royalpurple"></i>
                         <small class="d-none d-sm-inline text-muted">Close</small>
                       </a>
+                      {% endif %}
                     </td>
                     <td class="position-relative px-2">
                       <!-- TODO: resume_delete -->
@@ -92,7 +110,7 @@
         <h5 class="card-title">You have not created any resumes yet.</h5>
         {% endif %}
       </div>
-      <div class="text-end text-sm-start mt-2 mx-3">
+      <div class="text-end text-sm-start mb-2 mx-3">
         <a href="{% url 'resume_create' %}" class="btn btn-outline-royalpurple py-1">
           <i class="fa fa-plus"></i>
           <span class="ms-2">Add New Resume</span>
