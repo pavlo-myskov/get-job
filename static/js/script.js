@@ -16,6 +16,13 @@ $(document).ready(function () {
     // init dropdown menu
     let dropdown = initDropdown();
 
+    // init tooltips
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl)
+    })
+
+
     hideShowNavbar(windowWidth, dropdown);
     fixDaysCounterPosition(windowWidth);
     fixCardImagePosition(windowWidth);
