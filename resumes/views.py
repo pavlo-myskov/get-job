@@ -8,7 +8,7 @@ from dateutil.relativedelta import relativedelta
 from django.views.generic import ListView, DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
-from django.views.generic.edit import CreateView
+from django.views.generic.edit import CreateView, UpdateView
 from django.db.models import Q
 from django.db.models import QuerySet
 from jobs.forms import SearchForm
@@ -219,6 +219,7 @@ class ResumeCreateView(
 ):
     model = Resume
     form_class = ResumeCreateForm
+    template_name_suffix = "_create_form"
     success_message = (
         "Your resume has been created and is "
         "<span class='text-info'>pending approval</span>"
@@ -240,7 +241,8 @@ class MyResumeListView(LoginRequiredMixin, JobseekerRequiredMixin, ListView):
         ordered by status, updated_on and created_on.
         Example: IN_REVIEW on top and with the latest updated_on date"""
         return Resume.objects.filter(jobseeker=self.request.user).order_by(
-            "-status", "-updated_on",
+            "-status",
+            "-updated_on",
         )
 
     def get_context_data(self, **kwargs):
