@@ -6,7 +6,7 @@ from django.urls import reverse, reverse_lazy
 from django.utils import timezone
 from dateutil.relativedelta import relativedelta
 from django.views.generic import ListView, DetailView
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.views.generic.edit import CreateView, UpdateView
 from django.db.models import Q
@@ -227,6 +227,7 @@ class ResumeCreateView(
     success_url = reverse_lazy("my_resumes")
 
     def form_valid(self, form: BaseForm) -> HttpResponse:
+        """Save the current user as a jobseeker-owner of the resume"""
         form.instance.jobseeker = self.request.user
         return super().form_valid(form)
 
@@ -275,3 +276,36 @@ class MyResumeListView(LoginRequiredMixin, JobseekerRequiredMixin, ListView):
                 return refferer
         else:
             return home
+
+
+class ResumeUpdateView(
+    LoginRequiredMixin, JobseekerRequiredMixin, SuccessMessageMixin, UpdateView
+):
+    model = Resume
+    form_class = ResumeCreateForm
+    template_name_suffix = "_update_form"
+    success_message = (
+        "Your resume has been updated and is "
+        "<span class='text-info'>pending approval</span>"
+    )
+    success_url = reverse_lazy("my_resumes")
+
+    def test_func(self):
+        """Allow only the owner to update the resume,
+        if the resume is not closed"""
+        jobseeker_test = super().test_func()
+        return (
+            jobseeker_test
+            and self.request.user == self.get_object().jobseeker
+            and self.get_object().status != Resume.ResumePublishStatus.CLOSED
+        )
+
+    def handle_no_permission(self):
+        """Inherit the default handle_no_permission method
+        from UserPassesTestMixin that redirects to default 403 page"""
+        return super(UserPassesTestMixin, self).handle_no_permission()
+
+    def form_valid(self, form: BaseForm) -> HttpResponse:
+        """Set the status of the resume to IN_REVIEW"""
+        form.instance.status = Resume.ResumePublishStatus.IN_REVIEW
+        return super().form_valid(form)
