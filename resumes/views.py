@@ -231,6 +231,25 @@ class ResumeCreateView(
     )
     success_url = reverse_lazy("my_resumes")
 
+    def test_func(self):
+        """Check if the user has less or equal than 10 resumes"""
+        self.jobseeker_test = super().test_func()
+        self.has_less_6_resumes = self.request.user.resumes.all().count() <= 4
+        return self.jobseeker_test and self.has_less_6_resumes
+
+    def handle_no_permission(self):
+        """Redirect to the resume list page and show an error message,
+        if the user has more than 5 resumes"""
+        if self.jobseeker_test and not self.has_less_6_resumes:
+            messages.error(
+                self.request,
+                "The maximum number of resumes has been reached. ",
+                extra_tags="modal",
+            )
+            return HttpResponseRedirect(reverse_lazy("my_resumes"))
+
+        return super().handle_no_permission()
+
     def form_valid(self, form: BaseForm) -> HttpResponse:
         """Save the current user as a jobseeker-owner of the resume"""
         form.instance.jobseeker = self.request.user

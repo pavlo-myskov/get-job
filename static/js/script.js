@@ -16,6 +16,10 @@ $(document).ready(function () {
     // init dropdown menu
     let dropdown = initDropdown();
 
+    showToast();
+    // show messages Modal
+    $('#messagesModal').modal('show');
+
     // init tooltips
     var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
     var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
@@ -45,8 +49,6 @@ $(document).ready(function () {
         insertRoleToTitle();
     }
     );
-
-    showToast();
 
     // event listener for logout link
     $('#logout-link').click(function (e) {
