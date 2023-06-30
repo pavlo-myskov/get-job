@@ -256,10 +256,14 @@ class MyResumeListView(LoginRequiredMixin, JobseekerRequiredMixin, ListView):
 
         # add status tooltips to the context
         tooltips = {
-            Resume.ResumePublishStatus.ACTIVE: "This resume is visible to employers",   # noqa: E501
-            Resume.ResumePublishStatus.IN_REVIEW: "This resume is pending approval",  # noqa: E501
-            Resume.ResumePublishStatus.REJECTED: "This resume contains inappropriate content",  # noqa: E501
-            Resume.ResumePublishStatus.CLOSED: "This resume is not visible and cannot be edited",  # noqa: E501
+            Resume.ResumePublishStatus.ACTIVE: "This resume is visible"
+            " to employers",
+            Resume.ResumePublishStatus.IN_REVIEW: "This resume is pending"
+            " approval",
+            Resume.ResumePublishStatus.REJECTED: "This resume contains"
+            " inappropriate content or does not meet the requirements",
+            Resume.ResumePublishStatus.CLOSED: "This resume is not visible and"
+            " cannot be edited",
         }
         context["tooltips"] = tooltips
         context["nav_form"] = SearchForm(auto_id=False)
@@ -271,6 +275,10 @@ class MyResumeListView(LoginRequiredMixin, JobseekerRequiredMixin, ListView):
         Return the URL for the back button of the profile page.
         If the refferer is a child page of the my resumes, return to home.
         """
+        # match if the url contains /resumes/<int>/update/ in the url
+        update_resume_regex = r"/resume/\d+/update"
+        pattern = re.compile(update_resume_regex)
+
         # child pages of the profile page
         child_pages = [
             reverse("resume_create"),
@@ -283,7 +291,10 @@ class MyResumeListView(LoginRequiredMixin, JobseekerRequiredMixin, ListView):
             refferer, self.request.get_host()
         ):
             # return home url if the refferer is a child page of the my resumes
-            if any(page in refferer for page in child_pages):
+            if any(
+                page in refferer or pattern.search(page)
+                for page in child_pages
+            ):
                 return home
             else:
                 return refferer
