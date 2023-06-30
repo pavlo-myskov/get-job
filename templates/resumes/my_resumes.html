@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% load custom_tags %}
 {% load time_filters %}
 
 {% block head_title %}My Resumes{% endblock %}
@@ -45,22 +46,35 @@
               </thead>
               <tbody>
                 {% for resume in resume_list %}
-                <!-- set row color based on status -->
+                <!-- set row color and tooltip based on status -->
                 {% if resume.status == 'IN_REVIEW' %}
+                  {% define tooltips.IN_REVIEW as tooltip %}
                   <tr class="table-warning">
                 {% elif resume.status == 'ACTIVE' %}
+                  {% define tooltips.ACTIVE as tooltip %}
                   <tr class="table-success">
                 {% elif resume.status == 'REJECTED' %}
+                  {% define tooltips.REJECTED as tooltip %}
                   <tr class="table-danger">
                 {% elif resume.status == 'CLOSED' %}
+                  {% define tooltips.CLOSED as tooltip %}
                   <tr class="table-secondary">
                 {% endif %}
                     <td class="position-relative">
                       <a href="{% url 'resume_detail' resume.pk %}" class="stretched-link">
-                        {{ resume.occupation|truncatechars:30 }}
+                        {{ resume.occupation|truncatechars:40 }}
                       </a>
                     </td>
-                    <td>{{ resume.get_status_display }}</td>
+                    <td>
+                      <span class="position-relative">
+                        {{ resume.get_status_display }}
+                        <span
+                          class="position-absolute top-0 start-0 translate-middle badge border border-light rounded-circle p-0">
+                          <i class="fa fa-info-circle text-muted" data-bs-toggle="tooltip" data-bs-placement="top"
+                            title="{{ tooltip }}"></i>
+                        </span>
+                      </span>
+                    </td>
                     <td>{{ resume.updated_on|timeago }} ago</td>
                     <td class="position-relative px-2">
                       {% if resume.status == 'CLOSED' %}

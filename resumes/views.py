@@ -247,8 +247,21 @@ class MyResumeListView(LoginRequiredMixin, JobseekerRequiredMixin, ListView):
         )
 
     def get_context_data(self, **kwargs):
-        """Add search form to the context for navbar search bar"""
+        """Add to the context:
+        - tooltips for tooltip status icons
+        - search form for navbar search bar
+        - back_url for the back button of the profile page
+        """
         context = super().get_context_data(**kwargs)
+
+        # add status tooltips to the context
+        tooltips = {
+            Resume.ResumePublishStatus.ACTIVE: "This resume is visible to employers",   # noqa: E501
+            Resume.ResumePublishStatus.IN_REVIEW: "This resume is pending approval",  # noqa: E501
+            Resume.ResumePublishStatus.REJECTED: "This resume contains inappropriate content",  # noqa: E501
+            Resume.ResumePublishStatus.CLOSED: "This resume is not visible and cannot be edited",  # noqa: E501
+        }
+        context["tooltips"] = tooltips
         context["nav_form"] = SearchForm(auto_id=False)
         context["back_url"] = self._get_back_url()
         return context
