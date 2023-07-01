@@ -1,6 +1,12 @@
+from django.shortcuts import get_object_or_404
+from django.http import JsonResponse
 from django.db.models import Q
 from django.db.models import QuerySet
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views import View
 from django.views.generic import ListView, DetailView
+
+from jobseeker.views import JobseekerRequiredMixin
 
 from .models import Vacancy, Areas, IRELAND_AREAS, DUBLIN_AREAS
 from .forms import SearchForm
@@ -119,3 +125,22 @@ class JobDetailView(DetailView):
         context["nav_form"] = SearchForm(auto_id=False)
 
         return context
+
+
+class JobSaveToggle(LoginRequiredMixin, JobseekerRequiredMixin, View):
+    """Toggle save/unsave job for the current jobseeker"""
+
+    http_method_names = ["post"]  # only POST requests are allowed
+
+    def post(self, request, *args, **kwargs):
+        pk = kwargs.get("pk")
+        vacancy = get_object_or_404(Vacancy, pk=pk)
+        profile = request.user.jobseekerprofile
+        if profile.favorites.filter(id=vacancy.id).exists():
+            profile.favorites.remove(vacancy.id)
+            result = "unsaved"
+        else:
+            profile.favorites.add(vacancy.id)
+            result = "saved"
+
+        return JsonResponse({"result": "success", "action": result})
