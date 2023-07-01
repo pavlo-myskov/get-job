@@ -1,4 +1,5 @@
 from django.views.generic import ListView, DetailView
+from django.db.models import Case, When, BooleanField
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.views.generic.edit import UpdateView
@@ -32,8 +33,28 @@ class HomeView(ListView):
     context_object_name = "job_list"
     # get only first 4 active vacancies
     queryset = Vacancy.objects.active()[:4]
-
     template_name = "jobseeker/home.html"
+
+    def get_queryset(self):
+        """Annotate the vacancies with is_saved field
+        if user is authenticated and is a jobseeker"""
+        queryset = super().get_queryset()
+
+        if (
+            self.request.user.is_authenticated
+            and self.request.user.role == User.Role.JOBSEEKER
+        ):
+            profile = self.request.user.jobseekerprofile
+
+            # get the ids of the saved vacancies
+            saved_ids = profile.favorites.values_list("id", flat=True)
+            # set is_saved to True if the vacancy id is in saved_ids
+            queryset = queryset.annotate(is_saved=Case(
+                When(id__in=saved_ids, then=True),
+                default=False,
+                output_field=BooleanField()
+            ))
+        return queryset
 
     def get_context_data(self, **kwargs):
         """Add search form to the context"""

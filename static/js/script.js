@@ -344,9 +344,9 @@ function toggleSaveResume(e) {
             showToasts(toastElementsList, 'success');
 
             // change heart icon fill
-            if (response.result === 'saved') {
+            if (response.is_saved === true) {
                 saveBtn.addClass('btn-save--filled').removeClass('btn-save');
-            } else if (response.result === 'unsaved') {
+            } else if (response.is_saved === false) {
                 saveBtn.addClass('btn-save').removeClass('btn-save--filled');
             } else {
                 console.error('AJAX POST Save/Unsave Job: "response.result for save/unsave resume is not valid"');

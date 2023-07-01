@@ -66,7 +66,7 @@
           <form class="save-job-form" action="{% url 'job_save_toggle' vacancy.id %}" method="post">
             {% csrf_token %}
             <button type="submit"
-              class="btn-save{% if user.jobseekerprofile in vacancy.favoriters.all %}--filled{% endif %} btn--royalpurple card-link">
+              class="btn-save{% if vacancy.is_saved %}--filled{% endif %} btn--royalpurple card-link">
               Save
             </button>
           </form>
