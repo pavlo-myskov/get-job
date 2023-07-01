@@ -318,3 +318,44 @@ function setResumeActionModal(event, actionText) {
     $('#resume-modal-form').attr('action', actionUrl);
     $('#resumeModal').modal('show');
 }
+
+/**
+ * Toggle save/unsave resume using ajax.
+ */
+function toggleSaveResume(e) {
+    e.preventDefault();
+    // get action url from submit form
+    const actionEndpoint = $(this).attr('action');
+    const csrf_token = $(this).find("input[name='csrfmiddlewaretoken']").val();
+    const saveBtn = $(this).find("button[type='submit']");
+
+    $.ajax({
+        type: "POST",
+        url: actionEndpoint,
+        data: {
+            'csrfmiddlewaretoken': csrf_token,
+        },
+        // the type of data that should be returned from the server
+        dataType: "json",
+        success: function (response) {
+            // set toast message
+            $('.custom-toast-msg').text(response.successMsg);
+            let toastElementsList = [].slice.call(document.querySelectorAll('.multi-use-toast'));
+            showToasts(toastElementsList, 'success');
+
+            // change heart icon fill
+            if (response.result === 'saved') {
+                saveBtn.addClass('btn-save--filled').removeClass('btn-save');
+            } else if (response.result === 'unsaved') {
+                saveBtn.addClass('btn-save').removeClass('btn-save--filled');
+            } else {
+                console.error('AJAX POST Save/Unsave Job: "response.result for save/unsave resume is not valid"');
+            }
+
+        },
+        error: function (response) {
+            console.error('AJAX POST Save/Unsave Job: "An error occurred while sending data to the server"');
+            console.error('Response: ', response);
+        }
+    })
+}

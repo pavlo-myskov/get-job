@@ -139,8 +139,10 @@ class JobSaveToggle(LoginRequiredMixin, JobseekerRequiredMixin, View):
         if profile.favorites.filter(id=vacancy.id).exists():
             profile.favorites.remove(vacancy.id)
             result = "unsaved"
+            success_message = "The job has been removed from saved jobs."
         else:
             profile.favorites.add(vacancy.id)
             result = "saved"
+            success_message = "The job has been saved."
 
-        return JsonResponse({"result": "success", "action": result})
+        return JsonResponse({"result": result, "successMsg": success_message})
