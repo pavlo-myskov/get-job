@@ -16,8 +16,10 @@ $(document).ready(function () {
     // init dropdown menu
     let dropdown = initDropdown();
 
-    showToast();
-    // show messages Modal
+    // init and show toast messages if they exist
+    let toastElementsList = [].slice.call(document.querySelectorAll('.default-msg-toast'))
+    showToasts(toastElementsList);
+    // init and show messages Modal if it exists
     $('#messagesModal').modal('show');
 
     // init tooltips
@@ -64,6 +66,9 @@ $(document).ready(function () {
     $('.resume-delete-btn').click(function (e) {
         setResumeActionModal(e, 'delete');
     });
+
+    // event listener for submit of save form
+    $('.save-job-form').submit(toggleSaveResume);
 
 });
 
@@ -265,32 +270,37 @@ function insertRoleToTitle() {
 }
 
 /**
- * Initialize Bootstrap toast.
+ * Initialize and show Bootstrap toasts.
  */
-function showToast() {
-
-    var toastElList = [].slice.call(document.querySelectorAll('.toast'))
-    var toastList = toastElList.map(function (toastEl) {
+function showToasts(toastElementsList, toastBootstrapColor) {
+    var toastList = toastElementsList.map(function (toastEl) {
 
         return new bootstrap.Toast(toastEl)
     })
 
-    changeToastColor(toastElList);
+    changeToastsColor(toastElementsList, toastBootstrapColor);
     // show toast by default
     toastList.forEach(toast => toast.show())
 }
 
 /**
- * Change `toast::after` bg color based on `data-msg-tag` attribute
+ * Change `toast::after` bg color based on passed toastBootstrapColor or
+ * `data-msg-tag` attribute. It takes name of bootstrap color as a string,
+ * searches for it in bootstrapColors object and sets rgb color to css variable.
  */
-function changeToastColor(toastElList) {
+function changeToastsColor(toastElList, toastBootstrapColor) {
     // change `toast::after` bg color based on `data-msg-tag` attribute
     toastElList.forEach(toast => {
-        // get data-msg-tag attribute value
-        let msgTag = toast.getAttribute('data-msg-tag');
-        // get bootstrap color if exists or set default color as light
+        let bootstrapColor;
+        if (toastBootstrapColor) {
+            bootstrapColor = toastBootstrapColor;
+        } else {
+            // get data-msg-tag attribute value
+            bootstrapColor = toast.getAttribute('data-msg-tag');
+        }
+        // set default color if bootstrapColor is undefined
         // ?? - Nullish coalescing operator
-        let rgbColor = bootstrapColors[msgTag] ?? bootstrapColors['light'];
+        let rgbColor = bootstrapColors[bootstrapColor] ?? bootstrapColors['light'];
         // set css variable
         toast.style.setProperty('--toast-bg-color', rgbColor);
     }

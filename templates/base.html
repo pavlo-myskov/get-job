@@ -23,7 +23,7 @@
   <!-- django notification styled with bootstrap toast and modal -->
   {% for message in messages %}
   {% if 'modal' in message.extra_tags %}
-  <!-- Modal alert -->
+  <!-- Modal message alert -->
     <div class="modal fade" id="messagesModal" tabindex="-1" aria-labelledby="messagesModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-sm">
         <div class="modal-content">
@@ -35,9 +35,9 @@
       </div>
     </div>
   {% else %}
-  <!-- Toast alert by default -->
+  <!-- Toast msg alert by default -->
     <div class="position-fixed top-0 end-0 p-3 mt-5 me-sm-2" style="z-index: 11">
-      <div class="toast shadow align-items-center position-relative" data-msg-tag="{{ message.tags }}" role="alert" aria-live="assertive" aria-atomic="true">
+      <div class="toast default-msg-toast shadow align-items-center position-relative" data-msg-tag="{{ message.tags }}" role="alert" aria-live="assertive" aria-atomic="true">
         <div class="d-flex text-black">
           <div class="toast-body w-100 d-flex justify-content-between">
             <span>{{ message | safe }}</span>
