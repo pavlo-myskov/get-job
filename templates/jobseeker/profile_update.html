@@ -23,7 +23,14 @@
     </div>
     <div class="card-body">
       <h3 class="card-title text-center text-royalpurple">
-        Edit Profile
+        <span class="position-relative">
+          Edit Profile
+          <span
+            class="position-absolute top-0 end-25 translate-middle badge border border-light rounded-circle p-0">
+            <i class="fa fa-info-circle text-muted" data-bs-toggle="tooltip" data-bs-placement="right"
+              title="Some data will be used to generate your public resumes. Try to fill in as much as possible."></i>
+          </span>
+        </span>
       </h3>
       <form method="POST" enctype="multipart/form-data">
         {% csrf_token %}
