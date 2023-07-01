@@ -13,7 +13,7 @@ from django.views.generic import ListView, DetailView
 from django.views.generic.detail import SingleObjectMixin
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.messages.views import SuccessMessageMixin
-from django.views.generic.edit import CreateView, UpdateView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.db.models import Q
 from django.db.models import QuerySet
 from jobs.forms import SearchForm
@@ -199,7 +199,9 @@ class ResumeDetailView(DetailView):
     def get_queryset(self):
         # TODO: add test
         """Return all active resumes and all resumes of the owner
-        if the user is authenticated as a jobseeker"""
+        if the user is authenticated as a jobseeker,
+        so that the jobseeker can see his own unpublished resumes as well
+        """
         query = Q()
         if (
             self.request.user.is_authenticated
@@ -238,8 +240,9 @@ class ResumeCreateView(
         return self.jobseeker_test and self.has_less_6_resumes
 
     def handle_no_permission(self):
-        """Redirect to the resume list page and show an error message,
-        if the user has more than 5 resumes"""
+        """Redirect to the resume list page and show an alert,
+        if the user has more than 5 resumes;
+        if the user is not a jobseeker, redirect to the specific 403 page"""
         if self.jobseeker_test and not self.has_less_6_resumes:
             messages.error(
                 self.request,
@@ -343,16 +346,20 @@ class ResumeUpdateView(
     def test_func(self):
         """Allow only the owner to update the resume,
         if the resume is not closed"""
-        jobseeker_test = super().test_func()
+        self.jobseeker_test = super().test_func()
         return (
-            jobseeker_test
+            self.jobseeker_test
             and self.request.user == self.get_object().jobseeker
             and self.get_object().status != Resume.ResumePublishStatus.CLOSED
         )
 
     def handle_no_permission(self):
-        """Inherit the default handle_no_permission method
-        from UserPassesTestMixin that redirects to default 403 page"""
+        """Inherit the JobseekerRequiredMixin handle_no_permission method
+        that displays specific 403 page if the user is not Jobseeker,
+        otherwise inherit the UserPassesTestMixin default handle_no_permission
+        method that displays default 403 page"""
+        if not self.jobseeker_test:
+            return super().handle_no_permission()
         return super(UserPassesTestMixin, self).handle_no_permission()
 
     def form_valid(self, form: BaseForm) -> HttpResponse:
@@ -374,16 +381,20 @@ class ResumeCloseView(
     def test_func(self):
         """Allow only the owner to close the resume,
         if the resume is not closed yet"""
-        jobseeker_test = super().test_func()
+        self.jobseeker_test = super().test_func()
         return (
-            jobseeker_test
+            self.jobseeker_test
             and self.request.user == self.get_object().jobseeker
             and self.get_object().status != Resume.ResumePublishStatus.CLOSED
         )
 
     def handle_no_permission(self):
-        """Inherit the default handle_no_permission method
-        from UserPassesTestMixin that redirects to default 403 page"""
+        """Inherit the JobseekerRequiredMixin handle_no_permission method
+        that displays specific 403 page if the user is not Jobseeker,
+        otherwise inherit the UserPassesTestMixin default handle_no_permission
+        method that displays default 403 page"""
+        if not self.jobseeker_test:
+            return super().handle_no_permission()
         return super(UserPassesTestMixin, self).handle_no_permission()
 
     # allows save object only if the transaction is successful
@@ -410,16 +421,20 @@ class ResumeOpenView(
     def test_func(self):
         """Allow only the owner to open the resume,
         if the resume is closed"""
-        jobseeker_test = super().test_func()
+        self.jobseeker_test = super().test_func()
         return (
-            jobseeker_test
+            self.jobseeker_test
             and self.request.user == self.get_object().jobseeker
             and self.get_object().status == Resume.ResumePublishStatus.CLOSED
         )
 
     def handle_no_permission(self):
-        """Inherit the default handle_no_permission method
-        from UserPassesTestMixin that redirects to default 403 page"""
+        """Inherit the JobseekerRequiredMixin handle_no_permission method
+        that displays specific 403 page if the user is not Jobseeker,
+        otherwise inherit the UserPassesTestMixin default handle_no_permission
+        method that displays default 403 page"""
+        if not self.jobseeker_test:
+            return super().handle_no_permission()
         return super(UserPassesTestMixin, self).handle_no_permission()
 
     # allows save object only if the transaction is successful
