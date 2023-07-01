@@ -7793,6 +7793,11 @@ textarea.form-control-lg {
   transform: translateY(0);
   transition: all 0.3s ease-in-out; }
 
+.hover-grow {
+  transition: all 0.1s ease-in-out; }
+  .hover-grow:hover {
+    transform: scale(1.2); }
+
 .royalpurple-input:focus {
   outline: none;
   border-color: #874c87;
@@ -7977,13 +7982,13 @@ textarea.form-control-lg {
   box-shadow: 0 0 3px #6c757d; }
 
 #divider::before {
-  content: '';
+  content: "";
   flex-grow: 1;
   margin-right: 8px;
   border-bottom: 1px solid #dee2e6; }
 
 #divider::after {
-  content: '';
+  content: "";
   flex-grow: 1;
   margin-left: 8px;
   border-bottom: 1px solid #dee2e6; }
@@ -8006,7 +8011,7 @@ a.ui-button:active,
   --toast-bg-color: $light; }
 
 .toast::after {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
@@ -8021,5 +8026,11 @@ a.ui-button:active,
 
 #my-resumes-table tbody tr {
   height: 70px; }
+
+.hover-grow-resume-control {
+  transition: all 0.1s ease-in-out; }
+  .hover-grow-resume-control:hover i {
+    transition: all 0.1s ease-in-out;
+    transform: scale(1.2); }
 
 /*# sourceMappingURL=main.css.map */
