@@ -1,12 +1,27 @@
 import re
+from django.contrib import messages
+from django.db import transaction
+from django.http import HttpResponseRedirect
+from django.utils.http import url_has_allowed_host_and_scheme
+from django.forms.forms import BaseForm
+from django.http.response import HttpResponse
+from django.urls import reverse, reverse_lazy
 from django.utils import timezone
 from dateutil.relativedelta import relativedelta
+from django.views import View
 from django.views.generic import ListView, DetailView
+from django.views.generic.detail import SingleObjectMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.messages.views import SuccessMessageMixin
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.db.models import Q
 from django.db.models import QuerySet
+from jobs.forms import SearchForm
 
+from users.models import User
 from .models import Resume
-from .forms import ResumeSearchForm
+from .forms import ResumeSearchForm, ResumeCreateForm
+from jobseeker.views import JobseekerRequiredMixin
 
 
 def get_keywords(search_data: dict) -> Q:
@@ -47,7 +62,7 @@ def get_age_lookup(search_data: dict) -> Q:
     if min_age == max_age:
         # get all ages that are equal or older than 65
         if min_age == 66:
-            dob_val = today - relativedelta(years=max_age-1)
+            dob_val = today - relativedelta(years=max_age - 1)
             lookup = Q(jobseeker__jobseekerprofile__dob__lte=dob_val)
         else:
             # if min_age and max_age are equal, search for exact age
@@ -66,8 +81,8 @@ def get_age_lookup(search_data: dict) -> Q:
 
     else:
         # search for all ages from min_age to max_age(not including max_age)
-        startdate = today - relativedelta(years=max_age) + relativedelta(
-            days=1
+        startdate = (
+            today - relativedelta(years=max_age) + relativedelta(days=1)
         )
         enddate = today - relativedelta(years=min_age)
         lookup = Q(
@@ -181,11 +196,287 @@ class ResumeListView(ListView):
 
 
 class ResumeDetailView(DetailView):
-    # get only active resumes
-    queryset = Resume.objects.active()
+    def get_queryset(self):
+        # TODO: add test
+        """Return all active resumes and all resumes of the owner
+        if the user is authenticated as a jobseeker,
+        so that the jobseeker can see his own unpublished resumes as well
+        """
+        query = Q()
+        if (
+            self.request.user.is_authenticated
+            and self.request.user.role == User.Role.JOBSEEKER
+        ):
+            query = Q(jobseeker__id=self.request.user.pk)
+
+        queryset = Resume.objects.filter(
+            query | Q(status=Resume.ResumePublishStatus.ACTIVE)
+        )
+        return queryset
 
     def get_context_data(self, **kwargs):
-        '''Add search form to the context for navbar search bar'''
+        """Add search form to the context for navbar search bar"""
         context = super().get_context_data(**kwargs)
-        context['nav_form'] = ResumeSearchForm(auto_id=False)
+        context["nav_form"] = ResumeSearchForm(auto_id=False)
         return context
+
+
+class ResumeCreateView(
+    LoginRequiredMixin, JobseekerRequiredMixin, SuccessMessageMixin, CreateView
+):
+    model = Resume
+    form_class = ResumeCreateForm
+    template_name_suffix = "_create_form"
+    success_message = (
+        "Your resume has been created and is "
+        "<span class='text-info'>pending approval</span>"
+    )
+    success_url = reverse_lazy("my_resumes")
+
+    def test_func(self):
+        """Check if the user has less or equal than 10 resumes"""
+        self.jobseeker_test = super().test_func()
+        self.has_less_6_resumes = self.request.user.resumes.all().count() <= 4
+        return self.jobseeker_test and self.has_less_6_resumes
+
+    def handle_no_permission(self):
+        """Redirect to the resume list page and show an alert,
+        if the user has more than 5 resumes;
+        if the user is not a jobseeker, redirect to the specific 403 page"""
+        if self.jobseeker_test and not self.has_less_6_resumes:
+            messages.error(
+                self.request,
+                "The maximum number of resumes has been reached. ",
+                extra_tags="modal",
+            )
+            return HttpResponseRedirect(reverse_lazy("my_resumes"))
+
+        return super().handle_no_permission()
+
+    def form_valid(self, form: BaseForm) -> HttpResponse:
+        """Save the current user as a jobseeker-owner of the resume"""
+        form.instance.jobseeker = self.request.user
+        return super().form_valid(form)
+
+
+class MyResumeListView(LoginRequiredMixin, JobseekerRequiredMixin, ListView):
+    model = Resume
+    template_name = "resumes/my_resumes.html"
+
+    def get_queryset(self):
+        # TODO: add test
+        """Return all resumes of the owner,
+        ordered by status, updated_on and created_on.
+        Example: IN_REVIEW on top and with the latest updated_on date"""
+        return Resume.objects.filter(jobseeker=self.request.user).order_by(
+            "-status",
+            "-updated_on",
+        )
+
+    def get_context_data(self, **kwargs):
+        """Add to the context:
+        - tooltips for tooltip status icons
+        - search form for navbar search bar
+        - back_url for the back button of the profile page
+        """
+        context = super().get_context_data(**kwargs)
+
+        # add status tooltips to the context
+        tooltips = {
+            Resume.ResumePublishStatus.ACTIVE: "This resume is visible"
+            " to employers",
+            Resume.ResumePublishStatus.IN_REVIEW: "This resume is pending"
+            " approval",
+            Resume.ResumePublishStatus.REJECTED: "This resume contains"
+            " inappropriate content or does not meet the requirements",
+            Resume.ResumePublishStatus.CLOSED: "This resume is not visible and"
+            " cannot be edited",
+        }
+        context["tooltips"] = tooltips
+        context["nav_form"] = SearchForm(auto_id=False)
+        context["back_url"] = self._get_back_url()
+        return context
+
+    def _get_back_url(self):
+        """
+        Return the URL for the back button of the profile page.
+        If the refferer is a child page of the my resumes, return to home.
+        """
+        # match if the url contains /resumes/<int>/update/ in the url
+        update_resume_regex = r"/resume/\d+/update"
+        pattern = re.compile(update_resume_regex)
+
+        # child pages of the profile page
+        child_pages = [
+            reverse("resume_create"),
+            reverse("my_resumes"),
+        ]
+        home = reverse("jobseeker_home")
+        refferer = self.request.META.get("HTTP_REFERER")
+
+        # check if the refferer exists and is a safe URL
+        if refferer and url_has_allowed_host_and_scheme(
+            refferer, self.request.get_host()
+        ):
+            # return home url if the refferer is a child page of the my resumes
+            if any(
+                page in refferer or pattern.search(page)
+                for page in child_pages
+            ):
+                return home
+            else:
+                return refferer
+        else:
+            return home
+
+
+class ResumeUpdateView(
+    LoginRequiredMixin, JobseekerRequiredMixin, SuccessMessageMixin, UpdateView
+):
+    # TODO: add test
+    model = Resume
+    form_class = ResumeCreateForm
+    template_name_suffix = "_update_form"
+    success_message = (
+        "Your resume has been updated and is "
+        "<span class='text-info'>pending approval</span>"
+    )
+    success_url = reverse_lazy("my_resumes")
+
+    def test_func(self):
+        """Allow only the owner to update the resume,
+        if the resume is not closed"""
+        self.jobseeker_test = super().test_func()
+        return (
+            self.jobseeker_test
+            and self.request.user == self.get_object().jobseeker
+            and self.get_object().status != Resume.ResumePublishStatus.CLOSED
+        )
+
+    def handle_no_permission(self):
+        """Inherit the JobseekerRequiredMixin handle_no_permission method
+        that displays specific 403 page if the user is not Jobseeker,
+        otherwise inherit the UserPassesTestMixin default handle_no_permission
+        method that displays default 403 page"""
+        if not self.jobseeker_test:
+            return super().handle_no_permission()
+        return super(UserPassesTestMixin, self).handle_no_permission()
+
+    def form_valid(self, form: BaseForm) -> HttpResponse:
+        """Set the status of the resume to IN_REVIEW"""
+        form.instance.status = Resume.ResumePublishStatus.IN_REVIEW
+        return super().form_valid(form)
+
+
+class ResumeCloseView(
+    LoginRequiredMixin,
+    JobseekerRequiredMixin,
+    SingleObjectMixin,
+    View,
+):
+    # TODO: add test
+    http_method_names = ["post"]  # only POST requests are allowed
+    model = Resume
+
+    def test_func(self):
+        """Allow only the owner to close the resume,
+        if the resume is not closed yet"""
+        self.jobseeker_test = super().test_func()
+        return (
+            self.jobseeker_test
+            and self.request.user == self.get_object().jobseeker
+            and self.get_object().status != Resume.ResumePublishStatus.CLOSED
+        )
+
+    def handle_no_permission(self):
+        """Inherit the JobseekerRequiredMixin handle_no_permission method
+        that displays specific 403 page if the user is not Jobseeker,
+        otherwise inherit the UserPassesTestMixin default handle_no_permission
+        method that displays default 403 page"""
+        if not self.jobseeker_test:
+            return super().handle_no_permission()
+        return super(UserPassesTestMixin, self).handle_no_permission()
+
+    # allows save object only if the transaction is successful
+    @transaction.atomic
+    def post(self, request, *args, **kwargs):
+        """Set the status of the resume to CLOSED"""
+        self.object = self.get_object()
+        self.object.status = Resume.ResumePublishStatus.CLOSED
+        self.object.save()
+        messages.success(self.request, "Your resume has been closed")
+        return HttpResponseRedirect(reverse("my_resumes"))
+
+
+class ResumeOpenView(
+    LoginRequiredMixin,
+    JobseekerRequiredMixin,
+    SingleObjectMixin,
+    View,
+):
+    # TODO: add test
+    http_method_names = ["post"]  # only POST requests are allowed
+    model = Resume
+
+    def test_func(self):
+        """Allow only the owner to open the resume,
+        if the resume is closed"""
+        self.jobseeker_test = super().test_func()
+        return (
+            self.jobseeker_test
+            and self.request.user == self.get_object().jobseeker
+            and self.get_object().status == Resume.ResumePublishStatus.CLOSED
+        )
+
+    def handle_no_permission(self):
+        """Inherit the JobseekerRequiredMixin handle_no_permission method
+        that displays specific 403 page if the user is not Jobseeker,
+        otherwise inherit the UserPassesTestMixin default handle_no_permission
+        method that displays default 403 page"""
+        if not self.jobseeker_test:
+            return super().handle_no_permission()
+        return super(UserPassesTestMixin, self).handle_no_permission()
+
+    # allows save object only if the transaction is successful
+    @transaction.atomic
+    def post(self, request, *args, **kwargs):
+        """Set the status of the resume to IN_REVIEW"""
+        self.object = self.get_object()
+        self.object.status = Resume.ResumePublishStatus.IN_REVIEW
+        self.object.save()
+        messages.success(
+            self.request,
+            "Your resume has been opened and is awaiting approval",
+        )
+        return HttpResponseRedirect(reverse("my_resumes"))
+
+
+class ResumeDeleteView(
+    LoginRequiredMixin, JobseekerRequiredMixin, DeleteView
+):
+    model = Resume
+    template_name = "resumes/my_resumes.html"
+    success_message = "Your resume has been permanently deleted"
+    success_url = reverse_lazy("my_resumes")
+
+    def test_func(self):
+        """Allow only the owner to delete the resume"""
+        self.jobseeker_test = super().test_func()
+        return (
+            self.jobseeker_test
+            and self.request.user == self.get_object().jobseeker
+        )
+
+    def handle_no_permission(self):
+        """Inherit the JobseekerRequiredMixin handle_no_permission method
+        that displays to specific 403 page if the user is not Jobseeker,
+        otherwise inherit the UserPassesTestMixin default handle_no_permission
+        method that displays default 403 page"""
+        if not self.jobseeker_test:
+            return super().handle_no_permission()
+        return super(UserPassesTestMixin, self).handle_no_permission()
+
+    def delete(self, request, *args, **kwargs):
+        """Add success message to the delete view"""
+        messages.success(self.request, self.success_message)
+        return super().delete(request, *args, **kwargs)

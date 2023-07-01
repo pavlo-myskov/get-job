@@ -31,7 +31,7 @@ class Resume(models.Model):
     class ResumePublishStatus(models.TextChoices):
         IN_REVIEW = "IN_REVIEW", "In Review"
         ACTIVE = "ACTIVE", "Active"
-        WITHDRAWN = "WITHDRAWN", "Withdrawn"
+        REJECTED = "REJECTED", "Rejected"
         CLOSED = "CLOSED", "Closed"
 
     class Duration(models.TextChoices):
@@ -59,6 +59,7 @@ class Resume(models.Model):
         validators=[file_validator],
     )
     created_on = models.DateTimeField(auto_now_add=True)
+    updated_on = models.DateTimeField(auto_now=True)
     status = models.CharField(
         choices=ResumePublishStatus.choices,
         max_length=50,
@@ -76,4 +77,4 @@ class Resume(models.Model):
         return f"{self.occupation} - {self.jobseeker}"
 
     def get_absolute_url(self):
-        return reverse("resumes:resume_detail", args=[str(self.id)])
+        return reverse("resume_detail", args=[str(self.pk)])

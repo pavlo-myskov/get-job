@@ -34,13 +34,13 @@ class VacancyAdmin(admin.ModelAdmin):
     # Sorted by vacancies that are in review and with the oldest created date
     ordering = ("status", "created_on")
 
-    actions = ['approve_job_posts', 'withdraw_job_posts', 'close_job_posts']
+    actions = ['approve_job_posts', 'reject_job_posts', 'close_job_posts']
 
     def approve_job_posts(self, request, queryset):
         queryset.update(status=Vacancy.JobPostStatus.ACTIVE)
 
-    def withdraw_job_posts(self, request, queryset):
-        queryset.update(status=Vacancy.JobPostStatus.WITHDRAWN)
+    def reject_job_posts(self, request, queryset):
+        queryset.update(status=Vacancy.JobPostStatus.REJECTED)
 
     def close_job_posts(self, request, queryset):
         queryset.update(status=Vacancy.JobPostStatus.CLOSED)

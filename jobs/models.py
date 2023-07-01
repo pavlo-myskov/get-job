@@ -93,7 +93,7 @@ class Vacancy(models.Model):
     class JobPostStatus(models.TextChoices):
         IN_REVIEW = "IN_REVIEW", "In Review"
         ACTIVE = "ACTIVE", "Active"
-        WITHDRAWN = "WITHDRAWN", "Withdrawn"
+        REJECTED = "REJECTED", "Rejected"
         CLOSED = "CLOSED", "Closed"
 
     title = models.CharField(max_length=255, blank=False)
@@ -137,4 +137,4 @@ class Vacancy(models.Model):
         return self.title
 
     def get_absolute_url(self):
-        return reverse("jobs:vacancy_detail", args=[str(self.id)])
+        return reverse("job_detail", args=[str(self.pk)])

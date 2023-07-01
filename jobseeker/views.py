@@ -65,6 +65,11 @@ class JobseekerProfileDetailView(
         jobseeker_test = super().test_func()
         return jobseeker_test and self.request.user == self.get_object().user
 
+    def handle_no_permission(self):
+        """Inherit the default handle_no_permission method
+        from UserPassesTestMixin that redirects to default 403 page"""
+        return super(UserPassesTestMixin, self).handle_no_permission()
+
     def get_object(self, queryset=None):
         """Return the jobseeker profile for the current user"""
         return self.request.user.jobseekerprofile
@@ -115,6 +120,11 @@ class JobseekerProfileUpdateView(
         """Allow only the owner to update the profile"""
         jobseeker_test = super().test_func()
         return jobseeker_test and self.request.user == self.get_object().user
+
+    def handle_no_permission(self):
+        """Inherit the default handle_no_permission method
+        from UserPassesTestMixin that redirects to default 403 page"""
+        return super(UserPassesTestMixin, self).handle_no_permission()
 
     def get_object(self, queryset=None):
         """Return the jobseeker profile for the current user"""

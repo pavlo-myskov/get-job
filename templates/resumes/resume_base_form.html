@@ -1,16 +1,12 @@
-{% extends "base.html" %}
 {% load static %}
 {% load crispy_forms_tags %}
 
-{% block content %}
-
-<div class="container-fluid px-0 flex-shrink-0 my-sm-auto">
+<div class="container-fluid px-0 my-sm-auto">
   <div class="card bg-light border-0 mx-auto" style="max-width: 40rem;">
     <div class="card-header">
       <div class="d-flex align-items-center justify-content-between">
-        {% if redirect_field_value %}
-        <a href="{{ redirect_field_value }}"{% else %}<a href="{% url 'jobseeker_profile' %}"
-        {% endif %}
+        {% if request.META.HTTP_REFERER %}
+        <a href="#" onClick="javascript:history.back();"{% else %}<a href="{% url 'my_resumes' %}"{% endif %}
         class="text-decoration-none d-flex align-items-center text-muted fs-5"
           area-label="return to previous page">
           <i class="fa fa-arrow-left"></i>
@@ -23,14 +19,7 @@
     </div>
     <div class="card-body">
       <h3 class="card-title text-center text-royalpurple">
-        <span class="position-relative">
-          Edit Profile
-          <span
-            class="position-absolute top-0 end-25 translate-middle badge border border-light rounded-circle p-0">
-            <i class="fa fa-info-circle text-muted" data-bs-toggle="tooltip" data-bs-placement="right"
-              title="Some data will be used to generate your public resumes. Try to fill in as much as possible."></i>
-          </span>
-        </span>
+        {{ form_name }}
       </h3>
       <form method="POST" enctype="multipart/form-data">
         {% csrf_token %}
@@ -38,11 +27,11 @@
         {% if redirect_field_value %}
         <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
         {% endif %}
-        <button type="submit" class="btn btn-royalpurple float-end mx-2 mx-sm-3 py-1">Submit</button>
-        <a href="{% url 'jobseeker_profile' %}" class="btn btn-outline-secondary float-end py-1">Cancel</a>
+        <button type="submit" class="btn btn-royalpurple float-end mx-2 mx-sm-3 py-1 px-3">Save</button>
+        {% if request.META.HTTP_REFERER %}
+        <a href="#" onClick="javascript:history.back();"{% else %}<a href="{% url 'my_resumes' %}"{% endif %}
+         class="btn btn-outline-secondary float-end py-1">Cancel</a>
       </form>
     </div>
   </div>
 </div>
-
-{% endblock %}

@@ -8019,4 +8019,7 @@ a.ui-button:active,
   position: relative;
   z-index: 1; }
 
+#my-resumes-table tbody tr {
+  height: 70px; }
+
 /*# sourceMappingURL=main.css.map */

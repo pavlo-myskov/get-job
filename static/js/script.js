@@ -9,12 +9,23 @@ const bootstrapColors = {
     light: 'rgb(248, 249, 250)',
 }
 
-
+// ___MAIN FUNCTIONALITY___
 $(document).ready(function () {
     let windowWidth = window.innerWidth;
 
     // init dropdown menu
     let dropdown = initDropdown();
+
+    showToast();
+    // show messages Modal
+    $('#messagesModal').modal('show');
+
+    // init tooltips
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl)
+    })
+
 
     hideShowNavbar(windowWidth, dropdown);
     fixDaysCounterPosition(windowWidth);
@@ -39,13 +50,21 @@ $(document).ready(function () {
     }
     );
 
-    showToast();
-
     // event listener for logout link
     $('#logout-link').click(function (e) {
         e.preventDefault();
         $('#logoutModal').modal('show');
-    })
+    });
+
+    // event listener for resume close button
+    $('.resume-close-btn').click(function (e) {
+        setResumeActionModal(e, 'close');
+    });
+    // event listener for resume delete button
+    $('.resume-delete-btn').click(function (e) {
+        setResumeActionModal(e, 'delete');
+    });
+
 });
 
 
@@ -276,4 +295,16 @@ function changeToastColor(toastElList) {
         toast.style.setProperty('--toast-bg-color', rgbColor);
     }
     );
+}
+
+/**
+ * Set resume modal form action url and modal action text by
+ * clicking on `Close/Delete` button.
+ */
+function setResumeActionModal(event, actionText) {
+    event.preventDefault();
+    let actionUrl = event.target.dataset.resumeActionUrl;
+    $('#modal-action').text(actionText);
+    $('#resume-modal-form').attr('action', actionUrl);
+    $('#resumeModal').modal('show');
 }

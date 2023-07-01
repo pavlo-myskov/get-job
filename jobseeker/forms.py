@@ -60,7 +60,8 @@ class JobseekerProfileForm(ModelForm):
 
     avatar = CloudinaryFileField(
         help_text="Upload a profile picture. "
-        f"Allowed image types are:  {', '.join(allowed_img_types)}",
+        f"Allowed image types are:  {', '.join(allowed_img_types)}<br>"
+        "Maximum file size: 5 MB",
         label="Profile Picture",
         required=False,
         options={
