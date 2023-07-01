@@ -449,3 +449,34 @@ class ResumeOpenView(
             "Your resume has been opened and is awaiting approval",
         )
         return HttpResponseRedirect(reverse("my_resumes"))
+
+
+class ResumeDeleteView(
+    LoginRequiredMixin, JobseekerRequiredMixin, DeleteView
+):
+    model = Resume
+    template_name = "resumes/my_resumes.html"
+    success_message = "Your resume has been permanently deleted"
+    success_url = reverse_lazy("my_resumes")
+
+    def test_func(self):
+        """Allow only the owner to delete the resume"""
+        self.jobseeker_test = super().test_func()
+        return (
+            self.jobseeker_test
+            and self.request.user == self.get_object().jobseeker
+        )
+
+    def handle_no_permission(self):
+        """Inherit the JobseekerRequiredMixin handle_no_permission method
+        that displays to specific 403 page if the user is not Jobseeker,
+        otherwise inherit the UserPassesTestMixin default handle_no_permission
+        method that displays default 403 page"""
+        if not self.jobseeker_test:
+            return super().handle_no_permission()
+        return super(UserPassesTestMixin, self).handle_no_permission()
+
+    def delete(self, request, *args, **kwargs):
+        """Add success message to the delete view"""
+        messages.success(self.request, self.success_message)
+        return super().delete(request, *args, **kwargs)

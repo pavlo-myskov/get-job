@@ -24,6 +24,11 @@ urlpatterns = [
         name="resume_open",
     ),
     path(
+        "jobseeker/resume/<int:pk>/delete",
+        views.ResumeDeleteView.as_view(),
+        name="resume_delete",
+    ),
+    path(
         "jobseeker/resumes",
         views.MyResumeListView.as_view(),
         name="my_resumes",

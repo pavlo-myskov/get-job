@@ -57,7 +57,13 @@ $(document).ready(function () {
     });
 
     // event listener for resume close button
-    setResumeModal();
+    $('.resume-close-btn').click(function (e) {
+        setResumeActionModal(e, 'close');
+    });
+    // event listener for resume delete button
+    $('.resume-delete-btn').click(function (e) {
+        setResumeActionModal(e, 'delete');
+    });
 
 });
 
@@ -293,14 +299,12 @@ function changeToastColor(toastElList) {
 
 /**
  * Set resume modal form action url and modal action text by
- * clicking on `Close` button.
+ * clicking on `Close/Delete` button.
  */
-function setResumeModal() {
-    $('.resume-close-btn').click(function (e) {
-        e.preventDefault();
-        let closeUrl = $(this).data('resume-close-url');
-        $('#modal-action').text('close');
-        $('#resume-modal-form').attr('action', closeUrl);
-        $('#resumeModal').modal('show');
-    })
+function setResumeActionModal(event, actionText) {
+    event.preventDefault();
+    let actionUrl = event.target.dataset.resumeActionUrl;
+    $('#modal-action').text(actionText);
+    $('#resume-modal-form').attr('action', actionUrl);
+    $('#resumeModal').modal('show');
 }

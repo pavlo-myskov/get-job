@@ -104,16 +104,15 @@
                       </form>
                       {% else %}
                       <a href="#" class="resume-close-btn stretched-link d-flex flex-column align-items-center text-decoration-none"
-                          aria-label="close resume" data-resume-close-url="{% url 'resume_close' resume.pk %}">
+                          aria-label="close resume" data-resume-action-url="{% url 'resume_close' resume.pk %}">
                         <i class="fa fa-xmark text-royalpurple"></i>
                         <small class="d-none d-sm-inline text-muted">Close</small>
                       </a>
                       {% endif %}
                     </td>
                     <td class="position-relative px-2">
-                      <!-- TODO: resume_delete -->
-                      <a href="{% url 'resume_detail' resume.pk %}" class="stretched-link d-flex flex-column align-items-center text-decoration-none"
-                          aria-label="delete resume">
+                      <a href="#" class="resume-delete-btn stretched-link d-flex flex-column align-items-center text-decoration-none"
+                          aria-label="delete resume" data-resume-action-url="{% url 'resume_delete' resume.pk %}">
                         <i class="fa fa-trash text-royalpurple"></i>
                         <small class="d-none d-sm-inline text-muted">Delete</small>
                       </a>
