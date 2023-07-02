@@ -37,7 +37,7 @@
   {% else %}
   <!-- Toast msg alert by default -->
     <div class="position-fixed top-0 end-0 p-3 mt-5 me-sm-2" style="z-index: 11">
-      <div class="toast default-msg-toast shadow align-items-center position-relative" data-msg-tag="{{ message.tags }}" role="alert" aria-live="assertive" aria-atomic="true">
+      <div class="toast hide default-msg-toast shadow align-items-center position-relative" data-msg-tag="{{ message.tags }}" role="alert" aria-live="assertive" aria-atomic="true">
         <div class="d-flex text-black">
           <div class="toast-body w-100 d-flex justify-content-between">
             <span>{{ message | safe }}</span>
@@ -56,7 +56,7 @@
 
   <!-- Multi-use toast alert -->
   <div class="position-fixed top-0 end-0 p-3 mt-5 me-sm-2" style="z-index: 11">
-    <div class="toast multi-use-toast shadow align-items-center position-relative" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="toast hide multi-use-toast shadow align-items-center position-relative" role="alert" aria-live="assertive" aria-atomic="true">
       <div class="d-flex text-black">
         <div class="toast-body w-100 d-flex justify-content-between">
           <span class="custom-toast-msg">...</span>
