@@ -12,11 +12,11 @@
     <!-- Nav header -->
     <nav class="card-header bg-white" aria-label="profile nav header">
       <div class="d-flex align-items-center justify-content-between">
-        <a href="{{ back_url }}"
+        <a href="{% url 'job_search' %}"
         class="text-decoration-none d-flex align-items-center text-muted fs-4"
           area-label="back to search results">
           <i class="fa fa-arrow-left"></i>
-          <span class="mx-2">Back</span>
+          <span class="mx-2">To search</span>
         </a>
         <a href="{% url 'jobseeker_home' %}" class="text-decoration-none d-flex align-items-center text-muted fs-4"
         area-label="go to jobeeker home page">
