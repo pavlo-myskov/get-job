@@ -1,4 +1,5 @@
 from django.views.generic import ListView, DetailView
+from django.db.models import Case, When, BooleanField
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.views.generic.edit import UpdateView
@@ -10,6 +11,7 @@ from allauth.account.utils import get_next_redirect_url
 
 from jobs.models import Vacancy
 from jobs.forms import SearchForm
+from jobs.utils import annotate_saved_jobs
 
 from users.models import User
 
@@ -32,8 +34,13 @@ class HomeView(ListView):
     context_object_name = "job_list"
     # get only first 4 active vacancies
     queryset = Vacancy.objects.active()[:4]
-
     template_name = "jobseeker/home.html"
+
+    def get_queryset(self):
+        """Annotate the vacancies with is_saved field
+        if user is authenticated and is a jobseeker"""
+        queryset = super().get_queryset()
+        return annotate_saved_jobs(queryset, self.request)
 
     def get_context_data(self, **kwargs):
         """Add search form to the context"""
@@ -143,3 +150,18 @@ class JobseekerProfileUpdateView(
             return next_url
         else:
             return reverse("jobseeker_profile")
+
+
+class FavoriteJobList(LoginRequiredMixin, JobseekerRequiredMixin, ListView):
+    template_name = 'jobseeker/favorite_jobs.html'
+    context_object_name = 'favorite_list'
+
+    def get_queryset(self):
+        favorites = self.request.user.jobseekerprofile.favorites.all()
+        return favorites
+
+    def get_context_data(self, **kwargs):
+        """Add search form and back URL to the context"""
+        context = super().get_context_data(**kwargs)
+        context["nav_form"] = SearchForm(auto_id=False)
+        return context

@@ -61,12 +61,20 @@
 
     </div>
     <div class="card-footer border-top-0">
-      <div class="d-flex justify-content-between px-3">
-        <a href="#" class="btn-save btn--royalpurple card-link">
-          Save
-        </a>
-        <a href="#" class="btn btn-outline-royalpurple card-link py-0 my-1">Apply</a>
-      </div>
+      {% if user.is_authenticated and user.role == 'JOBSEEKER' %}
+        <div class="d-flex justify-content-between px-3">
+          <form class="save-job-form" action="{% url 'job_save_toggle' vacancy.id %}" method="post">
+            {% csrf_token %}
+            <button type="submit"
+              class="btn-save{% if vacancy.is_saved %}--filled{% endif %} btn--royalpurple card-link">
+              Save
+            </button>
+          </form>
+          <a href="#" class="btn btn-outline-royalpurple card-link py-0 my-1">Apply</a>
+        </div>
+      {% else %}
+        <a href="#" class="float-end btn btn-outline-royalpurple card-link py-0 my-1">Apply</a>
+      {% endif %}
     </div>
   </div>
 </div>

@@ -32,7 +32,7 @@
       <div class="card-body p-0">
         {% if resume_list %}
           <div class="table-responsive">
-            <table id="my-resumes-table" class="table table-hover align-middle">
+            <table id="my-resumes-table" class="table table-hover align-middle mb-0">
               <caption class="mx-2">
                 *<small>Only active resumes will be shown in search results and can be applied to jobs.</small>
                 <br>
@@ -62,8 +62,8 @@
                   {% define tooltips.CLOSED as tooltip %}
                   <tr class="table-secondary">
                 {% endif %}
-                    <td class="position-relative">
-                      <a href="{% url 'resume_detail' resume.pk %}" class="stretched-link">
+                    <td>
+                      <a href="{% url 'resume_detail' resume.pk %}" class="link-royalpurple">
                         {{ resume.occupation|truncatechars:40 }}
                       </a>
                     </td>
@@ -85,7 +85,8 @@
                           <small class="d-none d-sm-inline text-muted">Edit</small>
                         </div>
                       {% else %}
-                      <a href="{% url 'resume_update' resume.pk %}" class="stretched-link d-flex flex-column align-items-center text-decoration-none"
+                      <a href="{% url 'resume_update' resume.pk %}"
+                          class="hover-grow-resume-control stretched-link d-flex flex-column align-items-center text-decoration-none"
                           aria-label="edit resume">
                         <i class="fa fa-edit text-royalpurple"></i>
                         <small class="d-none d-sm-inline text-muted">Edit</small>
@@ -97,13 +98,13 @@
                       <form method="post" action="{% url 'resume_open' resume.pk %}" id="resume-open-form-{{ resume.pk }}">
                         {% csrf_token %}
                         <a type="submit" href="#" onclick="document.getElementById('resume-open-form-{{ resume.pk }}').submit();"
-                          class="stretched-link d-flex flex-column align-items-center text-decoration-none" aria-label="open resume">
+                          class="hover-grow-resume-control stretched-link d-flex flex-column align-items-center text-decoration-none" aria-label="open resume">
                           <i class="fa fa-retweet text-royalpurple"></i>
                           <small class="d-none d-sm-inline text-muted">Open</small>
                         </a>
                       </form>
                       {% else %}
-                      <a href="#" class="resume-close-btn stretched-link d-flex flex-column align-items-center text-decoration-none"
+                      <a href="#" class="hover-grow-resume-control resume-close-btn stretched-link d-flex flex-column align-items-center text-decoration-none"
                           aria-label="close resume" data-resume-action-url="{% url 'resume_close' resume.pk %}">
                         <i class="fa fa-xmark text-royalpurple"></i>
                         <small class="d-none d-sm-inline text-muted">Close</small>
@@ -111,7 +112,7 @@
                       {% endif %}
                     </td>
                     <td class="position-relative px-2">
-                      <a href="#" class="resume-delete-btn stretched-link d-flex flex-column align-items-center text-decoration-none"
+                      <a href="#" class="hover-grow-resume-control resume-delete-btn stretched-link d-flex flex-column align-items-center text-decoration-none"
                           aria-label="delete resume" data-resume-action-url="{% url 'resume_delete' resume.pk %}">
                         <i class="fa fa-trash text-royalpurple"></i>
                         <small class="d-none d-sm-inline text-muted">Delete</small>
@@ -123,10 +124,10 @@
             </table>
           </div>
         {% else %}
-        <h5 class="card-title mb-4">You have not created any resumes yet.</h5>
+        <h5 class="card-title">You have not created any resumes yet.</h5>
         {% endif %}
       </div>
-      <div class="text-end text-sm-start mb-2 mx-3">
+      <div class="text-end text-sm-start m-3 mb-sm-1">
         <a href="{% url 'resume_create' %}" class="btn btn-outline-royalpurple py-1">
           <i class="fa fa-plus"></i>
           <span class="ms-2">Add New Resume</span>
