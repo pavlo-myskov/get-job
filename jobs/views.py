@@ -1,47 +1,14 @@
 from django.shortcuts import get_object_or_404
 from django.http import JsonResponse
-from django.db.models import Q
-from django.db.models import QuerySet
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import View
 from django.views.generic import ListView, DetailView
 
 from jobseeker.views import JobseekerRequiredMixin
 
-from .models import Vacancy, Areas, IRELAND_AREAS, DUBLIN_AREAS
+from .utils import annotate_saved_jobs, filter_jobs
+from .models import Vacancy
 from .forms import SearchForm
-
-
-def filter_jobs(search_data) -> QuerySet:
-    """Search for vacancies with the provided search data with Q objects"""
-    query = Q()
-    # change title to title__icontains
-    # to search for case insensitive title
-    if search_data.get("title"):
-        query &= Q(title__icontains=search_data["title"])
-
-    if search_data.get("area"):
-        area = search_data["area"]
-        # change area to area__in if Areas.IRELAND is provided
-        # to search in by irish areas only
-        if area == Areas.IRELAND:
-            query &= Q(area__in=IRELAND_AREAS)
-        # search in dublin areas only if DUBLIN_CITY is provided
-        elif area == Areas.DUBLIN_CITY:
-            query &= Q(area__in=DUBLIN_AREAS)
-        else:
-            query &= Q(area=area)
-
-    if search_data.get("job_location"):
-        query &= Q(job_location=search_data["job_location"])
-
-    if search_data.get("job_type"):
-        query &= Q(job_type=search_data["job_type"])
-
-    # search for vacancies with the provided search data
-    job_list = Vacancy.objects.active().filter(query).distinct()
-
-    return job_list
 
 
 class JobListView(ListView):
@@ -64,7 +31,10 @@ class JobListView(ListView):
             )
         else:
             self.form = SearchForm()
-            return Vacancy.objects.filter(status=Vacancy.JobPostStatus.ACTIVE)
+            job_list = Vacancy.objects.filter(
+                status=Vacancy.JobPostStatus.ACTIVE
+            )
+            return annotate_saved_jobs(job_list, self.request)
 
         # if form is valid, search for vacancies
         if self.form.is_valid():
@@ -95,7 +65,7 @@ class JobListView(ListView):
             # if form is not valid, return an empty queryset
             job_list = Vacancy.objects.none()
 
-        return job_list
+        return annotate_saved_jobs(job_list, self.request)
 
     def get_context_data(self, **kwargs):
         """Add search form to the context"""

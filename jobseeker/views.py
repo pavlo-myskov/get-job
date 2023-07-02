@@ -11,6 +11,7 @@ from allauth.account.utils import get_next_redirect_url
 
 from jobs.models import Vacancy
 from jobs.forms import SearchForm
+from jobs.utils import annotate_saved_jobs
 
 from users.models import User
 
@@ -39,22 +40,7 @@ class HomeView(ListView):
         """Annotate the vacancies with is_saved field
         if user is authenticated and is a jobseeker"""
         queryset = super().get_queryset()
-
-        if (
-            self.request.user.is_authenticated
-            and self.request.user.role == User.Role.JOBSEEKER
-        ):
-            profile = self.request.user.jobseekerprofile
-
-            # get the ids of the saved vacancies
-            saved_ids = profile.favorites.values_list("id", flat=True)
-            # set is_saved to True if the vacancy id is in saved_ids
-            queryset = queryset.annotate(is_saved=Case(
-                When(id__in=saved_ids, then=True),
-                default=False,
-                output_field=BooleanField()
-            ))
-        return queryset
+        return annotate_saved_jobs(queryset, self.request)
 
     def get_context_data(self, **kwargs):
         """Add search form to the context"""
