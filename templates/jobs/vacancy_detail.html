@@ -10,14 +10,10 @@
     <!-- Job detail header -->
     <div class="card-header">
       <div class="d-flex align-items-center justify-content-between">
-        {% url 'job_search' as url_job_search %}
-        {% if url_job_search in request.META.HTTP_REFERER %}
-        <a href="#" onClick="javascript:history.back();"{% else %}<a href="{{ url_job_search }}"
-        {% endif %}
-        class="text-decoration-none d-flex align-items-center text-muted fs-4"
-          area-label="back to search results">
+        <a href="{% url 'job_search' %}#{{ vacancy.id }}" class="text-decoration-none d-flex align-items-center text-muted fs-4"
+          area-label="to search results">
           <i class="fa fa-arrow-left"></i>
-          <span class="mx-2">Back</span>
+          <span class="mx-2">To search</span>
         </a>
         <div class="d-flex">
           <button class="btn btn-royalpurple btn-sm px-sm-3 py-1 me-2">Apply</button>

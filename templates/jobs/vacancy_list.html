@@ -11,8 +11,10 @@
   <div class="container px-0">
     <div class="card-header px-4 d-flex align-items-center justify-content-between">
       <!-- arrow font awesome icon back to the home page -->
-      <a href="{% url 'jobseeker_home' %}" class="text-decoration-none" area-label="back to home page">
-        <i class="fa fa-arrow-left text-muted fs-4"></i>
+      <a href="{% url 'jobseeker_home' %}" class="text-decoration-none d-flex align-items-center text-muted fs-4"
+        area-label="back to home page">
+        <i class="fa fa-arrow-left"></i>
+        <span class="mx-2">Home</span>
       </a>
       <h4 class="text-muted">
         {% if page_obj.paginator.count %}
@@ -60,6 +62,7 @@
         <div class="row row-cols-1 g-2">
           {% for vacancy in job_list %}
           <!-- ______vacancy card______ -->
+           <a name="{{ vacancy.id }}"></a>
           {% include "jobs/vacancy_card.html" %}
           {% endfor %}
         </div>

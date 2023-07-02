@@ -5,7 +5,6 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.views.generic.edit import UpdateView
 from django.shortcuts import render
 from django.urls import reverse
-from django.utils.http import url_has_allowed_host_and_scheme
 
 from allauth.account.utils import get_next_redirect_url
 
@@ -85,34 +84,7 @@ class JobseekerProfileDetailView(
         """Add search form and back URL to the context"""
         context = super().get_context_data(**kwargs)
         context["nav_form"] = SearchForm(auto_id=False)
-        context["back_url"] = self._get_back_url()
         return context
-
-    def _get_back_url(self):
-        """
-        Return the URL for the back button of the profile page.
-        If the refferer is a child page of the profile page, return to home.
-        """
-        # child pages of the profile page
-        child_pages = [
-            reverse("jobseeker_profile_update"),
-            reverse("account_change_password"),
-            reverse("account_deactivate"),
-        ]
-        home = reverse("jobseeker_home")
-        refferer = self.request.META.get("HTTP_REFERER")
-
-        # check if the refferer exists and is a safe URL
-        if refferer and url_has_allowed_host_and_scheme(
-            refferer, self.request.get_host()
-        ):
-            # return home url if the refferer is a child page of the profile
-            if any(page in refferer for page in child_pages):
-                return home
-            else:
-                return refferer
-        else:
-            return home
 
 
 class JobseekerProfileUpdateView(

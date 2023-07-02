@@ -15,15 +15,14 @@
     <!-- Nav header -->
     <nav class="card-header bg-white" aria-label="internal navigation">
       <div class="d-flex align-items-center justify-content-between">
-        <!-- TODO back url -->
-        <a href="{{ back_url }}"
+        <a href="{% url 'my_resumes' %}"
         class="text-decoration-none d-flex align-items-center text-muted fs-4"
-          area-label="back to search results">
+          area-label="to my resumes">
           <i class="fa fa-arrow-left"></i>
-          <span class="mx-2">Back</span>
+          <span class="mx-2">To my resumes</span>
         </a>
         <a href="{% url 'jobseeker_home' %}" class="text-decoration-none d-flex align-items-center text-muted fs-4"
-        area-label="go to jobeeker home page">
+        area-label="go to home page">
           <i class="fa fa-home"></i>
       </a>
       </div>
