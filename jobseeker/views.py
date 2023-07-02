@@ -150,3 +150,18 @@ class JobseekerProfileUpdateView(
             return next_url
         else:
             return reverse("jobseeker_profile")
+
+
+class FavoriteJobList(LoginRequiredMixin, JobseekerRequiredMixin, ListView):
+    template_name = 'jobseeker/favorite_jobs.html'
+    context_object_name = 'favorite_list'
+
+    def get_queryset(self):
+        favorites = self.request.user.jobseekerprofile.favorites.all()
+        return favorites
+
+    def get_context_data(self, **kwargs):
+        """Add search form and back URL to the context"""
+        context = super().get_context_data(**kwargs)
+        context["nav_form"] = SearchForm(auto_id=False)
+        return context

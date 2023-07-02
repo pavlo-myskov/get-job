@@ -32,7 +32,7 @@
       <div class="card-body p-0">
         {% if resume_list %}
           <div class="table-responsive">
-            <table id="my-resumes-table" class="table table-hover align-middle">
+            <table id="my-resumes-table" class="table table-hover align-middle mb-0">
               <caption class="mx-2">
                 *<small>Only active resumes will be shown in search results and can be applied to jobs.</small>
                 <br>
@@ -63,7 +63,7 @@
                   <tr class="table-secondary">
                 {% endif %}
                     <td>
-                      <a href="{% url 'resume_detail' resume.pk %}">
+                      <a href="{% url 'resume_detail' resume.pk %}" class="link-royalpurple">
                         {{ resume.occupation|truncatechars:40 }}
                       </a>
                     </td>
@@ -124,10 +124,10 @@
             </table>
           </div>
         {% else %}
-        <h5 class="card-title mb-4">You have not created any resumes yet.</h5>
+        <h5 class="card-title">You have not created any resumes yet.</h5>
         {% endif %}
       </div>
-      <div class="text-end text-sm-start mb-2 mx-3">
+      <div class="text-end text-sm-start m-3 mb-sm-1">
         <a href="{% url 'resume_create' %}" class="btn btn-outline-royalpurple py-1">
           <i class="fa fa-plus"></i>
           <span class="ms-2">Add New Resume</span>
