@@ -327,7 +327,8 @@ function toggleSaveResume(e) {
     // get action url from submit form
     const actionEndpoint = $(this).attr('action');
     const csrf_token = $(this).find("input[name='csrfmiddlewaretoken']").val();
-    const saveBtn = $(this).find("button[type='submit']");
+    // select all save buttons on the page
+    const saveBtn = $('.save-job-form').find("button[type='submit']");
 
     $.ajax({
         type: "POST",

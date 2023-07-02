@@ -88,6 +88,10 @@ class JobDetailView(DetailView):
     # get only active vacancies
     queryset = Vacancy.objects.active()
 
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        return annotate_saved_jobs(queryset, self.request)
+
     def get_context_data(self, **kwargs):
         """Add search form to the context"""
         context = super().get_context_data(**kwargs)
