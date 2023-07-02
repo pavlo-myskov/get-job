@@ -5,11 +5,11 @@
   <div class="card bg-light border-0 mx-auto" style="max-width: 40rem;">
     <div class="card-header">
       <div class="d-flex align-items-center justify-content-between">
-        {% if request.META.HTTP_REFERER %}
-        <a href="#" onClick="javascript:history.back();"{% else %}<a href="{% url 'my_resumes' %}"{% endif %}
-        class="text-decoration-none d-flex align-items-center text-muted fs-5"
-          area-label="return to previous page">
+        <a href="{% url 'my_resumes' %}"
+        class="text-decoration-none d-flex align-items-center text-muted fs-4"
+          area-label="to my resumes">
           <i class="fa fa-arrow-left"></i>
+          <span class="mx-2">To my resumes</span>
         </a>
         <a href="{% url 'jobseeker_home' %}" class="text-decoration-none d-flex align-items-center text-muted fs-5"
         area-label="go to jobeeker home page">
@@ -28,8 +28,8 @@
         <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
         {% endif %}
         <button type="submit" class="btn btn-royalpurple float-end mx-2 mx-sm-3 py-1 px-3">Save</button>
-        {% if request.META.HTTP_REFERER %}
-        <a href="#" onClick="javascript:history.back();"{% else %}<a href="{% url 'my_resumes' %}"{% endif %}
+
+        <a {% if redirect_field_value %}href="{{ redirect_field_value }}"{% else %}href="{% url 'my_resumes' %}"{% endif %}
          class="btn btn-outline-secondary float-end py-1">Cancel</a>
       </form>
     </div>

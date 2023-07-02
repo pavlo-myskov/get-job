@@ -294,40 +294,7 @@ class MyResumeListView(LoginRequiredMixin, JobseekerRequiredMixin, ListView):
         }
         context["tooltips"] = tooltips
         context["nav_form"] = SearchForm(auto_id=False)
-        context["back_url"] = self._get_back_url()
         return context
-
-    def _get_back_url(self):
-        """
-        Return the URL for the back button of the profile page.
-        If the refferer is a child page of the my resumes, return to home.
-        """
-        # match if the url contains /resumes/<int>/update/ in the url
-        update_resume_regex = r"/resume/\d+/update"
-        pattern = re.compile(update_resume_regex)
-
-        # child pages of the profile page
-        child_pages = [
-            reverse("resume_create"),
-            reverse("my_resumes"),
-        ]
-        home = reverse("jobseeker_home")
-        refferer = self.request.META.get("HTTP_REFERER")
-
-        # check if the refferer exists and is a safe URL
-        if refferer and url_has_allowed_host_and_scheme(
-            refferer, self.request.get_host()
-        ):
-            # return home url if the refferer is a child page of the my resumes
-            if any(
-                page in refferer or pattern.search(page)
-                for page in child_pages
-            ):
-                return home
-            else:
-                return refferer
-        else:
-            return home
 
 
 class ResumeUpdateView(
