@@ -330,8 +330,10 @@ function toggleSaveJob(e) {
     // get action url from submit form
     const actionEndpoint = $(this).attr('action');
     const csrfToken = $(this).find("input[name='csrfmiddlewaretoken']").val();
-    // select all save buttons on the page
-    const saveBtn = $('.save-job-form').find("button[type='submit']");
+
+    // select all save buttons of the card that contains submitted form
+    const targetCard = $(this).closest('.card')
+    const saveBtns = targetCard.find('.save-job-form').find("button[type='submit']");
 
     $.ajax({
         type: "POST",
@@ -349,9 +351,9 @@ function toggleSaveJob(e) {
 
             // change heart icon fill
             if (response.is_saved === true) {
-                saveBtn.addClass('btn-save--filled').removeClass('btn-save');
+                saveBtns.addClass('btn-save--filled').removeClass('btn-save');
             } else if (response.is_saved === false) {
-                saveBtn.addClass('btn-save').removeClass('btn-save--filled');
+                saveBtns.addClass('btn-save').removeClass('btn-save--filled');
             } else {
                 console.error('AJAX POST Save/Unsave Job: "response.result for save/unsave job is not valid"');
             }
@@ -373,7 +375,7 @@ function removeSavedJob(e) {
 
     const actionEndpoint = $(this).attr('action');
     const csrfToken = $(this).find("input[name='csrfmiddlewaretoken']").val();
-    const jobListItem = $(this).closest('li').addClass('hello');
+    const jobListItem = $(this).closest('li');
 
 
     $.ajax({
