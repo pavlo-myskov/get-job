@@ -13,7 +13,7 @@
         <a href="{% url 'job_search' %}#{{ vacancy.id }}" class="text-decoration-none d-flex align-items-center text-muted fs-4"
           area-label="to search results">
           <i class="fa fa-arrow-left"></i>
-          <span class="mx-2">To search</span>
+          <span class="mx-2">To job search</span>
         </a>
         <div class="d-flex">
           <button class="btn btn-royalpurple btn-sm px-sm-3 py-1 me-2">Apply</button>
@@ -22,7 +22,7 @@
               {% csrf_token %}
               <button type="submit"
                 class="btn btn-save{% if vacancy.is_saved %}--filled{% endif %} btn-sm btn--royalpurple border royalpurple-border px-sm-3 py-1">
-                Save
+                <span>Save{% if vacancy.is_saved %}d{% endif %}</span>
               </button>
             </form>
           {% endif %}

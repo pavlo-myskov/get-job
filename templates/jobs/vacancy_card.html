@@ -67,7 +67,7 @@
             {% csrf_token %}
             <button type="submit"
               class="btn-save{% if vacancy.is_saved %}--filled{% endif %} btn--royalpurple card-link">
-              Save
+              <span>Save{% if vacancy.is_saved %}d{% endif %}</span>
             </button>
           </form>
           <a href="#" class="btn btn-outline-royalpurple card-link py-0 my-1">Apply</a>

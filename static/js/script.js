@@ -352,8 +352,10 @@ function toggleSaveJob(e) {
             // change heart icon fill
             if (response.is_saved === true) {
                 saveBtns.addClass('btn-save--filled').removeClass('btn-save');
+                saveBtns.find('span').text('Saved');
             } else if (response.is_saved === false) {
                 saveBtns.addClass('btn-save').removeClass('btn-save--filled');
+                saveBtns.find('span').text('Save');
             } else {
                 console.error('AJAX POST Save/Unsave Job: "response.result for save/unsave job is not valid"');
             }
