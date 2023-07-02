@@ -68,7 +68,10 @@ $(document).ready(function () {
     });
 
     // event listener for submit of save form
-    $('.save-job-form').submit(toggleSaveResume);
+    $('.save-job-form').submit(toggleSaveJob);
+
+    // event listener for submit of remove fav job form
+    $('.remove-fav-job-form').submit(removeSavedJob);
 
 });
 
@@ -320,13 +323,13 @@ function setResumeActionModal(event, actionText) {
 }
 
 /**
- * Toggle save/unsave resume using ajax.
+ * Toggle save/unsave job using ajax.
  */
-function toggleSaveResume(e) {
+function toggleSaveJob(e) {
     e.preventDefault();
     // get action url from submit form
     const actionEndpoint = $(this).attr('action');
-    const csrf_token = $(this).find("input[name='csrfmiddlewaretoken']").val();
+    const csrfToken = $(this).find("input[name='csrfmiddlewaretoken']").val();
     // select all save buttons on the page
     const saveBtn = $('.save-job-form').find("button[type='submit']");
 
@@ -334,7 +337,7 @@ function toggleSaveResume(e) {
         type: "POST",
         url: actionEndpoint,
         data: {
-            'csrfmiddlewaretoken': csrf_token,
+            'csrfmiddlewaretoken': csrfToken,
         },
         // the type of data that should be returned from the server
         dataType: "json",
@@ -350,13 +353,44 @@ function toggleSaveResume(e) {
             } else if (response.is_saved === false) {
                 saveBtn.addClass('btn-save').removeClass('btn-save--filled');
             } else {
-                console.error('AJAX POST Save/Unsave Job: "response.result for save/unsave resume is not valid"');
+                console.error('AJAX POST Save/Unsave Job: "response.result for save/unsave job is not valid"');
             }
 
         },
         error: function (response) {
             console.error('AJAX POST Save/Unsave Job: "An error occurred while sending data to the server"');
             console.error('Response: ', response);
+        }
+    })
+}
+
+/**
+ * Remove saved job using ajax and remove job list element
+ * from Saved Jobs page without reloading the page.
+ */
+function removeSavedJob(e) {
+    e.preventDefault();
+
+    const actionEndpoint = $(this).attr('action');
+    const csrfToken = $(this).find("input[name='csrfmiddlewaretoken']").val();
+    const jobListItem = $(this).closest('li').addClass('hello');
+
+
+    $.ajax({
+        type: "POST",
+        url: actionEndpoint,
+        data: {
+            'csrfmiddlewaretoken': csrfToken,
+        },
+        dataType: 'json',
+        success: function (response) {
+            // set toast message
+            $('.custom-toast-msg').text(response.successMsg);
+            let toastElementsList = [].slice.call(document.querySelectorAll('.multi-use-toast'));
+            showToasts(toastElementsList, 'success');
+
+            // remove job list element
+            $(jobListItem).remove();
         }
     })
 }
