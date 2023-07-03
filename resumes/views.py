@@ -10,7 +10,6 @@ from dateutil.relativedelta import relativedelta
 from django.views import View
 from django.views.generic import ListView, DetailView
 from django.views.generic.detail import SingleObjectMixin
-from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.db.models import Q
@@ -220,6 +219,60 @@ class ResumeDetailView(DetailView):
         return context
 
 
+class MyResumeListView(JobseekerRequiredMixin, ListView):
+    model = Resume
+    template_name = "resumes/my_resumes.html"
+
+    def get_queryset(self):
+        # TODO: add test
+        """Return all resumes of the owner,
+        ordered by status, updated_on and created_on.
+        Example: IN_REVIEW on top and with the latest updated_on date"""
+        return Resume.objects.filter(jobseeker=self.request.user).order_by(
+            "-status",
+            "-updated_on",
+        )
+
+    def get_context_data(self, **kwargs):
+        """Add to the context:
+        - tooltips for tooltip status icons
+        - search form for navbar search bar
+        - back_url for the back button of the profile page
+        """
+        context = super().get_context_data(**kwargs)
+
+        # add status tooltips to the context
+        tooltips = {
+            Resume.ResumePublishStatus.ACTIVE: "This resume is visible"
+            " to employers",
+            Resume.ResumePublishStatus.IN_REVIEW: "This resume is pending"
+            " approval",
+            Resume.ResumePublishStatus.REJECTED: "This resume contains"
+            " inappropriate content or does not meet the requirements",
+            Resume.ResumePublishStatus.CLOSED: "This resume is not visible and"
+            " cannot be edited",
+        }
+        context["tooltips"] = tooltips
+        context["nav_form"] = SearchForm(auto_id=False)
+        return context
+
+
+class MyResumeDetailView(JobseekerRequiredMixin, DetailView):
+    model = Resume
+    template_name = "resumes/my_resume_detail.html"
+
+    def get_queryset(self):
+        # TODO: add test
+        """Return all resumes of the owner"""
+        return Resume.objects.filter(jobseeker=self.request.user)
+
+    def get_context_data(self, **kwargs):
+        """Add search form to the context for navbar search bar"""
+        context = super().get_context_data(**kwargs)
+        context["nav_form"] = SearchForm(auto_id=False)
+        return context
+
+
 class ResumeCreateView(
     JobseekerRequiredMixin, SuccessMessageMixin, CreateView
 ):
@@ -261,44 +314,6 @@ class ResumeCreateView(
         return super().form_valid(form)
 
 
-class MyResumeListView(JobseekerRequiredMixin, ListView):
-    model = Resume
-    template_name = "resumes/my_resumes.html"
-
-    def get_queryset(self):
-        # TODO: add test
-        """Return all resumes of the owner,
-        ordered by status, updated_on and created_on.
-        Example: IN_REVIEW on top and with the latest updated_on date"""
-        return Resume.objects.filter(jobseeker=self.request.user).order_by(
-            "-status",
-            "-updated_on",
-        )
-
-    def get_context_data(self, **kwargs):
-        """Add to the context:
-        - tooltips for tooltip status icons
-        - search form for navbar search bar
-        - back_url for the back button of the profile page
-        """
-        context = super().get_context_data(**kwargs)
-
-        # add status tooltips to the context
-        tooltips = {
-            Resume.ResumePublishStatus.ACTIVE: "This resume is visible"
-            " to employers",
-            Resume.ResumePublishStatus.IN_REVIEW: "This resume is pending"
-            " approval",
-            Resume.ResumePublishStatus.REJECTED: "This resume contains"
-            " inappropriate content or does not meet the requirements",
-            Resume.ResumePublishStatus.CLOSED: "This resume is not visible and"
-            " cannot be edited",
-        }
-        context["tooltips"] = tooltips
-        context["nav_form"] = SearchForm(auto_id=False)
-        return context
-
-
 class ResumeUpdateView(
     JobseekerRequiredMixin, SuccessMessageMixin, UpdateView
 ):
@@ -321,20 +336,6 @@ class ResumeUpdateView(
             and self.request.user == self.get_object().jobseeker
             and self.get_object().status != Resume.ResumePublishStatus.CLOSED
         )
-
-    def handle_no_permission(self):
-        """Inherit the JobseekerRequiredMixin handle_no_permission method
-        that displays specific 403 page if the user is not Jobseeker,
-        otherwise inherit the UserPassesTestMixin default handle_no_permission
-        method that displays default 403 page"""
-        # redirect to login page if the user is not authenticated
-        if not self.request.user.is_authenticated:
-            return super(LoginRequiredMixin, self).handle_no_permission()
-        # redirect to jobseeker 403 page if the user is not a jobseeker
-        if not self.jobseeker_test:
-            return super().handle_no_permission()
-        # redirect to default 403 page
-        return super(UserPassesTestMixin, self).handle_no_permission()
 
     def form_valid(self, form: BaseForm) -> HttpResponse:
         """Set the status of the resume to IN_REVIEW"""

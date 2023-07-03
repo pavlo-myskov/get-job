@@ -34,6 +34,11 @@ urlpatterns = [
         name="my_resumes",
     ),
     path(
+        "jobseeker/resume/<int:pk>",
+        views.MyResumeDetailView.as_view(),
+        name="my_resume_detail",
+    ),
+    path(
         "resume/<int:pk>",
         views.ResumeDetailView.as_view(),
         name="resume_detail",

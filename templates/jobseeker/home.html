@@ -16,7 +16,7 @@
       {% if user.is_authenticated and user.role != 'JOBSEEKER' %}
         <span class="mt-2 mt-md-0 align-self-end align-self-md-start" data-bs-toggle="tooltip"
          data-bs-placement="bottom" title="Only jobseekers can create resumes">
-          <a href="{% url 'resume_create' %}"
+          <a href="#"
             class="btn btn-outline-royalpurple py-1 inset-shadow-purple disabled">
             Create Resume
           </a>
