@@ -13,10 +13,20 @@
         <h1 class="fs-2 pb-0 pb-lg-1 text-center text-sm-start text-muted">Stand Out From the Crowd</h1>
         <h2 class="fs-4 lead text-center text-md-start">Create a Resume that Gets Noticed</h2>
       </div>
-      <a href="{% url 'resume_create' %}"
-        class="btn btn-outline-royalpurple inset-shadow-purple mt-2 mt-md-0 py-1 align-self-end align-self-md-start">
-        Create Resume
-      </a>
+      {% if user.is_authenticated and user.role != 'JOBSEEKER' %}
+        <span class="mt-2 mt-md-0 align-self-end align-self-md-start" data-bs-toggle="tooltip"
+         data-bs-placement="bottom" title="Only jobseekers can create resumes">
+          <a href="{% url 'resume_create' %}"
+            class="btn btn-outline-royalpurple py-1 inset-shadow-purple disabled">
+            Create Resume
+          </a>
+        </span>
+      {% else %}
+        <a href="{% url 'resume_create' %}"
+          class="btn btn-outline-royalpurple inset-shadow-purple mt-2 mt-md-0 py-1 align-self-end align-self-md-start">
+          Create Resume
+        </a>
+      {% endif %}
     </div>
     <div class="col-md-5 my-3 px-5 px-md-1 my-md-auto order-0 order-md-1">
       <img class="img-fluid" src="{% static 'images/jobseeker_hero.png' %}"
