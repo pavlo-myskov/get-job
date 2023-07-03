@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+{% include 'jobseeker/navbar.html' %}
+<main class="container py-3 px-0 flex-grow-1">
+  <div class="card shadow">
+
+    <!-- Job detail header -->
+    <div class="card-header">
+      <div class="d-flex align-items-center justify-content-between">
+        <a href="{% url 'my_resumes' %}" class="text-decoration-none d-flex align-items-center text-muted fs-4"
+          area-label="to job search results">
+          <i class="fa fa-arrow-left"></i>
+          <span class="mx-2">To my resumes</span>
+        </a>
+        <div class="d-flex">
+          {% if resume.status == 'CLOSED' %}
+            <form method="post" action="{% url 'resume_open' resume.pk %}" id="resume-open-form-{{ resume.pk }}">
+              {% csrf_token %}
+              <a type="submit" href="#" onclick="document.getElementById('resume-open-form-{{ resume.pk }}').submit();"
+                class="btn btn-outline-royalpurple btn-sm px-3 px-sm-3 py-1 me-2" aria-label="close resume">
+                Open
+              </a>
+            </form>
+          {% else %}
+            <a href="#" class="btn btn-outline-royalpurple btn-sm resume-close-btn px-3 px-sm-3 py-1 me-2"
+              aria-label="close resume" data-resume-action-url="{% url 'resume_close' resume.pk %}">
+              Close
+            </a>
+          {% endif %}
+          <a href="#" class="btn btn-outline-royalpurple btn-sm resume-delete-btn px-3 px-sm-3 py-1 me-2"
+            data-resume-action-url="{% url 'resume_delete' resume.pk %}">
+            Delete
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Job detail body -->
+    <div class="card-body position-relative py-4 px-3">
+      {% include 'resumes/resume_detail_card_body.html' %}
+      <!-- Bottom buttons panel -->
+      <div class="d-flex align-items-center justify-content-between px-3 px-sm-4">
+        {% if resume.status == 'CLOSED' %}
+          <span data-bs-toggle="tooltip" data-bs-placement="right" title="You can't edit a closed resume.">
+            <a href="#" class="btn btn-royalpurple px-3 px-sm-4 py-1 rounded-1 disabled">Edit</a>
+          </span>
+        {% else %}
+          <a href="{% url 'resume_update' resume.id %}" class="btn btn-royalpurple px-3 px-sm-4 py-1 rounded-1">Edit</a>
+        {% endif %}
+        <div role="button" class="fs-3 back-to-top d-flex align-items-center text-royalpurple"
+          area-label="scroll to top">
+          <i class="fa fa-arrow-up"></i>
+        </div>
+      </div>
+    </div>
+
+</main>
+
+<!-- Modal for close/delete resume -->
+{% include 'resumes/modal_close_delete_resume.html' %}
+
+{% include 'footer.html' %}
+{% endblock %}

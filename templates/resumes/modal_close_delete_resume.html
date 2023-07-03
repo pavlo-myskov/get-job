@@ -1,0 +1,16 @@
+<div class="modal fade" id="resumeModal" tabindex="-1" aria-labelledby="ResumeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-sm">
+    <div class="modal-content">
+      <div class="modal-body">
+        <p>Are you sure you want to <span id="modal-action"></span> this resume?</p>
+      </div>
+      <div class="modal-footer">
+        <form id="resume-modal-form" method="post" action="">
+          {% csrf_token %}
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-outline-danger">Confirm</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

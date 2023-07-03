@@ -10,7 +10,6 @@ from dateutil.relativedelta import relativedelta
 from django.views import View
 from django.views.generic import ListView, DetailView
 from django.views.generic.detail import SingleObjectMixin
-from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.db.models import Q
@@ -220,47 +219,6 @@ class ResumeDetailView(DetailView):
         return context
 
 
-class ResumeCreateView(
-    JobseekerRequiredMixin, SuccessMessageMixin, CreateView
-):
-    model = Resume
-    form_class = ResumeCreateForm
-    template_name_suffix = "_create_form"
-    success_message = (
-        "Your resume has been created and is "
-        "<span class='text-info'>pending approval</span>"
-    )
-    success_url = reverse_lazy("my_resumes")
-
-    def test_func(self):
-        """Check if the user has less or equal than 10 resumes"""
-        self.jobseeker_test = super().test_func()
-        self.has_less_6_resumes = self.request.user.resumes.all().count() <= 4
-        return self.jobseeker_test and self.has_less_6_resumes
-
-    def handle_no_permission(self):
-        """Redirect to the resume list page and show an alert,
-        if the user has more than 5 resumes;
-        if the user is not a jobseeker, redirect to the specific 403 page"""
-        # redirect to login page if the user is not authenticated
-        if not self.request.user.is_authenticated:
-            return super().handle_no_permission()
-        if self.jobseeker_test and not self.has_less_6_resumes:
-            messages.error(
-                self.request,
-                "The maximum number of resumes has been reached. ",
-                extra_tags="modal",
-            )
-            return HttpResponseRedirect(reverse_lazy("my_resumes"))
-
-        return super().handle_no_permission()
-
-    def form_valid(self, form: BaseForm) -> HttpResponse:
-        """Save the current user as a jobseeker-owner of the resume"""
-        form.instance.jobseeker = self.request.user
-        return super().form_valid(form)
-
-
 class MyResumeListView(JobseekerRequiredMixin, ListView):
     model = Resume
     template_name = "resumes/my_resumes.html"
@@ -299,6 +257,66 @@ class MyResumeListView(JobseekerRequiredMixin, ListView):
         return context
 
 
+class MyResumeDetailView(JobseekerRequiredMixin, DetailView):
+    model = Resume
+    template_name = "resumes/my_resume_detail.html"
+
+    def get_queryset(self):
+        # TODO: add test
+        """Return all resumes of the owner"""
+        return Resume.objects.filter(jobseeker=self.request.user)
+
+    def get_context_data(self, **kwargs):
+        """Add search form to the context for navbar search bar"""
+        context = super().get_context_data(**kwargs)
+        context["nav_form"] = SearchForm(auto_id=False)
+        return context
+
+
+class ResumeCreateView(
+    JobseekerRequiredMixin, SuccessMessageMixin, CreateView
+):
+    model = Resume
+    form_class = ResumeCreateForm
+    template_name_suffix = "_create_form"
+    success_message = (
+        "Your resume has been created and is "
+        "<span class='text-info'>pending approval</span>"
+    )
+
+    def test_func(self):
+        """Check if the user has less or equal than 10 resumes"""
+        self.jobseeker_test = super().test_func()
+        self.has_less_6_resumes = self.request.user.resumes.all().count() <= 4
+        return self.jobseeker_test and self.has_less_6_resumes
+
+    def handle_no_permission(self):
+        """Redirect to the resume list page and show an alert,
+        if the user has more than 5 resumes;
+        if the user is not a jobseeker, redirect to the specific 403 page"""
+        # redirect to login page if the user is not authenticated
+        if not self.request.user.is_authenticated:
+            return super().handle_no_permission()
+        if self.jobseeker_test and not self.has_less_6_resumes:
+            messages.error(
+                self.request,
+                "The maximum number of resumes has been reached. ",
+                extra_tags="modal",
+            )
+            return HttpResponseRedirect(reverse_lazy("my_resumes"))
+
+        return super().handle_no_permission()
+
+    def get_success_url(self):
+        """Redirect to the resume detail page"""
+        return reverse("my_resume_detail", args=(self.object.id,))
+
+    def form_valid(self, form: BaseForm) -> HttpResponse:
+        """Save the current user as a jobseeker-owner of the resume"""
+        form.instance.jobseeker = self.request.user
+        return super().form_valid(form)
+
+
 class ResumeUpdateView(
     JobseekerRequiredMixin, SuccessMessageMixin, UpdateView
 ):
@@ -310,7 +328,6 @@ class ResumeUpdateView(
         "Your resume has been updated and is "
         "<span class='text-info'>pending approval</span>"
     )
-    success_url = reverse_lazy("my_resumes")
 
     def test_func(self):
         """Allow only the owner to update the resume,
@@ -322,19 +339,9 @@ class ResumeUpdateView(
             and self.get_object().status != Resume.ResumePublishStatus.CLOSED
         )
 
-    def handle_no_permission(self):
-        """Inherit the JobseekerRequiredMixin handle_no_permission method
-        that displays specific 403 page if the user is not Jobseeker,
-        otherwise inherit the UserPassesTestMixin default handle_no_permission
-        method that displays default 403 page"""
-        # redirect to login page if the user is not authenticated
-        if not self.request.user.is_authenticated:
-            return super(LoginRequiredMixin, self).handle_no_permission()
-        # redirect to jobseeker 403 page if the user is not a jobseeker
-        if not self.jobseeker_test:
-            return super().handle_no_permission()
-        # redirect to default 403 page
-        return super(UserPassesTestMixin, self).handle_no_permission()
+    def get_success_url(self):
+        """Redirect to the resume detail page"""
+        return reverse("my_resume_detail", kwargs={"pk": self.get_object().pk})
 
     def form_valid(self, form: BaseForm) -> HttpResponse:
         """Set the status of the resume to IN_REVIEW"""
