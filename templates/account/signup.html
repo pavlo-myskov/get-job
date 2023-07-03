@@ -13,10 +13,8 @@
         <!-- Sign up card header -->
     <div class="card-header">
       <div class="d-flex align-items-center justify-content-between">
-        {% if redirect_field_value %}
-        <a href="{{ redirect_field_value }}"{% else %}<a href="{% url 'jobseeker_home' %}"
-        {% endif %}
-        class="text-decoration-none d-flex align-items-center text-muted fs-5"
+        <a href="{{ request.META.HTTP_REFERER }}" onclick="event.preventDefault(); window.history.back();"
+          class="text-decoration-none d-flex align-items-center text-muted fs-5"
           area-label="return to previous page">
           <i class="fa fa-arrow-left"></i>
         </a>
