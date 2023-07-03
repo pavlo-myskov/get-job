@@ -283,7 +283,6 @@ class ResumeCreateView(
         "Your resume has been created and is "
         "<span class='text-info'>pending approval</span>"
     )
-    success_url = reverse_lazy("my_resumes")
 
     def test_func(self):
         """Check if the user has less or equal than 10 resumes"""
@@ -308,6 +307,10 @@ class ResumeCreateView(
 
         return super().handle_no_permission()
 
+    def get_success_url(self):
+        """Redirect to the resume detail page"""
+        return reverse("my_resume_detail", args=(self.object.id,))
+
     def form_valid(self, form: BaseForm) -> HttpResponse:
         """Save the current user as a jobseeker-owner of the resume"""
         form.instance.jobseeker = self.request.user
@@ -325,7 +328,6 @@ class ResumeUpdateView(
         "Your resume has been updated and is "
         "<span class='text-info'>pending approval</span>"
     )
-    success_url = reverse_lazy("my_resumes")
 
     def test_func(self):
         """Allow only the owner to update the resume,
@@ -336,6 +338,10 @@ class ResumeUpdateView(
             and self.request.user == self.get_object().jobseeker
             and self.get_object().status != Resume.ResumePublishStatus.CLOSED
         )
+
+    def get_success_url(self):
+        """Redirect to the resume detail page"""
+        return reverse("my_resume_detail", kwargs={"pk": self.get_object().pk})
 
     def form_valid(self, form: BaseForm) -> HttpResponse:
         """Set the status of the resume to IN_REVIEW"""
