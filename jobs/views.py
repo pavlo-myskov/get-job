@@ -1,13 +1,16 @@
 from django.shortcuts import get_object_or_404
-from django.http import JsonResponse
+from django.http import HttpResponseRedirect, JsonResponse
+from django.urls import reverse
 from django.views import View
 from django.views.generic import ListView, DetailView
+from django.contrib import messages
 
 from jobseeker.views import JobseekerRequiredMixin
 
 from .utils import annotate_saved_jobs, filter_jobs
 from .models import Vacancy
 from .forms import SearchForm
+from resumes.models import Resume
 
 
 class JobListView(ListView):
@@ -121,3 +124,35 @@ class JobSaveToggle(JobseekerRequiredMixin, View):
         return JsonResponse(
             {"is_saved": is_saved, "successMsg": success_message}
         )
+
+
+class JobApplyView(JobseekerRequiredMixin, DetailView):
+    model = Vacancy
+    template_name = "jobs/job_apply.html"
+
+    def get_context_data(self, **kwargs):
+        """Add search form and back URL to the context"""
+        context = super().get_context_data(**kwargs)
+        context["nav_form"] = SearchForm(auto_id=False)
+        context["resumes"] = self.request.user.resumes.filter(
+            status=Resume.ResumePublishStatus.ACTIVE
+        )
+        return context
+
+    def post(self, request, *args, **kwargs):
+        """Add the job to the jobseeker's applied jobs list if
+        it is not there, otherwise display an error message"""
+        job = self.get_object()
+        if job in self.request.user.jobseekerprofile.applications.all():
+            jobseeker = self.request.user.jobseekerprofile
+            jobseeker.applications.add(job)
+            messages.success(
+                request,
+                "You have applied for the job successfully."
+                " Wait for the employer to contact you.",
+            )
+        else:
+            messages.error(
+                request, "You have already applied for this job before"
+            )
+        return HttpResponseRedirect(reverse("job_detail", args=[job.id]))

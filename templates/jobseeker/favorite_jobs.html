@@ -38,7 +38,7 @@
                   {{ job }}
                 </a>
                 <div class="btn-group" role="group" aria-label="action buttons">
-                  <button type="button" class="btn btn-sm btn-outline-royalpurple">Apply</button>
+                  <a href="{% url 'job_apply' job.id %}" type="button" class="btn btn-sm btn-outline-royalpurple">Apply</a>
                   <form class="remove-fav-job-form" action="{% url 'job_save_toggle' job.id %}"
                     data-job-id="{{ job.id }}" method="post">
                     {% csrf_token %}

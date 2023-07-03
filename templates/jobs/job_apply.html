@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block head_title %}Job Apply {% endblock %}
+
+{% block content %}
+{% include 'jobseeker/navbar.html' %}
+
+<main class="container-fluid bg-light px-0 flex-grow-1">
+  <div class="container px-0 px-sm-3 my-4" style="max-width: 50rem;">
+    <h2 class="ms-4 mb-3">Job application</h2>
+
+    <!-- Nav header -->
+    <nav class="card-header bg-white" aria-label="profile nav header">
+      <div class="d-flex align-items-center justify-content-between">
+        <a href="{% url 'job_detail' vacancy.id %}"
+        class="text-decoration-none d-flex align-items-center text-muted fs-4"
+          area-label="to job search">
+          <i class="fa fa-arrow-left"></i>
+          <span class="mx-2">To job details</span>
+        </a>
+        <a href="{% url 'jobseeker_home' %}" class="text-decoration-none d-flex align-items-center text-muted fs-4"
+        area-label="go to home page">
+          <i class="fa fa-home"></i>
+      </a>
+      </div>
+    </nav>
+
+    <div class="card mx-auto border-0 my-3 mt-1 p-sm-3" >
+      <div class="card-body pt-3 px-2">
+        {% if resumes %}
+        <h5 class="card-title">You have not active resumes</h5>
+        <p class="card-text">Create a new resume to apply to jobs or go to <a href="{% url 'my_resumes' %}">my resumes</a> to check status of your resumes.</p>
+      </div>
+      <div class="text-end text-sm-start m-3 mb-sm-1">
+        <a href="{% url 'resume_create' %}?next={% url 'job_detail' vacancy.id %}"
+          class="btn btn-outline-royalpurple py-1">
+          <i class="fa fa-plus"></i>
+          <span class="ms-2">Add New Resume</span>
+        </a>
+        {% else %}
+          ...
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</main>
+
+{% include 'footer.html' %}
+{% endblock %}
