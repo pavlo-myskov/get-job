@@ -1,10 +1,10 @@
 from django.views.generic import ListView, DetailView
-from django.db.models import Case, When, BooleanField
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.views.generic.edit import UpdateView
 from django.shortcuts import render
 from django.urls import reverse
+from django.contrib import messages
 
 from allauth.account.utils import get_next_redirect_url
 
@@ -18,14 +18,29 @@ from .models import JobseekerProfile
 from .forms import JobseekerProfileForm
 
 
-class JobseekerRequiredMixin(UserPassesTestMixin):
+class JobseekerRequiredMixin(LoginRequiredMixin, UserPassesTestMixin):
     def test_func(self):
         """Check if the user is a Jobseeker"""
         return self.request.user.role == User.Role.JOBSEEKER
 
     def handle_no_permission(self):
-        """Display the 403 jobseeker page if the role is not JOBSEEKER."""
-        return render(self.request, "errors/jobseeker_403.html", status=403)
+        """
+        Redirect to the specific page based on the user's authentication
+        status and role:
+        - Redirect to the login page if the user is not authenticated.
+        - Display the 403 jobseeker page if the role is not JOBSEEKER.
+        - Otherwise, display the default 403 page.
+        """
+        if not self.request.user.is_authenticated:
+            message = "Sign in or create an account to access this page"
+            messages.add_message(self.request, messages.WARNING, message)
+            return super().handle_no_permission()
+        elif self.request.user.role != User.Role.JOBSEEKER:
+            return render(
+                self.request, "errors/jobseeker_403.html", status=403
+            )
+        else:
+            return super().handle_no_permission()
 
 
 class HomeView(ListView):
@@ -59,9 +74,7 @@ class HomeView(ListView):
         return context
 
 
-class JobseekerProfileDetailView(
-    LoginRequiredMixin, JobseekerRequiredMixin, DetailView
-):
+class JobseekerProfileDetailView(JobseekerRequiredMixin, DetailView):
     model = JobseekerProfile
     template_name = "jobseeker/profile.html"
     context_object_name = "profile"
@@ -70,11 +83,6 @@ class JobseekerProfileDetailView(
         """Allow only the owner to view the profile"""
         jobseeker_test = super().test_func()
         return jobseeker_test and self.request.user == self.get_object().user
-
-    def handle_no_permission(self):
-        """Inherit the default handle_no_permission method
-        from UserPassesTestMixin that redirects to default 403 page"""
-        return super(UserPassesTestMixin, self).handle_no_permission()
 
     def get_object(self, queryset=None):
         """Return the jobseeker profile for the current user"""
@@ -88,7 +96,7 @@ class JobseekerProfileDetailView(
 
 
 class JobseekerProfileUpdateView(
-    LoginRequiredMixin, JobseekerRequiredMixin, SuccessMessageMixin, UpdateView
+    JobseekerRequiredMixin, SuccessMessageMixin, UpdateView
 ):
     model = JobseekerProfile
     form_class = JobseekerProfileForm
@@ -99,11 +107,6 @@ class JobseekerProfileUpdateView(
         """Allow only the owner to update the profile"""
         jobseeker_test = super().test_func()
         return jobseeker_test and self.request.user == self.get_object().user
-
-    def handle_no_permission(self):
-        """Inherit the default handle_no_permission method
-        from UserPassesTestMixin that redirects to default 403 page"""
-        return super(UserPassesTestMixin, self).handle_no_permission()
 
     def get_object(self, queryset=None):
         """Return the jobseeker profile for the current user"""
@@ -124,9 +127,9 @@ class JobseekerProfileUpdateView(
             return reverse("jobseeker_profile")
 
 
-class FavoriteJobList(LoginRequiredMixin, JobseekerRequiredMixin, ListView):
-    template_name = 'jobseeker/favorite_jobs.html'
-    context_object_name = 'favorite_list'
+class FavoriteJobList(JobseekerRequiredMixin, ListView):
+    template_name = "jobseeker/favorite_jobs.html"
+    context_object_name = "favorite_list"
 
     def get_queryset(self):
         favorites = self.request.user.jobseekerprofile.favorites.all()

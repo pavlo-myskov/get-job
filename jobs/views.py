@@ -1,6 +1,5 @@
 from django.shortcuts import get_object_or_404
 from django.http import JsonResponse
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import View
 from django.views.generic import ListView, DetailView
 
@@ -101,7 +100,7 @@ class JobDetailView(DetailView):
         return context
 
 
-class JobSaveToggle(LoginRequiredMixin, JobseekerRequiredMixin, View):
+class JobSaveToggle(JobseekerRequiredMixin, View):
     """Toggle save/unsave job for the current jobseeker"""
 
     http_method_names = ["post"]  # only POST requests are allowed
