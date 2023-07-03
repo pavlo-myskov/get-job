@@ -2,7 +2,6 @@ import re
 from django.contrib import messages
 from django.db import transaction
 from django.http import HttpResponseRedirect
-from django.utils.http import url_has_allowed_host_and_scheme
 from django.forms.forms import BaseForm
 from django.http.response import HttpResponse
 from django.urls import reverse, reverse_lazy
@@ -222,7 +221,7 @@ class ResumeDetailView(DetailView):
 
 
 class ResumeCreateView(
-    LoginRequiredMixin, JobseekerRequiredMixin, SuccessMessageMixin, CreateView
+    JobseekerRequiredMixin, SuccessMessageMixin, CreateView
 ):
     model = Resume
     form_class = ResumeCreateForm
@@ -243,6 +242,9 @@ class ResumeCreateView(
         """Redirect to the resume list page and show an alert,
         if the user has more than 5 resumes;
         if the user is not a jobseeker, redirect to the specific 403 page"""
+        # redirect to login page if the user is not authenticated
+        if not self.request.user.is_authenticated:
+            return super().handle_no_permission()
         if self.jobseeker_test and not self.has_less_6_resumes:
             messages.error(
                 self.request,
@@ -259,7 +261,7 @@ class ResumeCreateView(
         return super().form_valid(form)
 
 
-class MyResumeListView(LoginRequiredMixin, JobseekerRequiredMixin, ListView):
+class MyResumeListView(JobseekerRequiredMixin, ListView):
     model = Resume
     template_name = "resumes/my_resumes.html"
 
@@ -298,7 +300,7 @@ class MyResumeListView(LoginRequiredMixin, JobseekerRequiredMixin, ListView):
 
 
 class ResumeUpdateView(
-    LoginRequiredMixin, JobseekerRequiredMixin, SuccessMessageMixin, UpdateView
+    JobseekerRequiredMixin, SuccessMessageMixin, UpdateView
 ):
     # TODO: add test
     model = Resume
@@ -325,8 +327,13 @@ class ResumeUpdateView(
         that displays specific 403 page if the user is not Jobseeker,
         otherwise inherit the UserPassesTestMixin default handle_no_permission
         method that displays default 403 page"""
+        # redirect to login page if the user is not authenticated
+        if not self.request.user.is_authenticated:
+            return super(LoginRequiredMixin, self).handle_no_permission()
+        # redirect to jobseeker 403 page if the user is not a jobseeker
         if not self.jobseeker_test:
             return super().handle_no_permission()
+        # redirect to default 403 page
         return super(UserPassesTestMixin, self).handle_no_permission()
 
     def form_valid(self, form: BaseForm) -> HttpResponse:
@@ -336,7 +343,6 @@ class ResumeUpdateView(
 
 
 class ResumeCloseView(
-    LoginRequiredMixin,
     JobseekerRequiredMixin,
     SingleObjectMixin,
     View,
@@ -346,6 +352,7 @@ class ResumeCloseView(
     model = Resume
 
     def test_func(self):
+        # TODO: redirection tests
         """Allow only the owner to close the resume,
         if the resume is not closed yet"""
         self.jobseeker_test = super().test_func()
@@ -354,15 +361,6 @@ class ResumeCloseView(
             and self.request.user == self.get_object().jobseeker
             and self.get_object().status != Resume.ResumePublishStatus.CLOSED
         )
-
-    def handle_no_permission(self):
-        """Inherit the JobseekerRequiredMixin handle_no_permission method
-        that displays specific 403 page if the user is not Jobseeker,
-        otherwise inherit the UserPassesTestMixin default handle_no_permission
-        method that displays default 403 page"""
-        if not self.jobseeker_test:
-            return super().handle_no_permission()
-        return super(UserPassesTestMixin, self).handle_no_permission()
 
     # allows save object only if the transaction is successful
     @transaction.atomic
@@ -376,7 +374,6 @@ class ResumeCloseView(
 
 
 class ResumeOpenView(
-    LoginRequiredMixin,
     JobseekerRequiredMixin,
     SingleObjectMixin,
     View,
@@ -386,6 +383,7 @@ class ResumeOpenView(
     model = Resume
 
     def test_func(self):
+        # TODO: redirection tests
         """Allow only the owner to open the resume,
         if the resume is closed"""
         self.jobseeker_test = super().test_func()
@@ -394,15 +392,6 @@ class ResumeOpenView(
             and self.request.user == self.get_object().jobseeker
             and self.get_object().status == Resume.ResumePublishStatus.CLOSED
         )
-
-    def handle_no_permission(self):
-        """Inherit the JobseekerRequiredMixin handle_no_permission method
-        that displays specific 403 page if the user is not Jobseeker,
-        otherwise inherit the UserPassesTestMixin default handle_no_permission
-        method that displays default 403 page"""
-        if not self.jobseeker_test:
-            return super().handle_no_permission()
-        return super(UserPassesTestMixin, self).handle_no_permission()
 
     # allows save object only if the transaction is successful
     @transaction.atomic
@@ -418,9 +407,7 @@ class ResumeOpenView(
         return HttpResponseRedirect(reverse("my_resumes"))
 
 
-class ResumeDeleteView(
-    LoginRequiredMixin, JobseekerRequiredMixin, DeleteView
-):
+class ResumeDeleteView(JobseekerRequiredMixin, DeleteView):
     model = Resume
     template_name = "resumes/my_resumes.html"
     success_message = "Your resume has been permanently deleted"
@@ -433,15 +420,6 @@ class ResumeDeleteView(
             self.jobseeker_test
             and self.request.user == self.get_object().jobseeker
         )
-
-    def handle_no_permission(self):
-        """Inherit the JobseekerRequiredMixin handle_no_permission method
-        that displays to specific 403 page if the user is not Jobseeker,
-        otherwise inherit the UserPassesTestMixin default handle_no_permission
-        method that displays default 403 page"""
-        if not self.jobseeker_test:
-            return super().handle_no_permission()
-        return super(UserPassesTestMixin, self).handle_no_permission()
 
     def delete(self, request, *args, **kwargs):
         """Add success message to the delete view"""

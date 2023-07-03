@@ -72,8 +72,13 @@
           </form>
           <a href="#" class="btn btn-outline-royalpurple card-link py-0 my-1">Apply</a>
         </div>
+      {% elif user.is_authenticated and user.role != 'JOBSEEKER' %}
+        <span class="float-end" data-bs-toggle="tooltip" data-bs-placement="left" title="Only jobseekers can apply for jobs">
+          <a href="#" class="btn btn-outline-royalpurple card-link py-0 my-1 disabled">Apply</a>
+        </span>
       {% else %}
-        <a href="#" class="float-end btn btn-outline-royalpurple card-link py-0 my-1">Apply</a>
+        <!-- TODO: redirect to login page using view with JobseekerMixin -->
+        <a href="#" class="btn btn-outline-royalpurple card-link py-0 my-1 disabled">Apply</a>
       {% endif %}
     </div>
   </div>
