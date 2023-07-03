@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% load crispy_forms_tags %}
 
 {% block head_title %}Job Apply {% endblock %}
 
@@ -28,7 +29,7 @@
 
     <div class="card mx-auto border-0 my-3 mt-1 p-sm-3" >
       <div class="card-body pt-3 px-2">
-        {% if resumes %}
+        {% if not resumes %}
         <h5 class="card-title">You have not active resumes</h5>
         <p class="card-text">Create a new resume to apply to jobs or go to <a href="{% url 'my_resumes' %}">my resumes</a> to check status of your resumes.</p>
       </div>
@@ -39,7 +40,14 @@
           <span class="ms-2">Add New Resume</span>
         </a>
         {% else %}
-          ...
+        <form method="post">
+          {% csrf_token %}
+          {{ form|crispy }}
+          <div class="text-end text-sm-start m-3 mb-sm-1">
+            <button type="reset" class="btn btn-outline-secondary py-1 px-3">Reset</button>
+            <button type="submit" class="btn bt btn-royalpurple py-1">Submit</button>
+          </div>
+        </form>
         {% endif %}
       </div>
     </div>
