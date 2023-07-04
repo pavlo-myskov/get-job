@@ -155,12 +155,12 @@ class Application(models.Model):
     cover_letter = models.TextField(
         blank=True, validators=[MaxLengthValidator(1000)]
     )
-    applyed_on = models.DateTimeField(auto_now_add=True)
+    applied_on = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         # order by the date the application was made,
         # from the most recent to the oldest
-        ordering = ["-applyed_on"]
+        ordering = ["-applied_on"]
         verbose_name_plural = "applications"
 
     def __str__(self):

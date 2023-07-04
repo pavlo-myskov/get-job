@@ -66,31 +66,31 @@ def annotate_saved_jobs(queryset: QuerySet, request) -> QuerySet:
     return queryset
 
 
-def annotate_applyed_jobs(queryset: QuerySet, request) -> QuerySet:
-    """Annotate the vacancies with is_applyed field.
-    :is_applyed: is True if the vacancy applyed by the jobseeker.
+def annotate_applied_jobs(queryset: QuerySet, request) -> QuerySet:
+    """Annotate the vacancies with is_applied field.
+    :is_applied: is True if the vacancy applied by the jobseeker.
 
     :param queryset: Vacancy queryset
     :param request: request object
     :return: annotated queryset
     """
     profile = request.user.jobseekerprofile
-    # get the applyed vacancies ids by the jobseeker
-    applyed_ids = profile.applications.values_list("vacancy_id", flat=True)
+    # get the applied vacancies ids by the jobseeker
+    applied_ids = profile.applications.values_list("vacancy_id", flat=True)
     # set is_saved to True if the vacancy id is in saved_ids
     queryset = queryset.annotate(
-        is_applyed=Case(
-            When(id__in=applyed_ids, then=True),
+        is_applied=Case(
+            When(id__in=applied_ids, then=True),
             default=False,
             output_field=BooleanField(),
-        )
+        ),
     )
 
     return queryset
 
 
 def annotate_jobs(queryset: QuerySet, request) -> QuerySet:
-    """Main function to annotate the vacancies with is_saved and is_applyed.
+    """Main function to annotate the vacancies with is_saved and is_applied.
     Annotate only if user is authenticated and is a jobseeker otherwise
     return the original queryset.
 
@@ -101,6 +101,6 @@ def annotate_jobs(queryset: QuerySet, request) -> QuerySet:
         and request.user.role == User.Role.JOBSEEKER
     ):
         queryset = annotate_saved_jobs(queryset, request)
-        queryset = annotate_applyed_jobs(queryset, request)
+        queryset = annotate_applied_jobs(queryset, request)
 
     return queryset

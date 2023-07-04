@@ -54,7 +54,7 @@ class ApplicationAdmin(admin.ModelAdmin):
     list_display = (
         "vacancy",
         "applicant",
-        "applyed_on",
+        "applied_on",
     )
     # list of fields to generate filters in the right sidebar of admin panel
     list_filter = (
