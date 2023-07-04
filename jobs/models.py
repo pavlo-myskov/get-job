@@ -1,5 +1,6 @@
 from django.db import models
 from django.urls import reverse
+from django.core.validators import MaxLengthValidator
 
 
 class Areas(models.TextChoices):
@@ -151,7 +152,9 @@ class Application(models.Model):
     resume = models.ForeignKey(
         "resumes.Resume", on_delete=models.CASCADE, related_name="applications"
     )
-    cover_letter = models.TextField(blank=True)
+    cover_letter = models.TextField(
+        blank=True, validators=[MaxLengthValidator(1000)]
+    )
     applyed_on = models.DateTimeField(auto_now_add=True)
 
     class Meta:
