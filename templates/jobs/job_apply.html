@@ -40,7 +40,7 @@
           <span class="ms-2">Add New Resume</span>
         </a>
         {% else %}
-        <form method="post">
+        <form method="post" id="job-apply-form" action="{% url 'job_apply' vacancy.id %}">
           {% csrf_token %}
           {{ form|crispy }}
           <div class="text-end text-sm-start m-3 mb-sm-1">

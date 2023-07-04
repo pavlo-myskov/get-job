@@ -72,12 +72,7 @@ class ApplicationForm(forms.ModelForm):
             "resume": "Select your resume",
         }
         widgets = {
-            "resume": forms.Select(
-                attrs={
-                    "class": "form-select royalpurple-input",
-                    "aria-label": "Select resume",
-                }
-            ),
+            "resume": forms.RadioSelect,
             "cover_letter": forms.Textarea(
                 attrs={
                     "class": "form-control royalpurple-input",

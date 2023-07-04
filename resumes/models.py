@@ -74,7 +74,7 @@ class Resume(models.Model):
         ordering = ["-created_on"]
 
     def __str__(self) -> str:
-        return f"{self.occupation} - {self.jobseeker}"
+        return self.occupation
 
     def get_absolute_url(self):
         return reverse("resume_detail", args=[str(self.pk)])
