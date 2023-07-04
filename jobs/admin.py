@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Vacancy
+from .models import Vacancy, Application
 
 
 @admin.register(Vacancy)
@@ -44,3 +44,21 @@ class VacancyAdmin(admin.ModelAdmin):
 
     def close_job_posts(self, request, queryset):
         queryset.update(status=Vacancy.JobPostStatus.CLOSED)
+
+
+@admin.register(Application)
+class ApplicationAdmin(admin.ModelAdmin):
+    '''Define admin model for custom Application model.'''
+
+    # The fields which displayed in the list of applications in admin panel
+    list_display = (
+        "vacancy",
+        "applicant",
+        "applied_on",
+    )
+    # list of fields to generate filters in the right sidebar of admin panel
+    list_filter = (
+        "vacancy",
+        "applicant",
+    )
+    search_fields = ("vacancy", "applicant")

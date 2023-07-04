@@ -1,5 +1,6 @@
 from django.db import models
 from django.urls import reverse
+from django.core.validators import MaxLengthValidator
 
 
 class Areas(models.TextChoices):
@@ -50,7 +51,7 @@ EXCLUDED_AREAS = [
     Areas.NORTHERN_IRELAND,
     Areas.UK,
     Areas.EUROPE,
-    Areas.WORLDWIDE
+    Areas.WORLDWIDE,
 ]
 # list of irish areas to be used in the search form
 IRELAND_AREAS = [
@@ -75,7 +76,6 @@ class JobsManager(models.Manager):
 
 
 class Vacancy(models.Model):
-
     class JobTypes(models.TextChoices):
         FULL_TIME = "FULL_TIME", "Full Time"
         PART_TIME = "PART_TIME", "Part Time"
@@ -107,9 +107,7 @@ class Vacancy(models.Model):
     )
     """
     body = models.TextField(blank=False)
-    area = models.CharField(
-        choices=Areas.choices, max_length=50, blank=False
-    )
+    area = models.CharField(choices=Areas.choices, max_length=50, blank=False)
     job_location = models.CharField(
         max_length=50, choices=JobLocations.choices, blank=False
     )
@@ -138,3 +136,32 @@ class Vacancy(models.Model):
 
     def get_absolute_url(self):
         return reverse("job_detail", args=[str(self.pk)])
+
+
+class Application(models.Model):
+    """Applications for job vacancies"""
+
+    vacancy = models.ForeignKey(
+        Vacancy, on_delete=models.CASCADE, related_name="applications"
+    )
+    applicant = models.ForeignKey(
+        "jobseeker.JobseekerProfile",
+        on_delete=models.CASCADE,
+        related_name="applications",
+    )
+    resume = models.ForeignKey(
+        "resumes.Resume", on_delete=models.CASCADE, related_name="applications"
+    )
+    cover_letter = models.TextField(
+        blank=True, validators=[MaxLengthValidator(1000)]
+    )
+    applied_on = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        # order by the date the application was made,
+        # from the most recent to the oldest
+        ordering = ["-applied_on"]
+        verbose_name_plural = "applications"
+
+    def __str__(self):
+        return f"{self.applicant} - {self.vacancy}"

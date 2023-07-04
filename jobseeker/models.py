@@ -1,6 +1,5 @@
 from cloudinary.models import CloudinaryField
 
-from django.urls import reverse
 from django.db import models
 from django.dispatch import receiver
 from django.db.models.signals import post_save
@@ -108,9 +107,6 @@ class JobseekerProfile(models.Model):
     dob = models.DateField(blank=True, null=True)
     address = models.TextField(max_length=1000, blank=True)
     phone = models.CharField(max_length=20, blank=True)
-    applications = models.ManyToManyField(
-        Vacancy, blank=True, related_name="applicants"
-    )
     favorites = models.ManyToManyField(
         Vacancy, blank=True, related_name="favoriters"
     )

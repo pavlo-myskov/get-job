@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block head_title %}Job Apply {% endblock %}
+
+{% block content %}
+{% include 'jobseeker/navbar.html' %}
+
+<main class="container-fluid bg-light px-0 flex-grow-1">
+  <div class="container px-0 px-sm-3 my-4" style="max-width: 50rem;">
+    <h2 class="ms-4 mb-3">Job application</h2>
+
+    <!-- Nav header -->
+    <nav class="card-header bg-white" aria-label="profile nav header">
+      <div class="d-flex align-items-center justify-content-between">
+        <a href="{% url 'job_detail' vacancy.id %}"
+        class="text-decoration-none d-flex align-items-center text-muted fs-4"
+          area-label="to job search">
+          <i class="fa fa-arrow-left"></i>
+          <span class="mx-2">To job details</span>
+        </a>
+        <a href="{% url 'jobseeker_home' %}" class="text-decoration-none d-flex align-items-center text-muted fs-4"
+        area-label="go to home page">
+          <i class="fa fa-home"></i>
+      </a>
+      </div>
+    </nav>
+
+    <div class="card mx-auto border-0 my-3 mt-1 p-sm-3" >
+      <div class="card-body">
+        {% if not are_resumes_available %}
+        <h5 class="card-title">You have not active resumes</h5>
+        <p class="card-text">Create a new resume to apply to jobs or go to <a href="{% url 'my_resumes' %}">my resumes</a> to check status of your resumes.</p>
+      </div>
+      <div class="text-end text-sm-start m-3 mb-sm-1">
+        <a href="{% url 'resume_create' %}?next={% url 'job_detail' vacancy.id %}"
+          class="btn btn-outline-royalpurple py-1">
+          <i class="fa fa-plus"></i>
+          <span class="ms-2">Add New Resume</span>
+        </a>
+        {% else %}
+          <form method="post" id="job-apply-form" action="{% url 'job_apply' vacancy.id %}">
+            {% csrf_token %}
+
+            <!-- Generate a list of non-field errors if there are any -->
+            {% if form.non_field_errors %}
+              <div class="alert alert-danger" role="alert">
+                <ul class="mb-0">
+                  {% for error in form.non_field_errors %}
+                    <li>{{ error }}</li>
+                  {% endfor %}
+                </ul>
+              </div>
+            {% endif %}
+
+            <div id="div_id_resume" class="mb-3">
+              <!-- Label of the field -->
+              <label class="form-label requiredField">
+                Select your resume
+                <span class="asteriskField">*</span>
+              </label>
+              <div>
+                {% for choice in form.resume.field.choices %}
+                <div class="form-check position-relative">
+                  <!-- radio button with label -->
+                  <input class="form-check-input {% if form.resume.errors %}is-invalid{% endif %}"
+                  type="radio" name="{{ form.resume.name }}"  id="resume_id_for_label_{{ forloop.counter }}"
+                  value="{{ choice.0 }}" required>
+                  <label for="resume_id_for_label_{{ forloop.counter }}" class="form-check-label">
+                    {{ choice.1 }}
+                  </label>
+                  <!-- view resume link with absolute position -->
+                  <a href="{% url 'my_resume_detail' choice.0 %}" target="_blank" aria-label="view resume"
+                    class="position-absolute top-0 end-0 text-decoration-none text-royalpurple">
+                    <i class="fa fa-eye"></i>
+                    <span class="d-none d-sm-inline">View</span>
+                  </a>
+                  <!-- check if last iteration and if there are field errors;
+                  to display the error, 'invalid-feedback' elem must be sibling of the 'is-invalid' input -->
+                  {% if forloop.last and form.resume.errors %}
+                    {% for error in form.resume.errors %}
+                      <p class="invalid-feedback"><strong>{{ error }}</strong></p>
+                    {% endfor %}
+                  {% endif %}
+                </div>
+                {% endfor %}
+              </div>
+            </div>
+            {{ form.cover_letter | as_crispy_field }}
+            {% if form.cover_letter.errors %}
+              {% for error in form.cover_letter.errors %}
+                <p class="invalid-feedback"><strong>{{ error }}</strong></p>
+              {% endfor %}
+            {% endif %}
+            <div class="d-flex justify-content-between">
+              <div class="m-3 mb-sm-1">
+                <button type="reset" class="btn btn-outline-secondary py-1 px-3">Reset</button>
+                <button type="submit" class="btn bt btn-royalpurple py-1">Submit</button>
+              </div>
+              <div id="text-length-counter" class="text-royalpurple">
+                <span id="current-text-length-value">0</span>
+                <span>/</span>
+                <span id="max-text-length-value">&#8734;</span>
+              </div>
+            </div>
+          </form>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</main>
+
+{% include 'footer.html' %}
+{% endblock %}

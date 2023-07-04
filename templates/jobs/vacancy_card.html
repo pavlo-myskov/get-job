@@ -4,6 +4,12 @@
 <div class="col">
   <div class="card h-100 vaccancy-card">
     <div class="card-body position-relative">
+      {% if vacancy.is_applied %}
+        <span class="position-absolute ms-3 top-0 start-25 translate-middle badge rounded-pill bg-secondary">
+          Applied
+        </span>
+      {% endif %}
+
       <h5 class="card-title col-12 col-sm-8 py-mb-1 pb-lg-2 pb-xl-0 text-truncate">
         <a href="{% url 'job_detail' vacancy.id %}" class="text-decoration-none stretched-link text-dark">
           {{ vacancy.title }}
@@ -70,15 +76,14 @@
               <span>Save{% if vacancy.is_saved %}d{% endif %}</span>
             </button>
           </form>
-          <a href="#" class="btn btn-outline-royalpurple card-link py-0 my-1">Apply</a>
+          <a href="{% url 'job_apply' vacancy.id %}" class="btn btn-outline-royalpurple card-link py-0 my-1">Apply</a>
         </div>
       {% elif user.is_authenticated and user.role != 'JOBSEEKER' %}
         <span class="float-end" data-bs-toggle="tooltip" data-bs-placement="left" title="Only jobseekers can apply for jobs">
           <a href="#" class="btn btn-outline-royalpurple card-link py-0 my-1 disabled">Apply</a>
         </span>
       {% else %}
-        <!-- TODO: redirect to login page using view with JobseekerMixin -->
-        <a href="#" class="btn btn-outline-royalpurple card-link py-0 my-1 disabled">Apply</a>
+        <a href="{% url 'job_apply' vacancy.id %}" class="float-end btn btn-outline-royalpurple card-link py-0 my-1">Apply</a>
       {% endif %}
     </div>
   </div>

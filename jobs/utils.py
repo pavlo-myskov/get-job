@@ -1,9 +1,11 @@
 from django.db.models import Q
 from django.db.models import QuerySet
 from django.db.models import Case, When, BooleanField
+from django.db.models import Subquery, OuterRef, DateTimeField
 
 from users.models import User
-from .models import Vacancy, Areas, IRELAND_AREAS, DUBLIN_AREAS
+
+from .models import Application, Vacancy, Areas, IRELAND_AREAS, DUBLIN_AREAS
 
 
 def filter_jobs(search_data: dict) -> QuerySet:
@@ -43,30 +45,72 @@ def filter_jobs(search_data: dict) -> QuerySet:
 
 
 def annotate_saved_jobs(queryset: QuerySet, request) -> QuerySet:
-    """Annotate the vacancies with is_saved field
-    if user is authenticated and is a jobseeker.
+    """Annotate the vacancies with is_saved field.
     :is_saved: is True if the vacancy is in the jobseeker's favorites.
 
     :param queryset: Vacancy queryset
     :param request: request object
-    :return: annotated queryset or the original queryset if the user is not
-    authenticated or is not a jobseeker
+    :return: annotated queryset
+    """
+    profile = request.user.jobseekerprofile
+
+    # get the ids of the saved vacancies
+    saved_ids = profile.favorites.values_list("id", flat=True)
+    # set is_saved to True if the vacancy id is in saved_ids
+    queryset = queryset.annotate(
+        is_saved=Case(
+            When(id__in=saved_ids, then=True),
+            default=False,
+            output_field=BooleanField(),
+        )
+    )
+
+    return queryset
+
+
+def annotate_applied_jobs(queryset: QuerySet, request) -> QuerySet:
+    """Annotate the vacancies with is_applied and applied_on fields.
+    :is_applied: is True if the vacancy applied by the jobseeker.
+    :applied_on: date the vacancy applied by the jobseeker.
+
+    :param queryset: Vacancy queryset
+    :param request: request object
+    :return: annotated queryset
+    """
+    profile = request.user.jobseekerprofile
+    # get the applied vacancies ids by the jobseeker
+    applied_ids = profile.applications.values_list("vacancy_id", flat=True)
+    application_date = Application.objects.filter(
+        vacancy=OuterRef("pk"), applicant=profile
+        ).values("applied_on")
+
+    # set is_saved to True if the vacancy id is in saved_ids
+    queryset = queryset.annotate(
+        is_applied=Case(
+            When(id__in=applied_ids, then=True),
+            default=False,
+            output_field=BooleanField(),
+        ),
+        applied_on=Subquery(
+            application_date, output_field=DateTimeField()
+        ),
+    )
+
+    return queryset
+
+
+def annotate_jobs(queryset: QuerySet, request) -> QuerySet:
+    """Main function to annotate the vacancies with is_saved and is_applied.
+    Annotate only if user is authenticated and is a jobseeker otherwise
+    return the original queryset.
+
+    :return: annotated queryset or the original queryset
     """
     if (
         request.user.is_authenticated
         and request.user.role == User.Role.JOBSEEKER
     ):
-        profile = request.user.jobseekerprofile
-
-        # get the ids of the saved vacancies
-        saved_ids = profile.favorites.values_list("id", flat=True)
-        # set is_saved to True if the vacancy id is in saved_ids
-        queryset = queryset.annotate(
-            is_saved=Case(
-                When(id__in=saved_ids, then=True),
-                default=False,
-                output_field=BooleanField(),
-            )
-        )
+        queryset = annotate_saved_jobs(queryset, request)
+        queryset = annotate_applied_jobs(queryset, request)
 
     return queryset

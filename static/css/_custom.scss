@@ -324,3 +324,14 @@ a.ui-button:active,
     }
   }
 }
+
+// set royalpurple for radio buttons in job apply form
+#job-apply-form .form-check-input {
+  &:checked {
+    background-color: $royalpurple;
+    border-color: $royalpurple;
+  }
+  &:focus {
+    box-shadow: 0 0 0 $input-btn-focus-width rgba($royalpurple, 0.3);
+  }
+}

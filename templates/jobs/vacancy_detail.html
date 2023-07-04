@@ -21,7 +21,7 @@
               <button class="btn btn-royalpurple btn-sm px-sm-3 py-1 me-2 disabled">Apply</button>
             </span>
           {% else %}
-            <button class="btn btn-royalpurple btn-sm px-sm-3 py-1 me-2">Apply</button>
+            <a href="{% url 'job_apply' vacancy.id %}" class="btn btn-royalpurple btn-sm px-sm-3 py-1 me-2">Apply</a>
           {% endif %}
           {% if user.is_authenticated and user.role == 'JOBSEEKER' %}
             <form class="save-job-form" action="{% url 'job_save_toggle' vacancy.id %}" method="post">
@@ -34,6 +34,12 @@
           {% endif %}
         </div>
       </div>
+    </div>
+
+    <div class="alert alert-royalpurple mb-0">
+      <strong>You already applied for this job {{ vacancy.applied_on|timeago }} ago!</strong>
+      <!-- TODO my applications -->
+      <a class="float-end ms-3" href="">See my applications</a>
     </div>
 
     <!-- Job detail body -->
@@ -109,7 +115,7 @@
             <button class="btn btn-royalpurple px-3 px-sm-4 py-1 rounded-1 disabled">Apply</button>
           </span>
         {% else %}
-          <button class="btn btn-royalpurple px-3 px-sm-4 py-1 rounded-1">Apply</button>
+          <a href="{% url 'job_apply' vacancy.id %}" class="btn btn-royalpurple px-3 px-sm-4 py-1 rounded-1">Apply</a>
         {% endif %}
         <div class="d-flex fs-3">
           {% if user.is_authenticated and user.role == 'JOBSEEKER' %}

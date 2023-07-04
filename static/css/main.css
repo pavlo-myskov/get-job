@@ -8038,4 +8038,11 @@ a.ui-button:active,
     transition: all 0.1s ease-in-out;
     transform: scale(1.2); }
 
+#job-apply-form .form-check-input:checked {
+  background-color: #874c87;
+  border-color: #874c87; }
+
+#job-apply-form .form-check-input:focus {
+  box-shadow: 0 0 0 0.25rem rgba(135, 76, 135, 0.3); }
+
 /*# sourceMappingURL=main.css.map */

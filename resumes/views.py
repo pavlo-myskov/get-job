@@ -308,7 +308,10 @@ class ResumeCreateView(
         return super().handle_no_permission()
 
     def get_success_url(self):
-        """Redirect to the resume detail page"""
+        """Redirect to the 'next' url if it exists,
+        otherwise to the resume detail page"""
+        if self.request.GET.get("next"):
+            return self.request.GET.get("next")
         return reverse("my_resume_detail", args=(self.object.id,))
 
     def form_valid(self, form: BaseForm) -> HttpResponse:
