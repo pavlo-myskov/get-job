@@ -93,9 +93,16 @@
                 <p class="invalid-feedback"><strong>{{ error }}</strong></p>
               {% endfor %}
             {% endif %}
-            <div class="text-end text-sm-start m-3 mb-sm-1">
-              <button type="reset" class="btn btn-outline-secondary py-1 px-3">Reset</button>
-              <button type="submit" class="btn bt btn-royalpurple py-1">Submit</button>
+            <div class="d-flex justify-content-between">
+              <div class="m-3 mb-sm-1">
+                <button type="reset" class="btn btn-outline-secondary py-1 px-3">Reset</button>
+                <button type="submit" class="btn bt btn-royalpurple py-1">Submit</button>
+              </div>
+              <div id="text-length-counter" class="text-royalpurple">
+                <span id="current-text-length-value">0</span>
+                <span>/</span>
+                <span id="max-text-length-value">&#8734;</span>
+              </div>
             </div>
           </form>
         {% endif %}

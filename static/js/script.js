@@ -73,6 +73,15 @@ $(document).ready(function () {
     // event listener for submit of remove fav job form
     $('.remove-fav-job-form').submit(removeSavedJob);
 
+    // length text counter for textarea
+    $('textarea').on('input', function () {
+        let maxLen = $(this).attr('maxlength');
+        let currentLen = $(this).val().length;
+
+        $('#max-text-length-value').text(maxLen);
+        $('#current-text-length-value').text(currentLen);
+    })
+
 });
 
 
