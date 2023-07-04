@@ -36,6 +36,12 @@
       </div>
     </div>
 
+    <div class="alert alert-royalpurple mb-0">
+      <strong>You already applied for this job {{ vacancy.applied_on|timeago }} ago!</strong>
+      <!-- TODO my applications -->
+      <a class="float-end ms-3" href="">See my applications</a>
+    </div>
+
     <!-- Job detail body -->
     <div class="card-body position-relative py-4 px-3">
       <h2 class="card-title col-8 mb-1 mb-sm-2">{{ vacancy.title }}</h2>

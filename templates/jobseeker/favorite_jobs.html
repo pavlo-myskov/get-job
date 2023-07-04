@@ -37,8 +37,18 @@
                 <a href="{% url 'job_detail' job.id %}" class="w-100 h-100 link-royalpurple">
                   {{ job }}
                 </a>
-                <div class="btn-group" role="group" aria-label="action buttons">
-                  <a href="{% url 'job_apply' job.id %}" type="button" class="btn btn-sm btn-outline-royalpurple">Apply</a>
+                <div class="d-flex" role="group" aria-label="action buttons">
+                  {% if not job.is_applied %}
+                    <div>
+                      <a href="{% url 'job_apply' job.id %}" type="button"
+                      class="btn btn-sm btn-outline-secondary rounded-start rounded-0">Applied</a>
+                    </div>
+                  {% else %}
+                    <div>
+                      <a href="{% url 'job_apply' job.id %}" type="button"
+                      class="btn btn-sm btn-outline-royalpurple rounded-start rounded-0">Apply</a>
+                    </div>
+                  {% endif %}
                   <form class="remove-fav-job-form" action="{% url 'job_save_toggle' job.id %}"
                     data-job-id="{{ job.id }}" method="post">
                     {% csrf_token %}
