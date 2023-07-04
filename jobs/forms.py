@@ -72,7 +72,6 @@ class ApplicationForm(forms.ModelForm):
             "resume": "Select your resume",
         }
         widgets = {
-            "resume": forms.RadioSelect,
             "cover_letter": forms.Textarea(
                 attrs={
                     "class": "form-control royalpurple-input",
@@ -92,7 +91,8 @@ class ApplicationForm(forms.ModelForm):
         self.request = kwargs.pop("request")
         super().__init__(*args, **kwargs)
 
-        # set resume choices to resumes that are active of the logged in user
-        self.fields["resume"].queryset = self.request.user.resumes.filter(
+        # get active resumes of the user and set them as list of tuples
+        self.fields["resume"].choices = self.request.user.resumes.filter(
             status=Resume.ResumePublishStatus.ACTIVE
-        )
+        ).values_list("id", "occupation")
+        self.fields["resume"].empty_label = None
