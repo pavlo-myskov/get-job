@@ -1,9 +1,11 @@
 from django.db.models import Q
 from django.db.models import QuerySet
 from django.db.models import Case, When, BooleanField
+from django.db.models import Subquery, OuterRef, DateTimeField
 
 from users.models import User
-from .models import Vacancy, Areas, IRELAND_AREAS, DUBLIN_AREAS
+
+from .models import Application, Vacancy, Areas, IRELAND_AREAS, DUBLIN_AREAS
 
 
 def filter_jobs(search_data: dict) -> QuerySet:
@@ -67,8 +69,9 @@ def annotate_saved_jobs(queryset: QuerySet, request) -> QuerySet:
 
 
 def annotate_applied_jobs(queryset: QuerySet, request) -> QuerySet:
-    """Annotate the vacancies with is_applied field.
+    """Annotate the vacancies with is_applied and applied_on fields.
     :is_applied: is True if the vacancy applied by the jobseeker.
+    :applied_on: date the vacancy applied by the jobseeker.
 
     :param queryset: Vacancy queryset
     :param request: request object
@@ -77,12 +80,19 @@ def annotate_applied_jobs(queryset: QuerySet, request) -> QuerySet:
     profile = request.user.jobseekerprofile
     # get the applied vacancies ids by the jobseeker
     applied_ids = profile.applications.values_list("vacancy_id", flat=True)
+    application_date = Application.objects.filter(
+        vacancy=OuterRef("pk"), applicant=profile
+        ).values("applied_on")
+
     # set is_saved to True if the vacancy id is in saved_ids
     queryset = queryset.annotate(
         is_applied=Case(
             When(id__in=applied_ids, then=True),
             default=False,
             output_field=BooleanField(),
+        ),
+        applied_on=Subquery(
+            application_date, output_field=DateTimeField()
         ),
     )
 
