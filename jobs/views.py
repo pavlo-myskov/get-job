@@ -7,7 +7,7 @@ from django.views.generic.edit import CreateView
 
 from jobseeker.views import JobseekerRequiredMixin
 
-from .utils import annotate_saved_jobs, filter_jobs
+from .utils import annotate_jobs, filter_jobs
 from .models import Application, Vacancy
 from .forms import ApplicationForm, SearchForm
 from resumes.models import Resume
@@ -36,7 +36,7 @@ class JobListView(ListView):
             job_list = Vacancy.objects.filter(
                 status=Vacancy.JobPostStatus.ACTIVE
             )
-            return annotate_saved_jobs(job_list, self.request)
+            return annotate_jobs(job_list, self.request)
 
         # if form is valid, search for vacancies
         if self.form.is_valid():
@@ -67,7 +67,7 @@ class JobListView(ListView):
             # if form is not valid, return an empty queryset
             job_list = Vacancy.objects.none()
 
-        return annotate_saved_jobs(job_list, self.request)
+        return annotate_jobs(job_list, self.request)
 
     def get_context_data(self, **kwargs):
         """Add search form to the context"""
@@ -92,7 +92,7 @@ class JobDetailView(DetailView):
 
     def get_queryset(self):
         queryset = super().get_queryset()
-        return annotate_saved_jobs(queryset, self.request)
+        return annotate_jobs(queryset, self.request)
 
     def get_context_data(self, **kwargs):
         """Add search form to the context"""
