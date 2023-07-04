@@ -1,15 +1,15 @@
 from django.shortcuts import get_object_or_404
-from django.http import HttpResponseRedirect, JsonResponse
+from django.http import JsonResponse
 from django.urls import reverse
 from django.views import View
 from django.views.generic import ListView, DetailView
-from django.contrib import messages
+from django.views.generic.edit import CreateView
 
 from jobseeker.views import JobseekerRequiredMixin
 
 from .utils import annotate_saved_jobs, filter_jobs
 from .models import Vacancy
-from .forms import SearchForm
+from .forms import ApplicationForm, SearchForm
 from resumes.models import Resume
 
 
@@ -126,33 +126,44 @@ class JobSaveToggle(JobseekerRequiredMixin, View):
         )
 
 
-class JobApplyView(JobseekerRequiredMixin, DetailView):
-    model = Vacancy
+class JobApplyView(JobseekerRequiredMixin, CreateView):
+    form_class = ApplicationForm
     template_name = "jobs/job_apply.html"
+    success_message = (
+        "You have applied for the job successfully."
+        " Wait for the employer to contact you."
+    )
+
+    def get_form_kwargs(self):
+        """Passes the request object to the form class."""
+        kwargs = super().get_form_kwargs()
+        kwargs['request'] = self.request
+        return kwargs
+
+    def form_valid(self, form):
+        """Save the jobseeker and the job to the application"""
+        form.instance.applicant = self.request.user.jobseekerprofile
+        form.instance.vacancy = get_object_or_404(
+            Vacancy,
+            pk=self.kwargs.get("pk"),
+            status=Vacancy.JobPostStatus.ACTIVE,
+        )
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        """Redirect to the job detail page"""
+        return reverse("job_detail", kwargs={"pk": self.kwargs.get("pk")})
 
     def get_context_data(self, **kwargs):
-        """Add search form and back URL to the context"""
+        """Add search form, vacancy and resumes to the context"""
         context = super().get_context_data(**kwargs)
         context["nav_form"] = SearchForm(auto_id=False)
-        context["resumes"] = self.request.user.resumes.filter(
-            status=Resume.ResumePublishStatus.ACTIVE
+        context["vacancy"] = get_object_or_404(
+            Vacancy,
+            pk=self.kwargs.get("pk"),
+            status=Vacancy.JobPostStatus.ACTIVE,
         )
+        context["are_resumes_available"] = self.request.user.resumes.filter(
+            status=Resume.ResumePublishStatus.ACTIVE
+        ).exists()
         return context
-
-    def post(self, request, *args, **kwargs):
-        """Add the job to the jobseeker's applied jobs list if
-        it is not there, otherwise display an error message"""
-        job = self.get_object()
-        if job in self.request.user.jobseekerprofile.applications.all():
-            jobseeker = self.request.user.jobseekerprofile
-            jobseeker.applications.add(job)
-            messages.success(
-                request,
-                "You have applied for the job successfully."
-                " Wait for the employer to contact you.",
-            )
-        else:
-            messages.error(
-                request, "You have already applied for this job before"
-            )
-        return HttpResponseRedirect(reverse("job_detail", args=[job.id]))

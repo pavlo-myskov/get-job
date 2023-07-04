@@ -165,27 +165,6 @@ class Application(models.Model):
         return f"{self.applicant} - {self.vacancy}"
 
     def clean(self):
-        # check if the resume is active
-        if self.resume.status != "ACTIVE":
-            raise ValidationError(
-                "You cannot apply for a job using an inactive resume."
-            )
-
-        # check if the applicant is the owner of the resume
-        if self.applicant != self.resume.jobseeker:
-            raise ValidationError(
-                "You cannot apply for a job using another user's resume."
-            )
-
-        # check if the vacancy is active
-        if self.vacancy.status != Vacancy.JobPostStatus.ACTIVE:
-            raise ValidationError(
-                "You cannot apply for a job that is not active."
-            )
-
-        # check if the applicant is the employer
-        if self.vacancy.employer == self.applicant:
-            raise ValidationError("You cannot apply for a job you posted.")
 
         # check if the applicant has already applied for the job
         if self.vacancy.applications.filter(applicant=self.applicant).exists():
