@@ -1,5 +1,4 @@
 from django.db import models
-from django.forms import ValidationError
 from django.urls import reverse
 
 
@@ -163,9 +162,3 @@ class Application(models.Model):
 
     def __str__(self):
         return f"{self.applicant} - {self.vacancy}"
-
-    def clean(self):
-
-        # check if the applicant has already applied for the job
-        if self.vacancy.applications.filter(applicant=self.applicant).exists():
-            raise ValidationError("You cannot apply for the same job twice.")

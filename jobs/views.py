@@ -8,7 +8,7 @@ from django.views.generic.edit import CreateView
 from jobseeker.views import JobseekerRequiredMixin
 
 from .utils import annotate_saved_jobs, filter_jobs
-from .models import Vacancy
+from .models import Application, Vacancy
 from .forms import ApplicationForm, SearchForm
 from resumes.models import Resume
 
@@ -137,7 +137,7 @@ class JobApplyView(JobseekerRequiredMixin, CreateView):
     def get_form_kwargs(self):
         """Passes the request object to the form class."""
         kwargs = super().get_form_kwargs()
-        kwargs['request'] = self.request
+        kwargs["request"] = self.request
         return kwargs
 
     def form_valid(self, form):
@@ -148,6 +148,16 @@ class JobApplyView(JobseekerRequiredMixin, CreateView):
             pk=self.kwargs.get("pk"),
             status=Vacancy.JobPostStatus.ACTIVE,
         )
+        # check if the applicant has already applied for the job
+        if Application.objects.filter(
+            applicant=form.instance.applicant, vacancy=form.instance.vacancy
+        ).exists():
+            form.add_error(
+                None,
+                "You have already applied for this job. "
+                "Please wait for the employer to contact you.",
+            )
+            return super().form_invalid(form)
         return super().form_valid(form)
 
     def get_success_url(self):
