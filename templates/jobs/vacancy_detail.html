@@ -36,11 +36,13 @@
       </div>
     </div>
 
+    {% if vacancy.is_applied %}
     <div class="alert alert-royalpurple mb-0">
       <strong>You already applied for this job {{ vacancy.applied_on|timeago }} ago!</strong>
       <!-- TODO my applications -->
       <a class="float-end ms-3" href="">See my applications</a>
     </div>
+    {% endif %}
 
     <!-- Job detail body -->
     <div class="card-body position-relative py-4 px-3">
