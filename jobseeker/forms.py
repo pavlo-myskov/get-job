@@ -99,11 +99,6 @@ class JobseekerProfileForm(ModelForm):
                 attrs={"type": "date"},
             ),
         }
-        error_messages = {
-            "phone": {
-                "invalid": "Please enter a valid phone number.",
-            },
-        }
 
     def __init__(self, *args, **kwargs):
         # add royalpurple-input class to all fields
