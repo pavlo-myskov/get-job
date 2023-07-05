@@ -53,7 +53,8 @@ class JobseekerProfileForm(ModelForm):
         regex=r"^\+?1?\d{9,15}$",
         error_messages={
             "invalid": "Phone number must be entered in the format: "
-            "'+1234567890'. At least 9 digits and maximum 15 digits allowed."
+            "'+1234567890' or '012345678'. At least 9 digits and"
+            " maximum 15 digits allowed."
         },
         required=False,
     )
