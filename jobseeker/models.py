@@ -16,6 +16,9 @@ class JobseekerManager(BaseUserManager):
     Custom manager that allows to use this proxy model
     to work with Jobseeker data only
     Examples:
+    >>> from .models import Jobseeker
+    >>> Jobseeker.objects.all()
+    <QuerySet [<Jobseeker: jobseeker1>, <Jobseeker: jobseeker2>]>
     """
 
     def get_queryset(self, *args, **kwargs):
@@ -34,7 +37,9 @@ class Jobseeker(User):
 
     - Create a new Jobseeker user (automatically assign role=JOBSEEKER):
 
-    >>> Jobseeker.objects.create_user(username="jobseeker1", password="123456")
+    >>> Jobseeker.objects.create_user(
+        email="jobseeker1@email.com", password="123456"
+        )
 
     - Get all Jobseekers:
 
@@ -42,7 +47,7 @@ class Jobseeker(User):
 
     - Get a specific Jobseeker:
 
-    >>> Jobseeker.jobseeker.get(username="jobseeker1")
+    >>> Jobseeker.jobseeker.get(email="jobseeker1@email.com")
     """
 
     # override the default base_role
@@ -78,7 +83,7 @@ class JobseekerProfile(models.Model):
 
     Access JobseekerProfile data for a specific Jobseeker using
     Jobseeker.profile property:
-     >>> j1 = Jobseeker.jobseeker.get(username="jobseeker1")
+    >>> j1 = Jobseeker.jobseeker.get(email="jobseeker1@email.com")
     >>> j1.profile
     <JobseekerProfile: JobseekerProfile object (1)>
 

@@ -145,6 +145,7 @@ class Application(models.Model):
         Vacancy, on_delete=models.CASCADE, related_name="applications"
     )
     applicant = models.ForeignKey(
+        # TODO Change to Jobseeker proxy model
         "jobseeker.JobseekerProfile",
         on_delete=models.CASCADE,
         related_name="applications",
