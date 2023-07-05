@@ -10,7 +10,7 @@ from allauth.account.utils import get_next_redirect_url
 
 from jobs.models import Vacancy
 from jobs.forms import SearchForm
-from jobs.utils import annotate_jobs
+from jobs.utils import annotate_applied_jobs, annotate_jobs
 
 from users.models import User
 
@@ -133,7 +133,22 @@ class FavoriteJobList(JobseekerRequiredMixin, ListView):
 
     def get_queryset(self):
         favorites = self.request.user.jobseekerprofile.favorites.all()
-        return favorites
+        return annotate_applied_jobs(favorites, self.request)
+
+    def get_context_data(self, **kwargs):
+        """Add search form and back URL to the context"""
+        context = super().get_context_data(**kwargs)
+        context["nav_form"] = SearchForm(auto_id=False)
+        return context
+
+
+class AppliedJobList(JobseekerRequiredMixin, ListView):
+    template_name = "jobseeker/applied_jobs.html"
+    context_object_name = "applications"
+
+    def get_queryset(self):
+        applications = self.request.user.jobseekerprofile.applications.all()
+        return applications
 
     def get_context_data(self, **kwargs):
         """Add search form and back URL to the context"""

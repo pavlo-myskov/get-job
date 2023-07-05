@@ -34,11 +34,11 @@
           <ul class="list-group">
             {% for job in favorite_list %}
               <li class="list-group-item list-group-item-action d-flex">
-                <a href="{% url 'job_detail' job.id %}" class="w-100 h-100 link-royalpurple">
+                <a href="{% url 'job_detail' job.id %}" class="w-100 h-100 me-2 link-royalpurple">
                   {{ job }}
                 </a>
                 <div class="d-flex" role="group" aria-label="action buttons">
-                  {% if not job.is_applied %}
+                  {% if job.is_applied %}
                     <div>
                       <a href="{% url 'job_apply' job.id %}" type="button"
                       class="btn btn-sm btn-outline-secondary rounded-start rounded-0">Applied</a>

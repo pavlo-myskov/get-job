@@ -326,7 +326,7 @@ function changeToastsColor(toastElList, toastBootstrapColor) {
 function setResumeActionModal(event, actionText) {
     event.preventDefault();
     let actionUrl = event.target.dataset.resumeActionUrl;
-    $('#modal-action').text(actionText);
+    $('.modal-action').text(actionText);
     $('#resume-modal-form').attr('action', actionUrl);
     $('#resumeModal').modal('show');
 }

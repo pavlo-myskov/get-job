@@ -38,6 +38,14 @@ $pagination-hover-color: $royalpurple;
 $pagination-focus-color: $royalpurple;
 $pagination-focus-box-shadow: 0 0 0 0.2rem rgba($royalpurple, 0.25);
 
+
+// Accordion button, universal color for both jobseeker and employer
+$accordion-button-active-bg:              tint-color($secondary, 92%);
+$accordion-button-active-color:           shade-color($secondary, 50%);
+
+$accordion-button-focus-border-color:     $secondary;
+$accordion-button-focus-box-shadow:       $secondary;
+
 // Create a map of custom utilities
 @import "../bootstrap/scss/utilities";
 
