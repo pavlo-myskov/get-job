@@ -1,12 +1,20 @@
 from django.views.generic import ListView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.messages.views import SuccessMessageMixin
+from django.views.generic.edit import UpdateView
 from django.shortcuts import render
+from django.urls import reverse
 from django.contrib import messages
+
+from allauth.account.utils import get_next_redirect_url
 
 from users.models import User
 
 from resumes.models import Resume
 from resumes.forms import ResumeSearchForm
+
+from .models import EmployerProfile
+from .forms import EmployerProfileForm
 
 
 class EmployerRequiredMixin(LoginRequiredMixin, UserPassesTestMixin):
@@ -57,3 +65,35 @@ class HomeView(ListView):
         context["form"] = form
         context["nav_form"] = ResumeSearchForm(auto_id=False)
         return context
+
+
+class EmployerProfileUpdateView(
+    EmployerRequiredMixin, SuccessMessageMixin, UpdateView
+):
+    model = EmployerProfile
+    form_class = EmployerProfileForm
+    template_name = "employer/profile_update.html"
+    success_message = "Your profile has been updated successfully"
+
+    def test_func(self):
+        """Allow only the owner to update the profile"""
+        employer_test = super().test_func()
+        return employer_test and self.request.user == self.get_object().user
+
+    def get_object(self, queryset=None):
+        """Return the employer profile for the current user"""
+        return self.request.user.employerprofile
+
+    def get_success_url(self):
+        """
+        Return the URL to redirect to after processing a valid form.
+        - Redirect to the `next` parameter if it exists
+        - Otherwise, redirect to the employer profile page
+        """
+        # get next url using allauth's get_next_redirect_url,
+        # allows to perform checks to prevent redirecting to other sites
+        next_url = get_next_redirect_url(self.request)
+        if next_url:
+            return next_url
+        else:
+            return reverse("employer_profile")
