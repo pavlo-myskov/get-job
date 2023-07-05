@@ -45,7 +45,7 @@
           <h6 class="list-item-heading my-auto me-sm-4 flex-shrink-0">Age:</h6>
           <p class="my-0 overflow-auto">
             {% if user.role == 'EMPLOYER' or resume in user.resumes.all %}
-              {{ resume.jobseeker.profile.dob }}
+              {{ resume.jobseeker.profile.dob|timeago }}
             {% else %}
               <span data-bs-toggle="tooltip" data-bs-placement="right" title="Only visible to employers"
                 aria-label="Only visible to employers" class="text-muted">
