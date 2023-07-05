@@ -1,0 +1,39 @@
+{% load crispy_forms_tags %}
+
+<div class="container-fluid px-0 flex-shrink-0 my-sm-auto">
+  <div class="card bg-light border-0 mx-auto" style="max-width: 40rem;">
+    <div class="card-header">
+      <div class="d-flex align-items-center justify-content-between">
+        <a href="{{ url_profile }}" area-label="to profile"
+        class="text-decoration-none d-flex align-items-center text-muted fs-5">
+          <i class="fa fa-arrow-left"></i>
+        </a>
+        <a href="{{ url_home }}" class="text-decoration-none d-flex align-items-center text-muted fs-5"
+        area-label="go to home page">
+          <i class="fa fa-home"></i>
+      </a>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3 class="card-title text-center text-{{ color }}">
+        <span class="position-relative">
+          Edit Profile
+          <span
+            class="position-absolute top-0 end-25 translate-middle badge border border-light rounded-circle p-0">
+            <i class="fa fa-info-circle text-muted" data-bs-toggle="tooltip" data-bs-placement="right"
+              title="Some data will be used to generate your public {{ card_type }}. Please fill in all fields."></i>
+          </span>
+        </span>
+      </h3>
+      <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form|crispy }}
+        {% if redirect_field_value %}
+        <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+        {% endif %}
+        <button type="submit" class="btn btn-{{ color }} float-end mx-2 mx-sm-3 py-1">Submit</button>
+        <a href="{{ url_profile }}" class="btn btn-outline-secondary float-end py-1">Cancel</a>
+      </form>
+    </div>
+  </div>
+</div>
