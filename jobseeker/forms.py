@@ -1,49 +1,13 @@
-import re
 from django.forms import (
     ModelForm,
     Textarea,
     DateInput,
     RegexField,
 )
-from cloudinary.forms import CloudinaryFileField as BaseCloudinaryFileField
+from jobportal.custom_cloudinary import CloudinaryFileField, allowed_img_types
+from jobportal.utils import generate_filename_from_email
 
 from .models import JobseekerProfile
-from jobportal.validators import FileValidator
-
-
-img_validator = FileValidator(
-    max_size=5 * 1024 * 1024,  # 5 MB
-    content_types=[
-        "image/jpeg",
-        "image/png",
-        "image/webp",
-        "image/svg+xml",
-        "image/gif",
-        "image/tiff",
-        "image/bmp",
-        "image/jpg",
-    ],
-)
-
-allowed_img_types = [
-    img_type.replace("image/", "") for img_type in img_validator.content_types
-]
-
-
-def generate_filename_from_email(email: str):
-    """
-    Generate a filename from the user's email.
-    Replace all non-alphanumeric characters to underscores.
-    """
-    pattern = r"[^a-zA-Z0-9]"
-    return re.sub(pattern, "_", email)
-
-
-class CloudinaryFileField(BaseCloudinaryFileField):
-    def to_python(self, value):
-        """Override the default to_python method to add the custom validator"""
-        img_validator(value)
-        return super(CloudinaryFileField, self).to_python(value)
 
 
 class JobseekerProfileForm(ModelForm):
