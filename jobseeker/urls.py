@@ -19,4 +19,9 @@ urlpatterns = [
         views.FavoriteJobList.as_view(),
         name="favorite_jobs",
     ),
+    path(
+        "jobseeker/applications",
+        views.AppliedJobList.as_view(),
+        name="applied_jobs",
+    ),
 ]

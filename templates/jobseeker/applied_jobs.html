@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% load static %}
+{% load custom_tags %}
+{% load time_filters %}
+
+{% block head_title %}Applied Jobs{% endblock %}
+
+{% block content %}
+{% include 'jobseeker/navbar.html' %}
+
+<main class="container-fluid bg-light px-0 flex-grow-1">
+  <div class="container px-0 px-sm-3 my-4" style="max-width: 50rem;">
+    <h2 class="ms-4 mb-3">Applied Jobs</h2>
+
+    <!-- Nav header -->
+    <nav class="card-header bg-white" aria-label="internal navigation">
+      <div class="d-flex align-items-center justify-content-between">
+        <a href="{% url 'my_resumes' %}"
+        class="text-decoration-none d-flex align-items-center text-muted fs-4"
+          area-label="to my resumes">
+          <i class="fa fa-arrow-left"></i>
+          <span class="mx-2">To my resumes</span>
+        </a>
+        <a href="{% url 'jobseeker_home' %}"
+          class="text-decoration-none d-flex align-items-center text-muted fs-4"
+          area-label="go to home page">
+          <i class="fa fa-home"></i>
+      </a>
+      </div>
+    </nav>
+
+    <div class="card mx-auto border-0 my-3 mt-1 p-3" >
+      <div class="card-body p-0">
+        {% if applications %}
+          <div class="accordion" id="accordionApplications">
+            {% for application in applications %}
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="heading-{{ forloop.counter }}">
+                  <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#collapse-{{ forloop.counter }}" aria-expanded="true"
+                    aria-controls="collapse-{{ forloop.counter }}">
+                    {{ application.vacancy }}
+                  </button>
+                </h2>
+                <div id="collapse-{{ forloop.counter }}" class="accordion-collapse collapse show"
+                  aria-labelledby="heading-{{ forloop.counter }}" data-bs-parent="#accordionApplications">
+                  <div class="accordion-body">
+                    <p>
+                      Application submitted with the resume titled
+                      <a href="{% url 'my_resume_detail' application.resume.id %}">
+                        {{ application.resume.occupation }}
+                      </a>
+                      on the <strong>{{ application.applied_on|date:"jS M Y"}}</strong>
+                    </p>
+                    {% if application.resume.status != "ACTIVE" %}
+                    <p class="text-muted">
+                      *Application is currently closed and not available for review by the employer as your resume is
+                      not public(active).
+                    </p>
+                    {% endif %}
+                    <div class="text-end">
+                      <a href="{% url 'job_detail' application.vacancy.id %}"
+                        class="btn btn-outline-royalpurple py-1">
+                        <i class="fa fa-eye"></i>
+                        <span class="ms-2">View Job</span>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        {% else %}
+          <h5 class="card-title">You have no active applications</h5>
+        {% endif %}
+      </div>
+      <div class="m-3 mb-sm-1">
+        <a href="{% url 'job_search' %}" class="btn btn-royalpurple py-1">
+          <i class="fa fa-search"></i>
+          <span class="ms-2">Search Jobs</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</main>
+
+{% include 'footer.html' %}
+{% endblock %}
