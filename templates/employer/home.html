@@ -18,9 +18,19 @@
         <h1 class="fs-2 pb-0 pb-lg-1 text-center text-sm-start text-md-end text-muted">Hire Faster, Hire Smarter</h1>
         <h2 class="fs-4 lead text-center text-md-end">List Your Job Opening Here</h2>
       </div>
-      <a href="{% url 'job_create' %}" class="btn btn-outline-cyan-blue inset-shadow-cyan mt-2 mt-md-0 py-1 px-4 align-self-end">
-        Post Job
-      </a>
+      {% if user.is_authenticated and user.role != 'EMPLOYER' %}
+        <span class="mt-2 mt-md-0 align-self-end" data-bs-toggle="tooltip"
+         data-bs-placement="left" title="Only employers can post jobs">
+          <a href="#"
+            class="btn btn-outline-cyan-blue py-1 px-4 inset-shadow-cyan disabled">
+            Post Job
+          </a>
+        </span>
+      {% else %}
+        <a href="{% url 'job_create' %}" class="btn btn-outline-cyan-blue inset-shadow-cyan mt-2 mt-md-0 py-1 px-4 align-self-end">
+          Post Job
+        </a>
+      {% endif %}
     </div>
   </section>
 
