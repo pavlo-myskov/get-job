@@ -87,6 +87,12 @@
                 <h6 class="list-item-heading my-auto me-sm-4 flex-shrink-0">Required Experience:</h6>
                 <p class="my-0 overflow-auto">{{ vacancy.get_experience_duration_display }}</p>
               </li>
+              {% if vacancy.employer.profile.website %}
+                <li class="list-group-item align-items-end">
+                  <a href="{{ vacancy.employer.profile.website }}" target="_blank" rel="noopener noreferrer"
+                  class="my-auto me-sm-4">{{ vacancy.employer.profile.website }}</a>
+                </li>
+              {% endif %}
             </ul>
           </div>
           <!-- Company Image for large screens -->
