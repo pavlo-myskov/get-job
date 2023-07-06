@@ -1,16 +1,15 @@
-{% load static %}
+{% load cloudinary %}
 {% load time_filters %}
 
 
 <h2 class="card-title col-8 mb-1 mb-sm-2">{{ vacancy.title }}</h2>
 <p class="col days-counter text-muted">
-  <small>{{ vacancy.created_on|timeago }} ago</small>
+  <small>{{ vacancy.updated_on|timeago }} ago</small>
 </p>
 
-<!-- Company Image for small screens -->
+<!-- Profile Image for small screens -->
 <div class="d-sm-none position-absolute top-0 end-0 me-4 mt-3">
-  <img src="{% static 'images/company-placeholder.png' %}" class="img-thumbnail" alt="company logo"
-    style="max-height: 60px;">
+  {% cloudinary  vacancy.employer.profile.logo style="max-height: 60px" class="img-thumbnail" alt="company logo" %}
 </div>
 
 <!-- Main contant -->
@@ -53,8 +52,7 @@
     </div>
     <!-- Company Image for large screens -->
     <div class="d-none d-sm-block col-4 mx-auto my-auto text-center">
-      <img src="{% static 'images/company-placeholder.png' %}" class="img-thumbnail" alt="company logo"
-        style="max-height: 130px;">
+      {% cloudinary  vacancy.employer.profile.logo style="max-height: 130px" class="img-thumbnail" alt="company logo" %}
     </div>
   </div>
 
