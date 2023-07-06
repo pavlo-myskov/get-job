@@ -25,7 +25,7 @@
         {% csrf_token %}
         {{ form|crispy }}
         <button type="submit" class="btn btn-{{ color }} float-end mx-2 mx-sm-3 py-1 px-3">Save</button>
-        <a {% if request.GET.next %}href="{{ request.GET.next }}"{% else %}href="{% url 'my_resumes' %}"{% endif %}
+        <a {% if request.GET.next %}href="{{ request.GET.next }}"{% else %}href="{{ my_list }}"{% endif %}
          class="btn btn-outline-secondary float-end py-1">Cancel</a>
       </form>
     </div>

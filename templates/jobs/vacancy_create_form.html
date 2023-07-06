@@ -5,12 +5,13 @@
 {% block content %}
 
 {% url 'employer_home' as home_url %}
+{% url 'my_jobs' as my_list %}
 
 {%
   include 'resume_vacancy_base_form.html' with
   form_name="Create Vacancy"
   home_url=home_url
-  my_list_url="#"
+  my_list_url=my_list
   plural_name="vacancies"
   color="cyan-blue"
 %}

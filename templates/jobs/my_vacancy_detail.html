@@ -8,11 +8,10 @@
     <!-- Job detail header -->
     <div class="card-header">
       <div class="d-flex align-items-center justify-content-between">
-        <!-- TODO url 'my_vacancies' -->
-        <a href="#" class="text-decoration-none d-flex align-items-center text-muted fs-4"
+        <a href="{% url 'my_jobs' %}" class="text-decoration-none d-flex align-items-center text-muted fs-4"
           area-label="to my vacancies">
           <i class="fa fa-arrow-left"></i>
-          <span class="mx-2">To my vacancies</span>
+          <span class="mx-2">To my jobs</span>
         </a>
         <div class="d-flex">
           {% if vacancy.status == 'CLOSED' %}

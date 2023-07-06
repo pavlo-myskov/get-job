@@ -108,6 +108,43 @@ class JobDetailView(DetailView):
         return context
 
 
+class MyJobListView(EmployerRequiredMixin, ListView):
+    model = Vacancy
+    template_name = "jobs/my_jobs.html"
+
+    def get_queryset(self):
+        # TODO: add test
+        """Return all jobs of the owner,
+        ordered by status, updated_on.
+        Example: IN_REVIEW on top and with the latest updated_on date"""
+        return Vacancy.objects.filter(employer=self.request.user).order_by(
+            "-status",
+            "-updated_on",
+        )
+
+    def get_context_data(self, **kwargs):
+        """Add to the context:
+        - tooltips for tooltip status icons
+        - search form for navbar search bar
+        """
+        context = super().get_context_data(**kwargs)
+
+        # add status tooltips to the context
+        tooltips = {
+            Vacancy.JobPostStatus.ACTIVE: "This job is visible"
+            " to jobseekers",
+            Vacancy.JobPostStatus.IN_REVIEW: "This job is pending"
+            " approval",
+            Vacancy.JobPostStatus.REJECTED: "This job contains"
+            " inappropriate content or does not meet the requirements",
+            Vacancy.JobPostStatus.CLOSED: "This job is not visible and"
+            " cannot be edited",
+        }
+        context["tooltips"] = tooltips
+        context["nav_form"] = ResumeSearchForm(auto_id=False)
+        return context
+
+
 class MyVacancyDetailView(EmployerRequiredMixin, DetailView):
     model = Vacancy
     template_name = "jobs/my_vacancy_detail.html"
