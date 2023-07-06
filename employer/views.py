@@ -1,4 +1,4 @@
-from django.views.generic import ListView
+from django.views.generic import ListView, DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.views.generic.edit import UpdateView
@@ -63,6 +63,27 @@ class HomeView(ListView):
             form = ResumeSearchForm(auto_id=False)
 
         context["form"] = form
+        context["nav_form"] = ResumeSearchForm(auto_id=False)
+        return context
+
+
+class EmployerProfileDetailView(EmployerRequiredMixin, DetailView):
+    model = EmployerProfile
+    template_name = "employer/profile.html"
+    context_object_name = "profile"
+
+    def test_func(self):
+        """Allow only the owner to view the profile"""
+        employer_test = super().test_func()
+        return employer_test and self.request.user == self.get_object().user
+
+    def get_object(self, queryset=None):
+        """Return the employer profile for the current user"""
+        return self.request.user.employerprofile
+
+    def get_context_data(self, **kwargs):
+        """Add search form and back URL to the context"""
+        context = super().get_context_data(**kwargs)
         context["nav_form"] = ResumeSearchForm(auto_id=False)
         return context
 

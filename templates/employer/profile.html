@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+{% load static %}
+{% load cloudinary %}
+
+{% block content %}
+{% include 'employer/navbar.html' %}
+
+<main class="container-fluid bg-light px-0 flex-grow-1">
+  <div class="container px-0 px-sm-3 my-4" style="max-width: 50rem;">
+    <h2 class="ms-4 mb-3">My Profile</h2>
+
+    <!-- Nav header -->
+    <nav class="card-header bg-white" aria-label="profile nav header">
+      <div class="d-flex align-items-center justify-content-between">
+        <a href="{% url 'resume_search' %}"
+        class="text-decoration-none d-flex align-items-center text-muted fs-4"
+          area-label="to search results">
+          <i class="fa fa-arrow-left"></i>
+          <span class="mx-2">To resume search</span>
+        </a>
+        <a href="{% url 'employer_home' %}" class="text-decoration-none d-flex align-items-center text-muted fs-4"
+        area-label="go to home page">
+          <i class="fa fa-home"></i>
+      </a>
+      </div>
+    </nav>
+
+    <!-- Profile card -->
+    <div class="card mx-auto border-0 my-3 mt-1 p-3" >
+      <div class="row g-0">
+        <div class="col-sm-8">
+          <div class="card-body p-0">
+            <h5 class="card-title">{{ profile.name|default:"Name: <small>&#8212;</small>" }}</h5>
+            <ul class="list-group card-list pb-2 borderless">
+              <li class="list-group-item d-flex align-items-end">
+                <h6 class="list-item-heading text-muted my-auto me-sm-4 flex-shrink-0">Company Name:</h6>
+                <p class="my-0 overflow-auto text-truncate">{{ profile.company|default:"&#8212;" }}</p>
+              </li>
+              <li class="list-group-item d-flex align-items-end">
+                <h6 class="list-item-heading text-muted my-auto me-sm-4 flex-shrink-0">Website:</h6>
+                <p class="my-0 overflow-auto">{{ profile.website|default:"&#8212;" }}</p>
+              </li>
+              <li class="list-group-item d-flex align-items-end">
+                <h6 class="list-item-heading text-muted my-auto me-sm-4 flex-shrink-0">Phone:</h6>
+                <p class="my-0 overflow-auto">{{ profile.phone|default:"&#8212;" }}</p>
+              </li>
+              <li class="list-group-item d-flex align-items-end">
+                <h6 class="list-item-heading text-muted my-auto me-sm-4 flex-shrink-0">Email:</h6>
+                <p class="my-0 overflow-auto">{{ profile.user.email }}</p>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <!-- Company Logo -->
+        <figure class="col-sm-4 mt-2 d-flex flex-column align-items-center justify-content-center">
+          {% cloudinary profile.logo class="img-thumbnail border-0" style="max-height:150px;" alt="company logo" %}
+          <figcaption class="text-muted">Company Logo</figcaption>
+        </figure>
+      </div>
+        <div class="text-end text-sm-start mt-2 mx-3">
+          <a href="{% url 'employer_profile_update' %}" class="btn btn-outline-cyan-blue py-1">
+            <i class="fa fa-edit"></i>
+            <span class="ms-2">Edit</span>
+          </a>
+        </div>
+    </div>
+
+    <!-- Password card -->
+    <div class="card mx-auto border-0 my-3 mt-1 p-3" >
+      <div class="row g-0">
+        <div class="col-sm-8">
+          <div class="card-body p-0">
+            <h5 class="card-title">Password</h5>
+            <p class="list-group pb-2 ms-1">********</p>
+          </div>
+        </div>
+
+      </div>
+        <div class="text-end text-sm-start mt-2 mx-3">
+          <a href="{% url 'account_change_password' %}" class="btn btn-outline-cyan-blue py-1">
+            <i class="fa fa-edit"></i>
+            <span class="ms-2">Change</span>
+          </a>
+        </div>
+    </div>
+
+    <!-- Delete account -->
+    <div class="card mx-auto border-0 my-3 mt-1 p-3" >
+      <div class="row g-0">
+        <div class="card-body p-0">
+          <h5 class="card-title">Delete account</h5>
+          <p class="list-group pb-2 ms-1">
+            Once you delete your account, there is no going back. Please be certain.
+          </p>
+        </div>
+      </div>
+        <div class="text-end mt-2 mx-3">
+          <a href="{% url 'account_deactivate' %}" class="btn btn-outline-danger py-1">
+            <i class="fa fa-trash"></i>
+            <span class="ms-2">Delete</span>
+          </a>
+        </div>
+    </div>
+
+  </div>
+</main>
+
+{% include 'footer.html' %}
+{% endblock %}
