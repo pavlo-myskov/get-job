@@ -2,6 +2,8 @@ from django.db import models
 from django.urls import reverse
 from django.core.validators import MaxLengthValidator
 
+from resumes.models import Resume
+
 
 class Areas(models.TextChoices):
     IRELAND = "IRELAND", "Ireland"
@@ -96,23 +98,26 @@ class Vacancy(models.Model):
         REJECTED = "REJECTED", "Rejected"
         CLOSED = "CLOSED", "Closed"
 
-    title = models.CharField(max_length=255, blank=False)
+    title = models.CharField(max_length=255)
     employer = models.ForeignKey(
         "employer.Employer",
         on_delete=models.CASCADE,
         related_name="vacancies",
     )
-    body = models.TextField(blank=False)
-    area = models.CharField(choices=Areas.choices, max_length=50, blank=False)
+    area = models.CharField(choices=Areas.choices, max_length=50)
+    salary = models.CharField(max_length=50, default="Negotiable")
     job_location = models.CharField(
-        max_length=50, choices=JobLocations.choices, blank=False
+        max_length=50, choices=JobLocations.choices
     )
     job_type = models.CharField(
-        choices=JobTypes.choices, max_length=50, blank=False
+        choices=JobTypes.choices, max_length=50
     )
-    salary = models.CharField(max_length=50, default="Negotiable", blank=False)
-    experience = models.CharField(max_length=50, blank=True, null=True)
+    experience_duration = models.CharField(
+        choices=Resume.Duration.choices, max_length=50
+    )
+    body = models.TextField()
     created_on = models.DateTimeField(auto_now_add=True)
+    updated_on = models.DateTimeField(auto_now=True)
     status = models.CharField(
         choices=JobPostStatus.choices,
         max_length=50,
