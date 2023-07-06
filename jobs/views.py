@@ -10,6 +10,7 @@ from employer.views import EmployerRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 
 from jobseeker.views import JobseekerRequiredMixin
+from resumes.forms import ResumeSearchForm
 
 from .utils import annotate_jobs, filter_jobs
 from .models import Application, Vacancy
@@ -107,79 +108,19 @@ class JobDetailView(DetailView):
         return context
 
 
-class JobSaveToggle(JobseekerRequiredMixin, View):
-    """Toggle save/unsave job for the current jobseeker"""
+class MyVacancyDetailView(EmployerRequiredMixin, DetailView):
+    model = Vacancy
+    template_name = "jobs/my_vacancy_detail.html"
 
-    http_method_names = ["post"]  # only POST requests are allowed
-
-    def post(self, request, *args, **kwargs):
-        pk = kwargs.get("pk")
-        vacancy = get_object_or_404(Vacancy, pk=pk)
-        profile = request.user.jobseekerprofile
-        if profile.favorites.filter(id=vacancy.id).exists():
-            profile.favorites.remove(vacancy.id)
-            is_saved = False
-            success_message = "The job has been removed from saved jobs."
-        else:
-            profile.favorites.add(vacancy.id)
-            is_saved = True
-            success_message = "The job has been saved."
-
-        return JsonResponse(
-            {"is_saved": is_saved, "successMsg": success_message}
-        )
-
-
-class JobApplyView(JobseekerRequiredMixin, CreateView):
-    form_class = ApplicationForm
-    template_name = "jobs/job_apply.html"
-    success_message = (
-        "You have applied for the job successfully."
-        " Wait for the employer to contact you."
-    )
-
-    def get_form_kwargs(self):
-        """Passes the request object to the form class."""
-        kwargs = super().get_form_kwargs()
-        kwargs["request"] = self.request
-        return kwargs
-
-    def form_valid(self, form):
-        """Save the jobseeker and the job to the application"""
-        form.instance.applicant = self.request.user.jobseekerprofile
-        form.instance.vacancy = get_object_or_404(
-            Vacancy,
-            pk=self.kwargs.get("pk"),
-            status=Vacancy.JobPostStatus.ACTIVE,
-        )
-        # check if the applicant has already applied for the job
-        if Application.objects.filter(
-            applicant=form.instance.applicant, vacancy=form.instance.vacancy
-        ).exists():
-            form.add_error(
-                None,
-                "You have already applied for this job. "
-                "Please wait for the employer to contact you.",
-            )
-            return super().form_invalid(form)
-        return super().form_valid(form)
-
-    def get_success_url(self):
-        """Redirect to the job detail page"""
-        return reverse("job_detail", kwargs={"pk": self.kwargs.get("pk")})
+    def get_queryset(self):
+        # TODO: add test
+        """Return all jobs of the owner"""
+        return Vacancy.objects.filter(employer=self.request.user)
 
     def get_context_data(self, **kwargs):
-        """Add search form, vacancy and resumes to the context"""
+        """Add search form to the context for navbar search bar"""
         context = super().get_context_data(**kwargs)
-        context["nav_form"] = SearchForm(auto_id=False)
-        context["vacancy"] = get_object_or_404(
-            Vacancy,
-            pk=self.kwargs.get("pk"),
-            status=Vacancy.JobPostStatus.ACTIVE,
-        )
-        context["are_resumes_available"] = self.request.user.resumes.filter(
-            status=Resume.ResumePublishStatus.ACTIVE
-        ).exists()
+        context["nav_form"] = ResumeSearchForm(auto_id=False)
         return context
 
 
@@ -260,3 +201,79 @@ class JobUpdateView(
         """Set the status of the vacancy to IN_REVIEW"""
         form.instance.status = Vacancy.JobPostStatus.IN_REVIEW
         return super().form_valid(form)
+
+
+class JobSaveToggle(JobseekerRequiredMixin, View):
+    """Toggle save/unsave job for the current jobseeker"""
+
+    http_method_names = ["post"]  # only POST requests are allowed
+
+    def post(self, request, *args, **kwargs):
+        pk = kwargs.get("pk")
+        vacancy = get_object_or_404(Vacancy, pk=pk)
+        profile = request.user.jobseekerprofile
+        if profile.favorites.filter(id=vacancy.id).exists():
+            profile.favorites.remove(vacancy.id)
+            is_saved = False
+            success_message = "The job has been removed from saved jobs."
+        else:
+            profile.favorites.add(vacancy.id)
+            is_saved = True
+            success_message = "The job has been saved."
+
+        return JsonResponse(
+            {"is_saved": is_saved, "successMsg": success_message}
+        )
+
+
+class JobApplyView(JobseekerRequiredMixin, CreateView):
+    form_class = ApplicationForm
+    template_name = "jobs/job_apply.html"
+    success_message = (
+        "You have applied for the job successfully."
+        " Wait for the employer to contact you."
+    )
+
+    def get_form_kwargs(self):
+        """Passes the request object to the form class."""
+        kwargs = super().get_form_kwargs()
+        kwargs["request"] = self.request
+        return kwargs
+
+    def form_valid(self, form):
+        """Save the jobseeker and the job to the application"""
+        form.instance.applicant = self.request.user.jobseekerprofile
+        form.instance.vacancy = get_object_or_404(
+            Vacancy,
+            pk=self.kwargs.get("pk"),
+            status=Vacancy.JobPostStatus.ACTIVE,
+        )
+        # check if the applicant has already applied for the job
+        if Application.objects.filter(
+            applicant=form.instance.applicant, vacancy=form.instance.vacancy
+        ).exists():
+            form.add_error(
+                None,
+                "You have already applied for this job. "
+                "Please wait for the employer to contact you.",
+            )
+            return super().form_invalid(form)
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        """Redirect to the job detail page"""
+        return reverse("job_detail", kwargs={"pk": self.kwargs.get("pk")})
+
+    def get_context_data(self, **kwargs):
+        """Add search form, vacancy and resumes to the context"""
+        context = super().get_context_data(**kwargs)
+        context["nav_form"] = SearchForm(auto_id=False)
+        context["vacancy"] = get_object_or_404(
+            Vacancy,
+            pk=self.kwargs.get("pk"),
+            status=Vacancy.JobPostStatus.ACTIVE,
+        )
+        context["are_resumes_available"] = self.request.user.resumes.filter(
+            status=Resume.ResumePublishStatus.ACTIVE
+        ).exists()
+        return context

@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% include 'employer/navbar.html' %}
+<main class="container py-3 px-0 flex-grow-1">
+  <div class="card shadow">
+
+    <!-- Job detail header -->
+    <div class="card-header">
+      <div class="d-flex align-items-center justify-content-between">
+        <!-- TODO url 'my_vacancies' -->
+        <a href="#" class="text-decoration-none d-flex align-items-center text-muted fs-4"
+          area-label="to my vacancies">
+          <i class="fa fa-arrow-left"></i>
+          <span class="mx-2">To my vacancies</span>
+        </a>
+        <div class="d-flex">
+          {% if vacancy.status == 'CLOSED' %}
+          <!-- TODO url 'vacancy_open' vacancy.pk -->
+            <form method="post" action="#" id="vacancy-open-form-{{ vacancy.pk }}">
+              {% csrf_token %}
+              <a type="submit" href="#" onclick="document.getElementById('vacancy-open-form-{{ vacancy.pk }}').submit();"
+                class="btn btn-outline-cyan-blue btn-sm px-3 px-sm-3 py-1 me-2" aria-label="close vacancy">
+                Open
+              </a>
+            </form>
+          {% else %}
+          <!-- TODO modal data-resume-action-url="url 'resume_close' resume.pk"-->
+            <a href="#" class="btn btn-outline-cyan-blue btn-sm resume-close-btn px-3 px-sm-3 py-1 me-2"
+              aria-label="close vacancy" data-resume-action-url="#">
+              Close
+            </a>
+          {% endif %}
+          <!-- TODO modal data-resume-action-url=" url 'resume_delete' resume.pk -->
+          <a href="#" class="btn btn-outline-cyan-blue btn-sm resume-delete-btn px-3 px-sm-3 py-1 me-2"
+            data-resume-action-url="#">
+            Delete
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Job detail body -->
+    <div class="card-body position-relative py-4 px-3">
+
+      {% include "jobs/vacancy_detail_card_body.html" %}
+
+      <!-- Bottom buttons panel -->
+      <div class="d-flex align-items-center justify-content-between px-3 px-sm-4">
+        {% if vacancy.status == 'CLOSED' %}
+          <span data-bs-toggle="tooltip" data-bs-placement="right" title="You can't edit a closed vacancy.">
+            <a href="#" class="btn btn-cyan-blue px-3 px-sm-4 py-1 rounded-1 disabled">Edit</a>
+          </span>
+        {% else %}
+          <a href="{% url 'job_update' vacancy.id %}" class="btn btn-cyan-blue px-3 px-sm-4 py-1 rounded-1">Edit</a>
+        {% endif %}
+        <div role="button" class="fs-3 back-to-top d-flex align-items-center text-cyan-blue"
+          area-label="scroll to top">
+          <i class="fa fa-arrow-up"></i>
+        </div>
+      </div>
+    </div>
+
+</main>
+
+{% include 'footer.html' %}
+{% endblock %}
