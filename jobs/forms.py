@@ -107,7 +107,7 @@ class JobCreateForm(forms.ModelForm):
             "job_location",
             "job_type",
             "salary",
-            # "experience_duration",
+            "experience_duration",
             "body"
         ]
         labels = {"body": "Job Description"}

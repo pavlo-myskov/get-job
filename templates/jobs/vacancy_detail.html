@@ -64,9 +64,8 @@
           <div class="col-12 col-sm-8 px-0">
             <ul class="list-group pb-2 card-list borderless">
               <li class="list-group-item d-flex align-items-end">
-                <!-- TODO Clickable with link to detail company info page -->
                 <h6 class="list-item-heading my-auto me-sm-4 flex-shrink-0">Company:</h6>
-                <p class="my-0 overflow-auto">Company Name</p>
+                <p class="my-0 overflow-auto">{{ vacancy.employer.profile.company }}</p>
               </li>
               <li class="list-group-item d-flex align-items-end">
                 <h6 class="list-item-heading my-auto me-sm-4 flex-shrink-0">Area:</h6>
@@ -84,12 +83,10 @@
                 <h6 class="list-item-heading my-auto me-sm-4 flex-shrink-0">Job location:</h6>
                 <p class="my-0 overflow-auto">{{ vacancy.get_job_location_display }}</p>
               </li>
-              {% if vacancy.experience %}
               <li class="list-group-item d-flex align-items-end">
-                <h6 class="list-item-heading my-auto me-sm-4 flex-shrink-0">Experience:</h6>
-                <p class="my-0 overflow-auto">{{ vacancy.experience }}</p>
+                <h6 class="list-item-heading my-auto me-sm-4 flex-shrink-0">Required Experience:</h6>
+                <p class="my-0 overflow-auto">{{ vacancy.get_experience_duration_display }}</p>
               </li>
-              {% endif %}
             </ul>
           </div>
           <!-- Company Image for large screens -->
