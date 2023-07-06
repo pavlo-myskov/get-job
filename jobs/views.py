@@ -1,15 +1,19 @@
+from django.contrib import messages
+from django.forms import BaseForm
 from django.shortcuts import get_object_or_404
-from django.http import JsonResponse
-from django.urls import reverse
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
+from django.urls import reverse, reverse_lazy
 from django.views import View
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import CreateView
+from employer.views import EmployerRequiredMixin
+from django.contrib.messages.views import SuccessMessageMixin
 
 from jobseeker.views import JobseekerRequiredMixin
 
 from .utils import annotate_jobs, filter_jobs
 from .models import Application, Vacancy
-from .forms import ApplicationForm, SearchForm
+from .forms import ApplicationForm, JobCreateForm, SearchForm
 from resumes.models import Resume
 
 
@@ -177,3 +181,50 @@ class JobApplyView(JobseekerRequiredMixin, CreateView):
             status=Resume.ResumePublishStatus.ACTIVE
         ).exists()
         return context
+
+
+class JobCreateView(EmployerRequiredMixin, SuccessMessageMixin, CreateView):
+    model = Vacancy
+    form_class = JobCreateForm
+    template_name_suffix = "_create_form"
+    success_message = (
+        "Your vacancy has been created and is "
+        "<span class='text-info'>pending approval</span>"
+    )
+
+    def test_func(self):
+        """Check if the user has less or equal than 5 vacancies"""
+        self.employer_test = super().test_func()
+        self.has_less_6_vacancies = (
+            self.request.user.vacancies.all().count() <= 4
+        )
+        return self.employer_test and self.has_less_6_vacancies
+
+    def handle_no_permission(self):
+        """Redirect to the vacancy list page and show an alert,
+        if the user has more than 5 vacancies;
+        if the user is not an employer, redirect to the specific 403 page"""
+        # redirect to login page if the user is not authenticated
+        if not self.request.user.is_authenticated:
+            return super().handle_no_permission()
+        if self.employer_test and not self.has_less_6_vacancies:
+            messages.error(
+                self.request,
+                "The maximum number of vacancies has been reached. ",
+                extra_tags="modal",
+            )
+            return HttpResponseRedirect(reverse_lazy("my_vacancies"))
+
+        return super().handle_no_permission()
+
+    def get_success_url(self):
+        """Redirect to the 'next' url if it exists,
+        otherwise to the vacancy detail page"""
+        if self.request.GET.get("next"):
+            return self.request.GET.get("next")
+        return reverse("my_job_detail", args=(self.object.id,))
+
+    def form_valid(self, form: BaseForm) -> HttpResponse:
+        """Save the current user as a employer-owner of the vacancy"""
+        form.instance.employer = self.request.user
+        return super().form_valid(form)
