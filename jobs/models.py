@@ -97,15 +97,11 @@ class Vacancy(models.Model):
         CLOSED = "CLOSED", "Closed"
 
     title = models.CharField(max_length=255, blank=False)
-    """
-    # TODO: add FKs to Employer and Company models
     employer = models.ForeignKey(
-        Employer, on_delete=models.CASCADE, related_name="vaccancies"
+        "employer.Employer",
+        on_delete=models.CASCADE,
+        related_name="vacancies",
     )
-    company = models.ForeignKey(
-        Company, on_delete=models.CASCADE, related_name="vaccancies"
-    )
-    """
     body = models.TextField(blank=False)
     area = models.CharField(choices=Areas.choices, max_length=50, blank=False)
     job_location = models.CharField(

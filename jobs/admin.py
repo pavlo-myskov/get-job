@@ -11,8 +11,7 @@ class VacancyAdmin(admin.ModelAdmin):
     list_display = (
         "title",
         "status",
-        # "employer",
-        # "company",
+        "employer",
         "area",
         "job_location",
         "job_type",
@@ -23,8 +22,6 @@ class VacancyAdmin(admin.ModelAdmin):
     # list of fields to generate filters in the right sidebar of admin panel
     list_filter = (
         "status",
-        # "employer",
-        # "company",
         "job_type",
         "job_location",
         "area",
