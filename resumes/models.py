@@ -4,7 +4,6 @@ from django.db import models
 from django.urls import reverse
 
 from jobportal.validators import FileValidator, CV_TYPES
-from jobseeker.models import Jobseeker
 
 file_validator = FileValidator(
     max_size=512*1024,  # 500 KB
@@ -42,7 +41,7 @@ class Resume(models.Model):
         MORE_THAN_10_YEARS = "MORE_THAN_10_YEARS", "More than 10 years"
 
     jobseeker = models.ForeignKey(
-        Jobseeker, on_delete=models.CASCADE, related_name="resumes"
+        "jobseeker.Jobseeker", on_delete=models.CASCADE, related_name="resumes"
     )
     occupation = models.CharField(max_length=254)
     experience_duration = models.CharField(
