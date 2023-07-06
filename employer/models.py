@@ -112,7 +112,7 @@ class EmployerProfile(models.Model):
 
         # if avatar is not set, use the default avatar
         if not self.logo:
-            self.logo = "media/get-job/profile_placehoder.png"
+            self.logo = "media/get-job/company_placeholder"
             self.save()
 
     def __str__(self):

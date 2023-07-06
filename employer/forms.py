@@ -31,13 +31,13 @@ class EmployerProfileForm(ModelForm):
             "overwrite": True,
             "format": "webp",
             "resource_type": "image",
-            "default": "media/get-job/company_placehoder.png",
+            "default": "media/get-job/company_placeholder",
             "folder": "media/get-job/company_logos",
             "transformation": [
                 {
                     "quality": "auto:eco",
                     "crop": "fit",
-                    "width": 250,
+                    "width": "250",
                 }
             ],
         },
