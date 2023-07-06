@@ -70,41 +70,10 @@
     </div>
 
     <!-- Password card -->
-    <div class="card mx-auto border-0 my-3 mt-1 p-3" >
-      <div class="row g-0">
-        <div class="col-sm-8">
-          <div class="card-body p-0">
-            <h5 class="card-title">Password</h5>
-            <p class="list-group pb-2 ms-1">********</p>
-          </div>
-        </div>
-
-      </div>
-        <div class="text-end text-sm-start mt-2 mx-3">
-          <a href="{% url 'account_change_password' %}" class="btn btn-outline-royalpurple py-1">
-            <i class="fa fa-edit"></i>
-            <span class="ms-2">Change</span>
-          </a>
-        </div>
-    </div>
+    {% include 'account/snippets/change_password_profile_card.html' with color="royalpurple" %}
 
     <!-- Delete account -->
-    <div class="card mx-auto border-0 my-3 mt-1 p-3" >
-      <div class="row g-0">
-        <div class="card-body p-0">
-          <h5 class="card-title">Delete account</h5>
-          <p class="list-group pb-2 ms-1">
-            Once you delete your account, there is no going back. Please be certain.
-          </p>
-        </div>
-      </div>
-        <div class="text-end mt-2 mx-3">
-          <a href="{% url 'account_deactivate' %}" class="btn btn-outline-danger py-1">
-            <i class="fa fa-trash"></i>
-            <span class="ms-2">Delete</span>
-          </a>
-        </div>
-    </div>
+    {% include 'account/snippets/delete_account_profile_card.html' %}
 
   </div>
 </main>
