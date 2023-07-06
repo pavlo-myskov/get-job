@@ -5,7 +5,7 @@ from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.urls import reverse, reverse_lazy
 from django.views import View
 from django.views.generic import ListView, DetailView
-from django.views.generic.edit import CreateView
+from django.views.generic.edit import CreateView, UpdateView
 from employer.views import EmployerRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 
@@ -227,4 +227,36 @@ class JobCreateView(EmployerRequiredMixin, SuccessMessageMixin, CreateView):
     def form_valid(self, form: BaseForm) -> HttpResponse:
         """Save the current user as a employer-owner of the vacancy"""
         form.instance.employer = self.request.user
+        return super().form_valid(form)
+
+
+class JobUpdateView(
+    EmployerRequiredMixin, SuccessMessageMixin, UpdateView
+):
+    # TODO: add test
+    model = Vacancy
+    form_class = JobCreateForm
+    template_name_suffix = "_update_form"
+    success_message = (
+        "Your vacancy has been updated and is "
+        "<span class='text-info'>pending approval</span>"
+    )
+
+    def test_func(self):
+        """Allow only the owner to update the vacancy,
+        if the vacancy is not closed"""
+        self.employer_test = super().test_func()
+        return (
+            self.employer_test
+            and self.request.user == self.get_object().employer
+            and self.get_object().status != Vacancy.JobPostStatus.CLOSED
+        )
+
+    def get_success_url(self):
+        """Redirect to the vacancy detail page"""
+        return reverse("my_vacancy_detail", kwargs={"pk": self.get_object().pk})
+
+    def form_valid(self, form: BaseForm) -> HttpResponse:
+        """Set the status of the vacancy to IN_REVIEW"""
+        form.instance.status = Vacancy.JobPostStatus.IN_REVIEW
         return super().form_valid(form)

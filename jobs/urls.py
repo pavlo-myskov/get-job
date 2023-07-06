@@ -6,9 +6,14 @@ urlpatterns = [
     path("jobs/", views.JobListView.as_view(), name="job_search"),
     path("jobs/<int:pk>", views.JobDetailView.as_view(), name="job_detail"),
     path(
-        "employer/jobs/create",
+        "employer/job/create",
         views.JobCreateView.as_view(),
         name="job_create",
+    ),
+    path(
+        "employer/job/<int:pk>/update",
+        views.JobUpdateView.as_view(),
+        name="job_update",
     ),
     path(
         "job/<int:pk>/save",
