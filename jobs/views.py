@@ -234,7 +234,9 @@ class JobUpdateView(
 
     def get_success_url(self):
         """Redirect to the vacancy detail page"""
-        return reverse("my_vacancy_detail", kwargs={"pk": self.get_object().pk})
+        return reverse(
+            "my_vacancy_detail", kwargs={"pk": self.get_object().pk}
+        )
 
     def form_valid(self, form: BaseForm) -> HttpResponse:
         """Set the status of the vacancy to IN_REVIEW"""
@@ -270,6 +272,40 @@ class JobCloseView(
         self.object.status = Vacancy.JobPostStatus.CLOSED
         self.object.save()
         messages.success(self.request, "Your job has been closed")
+        return HttpResponseRedirect(reverse("my_jobs"))
+
+
+class JobOpenView(
+    EmployerRequiredMixin,
+    SingleObjectMixin,
+    View,
+):
+    # TODO: add test
+    http_method_names = ["post"]  # only POST requests are allowed
+    model = Vacancy
+
+    def test_func(self):
+        # TODO: redirection tests
+        """Allow only the owner to open the job,
+        if the job is closed"""
+        self.employer_test = super().test_func()
+        return (
+            self.employer_test
+            and self.request.user == self.get_object().employer
+            and self.get_object().status == Vacancy.JobPostStatus.CLOSED
+        )
+
+    # allows save object only if the transaction is successful
+    @transaction.atomic
+    def post(self, request, *args, **kwargs):
+        """Set the status of the job to IN_REVIEW"""
+        self.object = self.get_object()
+        self.object.status = Vacancy.JobPostStatus.IN_REVIEW
+        self.object.save()
+        messages.success(
+            self.request,
+            "Your job has been opened and is awaiting approval",
+        )
         return HttpResponseRedirect(reverse("my_jobs"))
 
 

@@ -96,8 +96,7 @@
                     </td>
                     <td class="position-relative px-2">
                       {% if job.status == 'CLOSED' %}
-                      {% comment %}<!-- TODO: action="{% url 'job_open' job.pk %}" -->{% endcomment %}
-                      <form method="post" action="" id="job-open-form-{{ job.pk }}">
+                      <form method="post" action="{% url 'job_open' job.pk %}" id="job-open-form-{{ job.pk }}">
                         {% csrf_token %}
                         <a type="submit" href="#" onclick="document.getElementById('job-open-form-{{ job.pk }}').submit();"
                           class="hover-grow-resume-control stretched-link d-flex flex-column align-items-center text-decoration-none" aria-label="open job">
