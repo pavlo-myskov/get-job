@@ -28,9 +28,8 @@
               Close
             </a>
           {% endif %}
-          <!-- TODO modal data-resume-action-url=" url 'resume_delete' resume.pk -->
-          <a href="#" class="btn btn-outline-cyan-blue btn-sm resume-delete-btn px-3 px-sm-3 py-1 me-2"
-            data-resume-action-url="#">
+          <a href="#" class="btn btn-outline-cyan-blue btn-sm job-delete-btn px-3 px-sm-3 py-1 me-2"
+            data-job-action-url="{% url 'job_delete' vacancy.pk %}">
             Delete
           </a>
         </div>

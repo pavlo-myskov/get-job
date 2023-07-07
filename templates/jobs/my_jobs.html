@@ -113,9 +113,8 @@
                       {% endif %}
                     </td>
                     <td class="position-relative px-2">
-                      {% comment %}<!-- TODO: data-job-action-url="{% url 'job_delete' job.pk %}" -->{% endcomment %}
                       <a href="#" class="hover-grow-resume-control job-delete-btn stretched-link d-flex flex-column align-items-center text-decoration-none"
-                          aria-label="delete job" data-job-action-url="">
+                          aria-label="delete job" data-job-action-url="{% url 'job_delete' job.pk %}">
                         <i class="fa fa-trash text-cyan-blue"></i>
                         <small class="d-none d-sm-inline text-muted">Delete</small>
                       </a>

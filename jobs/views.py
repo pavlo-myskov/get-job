@@ -6,7 +6,7 @@ from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.urls import reverse, reverse_lazy
 from django.views import View
 from django.views.generic import ListView, DetailView
-from django.views.generic.edit import CreateView, UpdateView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic.detail import SingleObjectMixin
 from employer.views import EmployerRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
@@ -307,6 +307,26 @@ class JobOpenView(
             "Your job has been opened and is awaiting approval",
         )
         return HttpResponseRedirect(reverse("my_jobs"))
+
+
+class JobDeleteView(EmployerRequiredMixin, DeleteView):
+    model = Vacancy
+    template_name = "jobs/my_jobs.html"
+    success_message = "Your job has been permanently deleted"
+    success_url = reverse_lazy("my_jobs")
+
+    def test_func(self):
+        """Allow only the owner to delete the job"""
+        self.employer_test = super().test_func()
+        return (
+            self.employer_test
+            and self.request.user == self.get_object().employer
+        )
+
+    def delete(self, request, *args, **kwargs):
+        """Add success message to the delete view"""
+        messages.success(self.request, self.success_message)
+        return super().delete(request, *args, **kwargs)
 
 
 class JobSaveToggle(JobseekerRequiredMixin, View):
