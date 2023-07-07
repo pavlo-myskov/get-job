@@ -26,6 +26,11 @@ urlpatterns = [
         name="job_update",
     ),
     path(
+        "employer/job/<int:pk>/close",
+        views.JobCloseView.as_view(),
+        name="job_close",
+    ),
+    path(
         "job/<int:pk>/save",
         views.JobSaveToggle.as_view(),
         name="job_save_toggle",

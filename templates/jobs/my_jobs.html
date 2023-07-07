@@ -106,18 +106,17 @@
                         </a>
                       </form>
                       {% else %}
-                      {% comment %}<!-- TODO: data-resume-action-url="{% url 'job_close' job.pk %}" -->{% endcomment %}
-                      <a href="#" class="hover-grow-resume-control resume-close-btn stretched-link d-flex flex-column align-items-center text-decoration-none"
-                          aria-label="close job" data-resume-action-url="">
+                      <a href="#" class="hover-grow-resume-control job-close-btn stretched-link d-flex flex-column align-items-center text-decoration-none"
+                          aria-label="close job" data-job-action-url="{% url 'job_close' job.pk %}">
                         <i class="fa fa-xmark text-cyan-blue"></i>
                         <small class="d-none d-sm-inline text-muted">Close</small>
                       </a>
                       {% endif %}
                     </td>
                     <td class="position-relative px-2">
-                      {% comment %}<!-- TODO: data-resume-action-url="{% url 'job_delete' job.pk %}" -->{% endcomment %}
-                      <a href="#" class="hover-grow-resume-control resume-delete-btn stretched-link d-flex flex-column align-items-center text-decoration-none"
-                          aria-label="delete job" data-resume-action-url="">
+                      {% comment %}<!-- TODO: data-job-action-url="{% url 'job_delete' job.pk %}" -->{% endcomment %}
+                      <a href="#" class="hover-grow-resume-control job-delete-btn stretched-link d-flex flex-column align-items-center text-decoration-none"
+                          aria-label="delete job" data-job-action-url="">
                         <i class="fa fa-trash text-cyan-blue"></i>
                         <small class="d-none d-sm-inline text-muted">Delete</small>
                       </a>
@@ -142,7 +141,7 @@
 </main>
 
 <!-- Modal for close/delete job -->
-{% include 'resumes/modal_close_delete_resume.html' %}
+{% include 'jobs/modal_close_delete_job.html' %}
 
 {% include 'footer.html' %}
 {% endblock %}

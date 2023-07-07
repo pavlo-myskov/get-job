@@ -1,4 +1,5 @@
 from django.contrib import messages
+from django.db import transaction
 from django.forms import BaseForm
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
@@ -6,6 +7,7 @@ from django.urls import reverse, reverse_lazy
 from django.views import View
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView
+from django.views.generic.detail import SingleObjectMixin
 from employer.views import EmployerRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 
@@ -238,6 +240,37 @@ class JobUpdateView(
         """Set the status of the vacancy to IN_REVIEW"""
         form.instance.status = Vacancy.JobPostStatus.IN_REVIEW
         return super().form_valid(form)
+
+
+class JobCloseView(
+    EmployerRequiredMixin,
+    SingleObjectMixin,
+    View,
+):
+    # TODO: add test
+    http_method_names = ["post"]  # only POST requests are allowed
+    model = Vacancy
+
+    def test_func(self):
+        # TODO: redirection tests
+        """Allow only the owner to close the job,
+        if the job is not closed yet"""
+        self.employer_test = super().test_func()
+        return (
+            self.employer_test
+            and self.request.user == self.get_object().employer
+            and self.get_object().status != Vacancy.JobPostStatus.CLOSED
+        )
+
+    # allows save object only if the transaction is successful
+    @transaction.atomic
+    def post(self, request, *args, **kwargs):
+        """Set the status of the job to CLOSED"""
+        self.object = self.get_object()
+        self.object.status = Vacancy.JobPostStatus.CLOSED
+        self.object.save()
+        messages.success(self.request, "Your job has been closed")
+        return HttpResponseRedirect(reverse("my_jobs"))
 
 
 class JobSaveToggle(JobseekerRequiredMixin, View):
