@@ -1,5 +1,6 @@
 from django.test import TestCase
 from django.urls import reverse
+from employer.models import Employer
 
 from jobs.models import Vacancy, Areas
 
@@ -7,9 +8,14 @@ from jobs.models import Vacancy, Areas
 class TestJobListView(TestCase):
     @classmethod
     def setUpTestData(cls):
+        cls.employer = Employer.employer.create(
+            email="test_employer@email.com",
+            password='123456',
+        )
         cls.active_vacancies = [
             Vacancy.objects.create(
                 title=f"ActiveJob {i}",
+                employer=cls.employer,
                 status=Vacancy.JobPostStatus.ACTIVE,
             )
             for i in range(6)
@@ -17,6 +23,7 @@ class TestJobListView(TestCase):
         cls.inactive_vacancies = [
             Vacancy.objects.create(
                 title=f"InactiveJob {i}",
+                employer=cls.employer,
                 status=Vacancy.JobPostStatus.IN_REVIEW,
             )
             for i in range(4)
@@ -109,6 +116,7 @@ class TestJobListView(TestCase):
         """
         valid_job = Vacancy.objects.create(
             title="Galway City Job",
+            employer=self.employer,
             status=Vacancy.JobPostStatus.ACTIVE,
             area=Areas.GALWAY_CITY,
         )
@@ -125,6 +133,7 @@ class TestJobListView(TestCase):
         """
         Vacancy.objects.create(
             title="Invalid Area Job",
+            employer=self.employer,
             status=Vacancy.JobPostStatus.ACTIVE,
             area="galway",
         )
@@ -140,16 +149,19 @@ class TestJobListView(TestCase):
         """
         Vacancy.objects.create(
             title="Irish Job",
+            employer=self.employer,
             status=Vacancy.JobPostStatus.ACTIVE,
             area=Areas.CORK_CITY,
         )
         Vacancy.objects.create(
             title="Irish Job",
+            employer=self.employer,
             status=Vacancy.JobPostStatus.ACTIVE,
             area=Areas.DONEGAL,
         )
         uk_job = Vacancy.objects.create(
             title="Non Irish Job",
+            employer=self.employer,
             status=Vacancy.JobPostStatus.ACTIVE,
             area=Areas.UK,
         )
@@ -166,26 +178,31 @@ class TestJobListView(TestCase):
         """
         Vacancy.objects.create(
             title="City Centre Job",
+            employer=self.employer,
             status=Vacancy.JobPostStatus.ACTIVE,
             area=Areas.DUBLIN_CITY_CENTRE,
         )
         Vacancy.objects.create(
             title="North Dublin Job",
+            employer=self.employer,
             status=Vacancy.JobPostStatus.ACTIVE,
             area=Areas.DUBLIN_NORTH,
         )
         Vacancy.objects.create(
             title="South Dublin Job",
+            employer=self.employer,
             status=Vacancy.JobPostStatus.ACTIVE,
             area=Areas.DUBLIN_SOUTH,
         )
         Vacancy.objects.create(
             title="West Dublin Job",
+            employer=self.employer,
             status=Vacancy.JobPostStatus.ACTIVE,
             area=Areas.DUBLIN_WEST,
         )
         Vacancy.objects.create(
             title="Dublin County Job",
+            employer=self.employer,
             status=Vacancy.JobPostStatus.ACTIVE,
             area=Areas.DUBLIN_COUNTY,
         )
@@ -202,16 +219,19 @@ class TestJobListView(TestCase):
         """
         job_1 = Vacancy.objects.create(
             title="Limerick City Job 1",
+            employer=self.employer,
             status=Vacancy.JobPostStatus.ACTIVE,
             area=Areas.LIMERICK_CITY,
         )
         job_11 = Vacancy.objects.create(
             title="Limerick City Job 11",
+            employer=self.employer,
             status=Vacancy.JobPostStatus.ACTIVE,
             area=Areas.LIMERICK_CITY,
         )
         job_2 = Vacancy.objects.create(
             title="Limerick City Job 2",
+            employer=self.employer,
             status=Vacancy.JobPostStatus.ACTIVE,
             area=Areas.LIMERICK_CITY,
         )
@@ -230,6 +250,7 @@ class TestJobListView(TestCase):
         """
         valid_job = Vacancy.objects.create(
             title="Remote Job",
+            employer=self.employer,
             status=Vacancy.JobPostStatus.ACTIVE,
             job_location=Vacancy.JobLocations.REMOTE,
         )
@@ -246,6 +267,7 @@ class TestJobListView(TestCase):
         """
         Vacancy.objects.create(
             title="Invalid Job Location Job",
+            employer=self.employer,
             status=Vacancy.JobPostStatus.ACTIVE,
             job_location="invalid",
         )
@@ -262,18 +284,21 @@ class TestJobListView(TestCase):
         """
         Vacancy.objects.create(
             title="Remote Job 1",
+            employer=self.employer,
             status=Vacancy.JobPostStatus.ACTIVE,
             area=Areas.OFFALY,
             job_location=Vacancy.JobLocations.REMOTE,
         )
         job_21 = Vacancy.objects.create(
             title="Remote Job 21",
+            employer=self.employer,
             status=Vacancy.JobPostStatus.ACTIVE,
             area=Areas.OFFALY,
             job_location=Vacancy.JobLocations.REMOTE,
         )
         Vacancy.objects.create(
             title="Remote Job 2",
+            employer=self.employer,
             status=Vacancy.JobPostStatus.ACTIVE,
             area=Areas.OFFALY,
             job_location=Vacancy.JobLocations.ON_SITE,
@@ -294,6 +319,7 @@ class TestJobListView(TestCase):
         Test that search by job type returns job if job type is valid
         """
         valid_job = Vacancy.objects.create(
+            employer=self.employer,
             status=Vacancy.JobPostStatus.ACTIVE,
             job_type=Vacancy.JobTypes.FULL_TIME,
         )
@@ -309,6 +335,7 @@ class TestJobListView(TestCase):
         Test that search by invalid job type returns no jobs
         """
         Vacancy.objects.create(
+            employer=self.employer,
             status=Vacancy.JobPostStatus.ACTIVE, job_type="trainee"
         )
 
@@ -324,18 +351,21 @@ class TestJobListView(TestCase):
         """
         Vacancy.objects.create(
             title="Full Time Job 1",
+            employer=self.employer,
             status=Vacancy.JobPostStatus.ACTIVE,
             job_location=Vacancy.JobLocations.HYBRID,
             job_type=Vacancy.JobTypes.FULL_TIME,
         )
         job_21 = Vacancy.objects.create(
             title="Full Time Job 21",
+            employer=self.employer,
             status=Vacancy.JobPostStatus.ACTIVE,
             job_location=Vacancy.JobLocations.ON_SITE,
             job_type=Vacancy.JobTypes.FULL_TIME,
         )
         Vacancy.objects.create(
             title="Full Time Job 2",
+            employer=self.employer,
             status=Vacancy.JobPostStatus.ACTIVE,
             job_location=Vacancy.JobLocations.REMOTE,
             job_type=Vacancy.JobTypes.TEMPORARY,
@@ -391,6 +421,7 @@ class TestJobListView(TestCase):
         for i in range(12):
             Vacancy.objects.create(
                 title=f"Job {i}",
+                employer=self.employer,
                 status=Vacancy.JobPostStatus.ACTIVE,
             )
 
@@ -407,9 +438,14 @@ class TestJobListView(TestCase):
 class TestJobDetailView(TestCase):
     @classmethod
     def setUpTestData(cls):
+        cls.employer = Employer.employer.create(
+            email="test_employer@email.com",
+            password='123456',
+        )
         cls.vacancies = [
             Vacancy.objects.create(
                 title=f"ActiveJob {i}",
+                employer=cls.employer,
                 status=Vacancy.JobPostStatus.ACTIVE,
             )
             for i in range(4)
@@ -417,6 +453,7 @@ class TestJobDetailView(TestCase):
         cls.inactive_vacancies = [
             Vacancy.objects.create(
                 title=f"InactiveJob {i}",
+                employer=cls.employer,
                 status=Vacancy.JobPostStatus.IN_REVIEW,
             )
             for i in range(1)
