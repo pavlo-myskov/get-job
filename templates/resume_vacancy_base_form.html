@@ -5,27 +5,27 @@
   <div class="card bg-light border-0 mx-auto" style="max-width: 40rem;">
     <div class="card-header">
       <div class="d-flex align-items-center justify-content-between">
-        <a href="{% url 'my_resumes' %}"
+        <a href="{{ my_list }}"
         class="text-decoration-none d-flex align-items-center text-muted fs-4"
           area-label="to my resumes">
           <i class="fa fa-arrow-left"></i>
-          <span class="mx-2">To my resumes</span>
+          <span class="mx-2">To my {{ plural_name }}</span>
         </a>
-        <a href="{% url 'jobseeker_home' %}" class="text-decoration-none d-flex align-items-center text-muted fs-5"
+        <a href="{{ home_url }}" class="text-decoration-none d-flex align-items-center text-muted fs-5"
         area-label="go to home page">
           <i class="fa fa-home"></i>
       </a>
       </div>
     </div>
     <div class="card-body">
-      <h3 class="card-title text-center text-royalpurple">
+      <h3 class="card-title text-center text-{{ color }}">
         {{ form_name }}
       </h3>
       <form method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form|crispy }}
-        <button type="submit" class="btn btn-royalpurple float-end mx-2 mx-sm-3 py-1 px-3">Save</button>
-        <a {% if request.GET.next %}href="{{ request.GET.next }}"{% else %}href="{% url 'my_resumes' %}"{% endif %}
+        <button type="submit" class="btn btn-{{ color }} float-end mx-2 mx-sm-3 py-1 px-3">Save</button>
+        <a {% if request.GET.next %}href="{{ request.GET.next }}"{% else %}href="{{ my_list }}"{% endif %}
          class="btn btn-outline-secondary float-end py-1">Cancel</a>
       </form>
     </div>

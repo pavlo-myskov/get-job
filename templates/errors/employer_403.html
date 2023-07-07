@@ -1,0 +1,9 @@
+<!-- employer 403 error page -->
+{% extends 'base.html' %}
+
+{% block head_title %}403 Forbidden{% endblock %}
+{% block content %}
+
+{% include 'errors/error.html' with error_number='403' error_title='Access Denied' error_text='Only employers can access this page.' %}
+
+{% endblock %}

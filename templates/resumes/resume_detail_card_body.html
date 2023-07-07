@@ -22,20 +22,66 @@
           <p class="my-0 overflow-auto text-truncate">{{ resume.jobseeker.profile.name }}</p>
         </li>
         <li class="list-group-item d-flex align-items-end">
-          <h6 class="list-item-heading my-auto me-sm-4 flex-shrink-0">Gender:</h6>
-          <p class="my-0 overflow-auto">{{ resume.jobseeker.profile.get_gender_display }}</p>
-        </li>
-        <li class="list-group-item d-flex align-items-end">
           <h6 class="list-item-heading my-auto me-sm-4 flex-shrink-0">Experience Duration:</h6>
           <p class="my-0 overflow-auto">{{ resume.get_experience_duration_display }}</p>
         </li>
+        {% if resume.jobseeker.profile.gender %}
+        <li class="list-group-item d-flex align-items-end">
+          <h6 class="list-item-heading my-auto me-sm-4 flex-shrink-0">Gender:</h6>
+          <p class="my-0 overflow-auto">
+            {% if user.role == 'EMPLOYER' or resume in user.resumes.all %}
+              {{ resume.jobseeker.profile.get_gender_display }}
+            {% else %}
+              <span data-bs-toggle="tooltip" data-bs-placement="right" title="Only visible to employers"
+                aria-label="Only visible to employers" class="text-muted">
+                <i class="fas fa-eye-slash"></i>
+             </span>
+            {% endif %}
+          </p>
+        </li>
+        {% endif %}
+        {% if resume.jobseeker.profile.dob %}
+        <li class="list-group-item d-flex align-items-end">
+          <h6 class="list-item-heading my-auto me-sm-4 flex-shrink-0">Age:</h6>
+          <p class="my-0 overflow-auto">
+            {% if user.role == 'EMPLOYER' or resume in user.resumes.all %}
+              {{ resume.jobseeker.profile.dob|timeago }}
+            {% else %}
+              <span data-bs-toggle="tooltip" data-bs-placement="right" title="Only visible to employers"
+                aria-label="Only visible to employers" class="text-muted">
+                <i class="fas fa-eye-slash"></i>
+              </span>
+            {% endif %}
+          </p>
+        </li>
+        {% endif %}
+        {% if resume.jobseeker.profile.phone %}
         <li class="list-group-item d-flex align-items-end">
           <h6 class="list-item-heading my-auto me-sm-4 flex-shrink-0">Phone:</h6>
-          <p class="my-0 overflow-auto">{{ resume.jobseeker.profile.phone }}</p>
+          <p class="my-0 overflow-auto">
+            {% if user.role == 'EMPLOYER' or resume in user.resumes.all %}
+              {{ resume.jobseeker.profile.phone }}
+            {% else %}
+              <span data-bs-toggle="tooltip" data-bs-placement="right" title="Only visible to employers"
+                aria-label="Only visible to employers" class="text-muted">
+                <i class="fas fa-eye-slash"></i>
+              </span>
+            {% endif %}
+          </p>
         </li>
+        {% endif %}
         <li class="list-group-item d-flex align-items-end">
           <h6 class="list-item-heading my-auto me-sm-4 flex-shrink-0">Email:</h6>
-          <p class="my-0 overflow-auto">{{ resume.jobseeker.email }}</p>
+          <p class="my-0 overflow-auto">
+            {% if user.role == 'EMPLOYER' or resume in user.resumes.all %}
+              {{ resume.jobseeker.email }}
+            {% else %}
+              <span data-bs-toggle="tooltip" data-bs-placement="right" title="Only visible to employers"
+                aria-label="Only visible to employers" class="text-muted">
+                <i class="fas fa-eye-slash"></i>
+              </span>
+            {% endif %}
+          </p>
         </li>
       </ul>
     </div>

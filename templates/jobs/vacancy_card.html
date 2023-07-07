@@ -16,7 +16,7 @@
         </a>
       </h5>
       <p class="col days-counter text-muted">
-        <small>{{ vacancy.created_on|timeago }} ago</small>
+        <small>{{ vacancy.updated_on|timeago }} ago</small>
       </p>
       <div class="row company-body my-2">
         <ul class="col-8 list-group borderless">
@@ -26,7 +26,7 @@
                 <i class="text-royalpurple fa fa-building-user"></i>
               </span>
               <span class="text-truncate">
-                <!-- TODO --> Company Name
+                {{ vacancy.employer.profile.company }}
               </span>
             </div>
           </li>

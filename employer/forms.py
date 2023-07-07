@@ -1,16 +1,13 @@
-from django.forms import (
-    ModelForm,
-    Textarea,
-    DateInput,
-    RegexField,
-)
+from django.forms import ModelForm, RegexField
+
 from jobportal.custom_cloudinary import CloudinaryFileField, allowed_img_types
+
 from jobportal.utils import generate_filename_from_email
 
-from .models import JobseekerProfile
+from .models import EmployerProfile
 
 
-class JobseekerProfileForm(ModelForm):
+class EmployerProfileForm(ModelForm):
     # override the default phone CharField with the RegexField
     # Code snippet based on: https://stackoverflow.com/a/19131360/20143678
     phone = RegexField(
@@ -23,56 +20,48 @@ class JobseekerProfileForm(ModelForm):
         required=False,
     )
 
-    avatar = CloudinaryFileField(
-        help_text="Upload a profile picture. "
+    logo = CloudinaryFileField(
+        help_text="Upload a company logo. "
         f"Allowed image types are:  {', '.join(allowed_img_types)}<br>"
         "Maximum file size: 5 MB",
-        label="Profile Picture",
+        label="Company Logo",
         required=False,
         options={
             "unique_filename": True,
             "overwrite": True,
             "format": "webp",
             "resource_type": "image",
-            "default": "media/get-job/profile_placehoder.png",
-            "folder": "media/get-job/jobseeker_avatars",
+            "default": "media/get-job/company_placeholder",
+            "folder": "media/get-job/company_logos",
             "transformation": [
                 {
-                    "width": 200,
-                    "height": 200,
-                    "crop": "thumb",
-                    "gravity": "face",
                     "quality": "auto:eco",
-                    "zoom": 0.8,
+                    "crop": "fit",
+                    "width": "250",
                 }
             ],
         },
     )
 
     class Meta:
-        model = JobseekerProfile
-        fields = ["name", "gender", "dob", "address", "phone", "avatar"]
+        model = EmployerProfile
+        fields = ["name", "company", "phone", "website", "logo"]
         labels = {
             "name": "Full Name",
-            "dob": "Date of Birth",
+            "company": "Company Name",
             "phone": "Phone Number",
-        }
-        widgets = {
-            "address": Textarea(attrs={"rows": 3}),
-            "dob": DateInput(
-                attrs={"type": "date"},
-            ),
+            "website": "Company Website",
         }
 
     def __init__(self, *args, **kwargs):
-        # add royalpurple-input class to all fields
+        # add cyan-blue-input class to all fields
         super().__init__(*args, **kwargs)
         for field in self.fields:
             self.fields[field].widget.attrs.update(
-                {"class": "royalpurple-input"}
+                {"class": "cyan-blue-input"}
             )
-        # set the public_id of the avatar field to the user's email
+        # set the public_id of the logo field to the user's email
         email = self.instance.user.email
-        self.fields["avatar"].options[
+        self.fields["logo"].options[
             "public_id"
         ] = generate_filename_from_email(email)

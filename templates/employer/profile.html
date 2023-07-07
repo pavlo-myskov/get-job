@@ -3,7 +3,7 @@
 {% load cloudinary %}
 
 {% block content %}
-{% include 'jobseeker/navbar.html' %}
+{% include 'employer/navbar.html' %}
 
 <main class="container-fluid bg-light px-0 flex-grow-1">
   <div class="container px-0 px-sm-3 my-4" style="max-width: 50rem;">
@@ -12,13 +12,13 @@
     <!-- Nav header -->
     <nav class="card-header bg-white" aria-label="profile nav header">
       <div class="d-flex align-items-center justify-content-between">
-        <a href="{% url 'job_search' %}"
+        <a href="{% url 'resume_search' %}"
         class="text-decoration-none d-flex align-items-center text-muted fs-4"
           area-label="to search results">
           <i class="fa fa-arrow-left"></i>
-          <span class="mx-2">To job search</span>
+          <span class="mx-2">To resume search</span>
         </a>
-        <a href="{% url 'jobseeker_home' %}" class="text-decoration-none d-flex align-items-center text-muted fs-4"
+        <a href="{% url 'employer_home' %}" class="text-decoration-none d-flex align-items-center text-muted fs-4"
         area-label="go to home page">
           <i class="fa fa-home"></i>
       </a>
@@ -33,16 +33,12 @@
             <h5 class="card-title">{{ profile.name|default:"Name: <small>&#8212;</small>" }}</h5>
             <ul class="list-group card-list pb-2 borderless">
               <li class="list-group-item d-flex align-items-end">
-                <h6 class="list-item-heading text-muted my-auto me-sm-4 flex-shrink-0">Gender:</h6>
-                <p class="my-0 overflow-auto text-truncate">{{ profile.get_gender_display|default:"&#8212;" }}</p>
+                <h6 class="list-item-heading text-muted my-auto me-sm-4 flex-shrink-0">Company Name:</h6>
+                <p class="my-0 overflow-auto text-truncate">{{ profile.company|default:"&#8212;" }}</p>
               </li>
               <li class="list-group-item d-flex align-items-end">
-                <h6 class="list-item-heading text-muted my-auto me-sm-4 flex-shrink-0">Date of Birth:</h6>
-                <p class="my-0 overflow-auto">{{ profile.dob|default:"&#8212;" }}</p>
-              </li>
-              <li class="list-group-item d-flex align-items-end">
-                <h6 class="list-item-heading text-muted my-auto me-sm-4 flex-shrink-0">Address:</h6>
-                <p class="my-0 overflow-auto">{{ profile.address|default:"&#8212;" }}</p>
+                <h6 class="list-item-heading text-muted my-auto me-sm-4 flex-shrink-0">Website:</h6>
+                <p class="my-0 overflow-auto">{{ profile.website|default:"&#8212;" }}</p>
               </li>
               <li class="list-group-item d-flex align-items-end">
                 <h6 class="list-item-heading text-muted my-auto me-sm-4 flex-shrink-0">Phone:</h6>
@@ -55,14 +51,14 @@
             </ul>
           </div>
         </div>
-        <!-- Profile picture -->
+        <!-- Company Logo -->
         <figure class="col-sm-4 mt-2 d-flex flex-column align-items-center justify-content-center">
-          {% cloudinary  profile.avatar class="img-fluid rounded-start" style="height:180px; max-width:180px;" alt="profile picture" %}
-          <figcaption class="text-muted">Profile Picture</figcaption>
+          {% cloudinary profile.logo class="img-thumbnail border-0" style="max-height:150px;" alt="company logo" %}
+          <figcaption class="text-muted">Company Logo</figcaption>
         </figure>
       </div>
         <div class="text-end text-sm-start mt-2 mx-3">
-          <a href="{% url 'jobseeker_profile_update' %}" class="btn btn-outline-royalpurple py-1">
+          <a href="{% url 'employer_profile_update' %}" class="btn btn-outline-cyan-blue py-1">
             <i class="fa fa-edit"></i>
             <span class="ms-2">Edit</span>
           </a>
@@ -70,7 +66,7 @@
     </div>
 
     <!-- Password card -->
-    {% include 'account/snippets/change_password_profile_card.html' with color="royalpurple" %}
+    {% include 'account/snippets/change_password_profile_card.html' with color="cyan-blue" %}
 
     <!-- Delete account -->
     {% include 'account/snippets/delete_account_profile_card.html' %}

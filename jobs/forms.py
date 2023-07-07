@@ -96,3 +96,26 @@ class ApplicationForm(forms.ModelForm):
             status=Resume.ResumePublishStatus.ACTIVE
         ).values_list("id", "occupation")
         self.fields["resume"].empty_label = None
+
+
+class JobCreateForm(forms.ModelForm):
+    class Meta:
+        model = Vacancy
+        fields = [
+            "title",
+            "area",
+            "job_location",
+            "job_type",
+            "salary",
+            "experience_duration",
+            "body"
+        ]
+        labels = {"body": "Job Description"}
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # add cyan-input class to all fields
+        for field in self.fields:
+            self.fields[field].widget.attrs.update(
+                {"class": "cyan-input"}
+            )

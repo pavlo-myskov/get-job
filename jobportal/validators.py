@@ -12,7 +12,6 @@ from django.core.exceptions import ValidationError
 CV_TYPES = (
     "application/pdf",
     "application/msword",
-    "text/plain",
     "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
 )
 

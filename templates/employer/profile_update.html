@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+{% url 'employer_profile' as employer_profile %}
+{% url 'employer_home' as employer_home %}
+
+{% include 'base_profile_update.html' with url_profile=employer_profile url_home=employer_home color="cyan-blue" card_type="vacancies" %}
+
+{% endblock %}

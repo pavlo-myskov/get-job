@@ -1,15 +1,22 @@
+from django.contrib import messages
+from django.db import transaction
+from django.forms import BaseForm
 from django.shortcuts import get_object_or_404
-from django.http import JsonResponse
-from django.urls import reverse
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
+from django.urls import reverse, reverse_lazy
 from django.views import View
 from django.views.generic import ListView, DetailView
-from django.views.generic.edit import CreateView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.views.generic.detail import SingleObjectMixin
+from employer.views import EmployerRequiredMixin
+from django.contrib.messages.views import SuccessMessageMixin
 
 from jobseeker.views import JobseekerRequiredMixin
+from resumes.forms import ResumeSearchForm
 
 from .utils import annotate_jobs, filter_jobs
 from .models import Application, Vacancy
-from .forms import ApplicationForm, SearchForm
+from .forms import ApplicationForm, JobCreateForm, SearchForm
 from resumes.models import Resume
 
 
@@ -101,6 +108,225 @@ class JobDetailView(DetailView):
         context["nav_form"] = SearchForm(auto_id=False)
 
         return context
+
+
+class MyJobListView(EmployerRequiredMixin, ListView):
+    model = Vacancy
+    template_name = "jobs/my_jobs.html"
+
+    def get_queryset(self):
+        # TODO: add test
+        """Return all jobs of the owner,
+        ordered by status, updated_on.
+        Example: IN_REVIEW on top and with the latest updated_on date"""
+        return Vacancy.objects.filter(employer=self.request.user).order_by(
+            "-status",
+            "-updated_on",
+        )
+
+    def get_context_data(self, **kwargs):
+        """Add to the context:
+        - tooltips for tooltip status icons
+        - search form for navbar search bar
+        """
+        context = super().get_context_data(**kwargs)
+
+        # add status tooltips to the context
+        tooltips = {
+            Vacancy.JobPostStatus.ACTIVE: "This job is visible"
+            " to jobseekers",
+            Vacancy.JobPostStatus.IN_REVIEW: "This job is pending"
+            " approval",
+            Vacancy.JobPostStatus.REJECTED: "This job contains"
+            " inappropriate content or does not meet the requirements",
+            Vacancy.JobPostStatus.CLOSED: "This job is not visible and"
+            " cannot be edited",
+        }
+        context["tooltips"] = tooltips
+        context["nav_form"] = ResumeSearchForm(auto_id=False)
+        return context
+
+
+class MyVacancyDetailView(EmployerRequiredMixin, DetailView):
+    model = Vacancy
+    template_name = "jobs/my_vacancy_detail.html"
+
+    def get_queryset(self):
+        # TODO: add test
+        """Return all jobs of the owner"""
+        return Vacancy.objects.filter(employer=self.request.user)
+
+    def get_context_data(self, **kwargs):
+        """Add search form to the context for navbar search bar"""
+        context = super().get_context_data(**kwargs)
+        context["nav_form"] = ResumeSearchForm(auto_id=False)
+        return context
+
+
+class JobCreateView(EmployerRequiredMixin, SuccessMessageMixin, CreateView):
+    model = Vacancy
+    form_class = JobCreateForm
+    template_name_suffix = "_create_form"
+    success_message = (
+        "Your vacancy has been created and is "
+        "<span class='text-info'>pending approval</span>"
+    )
+
+    def test_func(self):
+        """Check if the user has less or equal than 5 vacancies"""
+        self.employer_test = super().test_func()
+        self.has_less_6_vacancies = (
+            self.request.user.vacancies.all().count() <= 4
+        )
+        return self.employer_test and self.has_less_6_vacancies
+
+    def handle_no_permission(self):
+        """Redirect to the vacancy list page and show an alert,
+        if the user has more than 5 vacancies;
+        if the user is not an employer, redirect to the specific 403 page"""
+        # redirect to login page if the user is not authenticated
+        if not self.request.user.is_authenticated:
+            return super().handle_no_permission()
+        if self.employer_test and not self.has_less_6_vacancies:
+            messages.error(
+                self.request,
+                "The maximum number of vacancies has been reached. ",
+                extra_tags="modal",
+            )
+            return HttpResponseRedirect(reverse_lazy("my_vacancies"))
+
+        return super().handle_no_permission()
+
+    def get_success_url(self):
+        """Redirect to the 'next' url if it exists,
+        otherwise to the vacancy detail page"""
+        if self.request.GET.get("next"):
+            return self.request.GET.get("next")
+        return reverse("my_job_detail", args=(self.object.id,))
+
+    def form_valid(self, form: BaseForm) -> HttpResponse:
+        """Save the current user as a employer-owner of the vacancy"""
+        form.instance.employer = self.request.user
+        return super().form_valid(form)
+
+
+class JobUpdateView(
+    EmployerRequiredMixin, SuccessMessageMixin, UpdateView
+):
+    # TODO: add test
+    model = Vacancy
+    form_class = JobCreateForm
+    template_name_suffix = "_update_form"
+    success_message = (
+        "Your vacancy has been updated and is "
+        "<span class='text-info'>pending approval</span>"
+    )
+
+    def test_func(self):
+        """Allow only the owner to update the vacancy,
+        if the vacancy is not closed"""
+        self.employer_test = super().test_func()
+        return (
+            self.employer_test
+            and self.request.user == self.get_object().employer
+            and self.get_object().status != Vacancy.JobPostStatus.CLOSED
+        )
+
+    def get_success_url(self):
+        """Redirect to the vacancy detail page"""
+        return reverse(
+            "my_job_detail", kwargs={"pk": self.get_object().pk}
+        )
+
+    def form_valid(self, form: BaseForm) -> HttpResponse:
+        """Set the status of the vacancy to IN_REVIEW"""
+        form.instance.status = Vacancy.JobPostStatus.IN_REVIEW
+        return super().form_valid(form)
+
+
+class JobCloseView(
+    EmployerRequiredMixin,
+    SingleObjectMixin,
+    View,
+):
+    # TODO: add test
+    http_method_names = ["post"]  # only POST requests are allowed
+    model = Vacancy
+
+    def test_func(self):
+        # TODO: redirection tests
+        """Allow only the owner to close the job,
+        if the job is not closed yet"""
+        self.employer_test = super().test_func()
+        return (
+            self.employer_test
+            and self.request.user == self.get_object().employer
+            and self.get_object().status != Vacancy.JobPostStatus.CLOSED
+        )
+
+    # allows save object only if the transaction is successful
+    @transaction.atomic
+    def post(self, request, *args, **kwargs):
+        """Set the status of the job to CLOSED"""
+        self.object = self.get_object()
+        self.object.status = Vacancy.JobPostStatus.CLOSED
+        self.object.save()
+        messages.success(self.request, "Your job has been closed")
+        return HttpResponseRedirect(reverse("my_jobs"))
+
+
+class JobOpenView(
+    EmployerRequiredMixin,
+    SingleObjectMixin,
+    View,
+):
+    # TODO: add test
+    http_method_names = ["post"]  # only POST requests are allowed
+    model = Vacancy
+
+    def test_func(self):
+        # TODO: redirection tests
+        """Allow only the owner to open the job,
+        if the job is closed"""
+        self.employer_test = super().test_func()
+        return (
+            self.employer_test
+            and self.request.user == self.get_object().employer
+            and self.get_object().status == Vacancy.JobPostStatus.CLOSED
+        )
+
+    # allows save object only if the transaction is successful
+    @transaction.atomic
+    def post(self, request, *args, **kwargs):
+        """Set the status of the job to IN_REVIEW"""
+        self.object = self.get_object()
+        self.object.status = Vacancy.JobPostStatus.IN_REVIEW
+        self.object.save()
+        messages.success(
+            self.request,
+            "Your job has been opened and is awaiting approval",
+        )
+        return HttpResponseRedirect(reverse("my_jobs"))
+
+
+class JobDeleteView(EmployerRequiredMixin, DeleteView):
+    model = Vacancy
+    template_name = "jobs/my_jobs.html"
+    success_message = "Your job has been permanently deleted"
+    success_url = reverse_lazy("my_jobs")
+
+    def test_func(self):
+        """Allow only the owner to delete the job"""
+        self.employer_test = super().test_func()
+        return (
+            self.employer_test
+            and self.request.user == self.get_object().employer
+        )
+
+    def delete(self, request, *args, **kwargs):
+        """Add success message to the delete view"""
+        messages.success(self.request, self.success_message)
+        return super().delete(request, *args, **kwargs)
 
 
 class JobSaveToggle(JobseekerRequiredMixin, View):

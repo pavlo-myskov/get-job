@@ -226,7 +226,7 @@ class MyResumeListView(JobseekerRequiredMixin, ListView):
     def get_queryset(self):
         # TODO: add test
         """Return all resumes of the owner,
-        ordered by status, updated_on and created_on.
+        ordered by status, updated_on.
         Example: IN_REVIEW on top and with the latest updated_on date"""
         return Resume.objects.filter(jobseeker=self.request.user).order_by(
             "-status",
@@ -237,7 +237,6 @@ class MyResumeListView(JobseekerRequiredMixin, ListView):
         """Add to the context:
         - tooltips for tooltip status icons
         - search form for navbar search bar
-        - back_url for the back button of the profile page
         """
         context = super().get_context_data(**kwargs)
 

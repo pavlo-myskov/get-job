@@ -32,7 +32,8 @@ class JobseekerRequiredMixin(LoginRequiredMixin, UserPassesTestMixin):
         - Otherwise, display the default 403 page.
         """
         if not self.request.user.is_authenticated:
-            message = "Sign in or create an account to access this page"
+            message = "Sign in or create an account"
+            " as a Jobseeker to access this page"
             messages.add_message(self.request, messages.WARNING, message)
             return super().handle_no_permission()
         elif self.request.user.role != User.Role.JOBSEEKER:

@@ -3,25 +3,25 @@
 {% load custom_tags %}
 {% load time_filters %}
 
-{% block head_title %}My Resumes{% endblock %}
+{% block head_title %}My Jobs{% endblock %}
 
 {% block content %}
-{% include 'jobseeker/navbar.html' %}
+{% include 'employer/navbar.html' %}
 
 <main class="container-fluid bg-light px-0 flex-grow-1">
   <div class="container px-0 px-sm-3 my-4" style="max-width: 50rem;">
-    <h2 class="ms-4 mb-3">My Resumes</h2>
+    <h2 class="ms-4 mb-3">My Jobs</h2>
 
     <!-- Nav header -->
     <nav class="card-header bg-white" aria-label="profile nav header">
       <div class="d-flex align-items-center justify-content-between">
-        <a href="{% url 'job_search' %}"
+        <a href="{% url 'resume_search' %}"
         class="text-decoration-none d-flex align-items-center text-muted fs-4"
-          area-label="to job search">
+          area-label="to resume search">
           <i class="fa fa-arrow-left"></i>
-          <span class="mx-2">To job search</span>
+          <span class="mx-2">To resume search</span>
         </a>
-        <a href="{% url 'jobseeker_home' %}" class="text-decoration-none d-flex align-items-center text-muted fs-4"
+        <a href="{% url 'employer_home' %}" class="text-decoration-none d-flex align-items-center text-muted fs-4"
         area-label="go to home page">
           <i class="fa fa-home"></i>
       </a>
@@ -30,13 +30,13 @@
 
     <div class="card mx-auto border-0 my-3 mt-1 p-sm-3" >
       <div class="card-body p-0">
-        {% if resume_list %}
+        {% if vacancy_list %}
           <div class="table-responsive">
             <table id="my-resumes-table" class="table table-hover align-middle mb-0">
               <caption class="mx-2">
-                *<small>Only active resumes will be shown in search results and can be applied to jobs.</small>
+                *<small>Only active jobs will be shown in search results and can be used to send offers.</small>
                 <br>
-                *<small>The total number of resumes you can create is limited to 5.</small>
+                *<small>The total number of jobs you can create is limited to 5.</small>
               </caption>
               <thead>
                 <tr>
@@ -47,29 +47,29 @@
                 </tr>
               </thead>
               <tbody>
-                {% for resume in resume_list %}
+                {% for job in vacancy_list %}
                 <!-- set row color and tooltip based on status -->
-                {% if resume.status == 'IN_REVIEW' %}
+                {% if job.status == 'IN_REVIEW' %}
                   {% define tooltips.IN_REVIEW as tooltip %}
                   <tr class="table-warning">
-                {% elif resume.status == 'ACTIVE' %}
+                {% elif job.status == 'ACTIVE' %}
                   {% define tooltips.ACTIVE as tooltip %}
                   <tr class="table-success">
-                {% elif resume.status == 'REJECTED' %}
+                {% elif job.status == 'REJECTED' %}
                   {% define tooltips.REJECTED as tooltip %}
                   <tr class="table-danger">
-                {% elif resume.status == 'CLOSED' %}
+                {% elif job.status == 'CLOSED' %}
                   {% define tooltips.CLOSED as tooltip %}
                   <tr class="table-secondary">
                 {% endif %}
                     <td>
-                      <a href="{% url 'my_resume_detail' resume.pk %}" class="link-royalpurple">
-                        <strong>{{ resume.occupation|truncatechars:40 }}</strong>
+                      <a href="{% url 'my_job_detail' job.pk %}" class="link-cyan-blue">
+                        <strong>{{ job.title|truncatechars:40 }}</strong>
                       </a>
                     </td>
                     <td>
                       <span class="position-relative">
-                        {{ resume.get_status_display }}
+                        {{ job.get_status_display }}
                         <span
                           class="position-absolute top-0 start-0 translate-middle badge border border-light rounded-circle p-0">
                           <i class="fa fa-info-circle text-muted" data-bs-toggle="tooltip" data-bs-placement="top"
@@ -77,45 +77,45 @@
                         </span>
                       </span>
                     </td>
-                    <td>{{ resume.updated_on|timeago }} ago</td>
+                    <td>{{ job.updated_on|timeago }} ago</td>
                     <td class="position-relative px-2">
-                      {% if resume.status == 'CLOSED' %}
-                        <div data-bs-toggle="tooltip" data-bs-placement="left" title="You can't edit a closed resume."
+                      {% if job.status == 'CLOSED' %}
+                        <div data-bs-toggle="tooltip" data-bs-placement="left" title="You can't edit a closed job."
                           class="d-flex flex-column align-items-center">
                           <i class="fa fa-edit text-muted"></i>
                           <small class="d-none d-sm-inline text-muted">Edit</small>
                         </div>
                       {% else %}
-                      <a href="{% url 'resume_update' resume.pk %}"
+                      <a href="{% url 'job_update' job.pk %}"
                           class="hover-grow-resume-control stretched-link d-flex flex-column align-items-center text-decoration-none"
-                          aria-label="edit resume">
-                        <i class="fa fa-edit text-royalpurple"></i>
+                          aria-label="edit job">
+                        <i class="fa fa-edit text-cyan-blue"></i>
                         <small class="d-none d-sm-inline text-muted">Edit</small>
                       </a>
                       {% endif %}
                     </td>
                     <td class="position-relative px-2">
-                      {% if resume.status == 'CLOSED' %}
-                      <form method="post" action="{% url 'resume_open' resume.pk %}" id="resume-open-form-{{ resume.pk }}">
+                      {% if job.status == 'CLOSED' %}
+                      <form method="post" action="{% url 'job_open' job.pk %}" id="job-open-form-{{ job.pk }}">
                         {% csrf_token %}
-                        <a type="submit" href="#" onclick="document.getElementById('resume-open-form-{{ resume.pk }}').submit();"
-                          class="hover-grow-resume-control stretched-link d-flex flex-column align-items-center text-decoration-none" aria-label="open resume">
-                          <i class="fa fa-retweet text-royalpurple"></i>
+                        <a type="submit" href="#" onclick="document.getElementById('job-open-form-{{ job.pk }}').submit();"
+                          class="hover-grow-resume-control stretched-link d-flex flex-column align-items-center text-decoration-none" aria-label="open job">
+                          <i class="fa fa-retweet text-cyan-blue"></i>
                           <small class="d-none d-sm-inline text-muted">Open</small>
                         </a>
                       </form>
                       {% else %}
-                      <a href="#" class="hover-grow-resume-control resume-close-btn stretched-link d-flex flex-column align-items-center text-decoration-none"
-                          aria-label="close resume" data-resume-action-url="{% url 'resume_close' resume.pk %}">
-                        <i class="fa fa-xmark text-royalpurple"></i>
+                      <a href="#" class="hover-grow-resume-control job-close-btn stretched-link d-flex flex-column align-items-center text-decoration-none"
+                          aria-label="close job" data-job-action-url="{% url 'job_close' job.pk %}">
+                        <i class="fa fa-xmark text-cyan-blue"></i>
                         <small class="d-none d-sm-inline text-muted">Close</small>
                       </a>
                       {% endif %}
                     </td>
                     <td class="position-relative px-2">
-                      <a href="#" class="hover-grow-resume-control resume-delete-btn stretched-link d-flex flex-column align-items-center text-decoration-none"
-                          aria-label="delete resume" data-resume-action-url="{% url 'resume_delete' resume.pk %}">
-                        <i class="fa fa-trash text-royalpurple"></i>
+                      <a href="#" class="hover-grow-resume-control job-delete-btn stretched-link d-flex flex-column align-items-center text-decoration-none"
+                          aria-label="delete job" data-job-action-url="{% url 'job_delete' job.pk %}">
+                        <i class="fa fa-trash text-cyan-blue"></i>
                         <small class="d-none d-sm-inline text-muted">Delete</small>
                       </a>
                     </td>
@@ -125,21 +125,21 @@
             </table>
           </div>
         {% else %}
-        <h5 class="card-title">You have not created any resumes yet.</h5>
+        <h5 class="card-title">You have not created any jobs yet.</h5>
         {% endif %}
       </div>
       <div class="text-end text-sm-start m-3 mb-sm-1">
-        <a href="{% url 'resume_create' %}" class="btn btn-outline-royalpurple py-1">
+        <a href="{% url 'job_create' %}" class="btn btn-outline-cyan-blue py-1">
           <i class="fa fa-plus"></i>
-          <span class="ms-2">Add New Resume</span>
+          <span class="ms-2">Add New Job</span>
         </a>
       </div>
     </div>
   </div>
 </main>
 
-<!-- Modal for close/delete resume -->
-{% include 'resumes/modal_close_delete_resume.html' %}
+<!-- Modal for close/delete job -->
+{% include 'jobs/modal_close_delete_job.html' %}
 
 {% include 'footer.html' %}
 {% endblock %}

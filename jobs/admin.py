@@ -11,20 +11,18 @@ class VacancyAdmin(admin.ModelAdmin):
     list_display = (
         "title",
         "status",
-        # "employer",
-        # "company",
+        "employer",
         "area",
         "job_location",
         "job_type",
         "salary",
-        "experience",
+        "experience_duration",
+        "updated_on",
         "created_on",
     )
     # list of fields to generate filters in the right sidebar of admin panel
     list_filter = (
         "status",
-        # "employer",
-        # "company",
         "job_type",
         "job_location",
         "area",
@@ -32,7 +30,7 @@ class VacancyAdmin(admin.ModelAdmin):
     search_fields = ("title", "body")
 
     # Sorted by vacancies that are in review and with the oldest created date
-    ordering = ("status", "created_on")
+    ordering = ("-status", "updated_on")
 
     actions = ['approve_job_posts', 'reject_job_posts', 'close_job_posts']
 

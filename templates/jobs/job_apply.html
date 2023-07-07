@@ -30,8 +30,8 @@
     <div class="card mx-auto border-0 my-3 mt-1 p-sm-3" >
       <div class="card-body">
         {% if not are_resumes_available %}
-        <h5 class="card-title">You have not active resumes</h5>
-        <p class="card-text">Create a new resume to apply to jobs or go to <a href="{% url 'my_resumes' %}">my resumes</a> to check status of your resumes.</p>
+        <h5 class="card-title">You cannot apply for jobs as you do not currently have an active resume.</h5>
+        <p class="card-text">Create a new resume or go to <a href="{% url 'my_resumes' %}">my resumes</a> to check status of your all resumes.</p>
       </div>
       <div class="text-end text-sm-start m-3 mb-sm-1">
         <a href="{% url 'resume_create' %}?next={% url 'job_detail' vacancy.id %}"
@@ -40,7 +40,33 @@
           <span class="ms-2">Add New Resume</span>
         </a>
         {% else %}
-          <form method="post" id="job-apply-form" action="{% url 'job_apply' vacancy.id %}">
+          <button class="btn--royalpurple bg-body border-0 p-0 mb-1"
+            type="button" data-bs-toggle="collapse" data-bs-target="#employer-details"
+            aria-expanded="false" aria-controls="employer-details">
+            See Employer details
+            <i class="fa fa-chevron-down"></i>
+          </button>
+          <div class="collapse" id="employer-details">
+            <div class="card card-body">
+              <ul class="list-group">
+                <li class="list-group-item border-0 px-0 py-1">
+                  <i class="fa fa-user-circle me-2 text-secondary"></i>
+                  {{ vacancy.employer.profile.name|default:"----" }}
+                </li>
+                <li class="list-group-item border-0 px-0 py-1">
+                  <i class="fa fa-phone me-2 text-secondary"></i>
+                  {{ vacancy.employer.profile.phone }}
+                </li>
+                <li class="list-group-item border-0 px-0 py-1">
+                  <i class="fa fa-envelope me-2 text-secondary"></i>
+                  {{ vacancy.employer.email }}
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <h5 class="card-title text-muted mt-3">Apply for {{ vacancy.title }}</h5>
+          <form method="post" id="job-apply-form" action="{% url 'job_apply' vacancy.id %}" >
             {% csrf_token %}
 
             <!-- Generate a list of non-field errors if there are any -->
@@ -60,14 +86,14 @@
                 Select your resume
                 <span class="asteriskField">*</span>
               </label>
-              <div>
+              <div class="ms-2">
                 {% for choice in form.resume.field.choices %}
                 <div class="form-check position-relative">
                   <!-- radio button with label -->
                   <input class="form-check-input {% if form.resume.errors %}is-invalid{% endif %}"
                   type="radio" name="{{ form.resume.name }}"  id="resume_id_for_label_{{ forloop.counter }}"
                   value="{{ choice.0 }}" required>
-                  <label for="resume_id_for_label_{{ forloop.counter }}" class="form-check-label">
+                  <label for="resume_id_for_label_{{ forloop.counter }}" class="col-10 form-check-label">
                     {{ choice.1 }}
                   </label>
                   <!-- view resume link with absolute position -->
