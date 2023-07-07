@@ -1,0 +1,19 @@
+<div class="modal fade" id="jobModal" tabindex="-1" aria-labelledby="JobModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-sm">
+    <div class="modal-content">
+      <div class="modal-body">
+        <p>Are you sure you want to <span class="modal-action"></span> this job?
+          <br>
+          The job offer(s) associated with this job will also be <span class="modal-action"></span>d.
+        </p>
+      </div>
+      <div class="modal-footer">
+        <form id="job-modal-form" method="post" action="">
+          {% csrf_token %}
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-outline-danger">Confirm</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

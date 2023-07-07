@@ -67,6 +67,15 @@ $(document).ready(function () {
         setResumeActionModal(e, 'delete');
     });
 
+    // event listener for job close button
+    $('.job-close-btn').click(function (e) {
+        setJobActionModal(e, 'close');
+    });
+    // event listener for job delete button
+    $('.job-delete-btn').click(function (e) {
+        setJobActionModal(e, 'delete');
+    });
+
     // event listener for submit of save form
     $('.save-job-form').submit(toggleSaveJob);
 
@@ -329,6 +338,18 @@ function setResumeActionModal(event, actionText) {
     $('.modal-action').text(actionText);
     $('#resume-modal-form').attr('action', actionUrl);
     $('#resumeModal').modal('show');
+}
+
+/**
+ * Set job modal form action url and modal action text by
+ * clicking on `Close/Delete` button.
+ */
+function setJobActionModal(event, actionText) {
+    event.preventDefault();
+    let actionUrl = event.target.dataset.jobActionUrl;
+    $('.modal-action').text(actionText);
+    $('#job-modal-form').attr('action', actionUrl);
+    $('#jobModal').modal('show');
 }
 
 /**
