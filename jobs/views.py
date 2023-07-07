@@ -235,7 +235,7 @@ class JobUpdateView(
     def get_success_url(self):
         """Redirect to the vacancy detail page"""
         return reverse(
-            "my_vacancy_detail", kwargs={"pk": self.get_object().pk}
+            "my_job_detail", kwargs={"pk": self.get_object().pk}
         )
 
     def form_valid(self, form: BaseForm) -> HttpResponse:

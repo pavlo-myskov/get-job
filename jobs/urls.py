@@ -13,7 +13,7 @@ urlpatterns = [
     path(
         "employer/job/<int:pk>",
         views.MyVacancyDetailView.as_view(),
-        name="my_vacancy_detail",
+        name="my_job_detail",
     ),
     path(
         "employer/job/create",
@@ -34,6 +34,11 @@ urlpatterns = [
         "employer/job/<int:pk>/open",
         views.JobOpenView.as_view(),
         name="job_open",
+    ),
+    path(
+        "employer/job/<int:pk>/delete",
+        views.JobDeleteView.as_view(),
+        name="job_delete",
     ),
     path(
         "job/<int:pk>/save",
