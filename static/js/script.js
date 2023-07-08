@@ -77,7 +77,7 @@ $(document).ready(function () {
     });
 
     // event listener for submit of save form
-    $('.save-job-form').submit(toggleSaveJob);
+    $('.save-form').submit(toggleSaveUnsave);
 
     // event listener for submit of remove fav job form
     $('.remove-fav-job-form').submit(removeSavedJob);
@@ -353,9 +353,9 @@ function setJobActionModal(event, actionText) {
 }
 
 /**
- * Toggle save/unsave job using ajax.
+ * Toggle save/unsave with ajax.
  */
-function toggleSaveJob(e) {
+function toggleSaveUnsave(e) {
     e.preventDefault();
     // get action url from submit form
     const actionEndpoint = $(this).attr('action');
@@ -363,7 +363,7 @@ function toggleSaveJob(e) {
 
     // select all save buttons of the card that contains submitted form
     const targetCard = $(this).closest('.card')
-    const saveBtns = targetCard.find('.save-job-form').find("button[type='submit']");
+    const saveBtns = targetCard.find('.save-form').find("button[type='submit']");
 
     $.ajax({
         type: "POST",
@@ -387,12 +387,12 @@ function toggleSaveJob(e) {
                 saveBtns.addClass('btn-save').removeClass('btn-save--filled');
                 saveBtns.find('span').text('Save');
             } else {
-                console.error('AJAX POST Save/Unsave Job: "response.result for save/unsave job is not valid"');
+                console.error('AJAX POST Save/Unsave: "response.result for save/unsave is not valid"');
             }
 
         },
         error: function (response) {
-            console.error('AJAX POST Save/Unsave Job: "An error occurred while sending data to the server"');
+            console.error('AJAX POST Save/Unsave: "An error occurred while sending data to the server"');
             console.error('Response: ', response);
         }
     })
