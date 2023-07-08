@@ -1,9 +1,10 @@
 import re
 from django.contrib import messages
 from django.db import transaction
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from django.forms.forms import BaseForm
 from django.http.response import HttpResponse
+from django.shortcuts import get_object_or_404
 from django.urls import reverse, reverse_lazy
 from django.utils import timezone
 from dateutil.relativedelta import relativedelta
@@ -14,6 +15,7 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.db.models import Q
 from django.db.models import QuerySet
+from employer.views import EmployerRequiredMixin
 from jobs.forms import SearchForm
 
 from users.models import User
@@ -434,3 +436,26 @@ class ResumeDeleteView(JobseekerRequiredMixin, DeleteView):
         """Add success message to the delete view"""
         messages.success(self.request, self.success_message)
         return super().delete(request, *args, **kwargs)
+
+
+class ResumeSaveToggle(EmployerRequiredMixin, View):
+    """Toggle save/unsave resume for the current employer"""
+
+    http_method_names = ["post"]  # only POST requests are allowed
+
+    def post(self, request, *args, **kwargs):
+        pk = kwargs.get("pk")
+        resume = get_object_or_404(Resume, pk=pk)
+        profile = request.user.employerprofile
+        if profile.favorites.filter(id=resume.id).exists():
+            profile.favorites.remove(resume.id)
+            is_saved = False
+            success_message = "The resume has been removed from saved resumes."
+        else:
+            profile.favorites.add(resume.id)
+            is_saved = True
+            success_message = "The resume has been saved."
+
+        return JsonResponse(
+            {"is_saved": is_saved, "successMsg": success_message}
+        )

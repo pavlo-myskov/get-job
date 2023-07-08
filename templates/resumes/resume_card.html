@@ -61,12 +61,26 @@
 
     </div>
     <div class="card-footer border-top-0">
-      <div class="d-flex justify-content-between px-3">
-        <a href="#" class="btn-save btn--cyan-blue card-link">
-          Save
-        </a>
-        <a href="#" class="btn btn-outline-cyan-blue card-link py-0 my-1">Hire</a>
-      </div>
+      {% if user.is_authenticated and user.role == 'EMPLOYER' %}
+        <div class="d-flex justify-content-between px-3">
+          <form class="save-form" action="{% url 'resume_save_toggle' resume.id %}" method="post">
+            {% csrf_token %}
+            <button type="submit"
+              class="btn-save{% if resume.is_saved %}--filled{% endif %} btn--cyan-blue card-link">
+              <span>Save{% if vacancy.is_saved %}d{% endif %}</span>
+            </button>
+          </form>
+          <!-- TODO url 'hire' resume.id -->
+          <a href="#" class="btn btn-outline-cyan-blue card-link py-0 my-1">Hire</a>
+        </div>
+      {% elif user.is_authenticated and user.role != 'EMPLOYER' %}
+        <span class="float-end" data-bs-toggle="tooltip" data-bs-placement="left" title="Only employers can hire">
+          <a href="#" class="btn btn-outline-cyan-blue card-link py-0 my-1 disabled">Hire</a>
+        </span>
+      {% else %}
+        <!-- TODO url 'hire' resume.id -->
+        <a href="#" class="float-end btn btn-outline-cyan-blue card-link py-0 my-1">Hire</a>
+      {% endif %}
     </div>
   </div>
 </div>
