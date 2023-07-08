@@ -62,11 +62,11 @@
             <form class="save-form" action="{% url 'job_save_toggle' vacancy.id %}" method="post">
               {% csrf_token %}
               <button type="submit" aria-label="save job button"
-                class="btn-save{% if vacancy.is_saved %}--filled{% endif %} btn--royalpurple card-link me-4">
+                class="btn-save{% if vacancy.is_saved %}--filled{% endif %} btn--royalpurple card-link me-4 hover-grow">
               </button>
             </form>
           {% endif %}
-          <div role="button" class="back-to-top d-flex align-items-center text-royalpurple"
+          <div role="button" class="back-to-top d-flex align-items-center text-royalpurple hover-grow"
             area-label="scroll to top">
             <i class="fa fa-arrow-up"></i>
           </div>

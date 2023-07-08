@@ -42,6 +42,7 @@ class EmployerRequiredMixin(LoginRequiredMixin, UserPassesTestMixin):
 
 
 class HomeView(ListView):
+    # TODO: Annotate the resumes with is_saved field
     # object name that will be used in the template
     context_object_name = "resume_list"
     # get only first 4 active resumes
