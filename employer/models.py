@@ -103,8 +103,8 @@ class EmployerProfile(models.Model):
     logo = CloudinaryField("logo", blank=True, null=True)
     phone = models.CharField(max_length=20, blank=True)
     website = models.URLField(max_length=254, blank=True)
-    bookmarkers = models.ManyToManyField(
-        Resume, blank=True, related_name="bookmarked_by"
+    favorites = models.ManyToManyField(
+        Resume, blank=True, related_name="favoriters"
     )
 
     def save(self, *args, **kwargs):
