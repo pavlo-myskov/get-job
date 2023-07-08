@@ -124,3 +124,20 @@ class EmployerProfileUpdateView(
             return next_url
         else:
             return reverse("employer_profile")
+
+
+class FavoriteResumeList(EmployerRequiredMixin, ListView):
+    template_name = "employer/favorite_resumes.html"
+    context_object_name = "favorite_list"
+
+    def get_queryset(self):
+        favorites = self.request.user.employerprofile.favorites.all()
+        # TODO: annotate
+        # return annotate_hired_resumes(favorites, self.request)
+        return favorites
+
+    def get_context_data(self, **kwargs):
+        """Add search form and back URL to the context"""
+        context = super().get_context_data(**kwargs)
+        context["nav_form"] = ResumeSearchForm(auto_id=False)
+        return context
