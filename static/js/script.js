@@ -79,8 +79,8 @@ $(document).ready(function () {
     // event listener for submit of save form
     $('.save-form').submit(toggleSaveUnsave);
 
-    // event listener for submit of remove fav job form
-    $('.remove-fav-job-form').submit(removeSavedJob);
+    // event listener for submit of remove fav job/resume form
+    $('.remove-fav-form').submit(removeSaved);
 
     // length text counter for textarea
     $('textarea').on('input', function () {
@@ -399,15 +399,15 @@ function toggleSaveUnsave(e) {
 }
 
 /**
- * Remove saved job using ajax and remove job list element
- * from Saved Jobs page without reloading the page.
+ * Remove saved job/resume using ajax and remove job/resume list element
+ * from Saved Jobs/Resumes page without reloading the page.
  */
-function removeSavedJob(e) {
+function removeSaved(e) {
     e.preventDefault();
 
     const actionEndpoint = $(this).attr('action');
     const csrfToken = $(this).find("input[name='csrfmiddlewaretoken']").val();
-    const jobListItem = $(this).closest('li');
+    const listItem = $(this).closest('li');
 
 
     $.ajax({
@@ -418,13 +418,14 @@ function removeSavedJob(e) {
         },
         dataType: 'json',
         success: function (response) {
+            console.log('success')
             // set toast message
             $('.custom-toast-msg').text(response.successMsg);
             let toastElementsList = [].slice.call(document.querySelectorAll('.multi-use-toast'));
             showToasts(toastElementsList, 'success');
 
-            // remove job list element
-            $(jobListItem).remove();
+            // remove job/resume list element
+            $(listItem).remove();
         }
     })
 }

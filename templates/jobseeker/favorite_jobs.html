@@ -49,8 +49,7 @@
                       class="btn btn-sm btn-outline-royalpurple rounded-start rounded-0">Apply</a>
                     </div>
                   {% endif %}
-                  <form class="remove-fav-job-form" action="{% url 'job_save_toggle' job.id %}"
-                    data-job-id="{{ job.id }}" method="post">
+                  <form class="remove-fav-form" action="{% url 'job_save_toggle' job.id %}" method="post">
                     {% csrf_token %}
                     <button type="submit" class="btn btn-sm btn-outline-royalpurple rounded-end rounded-0">Remove</button>
                   </form>
