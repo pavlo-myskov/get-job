@@ -67,7 +67,7 @@
             {% csrf_token %}
             <button type="submit"
               class="btn-save{% if resume.is_saved %}--filled{% endif %} btn--cyan-blue card-link">
-              <span>Save{% if vacancy.is_saved %}d{% endif %}</span>
+              <span>Save{% if resume.is_saved %}d{% endif %}</span>
             </button>
           </form>
           <!-- TODO url 'hire' resume.id -->

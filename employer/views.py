@@ -7,6 +7,7 @@ from django.urls import reverse
 from django.contrib import messages
 
 from allauth.account.utils import get_next_redirect_url
+from resumes.utils import annotate_resumes
 
 from users.models import User
 
@@ -42,13 +43,17 @@ class EmployerRequiredMixin(LoginRequiredMixin, UserPassesTestMixin):
 
 
 class HomeView(ListView):
-    # TODO: Annotate the resumes with is_saved field
     # object name that will be used in the template
     context_object_name = "resume_list"
     # get only first 4 active resumes
     queryset = Resume.objects.active()[:4]
-
     template_name = "employer/home.html"
+
+    def get_queryset(self):
+        """Annotate the resumes with is_saved field
+        if user is authenticated and is a employer"""
+        queryset = super().get_queryset()
+        return annotate_resumes(queryset, self.request)
 
     def get_context_data(self, **kwargs):
         """Add search form to the context"""
