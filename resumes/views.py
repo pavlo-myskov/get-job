@@ -1,124 +1,24 @@
-import re
 from django.contrib import messages
 from django.db import transaction
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from django.forms.forms import BaseForm
 from django.http.response import HttpResponse
+from django.shortcuts import get_object_or_404
 from django.urls import reverse, reverse_lazy
-from django.utils import timezone
-from dateutil.relativedelta import relativedelta
 from django.views import View
 from django.views.generic import ListView, DetailView
 from django.views.generic.detail import SingleObjectMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.db.models import Q
-from django.db.models import QuerySet
+from employer.views import EmployerRequiredMixin
 from jobs.forms import SearchForm
 
 from users.models import User
 from .models import Resume
 from .forms import ResumeSearchForm, ResumeCreateForm
 from jobseeker.views import JobseekerRequiredMixin
-
-
-def get_keywords(search_data: dict) -> Q:
-    """Extract keywords from search data with regex
-    and return Q object with keywords"""
-
-    # extract keywords from string using regex
-    keywords_string = search_data.get("keywords", "").strip()
-    keywords_list = re.findall(r"\w+", keywords_string)
-
-    # "Search for multiple keywords over multiple columns in Django"
-    # code snippet based on stackoverflow answer:
-    # https://stackoverflow.com/a/43552495/20143678
-    if keywords_list:
-        keywords_obj = Q(occupation__icontains=keywords_list[0]) | Q(
-            skills__icontains=keywords_list[0]
-        )
-        for keyword in keywords_list[1:]:
-            keywords_obj.add(
-                Q(occupation__icontains=keyword)
-                | Q(skills__icontains=keyword),
-                keywords_obj.connector,
-            )
-    else:
-        keywords_obj = Q()
-
-    return keywords_obj
-
-
-def get_age_lookup(search_data: dict) -> Q:
-    """Return lookup for age range from search data"""
-    today = timezone.now().date()
-    max_age = search_data.get("max_age", 66)
-    min_age = search_data.get("min_age", 18)
-    if min_age > max_age:
-        min_age, max_age = max_age, min_age
-
-    if min_age == max_age:
-        # get all ages that are equal or older than 65
-        if min_age == 66:
-            dob_val = today - relativedelta(years=max_age - 1)
-            lookup = Q(jobseeker__jobseekerprofile__dob__lte=dob_val)
-        else:
-            # if min_age and max_age are equal, search for exact age
-            dob_val = today - relativedelta(years=min_age)
-            lookup = Q(
-                jobseeker__jobseekerprofile__dob__range=[
-                    dob_val - relativedelta(years=1),
-                    dob_val,
-                ]
-            )
-
-    # if max_age is 66, search for all ages from min_age to 66 and older
-    elif max_age == 66:
-        startdate = today - relativedelta(years=min_age)
-        lookup = Q(jobseeker__jobseekerprofile__dob__lte=startdate)
-
-    else:
-        # search for all ages from min_age to max_age(not including max_age)
-        startdate = (
-            today - relativedelta(years=max_age) + relativedelta(days=1)
-        )
-        enddate = today - relativedelta(years=min_age)
-        lookup = Q(
-            jobseeker__jobseekerprofile__dob__range=[startdate, enddate]
-        )
-    return lookup
-
-
-def filter_resumes(search_data: dict) -> QuerySet:
-    """
-    Filter resumes by search data using Q objects
-    """
-    query = Q()
-    # add Q objects to query if it is exist in search data
-    if search_data.get("keywords"):
-        query.add(get_keywords(search_data), query.connector)
-    if search_data.get("experience"):
-        query.add(
-            Q(experience_duration__contains=search_data["experience"]),
-            query.connector,
-        )
-    if search_data.get("gender"):
-        # Lookups that span relationships
-        query.add(
-            Q(
-                jobseeker__jobseekerprofile__gender__contains=search_data[  # noqa
-                    "gender"
-                ]
-            ),
-            query.connector,
-        )
-    if search_data.get("min_age") or search_data.get("max_age"):
-        query.add(get_age_lookup(search_data), query.connector)
-    # filter active resumes by search query
-    # distinct() removes duplicate results
-    resume_list = Resume.objects.active().filter(query).distinct()
-
-    return resume_list
+from .utils import annotate_resumes, filter_resumes
 
 
 class ResumeListView(ListView):
@@ -140,7 +40,8 @@ class ResumeListView(ListView):
             )
         else:
             self.form = ResumeSearchForm()
-            return Resume.objects.active()
+            resume_list = Resume.objects.active()
+            return annotate_resumes(resume_list, self.request)
 
         # if form is valid, search for resumes
         if self.form.is_valid():
@@ -169,7 +70,8 @@ class ResumeListView(ListView):
         else:
             # if form is not valid, return an empty queryset
             resume_list = Resume.objects.none()
-        return resume_list
+
+        return annotate_resumes(resume_list, self.request)
 
     def get_context_data(self, **kwargs):
         """Add search form to the context"""
@@ -194,23 +96,11 @@ class ResumeListView(ListView):
 
 
 class ResumeDetailView(DetailView):
-    def get_queryset(self):
-        # TODO: add test
-        """Return all active resumes and all resumes of the owner
-        if the user is authenticated as a jobseeker,
-        so that the jobseeker can see his own unpublished resumes as well
-        """
-        query = Q()
-        if (
-            self.request.user.is_authenticated
-            and self.request.user.role == User.Role.JOBSEEKER
-        ):
-            query = Q(jobseeker__id=self.request.user.pk)
+    queryset = Resume.objects.active()
 
-        queryset = Resume.objects.filter(
-            query | Q(status=Resume.ResumePublishStatus.ACTIVE)
-        )
-        return queryset
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        return annotate_resumes(queryset, self.request)
 
     def get_context_data(self, **kwargs):
         """Add search form to the context for navbar search bar"""
@@ -434,3 +324,26 @@ class ResumeDeleteView(JobseekerRequiredMixin, DeleteView):
         """Add success message to the delete view"""
         messages.success(self.request, self.success_message)
         return super().delete(request, *args, **kwargs)
+
+
+class ResumeSaveToggle(EmployerRequiredMixin, View):
+    """Toggle save/unsave resume for the current employer"""
+
+    http_method_names = ["post"]  # only POST requests are allowed
+
+    def post(self, request, *args, **kwargs):
+        pk = kwargs.get("pk")
+        resume = get_object_or_404(Resume, pk=pk)
+        profile = request.user.employerprofile
+        if profile.favorites.filter(id=resume.id).exists():
+            profile.favorites.remove(resume.id)
+            is_saved = False
+            success_message = "The resume has been removed from saved resumes."
+        else:
+            profile.favorites.add(resume.id)
+            is_saved = True
+            success_message = "The resume has been saved."
+
+        return JsonResponse(
+            {"is_saved": is_saved, "successMsg": success_message}
+        )

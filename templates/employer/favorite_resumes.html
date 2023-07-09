@@ -3,25 +3,25 @@
 {% load custom_tags %}
 {% load time_filters %}
 
-{% block head_title %}Saved Jobs{% endblock %}
+{% block head_title %}Saved Resumes{% endblock %}
 
 {% block content %}
-{% include 'jobseeker/navbar.html' %}
+{% include 'employer/navbar.html' %}
 
 <main class="container-fluid bg-light px-0 flex-grow-1">
   <div class="container px-0 px-sm-3 my-4" style="max-width: 50rem;">
-    <h2 class="ms-4 mb-3">Saved Jobs</h2>
+    <h2 class="ms-4 mb-3">Saved Resumes</h2>
 
     <!-- Nav header -->
     <nav class="card-header bg-white" aria-label="internal navigation">
       <div class="d-flex align-items-center justify-content-between">
-        <a href="{% url 'my_resumes' %}"
+        <a href="{% url 'my_jobs' %}"
         class="text-decoration-none d-flex align-items-center text-muted fs-4"
-          area-label="to my resumes">
+          area-label="to my jobs">
           <i class="fa fa-arrow-left"></i>
-          <span class="mx-2">To my resumes</span>
+          <span class="mx-2">To my jobs</span>
         </a>
-        <a href="{% url 'jobseeker_home' %}" class="text-decoration-none d-flex align-items-center text-muted fs-4"
+        <a href="{% url 'employer_home' %}" class="text-decoration-none d-flex align-items-center text-muted fs-4"
         area-label="go to home page">
           <i class="fa fa-home"></i>
       </a>
@@ -32,39 +32,41 @@
       <div class="card-body p-0">
         {% if favorite_list %}
           <ul class="list-group">
-            {% for job in favorite_list %}
+            {% for resume in favorite_list %}
               <li class="list-group-item list-group-item-action d-flex">
-                <a href="{% url 'job_detail' job.id %}" class="w-100 h-100 me-2 link-royalpurple">
-                  {{ job }}
+                <a href="{% url 'resume_detail' resume.id %}" class="w-100 h-100 me-2 link-cyan-blue">
+                  {{ resume }}
                 </a>
                 <div class="d-flex" role="group" aria-label="action buttons">
-                  {% if job.is_applied %}
+                  {% if resume.is_hired %}
                     <div>
-                      <a href="{% url 'job_apply' job.id %}" type="button"
-                      class="btn btn-sm btn-outline-secondary rounded-start rounded-0">Applied</a>
+                      <!-- TODO  url 'resume_hire' resume.id -->
+                      <a href="#" type="button"
+                      class="btn btn-sm btn-outline-secondary rounded-start rounded-0">Offered</a>
                     </div>
                   {% else %}
                     <div>
-                      <a href="{% url 'job_apply' job.id %}" type="button"
-                      class="btn btn-sm btn-outline-royalpurple rounded-start rounded-0">Apply</a>
+                      <!-- TODO  url 'resume_hire' resume.id -->
+                      <a href="#" type="button"
+                      class="btn btn-sm btn-outline-cyan-blue rounded-start rounded-0">Hire</a>
                     </div>
                   {% endif %}
-                  <form class="remove-fav-form" action="{% url 'job_save_toggle' job.id %}" method="post">
+                  <form class="remove-fav-form" action="{% url 'resume_save_toggle' resume.id %}" method="post">
                     {% csrf_token %}
-                    <button type="submit" class="btn btn-sm btn-outline-royalpurple rounded-end rounded-0">Remove</button>
+                    <button type="submit" class="btn btn-sm btn-outline-cyan-blue rounded-end rounded-0">Remove</button>
                   </form>
                 </div>
               </li>
             {% endfor %}
           </ul>
         {% else %}
-          <h5 class="card-title">You have not saved any jobs yet.</h5>
+          <h5 class="card-title">You have not saved any resumes yet.</h5>
         {% endif %}
       </div>
       <div class="text-end text-sm-start m-3 mb-sm-1">
-        <a href="{% url 'job_search' %}" class="btn btn-royalpurple py-1">
+        <a href="{% url 'resume_search' %}" class="btn btn-cyan-blue py-1">
           <i class="fa fa-search"></i>
-          <span class="ms-2">Search Jobs</span>
+          <span class="ms-2">Search Resumes</span>
         </a>
       </div>
     </div>

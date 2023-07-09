@@ -7,6 +7,7 @@ from django.urls import reverse
 from django.contrib import messages
 
 from allauth.account.utils import get_next_redirect_url
+from resumes.utils import annotate_resumes
 
 from users.models import User
 
@@ -46,8 +47,13 @@ class HomeView(ListView):
     context_object_name = "resume_list"
     # get only first 4 active resumes
     queryset = Resume.objects.active()[:4]
-
     template_name = "employer/home.html"
+
+    def get_queryset(self):
+        """Annotate the resumes with is_saved field
+        if user is authenticated and is a employer"""
+        queryset = super().get_queryset()
+        return annotate_resumes(queryset, self.request)
 
     def get_context_data(self, **kwargs):
         """Add search form to the context"""
@@ -118,3 +124,20 @@ class EmployerProfileUpdateView(
             return next_url
         else:
             return reverse("employer_profile")
+
+
+class FavoriteResumeList(EmployerRequiredMixin, ListView):
+    template_name = "employer/favorite_resumes.html"
+    context_object_name = "favorite_list"
+
+    def get_queryset(self):
+        favorites = self.request.user.employerprofile.favorites.all()
+        # TODO: annotate
+        # return annotate_hired_resumes(favorites, self.request)
+        return favorites
+
+    def get_context_data(self, **kwargs):
+        """Add search form and back URL to the context"""
+        context = super().get_context_data(**kwargs)
+        context["nav_form"] = ResumeSearchForm(auto_id=False)
+        return context

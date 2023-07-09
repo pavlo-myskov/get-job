@@ -14,4 +14,9 @@ urlpatterns = [
         views.EmployerProfileUpdateView.as_view(),
         name="employer_profile_update",
     ),
+    path(
+        "employer/favorites",
+        views.FavoriteResumeList.as_view(),
+        name="favorite_resumes",
+    ),
 ]

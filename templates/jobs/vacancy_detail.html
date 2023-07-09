@@ -23,7 +23,7 @@
             <a href="{% url 'job_apply' vacancy.id %}" class="btn btn-royalpurple btn-sm px-sm-3 py-1 me-2">Apply</a>
           {% endif %}
           {% if user.is_authenticated and user.role == 'JOBSEEKER' %}
-            <form class="save-job-form" action="{% url 'job_save_toggle' vacancy.id %}" method="post">
+            <form class="save-form" action="{% url 'job_save_toggle' vacancy.id %}" method="post">
               {% csrf_token %}
               <button type="submit"
                 class="btn btn-save{% if vacancy.is_saved %}--filled{% endif %} btn-sm btn--royalpurple border royalpurple-border px-sm-3 py-1">
@@ -59,14 +59,14 @@
         {% endif %}
         <div class="d-flex fs-3">
           {% if user.is_authenticated and user.role == 'JOBSEEKER' %}
-            <form class="save-job-form" action="{% url 'job_save_toggle' vacancy.id %}" method="post">
+            <form class="save-form" action="{% url 'job_save_toggle' vacancy.id %}" method="post">
               {% csrf_token %}
               <button type="submit" aria-label="save job button"
-                class="btn-save{% if vacancy.is_saved %}--filled{% endif %} btn--royalpurple card-link me-4">
+                class="btn-save{% if vacancy.is_saved %}--filled{% endif %} btn--royalpurple card-link me-4 hover-grow">
               </button>
             </form>
           {% endif %}
-          <div role="button" class="back-to-top d-flex align-items-center text-royalpurple"
+          <div role="button" class="back-to-top d-flex align-items-center text-royalpurple hover-grow"
             area-label="scroll to top">
             <i class="fa fa-arrow-up"></i>
           </div>
