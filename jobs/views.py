@@ -375,13 +375,15 @@ class JobApplyView(JobseekerRequiredMixin, CreateView):
             status=Vacancy.JobPostStatus.ACTIVE,
         )
         # check if the applicant has already applied for the job
+        # with the same resume
         if Application.objects.filter(
-            applicant=form.instance.applicant, vacancy=form.instance.vacancy
+            applicant=form.instance.applicant, vacancy=form.instance.vacancy,
+            resume=form.instance.resume,
         ).exists():
             form.add_error(
                 None,
-                "You have already applied for this job. "
-                "Please wait for the employer to contact you.",
+                "You have already applied for this job "
+                "with selected resume.",
             )
             return super().form_invalid(form)
         return super().form_valid(form)
