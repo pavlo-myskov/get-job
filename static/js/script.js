@@ -91,6 +91,8 @@ $(document).ready(function () {
         $('#current-text-length-value').text(currentLen);
     })
 
+    $('.snapshot').click(showSnapshot);
+
 });
 
 
@@ -426,6 +428,22 @@ function removeSaved(e) {
 
             // remove job/resume list element
             $(listItem).remove();
+        }
+    })
+}
+
+
+function showSnapshot(e) {
+    e.preventDefault();
+    const actionEndpoint = $(this).attr('href');
+
+    $.ajax({
+        url: actionEndpoint,
+        type: 'get',
+        dataType: 'json',
+        success: function(response){
+            $('#snapshotModal .card-body').html(response.resume_card);
+            $('#snapshotModal').modal('show');
         }
     })
 }

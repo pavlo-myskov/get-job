@@ -29,4 +29,9 @@ urlpatterns = [
         views.JobOfferView.as_view(),
         name="job_offer",
     ),
+    path(
+        "offer/<int:pk>/resume",
+        views.JobOfferResumeSnapshotView.as_view(),
+        name="job_offer_resume_snapshot",
+    ),
 ]

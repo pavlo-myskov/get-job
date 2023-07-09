@@ -46,25 +46,38 @@
                   aria-labelledby="heading-{{ forloop.counter }}" data-bs-parent="#accordionOffers">
                   <div class="accordion-body">
                     <p>
-                      Job Offer submitted with the vacancy titled
-                      <a href="{% url 'my_job_detail' offer.vacancy.id %}">
-                        {{ offer.vacancy.title }}
-                      </a>
-                      on the <strong>{{ offer.offered_on|date:"jS M Y"}}</strong>
+                      Job Offer submitted on the <strong>{{ offer.offered_on|date:"jS M Y"}}</strong>
                     </p>
-                    {% if offer.vacancy.status != "ACTIVE" %}
-                    <p class="text-muted">
-                      *Job Offer is currently closed and not available for review by the candidate as your vacancy is
-                      not public(active).
-                    </p>
-                    {% endif %}
-                    <div class="text-end">
-                      <a href="{% url 'resume_detail' offer.resume.id %}"
-                        class="btn btn-outline-cyan-blue py-1">
-                        <i class="fa fa-eye"></i>
-                        <span class="ms-2">View Resume</span>
-                      </a>
-                    </div>
+                    <table class="table table-borderless">
+                      <thead>
+                        <tr class="text-muted">
+                          <th scope="col">Proposed Vacancy</th>
+                          <th scope="col">Jobseeker Resume</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>{{ offer.vacancy.title }}</td>
+                          <td>{{ offer.resume.occupation }}</td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <a href=""
+                            class="btn btn-outline-cyan-blue btn-sm py-0" aria-label="view vacancy snapshot">
+                            <i class="fa fa-eye"></i>
+                            <span class="ms-2"><span class="d-none d-sm-inline">View</span> Snapshot</span>
+                            </a>
+                          </td>
+                          <td>
+                            <a href="{% url 'job_offer_resume_snapshot' offer.id %}"
+                              class="btn btn-outline-cyan-blue btn-sm py-0 snapshot" aria-label="view vacancy snapshot">
+                              <i class="fa fa-eye"></i>
+                              <span class="ms-2"><span class="d-none d-sm-inline">View</span> Snapshot</span>
+                            </a>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
                   </div>
                 </div>
               </div>
@@ -83,6 +96,23 @@
     </div>
   </div>
 </main>
+
+<!-- Snapshot modal -->
+<div class="modal fade" id="snapshotModal" tabindex="-1" aria-labelledby="snapshotModal" aria-hidden="true" role="dialog">
+  <div class="modal-dialog modal-dialog-scrollable">
+    <div class="modal-content position-relative">
+        <div>
+          <button type="button" class="btn-close position-absolute me-4 mt-2 top-0 end-0" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="card border-0">
+            <div class="card-body position-relative py-3 px-3">...</div>
+          </div>
+        </div>
+        <button type="button" class="btn btn-secondary btn-sm rounded-bottom rounded-0 py-0" data-bs-dismiss="modal">Close</button>
+    </div>
+  </div>
+</div>
 
 {% include 'footer.html' %}
 {% endblock %}

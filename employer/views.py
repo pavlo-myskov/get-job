@@ -1,5 +1,8 @@
 from django.core import serializers
+from django.template.loader import render_to_string
+from django.http import JsonResponse
 from django.views.generic import ListView, DetailView
+from django.views.generic.detail import BaseDetailView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.views.generic.edit import UpdateView, CreateView
@@ -148,9 +151,7 @@ class FavoriteResumeList(EmployerRequiredMixin, ListView):
 class JobOfferView(EmployerRequiredMixin, SuccessMessageMixin, CreateView):
     form_class = OfferForm
     template_name = "employer/job_offer.html"
-    success_message = (
-        "Your offer has been sent successfully. "
-    )
+    success_message = "Your offer has been sent successfully. "
 
     def get_form_kwargs(self):
         """Passes the request object to the form class."""
@@ -169,7 +170,8 @@ class JobOfferView(EmployerRequiredMixin, SuccessMessageMixin, CreateView):
         # check if the employer has already sent an offer to the jobseeker with
         # the same vacancy
         if JobOffer.objects.filter(
-            employer=form.instance.employer, resume=form.instance.resume,
+            employer=form.instance.employer,
+            resume=form.instance.resume,
             vacancy=form.instance.vacancy,
         ).exists():
             form.add_error(
@@ -181,7 +183,8 @@ class JobOfferView(EmployerRequiredMixin, SuccessMessageMixin, CreateView):
         # check if the jobseeker has already applied to the selected vacancy
         # with the same resume
         elif Application.objects.filter(
-            resume=form.instance.resume, vacancy=form.instance.vacancy,
+            resume=form.instance.resume,
+            vacancy=form.instance.vacancy,
         ).exists():
             form.add_error(
                 None,
@@ -234,3 +237,32 @@ class MyJobOfferList(EmployerRequiredMixin, ListView):
         context = super().get_context_data(**kwargs)
         context["nav_form"] = ResumeSearchForm(auto_id=False)
         return context
+
+
+class JobOfferResumeSnapshotView(EmployerRequiredMixin, BaseDetailView):
+    model = JobOffer
+
+    def test_func(self):
+        """Allow only the owner to view the job offer resume snapshot"""
+        employer_test = super().test_func()
+        return (
+            employer_test and self.request.user == self.get_object().employer
+        )
+
+    def get(self, request, *args, **kwargs):
+        """Render the resume page from the json snapshot that is stored in
+        the job offer instance"""
+        resume_snapshot = self.get_object().resume_snapshot
+        # deserealize the resume snapshot
+        resume_deserealized = serializers.deserialize("json", resume_snapshot)
+        # get the resume instance from the iterator
+        resume_instance = next(resume_deserealized).object
+        resume_instance.updated_on = None
+
+        resume_html = render_to_string(
+            "resumes/resume_detail_card_body.html",
+            {"resume": resume_instance, "user": request.user},
+        )
+        return JsonResponse(
+            {"resume_card": resume_html, "cv": resume_instance.cv.url}
+        )

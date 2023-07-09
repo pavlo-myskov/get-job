@@ -2,9 +2,15 @@
 {% load cloudinary %}
 
 <h2 class="card-title col-8 mb-1 mb-sm-2">{{ resume.occupation }}</h2>
+
+{% if resume.updated_on %}
 <p class="col days-counter text-muted">
   <small>{{ resume.updated_on|timeago }} ago</small>
 </p>
+{% else %}
+<!-- non-breaking space -->
+<p class="mb-1">&nbsp;</p>
+{% endif %}
 
 <!-- Profile Image for small screens -->
 <div class="d-sm-none position-absolute top-0 end-0 me-4 mt-3">

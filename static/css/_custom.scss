@@ -346,3 +346,12 @@ a.ui-button:active,
     box-shadow: 0 0 0 $input-btn-focus-width rgba($cyan-blue, 0.3);
   }
 }
+
+#snapshotModal {
+  .card {
+    z-index: 10;
+  }
+  .btn-close {
+    z-index: 11;
+  }
+}
