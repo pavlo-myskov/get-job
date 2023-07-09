@@ -1,12 +1,13 @@
 from django.views.generic import ListView, DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.messages.views import SuccessMessageMixin
-from django.views.generic.edit import UpdateView
-from django.shortcuts import render
+from django.views.generic.edit import UpdateView, CreateView
+from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 from django.contrib import messages
 
 from allauth.account.utils import get_next_redirect_url
+from jobs.models import Application, Vacancy
 from resumes.utils import annotate_resumes
 
 from users.models import User
@@ -14,8 +15,8 @@ from users.models import User
 from resumes.models import Resume
 from resumes.forms import ResumeSearchForm
 
-from .models import EmployerProfile
-from .forms import EmployerProfileForm
+from .models import EmployerProfile, JobOffer
+from .forms import EmployerProfileForm, OfferForm
 
 
 class EmployerRequiredMixin(LoginRequiredMixin, UserPassesTestMixin):
@@ -140,4 +141,69 @@ class FavoriteResumeList(EmployerRequiredMixin, ListView):
         """Add search form and back URL to the context"""
         context = super().get_context_data(**kwargs)
         context["nav_form"] = ResumeSearchForm(auto_id=False)
+        return context
+
+
+class JobOfferView(EmployerRequiredMixin, SuccessMessageMixin, CreateView):
+    form_class = OfferForm
+    template_name = "employer/job_offer.html"
+    success_message = (
+        "Your offer has been sent successfully. "
+    )
+
+    def get_form_kwargs(self):
+        """Passes the request object to the form class."""
+        kwargs = super().get_form_kwargs()
+        kwargs["request"] = self.request
+        return kwargs
+
+    def form_valid(self, form):
+        """Save the employer and the resume to the offer"""
+        form.instance.employer = self.request.user
+        form.instance.resume = get_object_or_404(
+            Resume,
+            pk=self.kwargs.get("pk"),
+            status=Resume.ResumePublishStatus.ACTIVE,
+        )
+        # check if the employer has already sent an offer to the jobseeker with
+        # the same vacancy
+        if JobOffer.objects.filter(
+            employer=form.instance.employer, resume=form.instance.resume,
+            vacancy=form.instance.vacancy,
+        ).exists():
+            form.add_error(
+                None,
+                "You have already sent an offer to this jobseeker for "
+                "selected vacancy.",
+            )
+            return super().form_invalid(form)
+        # check if the jobseeker has already applied to the selected vacancy
+        # with the same resume
+        elif Application.objects.filter(
+            resume=form.instance.resume, vacancy=form.instance.vacancy,
+        ).exists():
+            form.add_error(
+                None,
+                "This jobseeker has already applied to selected vacancy "
+                "with current resume. <br>Please, check Applicants list.",
+            )
+            return super().form_invalid(form)
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        """Redirect to the resume detail page"""
+        return reverse("resume_detail", kwargs={"pk": self.kwargs.get("pk")})
+
+    def get_context_data(self, **kwargs):
+        """Add search form, vacancy and resumes to the context"""
+        context = super().get_context_data(**kwargs)
+        context["nav_form"] = ResumeSearchForm(auto_id=False)
+        context["resume"] = get_object_or_404(
+            Resume,
+            pk=self.kwargs.get("pk"),
+            status=Resume.ResumePublishStatus.ACTIVE,
+        )
+        context["are_jobs_available"] = self.request.user.vacancies.filter(
+            status=Vacancy.JobPostStatus.ACTIVE,
+        ).exists()
         return context

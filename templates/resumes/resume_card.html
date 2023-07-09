@@ -70,16 +70,14 @@
               <span>Save{% if resume.is_saved %}d{% endif %}</span>
             </button>
           </form>
-          <!-- TODO url 'hire' resume.id -->
-          <a href="#" class="btn btn-outline-cyan-blue card-link py-0 my-1">Hire</a>
+          <a href="{% url 'job_offer' resume.id %}" class="btn btn-outline-cyan-blue card-link py-0 my-1">Hire</a>
         </div>
       {% elif user.is_authenticated and user.role != 'EMPLOYER' %}
         <span class="float-end" data-bs-toggle="tooltip" data-bs-placement="left" title="Only employers can hire">
           <a href="#" class="btn btn-outline-cyan-blue card-link py-0 my-1 disabled">Hire</a>
         </span>
       {% else %}
-        <!-- TODO url 'hire' resume.id -->
-        <a href="#" class="float-end btn btn-outline-cyan-blue card-link py-0 my-1">Hire</a>
+        <a href="{% url 'job_offer' resume.id %}" class="float-end btn btn-outline-cyan-blue card-link py-0 my-1">Hire</a>
       {% endif %}
     </div>
   </div>

@@ -6,7 +6,6 @@
   <div class="card shadow">
 
     <!-- Resume detail header -->
-      <!-- TODO: make the header multi-use component for employer and jobseeker -->
     <div class="card-header">
       <div class="d-flex align-items-center justify-content-between">
         <a href="{% url 'resume_search' %}#{{ resume.id }}" class="text-decoration-none d-flex align-items-center text-muted fs-4"
@@ -20,8 +19,7 @@
               <button class="btn btn-cyan-blue btn-sm px-sm-3 py-1 me-2 disabled">Hire</button>
             </span>
           {% else %}
-          <!-- TODO: url 'hire' resume.id -->
-            <a href="#" class="btn btn-cyan-blue btn-sm px-sm-3 py-1 me-2">Hire</a>
+            <a href="{% url 'job_offer' resume.id %}" class="btn btn-cyan-blue btn-sm px-sm-3 py-1 me-2">Hire</a>
           {% endif %}
           {% if user.is_authenticated and user.role == 'EMPLOYER' %}
             <form class="save-form" action="{% url 'resume_save_toggle' resume.id %}" method="post">
@@ -41,15 +39,13 @@
       {% include 'resumes/resume_detail_card_body.html' %}
 
       <!-- Bottom buttons panel -->
-      <!-- TODO: make the panel multi-use component for employer and jobseeker -->
       <div class="d-flex align-items-center justify-content-between px-3 px-sm-4">
         {% if user.is_authenticated and user.role != 'EMPLOYER' %}
           <span data-bs-toggle="tooltip" data-bs-placement="right" title="Only employers can hire">
             <button class="btn btn-cyan-blue px-3 px-sm-4 py-1 rounded-1 disabled">Hire</button>
           </span>
         {% else %}
-          <!-- TODO: url 'hire' resume.id -->
-          <a href="#" class="btn btn-cyan-blue px-3 px-sm-4 py-1 rounded-1">Hire</a>
+          <a href="{% url 'job_offer' resume.id %}" class="btn btn-cyan-blue px-3 px-sm-4 py-1 rounded-1">Hire</a>
         {% endif %}
         <div class="d-flex fs-3">
           {% if user.is_authenticated and user.role == 'EMPLOYER' %}
