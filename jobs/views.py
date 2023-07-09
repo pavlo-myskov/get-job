@@ -8,6 +8,7 @@ from django.views import View
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic.detail import SingleObjectMixin
+from employer.models import JobOffer
 from employer.views import EmployerRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 
@@ -352,12 +353,11 @@ class JobSaveToggle(JobseekerRequiredMixin, View):
         )
 
 
-class JobApplyView(JobseekerRequiredMixin, CreateView):
+class JobApplyView(JobseekerRequiredMixin, SuccessMessageMixin, CreateView):
     form_class = ApplicationForm
     template_name = "jobs/job_apply.html"
     success_message = (
         "You have applied for the job successfully."
-        " Wait for the employer to contact you."
     )
 
     def get_form_kwargs(self):
@@ -384,6 +384,17 @@ class JobApplyView(JobseekerRequiredMixin, CreateView):
                 None,
                 "You have already applied for this job "
                 "with selected resume.",
+            )
+            return super().form_invalid(form)
+        # check if the employer has already sent a job offer to the applicant
+        # with the selected resume for the current job
+        elif JobOffer.objects.filter(
+            resume=form.instance.resume, vacancy=form.instance.vacancy,
+        ).exists():
+            form.add_error(
+                None,
+                "You have already received a job offer for this job "
+                "with selected resume. <br>Please check your Job Invitations.",
             )
             return super().form_invalid(form)
         return super().form_valid(form)
