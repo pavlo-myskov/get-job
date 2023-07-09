@@ -1,3 +1,4 @@
+from django.core import serializers
 from django.views.generic import ListView, DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.messages.views import SuccessMessageMixin
@@ -188,11 +189,23 @@ class JobOfferView(EmployerRequiredMixin, SuccessMessageMixin, CreateView):
                 "with current resume. <br>Please, check Applicants list.",
             )
             return super().form_invalid(form)
+
+        # serialize vacancy and resume instances to JSON and
+        # save them to the offer instance
+        form.instance.vacancy_snapshot = serializers.serialize(
+            "json", [form.instance.vacancy]
+        )
+        form.instance.resume_snapshot = serializers.serialize(
+            "json", [form.instance.resume]
+        )
+
         return super().form_valid(form)
 
     def get_success_url(self):
-        """Redirect to the resume detail page"""
-        return reverse("resume_detail", kwargs={"pk": self.kwargs.get("pk")})
+        """Redirect to the resume search page"""
+        pk = self.kwargs.get("pk")
+        url = reverse("resume_search")
+        return f"{url}#{pk}"
 
     def get_context_data(self, **kwargs):
         """Add search form, vacancy and resumes to the context"""

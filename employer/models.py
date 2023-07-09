@@ -139,6 +139,7 @@ class JobOffer(models.Model):
     resume = models.ForeignKey(
         Resume, on_delete=models.CASCADE, related_name="job_offers"
     )
+    resume_snapshot = models.JSONField()
     employer = models.ForeignKey(
         Employer,
         on_delete=models.CASCADE,
@@ -147,6 +148,7 @@ class JobOffer(models.Model):
     vacancy = models.ForeignKey(
         "jobs.Vacancy", on_delete=models.CASCADE, related_name="job_offers"
     )
+    vacancy_snapshot = models.JSONField()
     message = models.TextField(
         blank=True, validators=[MaxLengthValidator(1000)]
     )
