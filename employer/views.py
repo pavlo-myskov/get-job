@@ -207,3 +207,17 @@ class JobOfferView(EmployerRequiredMixin, SuccessMessageMixin, CreateView):
             status=Vacancy.JobPostStatus.ACTIVE,
         ).exists()
         return context
+
+
+class MyJobOfferList(EmployerRequiredMixin, ListView):
+    template_name = "employer/my_job_offers.html"
+
+    def get_queryset(self):
+        job_offers = self.request.user.job_offers.all()
+        return job_offers
+
+    def get_context_data(self, **kwargs):
+        """Add search form and back URL to the context"""
+        context = super().get_context_data(**kwargs)
+        context["nav_form"] = ResumeSearchForm(auto_id=False)
+        return context

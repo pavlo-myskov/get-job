@@ -20,6 +20,11 @@ urlpatterns = [
         name="favorite_resumes",
     ),
     path(
+        "employer/offers",
+        views.MyJobOfferList.as_view(),
+        name="my_job_offers",
+    ),
+    path(
         "resume/<int:pk>/offer",
         views.JobOfferView.as_view(),
         name="job_offer",
