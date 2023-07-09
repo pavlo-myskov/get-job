@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load time_filters %}
 
 {% block content %}
 {% include 'employer/navbar.html' %}
@@ -34,7 +35,15 @@
       </div>
     </div>
 
-    <!-- resume detail body -->
+    <!-- Resume already offered by the employer alert -->
+    {% if resume.is_offered%}
+    <div class="alert alert-cyan-blue rounded-0 py-1 mb-0">
+      <strong>You already sent an offer for this resume {{ resume.offered_on|timeago }} ago!</strong>
+      <a class="float-end ms-3" href="{% url 'my_job_offers' %}">See my job offers</a>
+    </div>
+    {% endif %}
+
+    <!-- Resume detail body -->
     <div class="card-body position-relative py-4 px-3">
       {% include 'resumes/resume_detail_card_body.html' %}
 

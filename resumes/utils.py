@@ -5,6 +5,7 @@ from django.db.models import QuerySet
 from django.db.models import Q
 from django.db.models import Case, When, BooleanField
 from django.db.models import Subquery, OuterRef, DateTimeField
+from employer.models import JobOffer
 from resumes.models import Resume
 
 from users.models import User
@@ -132,40 +133,40 @@ def annotate_saved_resumes(queryset: QuerySet, request) -> QuerySet:
 
     return queryset
 
-# TODO: REfactor:
-# def annotate_hired_resumes(queryset: QuerySet, request) -> QuerySet:
-#     """Annotate the vacancies with is_applied and applied_on fields.
-#     :is_applied: is True if the vacancy applied by the jobseeker.
-#     :applied_on: date the vacancy applied by the jobseeker.
 
-#     :param queryset: Vacancy queryset
-#     :param request: request object
-#     :return: annotated queryset
-#     """
-#     profile = request.user.jobseekerprofile
-#     # get the applied vacancies ids by the jobseeker
-#     applied_ids = profile.applications.values_list("vacancy_id", flat=True)
-#     application_date = Application.objects.filter(
-#         vacancy=OuterRef("pk"), applicant=profile
-#         ).values("applied_on")
+def annotate_offered_resumes(queryset: QuerySet, request) -> QuerySet:
+    """Annotate the resumes with is_offered and offered_on fields.
+    :is_offered: is True if the resume offered by the employer.
+    :offered_on: date the resume offered by the employer.
 
-#     # set is_saved to True if the vacancy id is in saved_ids
-#     queryset = queryset.annotate(
-#         is_applied=Case(
-#             When(id__in=applied_ids, then=True),
-#             default=False,
-#             output_field=BooleanField(),
-#         ),
-#         applied_on=Subquery(
-#             application_date, output_field=DateTimeField()
-#         ),
-#     )
+    :param queryset: Resume queryset
+    :param request: request object
+    :return: annotated queryset
+    """
+    user = request.user
+    # get the offered vacancies ids by the employer
+    offered_ids = user.job_offers.values_list("resume_id", flat=True)
+    offer_date = JobOffer.objects.filter(
+        resume=OuterRef("pk"), employer=user
+        ).values("offered_on")
 
-#     return queryset
+    # set is_offered to True if the resume id is in offered_ids
+    queryset = queryset.annotate(
+        is_offered=Case(
+            When(id__in=offered_ids, then=True),
+            default=False,
+            output_field=BooleanField(),
+        ),
+        offered_on=Subquery(
+            offer_date, output_field=DateTimeField()
+        ),
+    )
+
+    return queryset
 
 
 def annotate_resumes(queryset: QuerySet, request) -> QuerySet:
-    """Main function to annotate the resumes with is_saved and is_hired.
+    """Main function to annotate the resumes with is_saved and is_offered.
     Annotate only if user is authenticated and is a employer otherwise
     return the original queryset.
 
@@ -176,7 +177,6 @@ def annotate_resumes(queryset: QuerySet, request) -> QuerySet:
         and request.user.role == User.Role.EMPLOYER
     ):
         queryset = annotate_saved_resumes(queryset, request)
-        # TODO add:
-        # queryset = annotate_hired_resumes(queryset, request)
+        queryset = annotate_offered_resumes(queryset, request)
 
     return queryset
