@@ -263,6 +263,38 @@ class JobOfferResumeSnapshotView(EmployerRequiredMixin, BaseDetailView):
             "resumes/resume_detail_card_body.html",
             {"resume": resume_instance, "user": request.user},
         )
+        # TODO: add CV download
         return JsonResponse(
-            {"resume_card": resume_html, "cv": resume_instance.cv.url}
+            {"html_card": resume_html}
+        )
+
+
+class JobOfferVacancySnapshotView(EmployerRequiredMixin, BaseDetailView):
+    model = JobOffer
+
+    def test_func(self):
+        """Allow only the owner to view the job offer vacancy snapshot"""
+        employer_test = super().test_func()
+        return (
+            employer_test and self.request.user == self.get_object().employer
+        )
+
+    def get(self, request, *args, **kwargs):
+        """Render the vacancy page from the json snapshot that is stored in
+        the job offer instance"""
+        vacancy_snapshot = self.get_object().vacancy_snapshot
+        # deserealize the vacancy snapshot
+        vacancy_deserealized = serializers.deserialize(
+            "json", vacancy_snapshot
+        )
+        # get the vacancy instance from the iterator
+        vacancy_instance = next(vacancy_deserealized).object
+        vacancy_instance.updated_on = None
+
+        vacancy_html = render_to_string(
+            "jobs/vacancy_detail_card_body.html",
+            {"vacancy": vacancy_instance, "user": request.user},
+        )
+        return JsonResponse(
+            {"html_card": vacancy_html}
         )

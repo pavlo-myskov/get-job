@@ -442,7 +442,7 @@ function showSnapshot(e) {
         type: 'get',
         dataType: 'json',
         success: function(response){
-            $('#snapshotModal .card-body').html(response.resume_card);
+            $('#snapshotModal .card-body').html(response.html_card);
             $('#snapshotModal').modal('show');
         }
     })

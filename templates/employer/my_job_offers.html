@@ -62,8 +62,8 @@
                         </tr>
                         <tr>
                           <td>
-                            <a href=""
-                            class="btn btn-outline-cyan-blue btn-sm py-0" aria-label="view vacancy snapshot">
+                            <a href="{% url 'job_offer_vacancy_snapshot' offer.id %}"
+                            class="btn btn-outline-cyan-blue btn-sm py-0 snapshot" aria-label="view vacancy snapshot">
                             <i class="fa fa-eye"></i>
                             <span class="ms-2"><span class="d-none d-sm-inline">View</span> Snapshot</span>
                             </a>
@@ -99,7 +99,7 @@
 
 <!-- Snapshot modal -->
 <div class="modal fade" id="snapshotModal" tabindex="-1" aria-labelledby="snapshotModal" aria-hidden="true" role="dialog">
-  <div class="modal-dialog modal-dialog-scrollable">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable">
     <div class="modal-content position-relative">
         <div>
           <button type="button" class="btn-close position-absolute me-4 mt-2 top-0 end-0" data-bs-dismiss="modal" aria-label="Close"></button>

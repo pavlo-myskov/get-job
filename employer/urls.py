@@ -34,4 +34,9 @@ urlpatterns = [
         views.JobOfferResumeSnapshotView.as_view(),
         name="job_offer_resume_snapshot",
     ),
+    path(
+        "offer/<int:pk>/vacancy",
+        views.JobOfferVacancySnapshotView.as_view(),
+        name="job_offer_vacancy_snapshot",
+    ),
 ]

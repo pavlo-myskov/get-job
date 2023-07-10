@@ -400,8 +400,10 @@ class JobApplyView(JobseekerRequiredMixin, SuccessMessageMixin, CreateView):
         return super().form_valid(form)
 
     def get_success_url(self):
-        """Redirect to the job detail page"""
-        return reverse("job_detail", kwargs={"pk": self.kwargs.get("pk")})
+        """Redirect to the job search page"""
+        pk = self.kwargs.get("pk")
+        url = reverse("job_search")
+        return f"{url}#{pk}"
 
     def get_context_data(self, **kwargs):
         """Add search form, vacancy and resumes to the context"""
