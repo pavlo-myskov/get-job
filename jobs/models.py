@@ -145,6 +145,7 @@ class Application(models.Model):
     vacancy = models.ForeignKey(
         Vacancy, on_delete=models.CASCADE, related_name="applications"
     )
+    vacancy_snapshot = models.JSONField()
     applicant = models.ForeignKey(
         # TODO Change to Jobseeker proxy model
         "jobseeker.JobseekerProfile",
@@ -154,6 +155,7 @@ class Application(models.Model):
     resume = models.ForeignKey(
         "resumes.Resume", on_delete=models.CASCADE, related_name="applications"
     )
+    resume_snapshot = models.JSONField()
     cover_letter = models.TextField(
         blank=True, validators=[MaxLengthValidator(1000)]
     )
