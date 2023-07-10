@@ -395,7 +395,7 @@ function toggleSaveUnsave(e) {
         },
         error: function (response) {
             console.error('AJAX POST Save/Unsave: "An error occurred while sending data to the server"');
-            console.error('Response: ', response);
+            alert('An error occurred while sending data to the server');
         }
     })
 }
@@ -428,6 +428,10 @@ function removeSaved(e) {
 
             // remove job/resume list element
             $(listItem).remove();
+        },
+        error: function (response) {
+            console.error('AJAX POST Remove Saved: "An error occurred while sending data to the server"');
+            alert('An error occurred while sending data to the server');
         }
     })
 }
@@ -441,9 +445,19 @@ function showSnapshot(e) {
         url: actionEndpoint,
         type: 'get',
         dataType: 'json',
-        success: function(response){
+        success: function (response) {
             $('#snapshotModal .card-body').html(response.html_card);
             $('#snapshotModal').modal('show');
+        },
+        error: function (xhr, textStatus, thrownError) {
+            console.log("Couldn't get snapshot data from server.");
+            if (xhr.status == 403) {
+                const response = JSON.parse(xhr.responseText);
+                $('body').html(response.html_page);
+            } else {
+                console.log(xhr.responseText);
+                alert('An error occurred while sending data to the server');
+            }
         }
     })
 }

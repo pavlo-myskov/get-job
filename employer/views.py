@@ -1,4 +1,6 @@
+from django.template.loader import render_to_string
 from django.core import serializers
+from django.http import JsonResponse
 from django.views.generic import ListView, DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.messages.views import SuccessMessageMixin
@@ -28,12 +30,21 @@ class EmployerRequiredMixin(LoginRequiredMixin, UserPassesTestMixin):
 
     def handle_no_permission(self):
         """
+        If the request is AJAX, return a JSON response with
+        the HTML of the 403 page.
+
         Redirect to the specific page based on the user's authentication
         status and role:
         - Redirect to the login page if the user is not authenticated.
         - Display the 403 employer page if the role is not EMPLOYER.
         - Otherwise, display the default 403 page.
         """
+        if self.request.is_ajax():
+            error_403_html = render_to_string("errors/403.html")
+            return JsonResponse(
+                {"error": "Forbidden", "html_page": error_403_html},
+                status=403,
+            )
         if not self.request.user.is_authenticated:
             message = "Sign in or create an account"
             " as an Employer to access this page"
