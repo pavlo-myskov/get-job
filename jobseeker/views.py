@@ -29,7 +29,7 @@ class JobseekerRequiredMixin(LoginRequiredMixin, UserPassesTestMixin):
         """
         If the request is AJAX, return a JSON response with
         the HTML of the 403 page.
-        
+
         Redirect to the specific page based on the user's authentication
         status and role:
         - Redirect to the login page if the user is not authenticated.
