@@ -1,8 +1,5 @@
 from django.core import serializers
-from django.template.loader import render_to_string
-from django.http import JsonResponse
 from django.views.generic import ListView, DetailView
-from django.views.generic.detail import BaseDetailView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.views.generic.edit import UpdateView, CreateView

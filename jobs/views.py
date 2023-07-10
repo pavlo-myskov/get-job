@@ -1,3 +1,4 @@
+from django.core import serializers
 from django.contrib import messages
 from django.db import transaction
 from django.forms import BaseForm
@@ -136,8 +137,7 @@ class MyJobListView(EmployerRequiredMixin, ListView):
         tooltips = {
             Vacancy.JobPostStatus.ACTIVE: "This job is visible"
             " to jobseekers",
-            Vacancy.JobPostStatus.IN_REVIEW: "This job is pending"
-            " approval",
+            Vacancy.JobPostStatus.IN_REVIEW: "This job is pending" " approval",
             Vacancy.JobPostStatus.REJECTED: "This job contains"
             " inappropriate content or does not meet the requirements",
             Vacancy.JobPostStatus.CLOSED: "This job is not visible and"
@@ -211,9 +211,7 @@ class JobCreateView(EmployerRequiredMixin, SuccessMessageMixin, CreateView):
         return super().form_valid(form)
 
 
-class JobUpdateView(
-    EmployerRequiredMixin, SuccessMessageMixin, UpdateView
-):
+class JobUpdateView(EmployerRequiredMixin, SuccessMessageMixin, UpdateView):
     # TODO: add test
     model = Vacancy
     form_class = JobCreateForm
@@ -235,9 +233,7 @@ class JobUpdateView(
 
     def get_success_url(self):
         """Redirect to the vacancy detail page"""
-        return reverse(
-            "my_job_detail", kwargs={"pk": self.get_object().pk}
-        )
+        return reverse("my_job_detail", kwargs={"pk": self.get_object().pk})
 
     def form_valid(self, form: BaseForm) -> HttpResponse:
         """Set the status of the vacancy to IN_REVIEW"""
@@ -356,9 +352,7 @@ class JobSaveToggle(JobseekerRequiredMixin, View):
 class JobApplyView(JobseekerRequiredMixin, SuccessMessageMixin, CreateView):
     form_class = ApplicationForm
     template_name = "jobs/job_apply.html"
-    success_message = (
-        "You have applied for the job successfully."
-    )
+    success_message = "You have applied for the job successfully."
 
     def get_form_kwargs(self):
         """Passes the request object to the form class."""
@@ -377,7 +371,8 @@ class JobApplyView(JobseekerRequiredMixin, SuccessMessageMixin, CreateView):
         # check if the applicant has already applied for the job
         # with the same resume
         if Application.objects.filter(
-            applicant=form.instance.applicant, vacancy=form.instance.vacancy,
+            applicant=form.instance.applicant,
+            vacancy=form.instance.vacancy,
             resume=form.instance.resume,
         ).exists():
             job_applications_url = reverse("applied_jobs")
@@ -385,13 +380,14 @@ class JobApplyView(JobseekerRequiredMixin, SuccessMessageMixin, CreateView):
                 None,
                 "You have already applied for this job "
                 "with selected resume. <br>Please check your "
-                f"<a href='{job_applications_url}'>Job Applications</a>"
+                f"<a href='{job_applications_url}'>Job Applications</a>",
             )
             return super().form_invalid(form)
         # check if the employer has already sent a job offer to the applicant
         # with the selected resume for the current job
         elif JobOffer.objects.filter(
-            resume=form.instance.resume, vacancy=form.instance.vacancy,
+            resume=form.instance.resume,
+            vacancy=form.instance.vacancy,
         ).exists():
             # TODO: add job invitations link: reverse("job_invitations")
             job_invitations_url = reverse("jobseeker_home")
@@ -402,6 +398,16 @@ class JobApplyView(JobseekerRequiredMixin, SuccessMessageMixin, CreateView):
                 f"<a href='{job_invitations_url}'>Job Invitations</a>",
             )
             return super().form_invalid(form)
+
+        # serialize vacancy and resume instances to JSON and
+        # save them to the application instance
+        form.instance.vacancy_snapshot = serializers.serialize(
+            "json", [form.instance.vacancy]
+        )
+        form.instance.resume_snapshot = serializers.serialize(
+            "json", [form.instance.resume]
+        )
+
         return super().form_valid(form)
 
     def get_success_url(self):
