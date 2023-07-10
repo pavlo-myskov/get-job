@@ -12,7 +12,7 @@ from django.contrib import messages
 
 from allauth.account.utils import get_next_redirect_url
 from jobs.models import Application, Vacancy
-from resumes.utils import annotate_resumes
+from resumes.utils import annotate_offered_resumes, annotate_resumes
 
 from users.models import User
 
@@ -137,9 +137,7 @@ class FavoriteResumeList(EmployerRequiredMixin, ListView):
 
     def get_queryset(self):
         favorites = self.request.user.employerprofile.favorites.all()
-        # TODO: annotate
-        # return annotate_hired_resumes(favorites, self.request)
-        return favorites
+        return annotate_offered_resumes(favorites, self.request)
 
     def get_context_data(self, **kwargs):
         """Add search form and back URL to the context"""

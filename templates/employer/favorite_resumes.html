@@ -38,16 +38,14 @@
                   {{ resume }}
                 </a>
                 <div class="d-flex" role="group" aria-label="action buttons">
-                  {% if resume.is_hired %}
+                  {% if resume.is_offered %}
                     <div>
-                      <!-- TODO  url 'resume_hire' resume.id -->
-                      <a href="#" type="button"
+                      <a href="{% url 'job_offer' resume.id %}" type="button"
                       class="btn btn-sm btn-outline-secondary rounded-start rounded-0">Offered</a>
                     </div>
                   {% else %}
                     <div>
-                      <!-- TODO  url 'resume_hire' resume.id -->
-                      <a href="#" type="button"
+                      <a href="{% url 'job_offer' resume.id %}" type="button"
                       class="btn btn-sm btn-outline-cyan-blue rounded-start rounded-0">Hire</a>
                     </div>
                   {% endif %}
