@@ -380,10 +380,12 @@ class JobApplyView(JobseekerRequiredMixin, SuccessMessageMixin, CreateView):
             applicant=form.instance.applicant, vacancy=form.instance.vacancy,
             resume=form.instance.resume,
         ).exists():
+            job_applications_url = reverse("applied_jobs")
             form.add_error(
                 None,
                 "You have already applied for this job "
-                "with selected resume.",
+                "with selected resume. <br>Please check your "
+                f"<a href='{job_applications_url}'>Job Applications</a>"
             )
             return super().form_invalid(form)
         # check if the employer has already sent a job offer to the applicant
@@ -391,10 +393,13 @@ class JobApplyView(JobseekerRequiredMixin, SuccessMessageMixin, CreateView):
         elif JobOffer.objects.filter(
             resume=form.instance.resume, vacancy=form.instance.vacancy,
         ).exists():
+            # TODO: add job invitations link: reverse("job_invitations")
+            job_invitations_url = reverse("jobseeker_home")
             form.add_error(
                 None,
                 "You have already received a job offer for this job "
-                "with selected resume. <br>Please check your Job Invitations.",
+                "with selected resume. <br>Please check your "
+                f"<a href='{job_invitations_url}'>Job Invitations</a>",
             )
             return super().form_invalid(form)
         return super().form_valid(form)

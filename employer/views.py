@@ -172,10 +172,12 @@ class JobOfferView(EmployerRequiredMixin, SuccessMessageMixin, CreateView):
             resume=form.instance.resume,
             vacancy=form.instance.vacancy,
         ).exists():
+            my_job_offers_url = reverse("my_job_offers")
             form.add_error(
                 None,
                 "You have already sent an offer to this jobseeker for "
-                "selected vacancy.",
+                "selected vacancy. <br>Please, check your "
+                f"<a href='{my_job_offers_url}'>Job Offers</a> list.",
             )
             return super().form_invalid(form)
         # check if the jobseeker has already applied to the selected vacancy
@@ -184,10 +186,13 @@ class JobOfferView(EmployerRequiredMixin, SuccessMessageMixin, CreateView):
             resume=form.instance.resume,
             vacancy=form.instance.vacancy,
         ).exists():
+            # TODO: add link to the applicants list
+            applicants_url = reverse("employer_home")
             form.add_error(
                 None,
                 "This jobseeker has already applied to selected vacancy "
-                "with current resume. <br>Please, check Applicants list.",
+                "with current resume. <br>Please, check "
+                f"<a class='{applicants_url}'>Applicants</a> list.",
             )
             return super().form_invalid(form)
 
@@ -262,9 +267,7 @@ class JobOfferResumeSnapshotView(EmployerRequiredMixin, BaseDetailView):
             {"resume": resume_instance, "user": request.user},
         )
         # TODO: add CV download
-        return JsonResponse(
-            {"html_card": resume_html}
-        )
+        return JsonResponse({"html_card": resume_html})
 
 
 class JobOfferVacancySnapshotView(EmployerRequiredMixin, BaseDetailView):
@@ -293,6 +296,4 @@ class JobOfferVacancySnapshotView(EmployerRequiredMixin, BaseDetailView):
             "jobs/vacancy_detail_card_body.html",
             {"vacancy": vacancy_instance, "user": request.user},
         )
-        return JsonResponse(
-            {"html_card": vacancy_html}
-        )
+        return JsonResponse({"html_card": vacancy_html})
