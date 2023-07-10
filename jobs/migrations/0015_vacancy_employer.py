@@ -10,7 +10,7 @@ def populate_employer(apps, schema_editor):
     Vacancy = apps.get_model('jobs', 'Vacancy')
     Employer = apps.get_model('employer', 'Employer')
     for vacancy in Vacancy.objects.filter(employer__isnull=True):
-        vacancy.employer = Employer.objects.first()
+        vacancy.employer = Employer.employer.first()
         vacancy.save()
 
 
