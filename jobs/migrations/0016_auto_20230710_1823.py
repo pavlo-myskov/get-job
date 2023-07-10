@@ -13,11 +13,13 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='application',
             name='resume_snapshot',
-            field=models.JSONField(),
+            field=models.JSONField(default=dict),
+            preserve_default=False,
         ),
         migrations.AddField(
             model_name='application',
             name='vacancy_snapshot',
-            field=models.JSONField(),
+            field=models.JSONField(default=dict),
+            preserve_default=False,
         ),
     ]

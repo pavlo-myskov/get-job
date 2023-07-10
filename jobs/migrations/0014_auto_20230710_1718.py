@@ -17,6 +17,11 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='vacancy',
             name='experience_duration',
+            field=models.CharField(null=True, choices=[('LESS_THAN_1_YEAR', 'Less than 1 year'), ('ONE_TO_2_YEARS', '1 to 2 years'), ('TWO_TO_5_YEARS', '2 to 5 years'), ('FIVE_TO_10_YEARS', '5 to 10 years'), ('MORE_THAN_10_YEARS', 'More than 10 years')], max_length=50, default='LESS_THAN_1_YEAR'),
+        ),
+        migrations.AlterField(
+            model_name='vacancy',
+            name='experience_duration',
             field=models.CharField(choices=[('LESS_THAN_1_YEAR', 'Less than 1 year'), ('ONE_TO_2_YEARS', '1 to 2 years'), ('TWO_TO_5_YEARS', '2 to 5 years'), ('FIVE_TO_10_YEARS', '5 to 10 years'), ('MORE_THAN_10_YEARS', 'More than 10 years')], max_length=50),
         ),
         migrations.AddField(

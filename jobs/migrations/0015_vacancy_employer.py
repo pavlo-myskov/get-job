@@ -4,6 +4,16 @@ from django.db import migrations, models
 import django.db.models.deletion
 
 
+def populate_employer(apps, schema_editor):
+    """Populate employer field in Vacancy model where it is null
+    with first Employer object"""
+    Vacancy = apps.get_model('jobs', 'Vacancy')
+    Employer = apps.get_model('employer', 'Employer')
+    for vacancy in Vacancy.objects.filter(employer__isnull=True):
+        vacancy.employer = Employer.objects.first()
+        vacancy.save()
+
+
 class Migration(migrations.Migration):
 
     dependencies = [
@@ -15,6 +25,13 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='vacancy',
             name='employer',
+            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, related_name='vacancies', to='employer.employer'),
+        ),
+        migrations.RunPython(populate_employer),
+        migrations.AlterField(
+            model_name='vacancy',
+            name='employer',
             field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='vacancies', to='employer.employer'),
         ),
+
     ]
