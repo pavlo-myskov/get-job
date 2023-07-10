@@ -5,6 +5,7 @@ from django.dispatch import receiver
 from django.db.models.signals import post_save
 from django.contrib.auth.models import BaseUserManager
 from django.contrib.auth import get_user_model
+from django.core.validators import MaxLengthValidator
 
 User = get_user_model()
 
@@ -128,3 +129,29 @@ def create_employer_profile(sender, instance, created, **kwargs):
     """
     if created and instance.role == "EMPLOYER":
         EmployerProfile.objects.create(user=instance)
+
+
+class JobOffer(models.Model):
+    """Stores job offers"""
+
+    resume = models.ForeignKey(
+        'resumes.Resume', on_delete=models.CASCADE, related_name="job_offers"
+    )
+    employer = models.ForeignKey(
+        "employer.Employer",
+        on_delete=models.CASCADE,
+        related_name="job_offers",
+    )
+    vacancy = models.ForeignKey(
+        'jobs.Vacancy', on_delete=models.CASCADE, related_name="job_offers"
+    )
+    message = models.TextField(
+        blank=True, validators=[MaxLengthValidator(1000)]
+    )
+    offered_on = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["-offered_on"]
+
+    def __str__(self):
+        return f"{self.employer} - {self.resume}"
