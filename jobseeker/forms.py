@@ -34,7 +34,7 @@ class JobseekerProfileForm(ModelForm):
             "overwrite": True,
             "format": "webp",
             "resource_type": "image",
-            "default": "media/get-job/profile_placehoder.png",
+            "default": "media/get-job/profile_placeholder.webp",
             "folder": "media/get-job/jobseeker_avatars",
             "transformation": [
                 {

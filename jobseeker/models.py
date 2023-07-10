@@ -121,7 +121,7 @@ class JobseekerProfile(models.Model):
 
         # if avatar is not set, use the default avatar
         if not self.avatar:
-            self.avatar = "media/get-job/profile_placehoder.png"
+            self.avatar = "media/get-job/profile_placeholder.webp"
             self.save()
 
     def __str__(self):
