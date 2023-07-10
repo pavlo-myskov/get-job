@@ -1,3 +1,4 @@
+from django.core import serializers
 from django.contrib import messages
 from django.db import transaction
 from django.forms import BaseForm
@@ -8,9 +9,11 @@ from django.views import View
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic.detail import SingleObjectMixin
+from employer.models import JobOffer
 from employer.views import EmployerRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 
+from jobportal.base_views import ResumeSnapshotView, VacancySnapshotView
 from jobseeker.views import JobseekerRequiredMixin
 from resumes.forms import ResumeSearchForm
 
@@ -135,8 +138,7 @@ class MyJobListView(EmployerRequiredMixin, ListView):
         tooltips = {
             Vacancy.JobPostStatus.ACTIVE: "This job is visible"
             " to jobseekers",
-            Vacancy.JobPostStatus.IN_REVIEW: "This job is pending"
-            " approval",
+            Vacancy.JobPostStatus.IN_REVIEW: "This job is pending" " approval",
             Vacancy.JobPostStatus.REJECTED: "This job contains"
             " inappropriate content or does not meet the requirements",
             Vacancy.JobPostStatus.CLOSED: "This job is not visible and"
@@ -210,9 +212,7 @@ class JobCreateView(EmployerRequiredMixin, SuccessMessageMixin, CreateView):
         return super().form_valid(form)
 
 
-class JobUpdateView(
-    EmployerRequiredMixin, SuccessMessageMixin, UpdateView
-):
+class JobUpdateView(EmployerRequiredMixin, SuccessMessageMixin, UpdateView):
     # TODO: add test
     model = Vacancy
     form_class = JobCreateForm
@@ -234,9 +234,7 @@ class JobUpdateView(
 
     def get_success_url(self):
         """Redirect to the vacancy detail page"""
-        return reverse(
-            "my_job_detail", kwargs={"pk": self.get_object().pk}
-        )
+        return reverse("my_job_detail", kwargs={"pk": self.get_object().pk})
 
     def form_valid(self, form: BaseForm) -> HttpResponse:
         """Set the status of the vacancy to IN_REVIEW"""
@@ -352,13 +350,10 @@ class JobSaveToggle(JobseekerRequiredMixin, View):
         )
 
 
-class JobApplyView(JobseekerRequiredMixin, CreateView):
+class JobApplyView(JobseekerRequiredMixin, SuccessMessageMixin, CreateView):
     form_class = ApplicationForm
     template_name = "jobs/job_apply.html"
-    success_message = (
-        "You have applied for the job successfully."
-        " Wait for the employer to contact you."
-    )
+    success_message = "You have applied for the job successfully."
 
     def get_form_kwargs(self):
         """Passes the request object to the form class."""
@@ -375,20 +370,52 @@ class JobApplyView(JobseekerRequiredMixin, CreateView):
             status=Vacancy.JobPostStatus.ACTIVE,
         )
         # check if the applicant has already applied for the job
+        # with the same resume
         if Application.objects.filter(
-            applicant=form.instance.applicant, vacancy=form.instance.vacancy
+            applicant=form.instance.applicant,
+            vacancy=form.instance.vacancy,
+            resume=form.instance.resume,
         ).exists():
+            job_applications_url = reverse("applied_jobs")
             form.add_error(
                 None,
-                "You have already applied for this job. "
-                "Please wait for the employer to contact you.",
+                "You have already applied for this job "
+                "with selected resume. <br>Please check your "
+                f"<a href='{job_applications_url}'>Job Applications</a>",
             )
             return super().form_invalid(form)
+        # check if the employer has already sent a job offer to the applicant
+        # with the selected resume for the current job
+        elif JobOffer.objects.filter(
+            resume=form.instance.resume,
+            vacancy=form.instance.vacancy,
+        ).exists():
+            # TODO: add job invitations link: reverse("job_invitations")
+            job_invitations_url = reverse("jobseeker_home")
+            form.add_error(
+                None,
+                "You have already received a job offer for this job "
+                "with selected resume. <br>Please check your "
+                f"<a href='{job_invitations_url}'>Job Invitations</a>",
+            )
+            return super().form_invalid(form)
+
+        # serialize vacancy and resume instances to JSON and
+        # save them to the application instance
+        form.instance.vacancy_snapshot = serializers.serialize(
+            "json", [form.instance.vacancy]
+        )
+        form.instance.resume_snapshot = serializers.serialize(
+            "json", [form.instance.resume]
+        )
+
         return super().form_valid(form)
 
     def get_success_url(self):
-        """Redirect to the job detail page"""
-        return reverse("job_detail", kwargs={"pk": self.kwargs.get("pk")})
+        """Redirect to the job search page"""
+        pk = self.kwargs.get("pk")
+        url = reverse("job_search")
+        return f"{url}#{pk}"
 
     def get_context_data(self, **kwargs):
         """Add search form, vacancy and resumes to the context"""
@@ -403,3 +430,33 @@ class JobApplyView(JobseekerRequiredMixin, CreateView):
             status=Resume.ResumePublishStatus.ACTIVE
         ).exists()
         return context
+
+
+class ApplicationResumeSnapshotView(
+    JobseekerRequiredMixin, ResumeSnapshotView
+):
+    model = Application
+
+    def test_func(self):
+        """Allow only the owner to view the application resume snapshot"""
+        jobseeker_test = super().test_func()
+        return (
+            jobseeker_test
+            and self.request.user.jobseekerprofile
+            == self.get_object().applicant
+        )
+
+
+class ApplicationVacancySnapshotView(
+    JobseekerRequiredMixin, VacancySnapshotView
+):
+    model = Application
+
+    def test_func(self):
+        """Allow only the owner to view the application vacancy snapshot"""
+        jobseeker_test = super().test_func()
+        return (
+            jobseeker_test
+            and self.request.user.jobseekerprofile
+            == self.get_object().applicant
+        )

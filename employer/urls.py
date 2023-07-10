@@ -19,4 +19,24 @@ urlpatterns = [
         views.FavoriteResumeList.as_view(),
         name="favorite_resumes",
     ),
+    path(
+        "employer/offers",
+        views.MyJobOfferList.as_view(),
+        name="my_job_offers",
+    ),
+    path(
+        "resume/<int:pk>/offer",
+        views.JobOfferView.as_view(),
+        name="job_offer",
+    ),
+    path(
+        "offer/<int:pk>/resume",
+        views.JobOfferResumeSnapshotView.as_view(),
+        name="job_offer_resume_snapshot",
+    ),
+    path(
+        "offer/<int:pk>/vacancy",
+        views.JobOfferVacancySnapshotView.as_view(),
+        name="job_offer_vacancy_snapshot",
+    ),
 ]

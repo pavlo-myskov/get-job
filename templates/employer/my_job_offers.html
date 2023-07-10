@@ -3,25 +3,25 @@
 {% load custom_tags %}
 {% load time_filters %}
 
-{% block head_title %}Applied Jobs{% endblock %}
+{% block head_title %}Job Offers{% endblock %}
 
 {% block content %}
-{% include 'jobseeker/navbar.html' %}
+{% include 'employer/navbar.html' %}
 
 <main class="container-fluid bg-light px-0 flex-grow-1">
   <div class="container px-0 px-sm-3 my-4" style="max-width: 50rem;">
-    <h2 class="ms-4 mb-3">Applied Jobs</h2>
+    <h2 class="ms-4 mb-3">My Job Offers</h2>
 
     <!-- Nav header -->
     <nav class="card-header bg-white" aria-label="internal navigation">
       <div class="d-flex align-items-center justify-content-between">
-        <a href="{% url 'my_resumes' %}"
+        <a href="{% url 'my_jobs' %}"
         class="text-decoration-none d-flex align-items-center text-muted fs-4"
-          area-label="to my resumes">
+          area-label="to my jobs">
           <i class="fa fa-arrow-left"></i>
-          <span class="mx-2">To my resumes</span>
+          <span class="mx-2">To my jobs</span>
         </a>
-        <a href="{% url 'jobseeker_home' %}"
+        <a href="{% url 'employer_home' %}"
           class="text-decoration-none d-flex align-items-center text-muted fs-4"
           area-label="go to home page">
           <i class="fa fa-home"></i>
@@ -31,46 +31,46 @@
 
     <div class="card mx-auto border-0 my-3 mt-1 p-3" >
       <div class="card-body p-0">
-        {% if applications %}
+        {% if joboffer_list %}
           <div class="accordion" id="accordionOffers">
-            {% for application in applications %}
+            {% for offer in joboffer_list %}
               <div class="accordion-item">
                 <h2 class="accordion-header" id="heading-{{ forloop.counter }}">
                   <button class="accordion-button" type="button" data-bs-toggle="collapse"
                     data-bs-target="#collapse-{{ forloop.counter }}" aria-expanded="true"
                     aria-controls="collapse-{{ forloop.counter }}">
-                    {{ application.vacancy }}
+                    {{ offer.resume }}
                   </button>
                 </h2>
                 <div id="collapse-{{ forloop.counter }}" class="accordion-collapse collapse show"
                   aria-labelledby="heading-{{ forloop.counter }}" data-bs-parent="#accordionOffers">
                   <div class="accordion-body">
                     <p>
-                      Applied on the <strong>{{ application.applied_on|date:"jS M Y"}}</strong>
+                      Job Offer submitted on the <strong>{{ offer.offered_on|date:"jS M Y"}}</strong>
                     </p>
                     <table class="table table-borderless">
                       <thead>
                         <tr class="text-muted">
-                          <th scope="col">Applied for Vacancy</th>
-                          <th scope="col">Sent Resume</th>
+                          <th scope="col">Proposed Vacancy</th>
+                          <th scope="col">Jobseeker Resume</th>
                         </tr>
                       </thead>
                       <tbody>
                         <tr>
-                          <td>{{ application.vacancy.title }}</td>
-                          <td>{{ application.resume.occupation }}</td>
+                          <td>{{ offer.vacancy.title }}</td>
+                          <td>{{ offer.resume.occupation }}</td>
                         </tr>
                         <tr>
                           <td>
-                            <a href="{% url 'application_vacancy_snapshot' application.id %}"
-                            class="btn btn-outline-royalpurple btn-sm py-0 snapshot" aria-label="view vacancy snapshot">
+                            <a href="{% url 'job_offer_vacancy_snapshot' offer.id %}"
+                            class="btn btn-outline-cyan-blue btn-sm py-0 snapshot" aria-label="view vacancy snapshot">
                             <i class="fa fa-eye"></i>
                             <span class="ms-2"><span class="d-none d-sm-inline">View</span> Snapshot</span>
                             </a>
                           </td>
                           <td>
-                            <a href="{% url 'application_resume_snapshot' application.id %}"
-                              class="btn btn-outline-royalpurple btn-sm py-0 snapshot" aria-label="view resume snapshot">
+                            <a href="{% url 'job_offer_resume_snapshot' offer.id %}"
+                              class="btn btn-outline-cyan-blue btn-sm py-0 snapshot" aria-label="view resume snapshot">
                               <i class="fa fa-eye"></i>
                               <span class="ms-2"><span class="d-none d-sm-inline">View</span> Snapshot</span>
                             </a>
@@ -84,13 +84,13 @@
             {% endfor %}
           </div>
         {% else %}
-          <h5 class="card-title">You have no active applications</h5>
+          <h5 class="card-title">You have no active job offers</h5>
         {% endif %}
       </div>
       <div class="m-3 mb-sm-1">
-        <a href="{% url 'job_search' %}" class="btn btn-royalpurple py-1">
+        <a href="{% url 'resume_search' %}" class="btn btn-cyan-blue py-1">
           <i class="fa fa-search"></i>
-          <span class="ms-2">Search Jobs</span>
+          <span class="ms-2">Search Resumes</span>
         </a>
       </div>
     </div>

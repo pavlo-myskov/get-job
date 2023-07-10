@@ -114,6 +114,7 @@ The main goal of the app is to deliver a solution that creates real value for th
     - As an Employer I want to be able to reset search parameters so that I can see the full list of resumes.
     - As an Employer I want to be able to see the search panel all the time when I scroll the page so that I can easily search for resumes.
     - As an Employer I want to be able to hire a jobseeker so that I can get the right candidate.
+    - As an Employer I want to be able to see my job offers so that I can manage them.
     - As an Employer I want to be able to save a resume so that I can hire the candidate later.
     - As an Employer I want to be able to see the bookmarked resumes so that I can hire the candidate later.
     - As an Employer I want to be able to see the Hire and Save buttons on the detailed resume page on the mobile screen all the time when I scroll the page so that I can easily hire a candidate or save the resume for later.

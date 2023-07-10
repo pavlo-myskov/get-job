@@ -84,8 +84,8 @@ INSTALLED_APPS = [
     'compressor',
     'users',
     'jobseeker',
-    'jobs',
     'employer',
+    'jobs',
     'resumes',
 ]
 

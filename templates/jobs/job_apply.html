@@ -71,10 +71,10 @@
 
             <!-- Generate a list of non-field errors if there are any -->
             {% if form.non_field_errors %}
-              <div class="alert alert-danger" role="alert">
+              <div class="alert alert-warning" role="alert">
                 <ul class="mb-0">
                   {% for error in form.non_field_errors %}
-                    <li>{{ error }}</li>
+                    <li>{{ error|safe }}</li>
                   {% endfor %}
                 </ul>
               </div>
