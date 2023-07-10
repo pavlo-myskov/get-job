@@ -32,7 +32,7 @@
     <div class="card mx-auto border-0 my-3 mt-1 p-3" >
       <div class="card-body p-0">
         {% if applications %}
-          <div class="accordion" id="accordionApplications">
+          <div class="accordion" id="accordionOffers">
             {% for application in applications %}
               <div class="accordion-item">
                 <h2 class="accordion-header" id="heading-{{ forloop.counter }}">
@@ -43,28 +43,41 @@
                   </button>
                 </h2>
                 <div id="collapse-{{ forloop.counter }}" class="accordion-collapse collapse show"
-                  aria-labelledby="heading-{{ forloop.counter }}" data-bs-parent="#accordionApplications">
+                  aria-labelledby="heading-{{ forloop.counter }}" data-bs-parent="#accordionOffers">
                   <div class="accordion-body">
                     <p>
-                      Application submitted with the resume titled
-                      <a href="{% url 'my_resume_detail' application.resume.id %}">
-                        {{ application.resume.occupation }}
-                      </a>
-                      on the <strong>{{ application.applied_on|date:"jS M Y"}}</strong>
+                      Applied on the <strong>{{ application.applied_on|date:"jS M Y"}}</strong>
                     </p>
-                    {% if application.resume.status != "ACTIVE" %}
-                    <p class="text-muted">
-                      *Application is currently closed and not available for review by the employer as your resume is
-                      not public(active).
-                    </p>
-                    {% endif %}
-                    <div class="text-end">
-                      <a href="{% url 'job_detail' application.vacancy.id %}"
-                        class="btn btn-outline-royalpurple py-1">
-                        <i class="fa fa-eye"></i>
-                        <span class="ms-2">View Job</span>
-                      </a>
-                    </div>
+                    <table class="table table-borderless">
+                      <thead>
+                        <tr class="text-muted">
+                          <th scope="col">Applied for Vacancy</th>
+                          <th scope="col">Sent Resume</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>{{ application.vacancy.title }}</td>
+                          <td>{{ application.resume.occupation }}</td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <a href="{% url 'application_vacancy_snapshot' application.id %}"
+                            class="btn btn-outline-royalpurple btn-sm py-0 snapshot" aria-label="view vacancy snapshot">
+                            <i class="fa fa-eye"></i>
+                            <span class="ms-2"><span class="d-none d-sm-inline">View</span> Snapshot</span>
+                            </a>
+                          </td>
+                          <td>
+                            <a href="{% url 'application_resume_snapshot' application.id %}"
+                              class="btn btn-outline-royalpurple btn-sm py-0 snapshot" aria-label="view resume snapshot">
+                              <i class="fa fa-eye"></i>
+                              <span class="ms-2"><span class="d-none d-sm-inline">View</span> Snapshot</span>
+                            </a>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
                   </div>
                 </div>
               </div>
@@ -83,6 +96,9 @@
     </div>
   </div>
 </main>
+
+<!-- Snapshot modal -->
+{% include 'snapshot_modal.html' %}
 
 {% include 'footer.html' %}
 {% endblock %}

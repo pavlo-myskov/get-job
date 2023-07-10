@@ -50,4 +50,14 @@ urlpatterns = [
         views.JobApplyView.as_view(),
         name="job_apply",
     ),
+    path(
+        "application/<int:pk>/resume",
+        views.ApplicationResumeSnapshotView.as_view(),
+        name="application_resume_snapshot",
+    ),
+    path(
+        "application/<int:pk>/vacancy",
+        views.ApplicationVacancySnapshotView.as_view(),
+        name="application_vacancy_snapshot",
+    ),
 ]

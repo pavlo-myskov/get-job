@@ -13,6 +13,7 @@ from employer.models import JobOffer
 from employer.views import EmployerRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 
+from jobportal.base_views import ResumeSnapshotView, VacancySnapshotView
 from jobseeker.views import JobseekerRequiredMixin
 from resumes.forms import ResumeSearchForm
 
@@ -429,3 +430,33 @@ class JobApplyView(JobseekerRequiredMixin, SuccessMessageMixin, CreateView):
             status=Resume.ResumePublishStatus.ACTIVE
         ).exists()
         return context
+
+
+class ApplicationResumeSnapshotView(
+    JobseekerRequiredMixin, ResumeSnapshotView
+):
+    model = Application
+
+    def test_func(self):
+        """Allow only the owner to view the application resume snapshot"""
+        jobseeker_test = super().test_func()
+        return (
+            jobseeker_test
+            and self.request.user.jobseekerprofile
+            == self.get_object().applicant
+        )
+
+
+class ApplicationVacancySnapshotView(
+    JobseekerRequiredMixin, VacancySnapshotView
+):
+    model = Application
+
+    def test_func(self):
+        """Allow only the owner to view the application vacancy snapshot"""
+        jobseeker_test = super().test_func()
+        return (
+            jobseeker_test
+            and self.request.user.jobseekerprofile
+            == self.get_object().applicant
+        )
