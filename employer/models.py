@@ -7,8 +7,6 @@ from django.contrib.auth.models import BaseUserManager
 from django.contrib.auth import get_user_model
 from django.core.validators import MaxLengthValidator
 
-from resumes.models import Resume
-
 User = get_user_model()
 
 
@@ -105,7 +103,7 @@ class EmployerProfile(models.Model):
     phone = models.CharField(max_length=20, blank=True)
     website = models.URLField(max_length=254, blank=True)
     favorites = models.ManyToManyField(
-        Resume, blank=True, related_name="favoriters"
+        'resumes.Resume', blank=True, related_name="favoriters"
     )
 
     def save(self, *args, **kwargs):
@@ -137,16 +135,16 @@ class JobOffer(models.Model):
     """Stores job offers"""
 
     resume = models.ForeignKey(
-        Resume, on_delete=models.CASCADE, related_name="job_offers"
+        'resumes.Resume', on_delete=models.CASCADE, related_name="job_offers"
     )
     resume_snapshot = models.JSONField()
     employer = models.ForeignKey(
-        Employer,
+        "employer.Employer",
         on_delete=models.CASCADE,
         related_name="job_offers",
     )
     vacancy = models.ForeignKey(
-        "jobs.Vacancy", on_delete=models.CASCADE, related_name="job_offers"
+        'jobs.Vacancy', on_delete=models.CASCADE, related_name="job_offers"
     )
     vacancy_snapshot = models.JSONField()
     message = models.TextField(
