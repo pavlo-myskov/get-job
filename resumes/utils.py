@@ -148,7 +148,7 @@ def annotate_offered_resumes(queryset: QuerySet, request) -> QuerySet:
     offered_ids = user.job_offers.values_list("resume_id", flat=True)
     offer_date = JobOffer.objects.filter(
         resume=OuterRef("pk"), employer=user
-        ).values("offered_on")
+        ).values("offered_on")[:1]
 
     # set is_offered to True if the resume id is in offered_ids
     queryset = queryset.annotate(

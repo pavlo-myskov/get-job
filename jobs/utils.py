@@ -82,7 +82,7 @@ def annotate_applied_jobs(queryset: QuerySet, request) -> QuerySet:
     applied_ids = profile.applications.values_list("vacancy_id", flat=True)
     application_date = Application.objects.filter(
         vacancy=OuterRef("pk"), applicant=profile
-        ).values("applied_on")
+        ).values("applied_on")[:1]
 
     # set is_saved to True if the vacancy id is in saved_ids
     queryset = queryset.annotate(
