@@ -17,11 +17,11 @@ from django.contrib.messages.views import SuccessMessageMixin
 from jobportal.base_views import (
     JobSearchFormMixin,
     RelatedUserRequiredMixin,
+    ResumeSearchFormMixin,
     ResumeSnapshotView,
     VacancySnapshotView,
 )
 from jobseeker.views import JobseekerRequiredMixin
-from resumes.forms import ResumeSearchForm
 from users.models import User
 
 from .utils import annotate_jobs, filter_jobs
@@ -467,7 +467,7 @@ def annotate_applications_count(vacancies):
     )
 
 
-class ApplicantsList(EmployerRequiredMixin, ListView):
+class ApplicantsList(EmployerRequiredMixin, ResumeSearchFormMixin, ListView):
     template_name = "employer/applicants_list.html"
     context_object_name = "vacancies"
 
@@ -479,9 +479,3 @@ class ApplicantsList(EmployerRequiredMixin, ListView):
         ).distinct()
 
         return annotate_applications_count(employer_vacancies)
-
-    def get_context_data(self, **kwargs):
-        """Add search form and back URL to the context"""
-        context = super().get_context_data(**kwargs)
-        context["nav_form"] = ResumeSearchForm(auto_id=False)
-        return context

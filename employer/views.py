@@ -12,6 +12,7 @@ from django.contrib import messages
 from allauth.account.utils import get_next_redirect_url
 from jobportal.base_views import (
     RelatedUserRequiredMixin,
+    ResumeSearchFormMixin,
     ResumeSnapshotView,
     VacancySnapshotView,
 )
@@ -60,7 +61,7 @@ class EmployerRequiredMixin(LoginRequiredMixin, UserPassesTestMixin):
             return super().handle_no_permission()
 
 
-class HomeView(ListView):
+class HomeView(ResumeSearchFormMixin, ListView):
     # object name that will be used in the template
     context_object_name = "resume_list"
     # get only first 4 active resumes
@@ -87,11 +88,12 @@ class HomeView(ListView):
             form = ResumeSearchForm(auto_id=False)
 
         context["form"] = form
-        context["nav_form"] = ResumeSearchForm(auto_id=False)
         return context
 
 
-class EmployerProfileDetailView(EmployerRequiredMixin, DetailView):
+class EmployerProfileDetailView(
+    EmployerRequiredMixin, ResumeSearchFormMixin, DetailView
+):
     model = EmployerProfile
     template_name = "employer/profile.html"
     context_object_name = "profile"
@@ -104,12 +106,6 @@ class EmployerProfileDetailView(EmployerRequiredMixin, DetailView):
     def get_object(self, queryset=None):
         """Return the employer profile for the current user"""
         return self.request.user.employerprofile
-
-    def get_context_data(self, **kwargs):
-        """Add search form and back URL to the context"""
-        context = super().get_context_data(**kwargs)
-        context["nav_form"] = ResumeSearchForm(auto_id=False)
-        return context
 
 
 class EmployerProfileUpdateView(
@@ -144,7 +140,9 @@ class EmployerProfileUpdateView(
             return reverse("employer_profile")
 
 
-class FavoriteResumeList(EmployerRequiredMixin, ListView):
+class FavoriteResumeList(
+    EmployerRequiredMixin, ResumeSearchFormMixin, ListView
+):
     template_name = "employer/favorite_resumes.html"
     context_object_name = "favorite_list"
 
@@ -152,14 +150,13 @@ class FavoriteResumeList(EmployerRequiredMixin, ListView):
         favorites = self.request.user.employerprofile.favorites.all()
         return annotate_offered_resumes(favorites, self.request)
 
-    def get_context_data(self, **kwargs):
-        """Add search form and back URL to the context"""
-        context = super().get_context_data(**kwargs)
-        context["nav_form"] = ResumeSearchForm(auto_id=False)
-        return context
 
-
-class JobOfferView(EmployerRequiredMixin, SuccessMessageMixin, CreateView):
+class JobOfferView(
+    EmployerRequiredMixin,
+    ResumeSearchFormMixin,
+    SuccessMessageMixin,
+    CreateView,
+):
     form_class = OfferForm
     template_name = "employer/job_offer.html"
     success_message = "Your offer has been sent successfully. "
@@ -229,7 +226,6 @@ class JobOfferView(EmployerRequiredMixin, SuccessMessageMixin, CreateView):
     def get_context_data(self, **kwargs):
         """Add search form, vacancy and resumes to the context"""
         context = super().get_context_data(**kwargs)
-        context["nav_form"] = ResumeSearchForm(auto_id=False)
         context["resume"] = get_object_or_404(
             Resume,
             pk=self.kwargs.get("pk"),
@@ -241,18 +237,12 @@ class JobOfferView(EmployerRequiredMixin, SuccessMessageMixin, CreateView):
         return context
 
 
-class MyJobOfferList(EmployerRequiredMixin, ListView):
+class MyJobOfferList(EmployerRequiredMixin, ResumeSearchFormMixin, ListView):
     template_name = "employer/my_job_offers.html"
 
     def get_queryset(self):
         job_offers = self.request.user.job_offers.all()
         return job_offers
-
-    def get_context_data(self, **kwargs):
-        """Add search form and back URL to the context"""
-        context = super().get_context_data(**kwargs)
-        context["nav_form"] = ResumeSearchForm(auto_id=False)
-        return context
 
 
 class JobOfferSnapshotMixin(RelatedUserRequiredMixin):
@@ -281,7 +271,5 @@ class JobOfferResumeSnapshotView(JobOfferSnapshotMixin, ResumeSnapshotView):
     model = JobOffer
 
 
-class JobOfferVacancySnapshotView(
-    JobOfferSnapshotMixin, VacancySnapshotView
-):
+class JobOfferVacancySnapshotView(JobOfferSnapshotMixin, VacancySnapshotView):
     model = JobOffer
