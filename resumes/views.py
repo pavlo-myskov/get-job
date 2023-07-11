@@ -10,11 +10,9 @@ from django.views.generic import ListView, DetailView
 from django.views.generic.detail import SingleObjectMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from django.db.models import Q
 from employer.views import EmployerRequiredMixin
-from jobs.forms import SearchForm
+from jobportal.base_views import JobSearchFormMixin
 
-from users.models import User
 from .models import Resume
 from .forms import ResumeSearchForm, ResumeCreateForm
 from jobseeker.views import JobseekerRequiredMixin
@@ -109,7 +107,7 @@ class ResumeDetailView(DetailView):
         return context
 
 
-class MyResumeListView(JobseekerRequiredMixin, ListView):
+class MyResumeListView(JobseekerRequiredMixin, JobSearchFormMixin, ListView):
     model = Resume
     template_name = "resumes/my_resumes.html"
 
@@ -142,11 +140,12 @@ class MyResumeListView(JobseekerRequiredMixin, ListView):
             " cannot be edited",
         }
         context["tooltips"] = tooltips
-        context["nav_form"] = SearchForm(auto_id=False)
         return context
 
 
-class MyResumeDetailView(JobseekerRequiredMixin, DetailView):
+class MyResumeDetailView(
+    JobseekerRequiredMixin, JobSearchFormMixin, DetailView
+):
     model = Resume
     template_name = "resumes/my_resume_detail.html"
 
@@ -154,12 +153,6 @@ class MyResumeDetailView(JobseekerRequiredMixin, DetailView):
         # TODO: add test
         """Return all resumes of the owner"""
         return Resume.objects.filter(jobseeker=self.request.user)
-
-    def get_context_data(self, **kwargs):
-        """Add search form to the context for navbar search bar"""
-        context = super().get_context_data(**kwargs)
-        context["nav_form"] = SearchForm(auto_id=False)
-        return context
 
 
 class ResumeCreateView(

@@ -4,7 +4,7 @@ from resumes.models import Resume
 from .models import Application, Vacancy
 
 
-class SearchForm(forms.ModelForm):
+class JobSearchForm(forms.ModelForm):
     class Meta:
         model = Vacancy
         fields = ["title", "area", "job_location", "job_type"]

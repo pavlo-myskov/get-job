@@ -4,7 +4,7 @@ from django.test import TestCase
 from employer.models import Employer
 
 from jobs.models import Vacancy
-from jobs.forms import SearchForm
+from jobs.forms import JobSearchForm
 
 
 def get_random_date():
@@ -89,5 +89,5 @@ class TestJobseekerHomeView(TestCase):
         self.assertIn("form", context)
         self.assertIn("nav_form", context)
 
-        self.assertIsInstance(context["form"], SearchForm)
-        self.assertIsInstance(context["nav_form"], SearchForm)
+        self.assertIsInstance(context["form"], JobSearchForm)
+        self.assertIsInstance(context["nav_form"], JobSearchForm)
