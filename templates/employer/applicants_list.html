@@ -47,7 +47,13 @@
                   <button class="accordion-button" type="button" data-bs-toggle="collapse"
                     data-bs-target="#collapse-{{ forloop.counter }}" aria-expanded="true"
                     aria-controls="collapse-{{ forloop.counter }}">
-                    <span class="pt-1">{{ vacancy.title }}</span>
+                    <span class="pt-1">
+                      {{ vacancy.title }}
+                      <a href="{% url 'application_vacancy_snapshot' vacancy.applications.first.id %}"
+                        class="btn-link py-0 snapshot" aria-label="view resume snapshot">
+                        <i class="fa fa-eye text-cyan-blue"></i>
+                      </a>
+                    </span>
                     <span class="position-absolute ms-2 mt-2 top-0 start-0 translate-middle rounded-0 rounded-end badge bg-cyan-blue"
                       data-bs-toggle="tooltip" data-bs-placement="right" title="Number of applicants">
                         {{ vacancy.num_applications }}
@@ -57,10 +63,21 @@
                 <div id="collapse-{{ forloop.counter }}" class="accordion-collapse collapse position-relative"
                   aria-labelledby="heading-{{ forloop.counter }}" data-bs-parent="#accordionOffers">
                   <div class="accordion-body">
-                    <ul class="list-group borderless" aria-label="list of applicants">
+                    <ul class="list-group borderless ms-3" aria-label="list of applicants" style="list-style-type: circle;">
                       {% for application in vacancy.applications.all %}
-                        <li class="list-group-item">
-                          {{ application.resume }}
+                        <li class="list-group-item ps-0" style="display: list-item;">
+                          <div class="d-flex justify-content-between">
+                            <a href="{% url 'application_resume_snapshot' application.id %}"
+                              class="btn-link py-0 snapshot text-cyan-blue" aria-label="view resume snapshot">
+                              {{ application.resume }}
+                            </a>
+                            {% if application.resume.cv %}
+                            <a href="{{ application.resume.cv.url }}" class="btn btn--cyan-blue btn-sm flex-shrink-0 py-0 hover-grow"
+                              aria-label="download cv"><i class="fa fa-download"></i>
+                              CV
+                            </a>
+                            {% endif %}
+                          </div>
                         </li>
                       {% endfor %}
                     </ul>
@@ -91,6 +108,9 @@
     </div>
   </div>
 </main>
+
+<!-- Snapshot modal -->
+{% include 'snapshot_modal.html' %}
 
 {% include 'footer.html' %}
 {% endblock %}
