@@ -6,6 +6,7 @@ from django.shortcuts import get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.urls import reverse, reverse_lazy
 from django.views import View
+from django.db.models import Count
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic.detail import SingleObjectMixin
@@ -460,3 +461,33 @@ class ApplicationVacancySnapshotView(
             and self.request.user.jobseekerprofile
             == self.get_object().applicant
         )
+
+
+def annotate_applications_count(vacancies):
+    """Annotate the vacancies with the number of applications
+    for each vacancy"""
+    return vacancies.annotate(
+        num_applications=Count("applications", distinct=True)
+    )
+
+
+class ApplicantsList(EmployerRequiredMixin, ListView):
+    template_name = "employer/applicants_list.html"
+    context_object_name = "vacancies"
+
+    def get_queryset(self):
+        """Return the list of employer's vacancies
+        that have at least one application"""
+        employer_vacancies = (
+            self.request.user.vacancies.filter(
+                applications__isnull=False,
+            ).distinct()
+        )
+
+        return annotate_applications_count(employer_vacancies)
+
+    def get_context_data(self, **kwargs):
+        """Add search form and back URL to the context"""
+        context = super().get_context_data(**kwargs)
+        context["nav_form"] = ResumeSearchForm(auto_id=False)
+        return context
