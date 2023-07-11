@@ -1,3 +1,6 @@
+{% url 'jobseeker_home' as jobseeker_home %}
+{% url 'employer_home' as employer_home %}
+
 <div class="nav-item dropdown" id="navbar--dropdown">
   <a class="nav-link dropdown-toggle text-{{ color }}" href="#" role="button"
     aria-expanded="false" aria-label="Sign In/Sign Up Dropdown menu">
@@ -7,7 +10,9 @@
   <ul class="dropdown-menu {{ role|lower }}-dm dropdown-menu-end"
     aria-labelledby="Sign In/Sign Up Options">
     <li>
-      <a class="dropdown-item" href="{% url 'account_login' %}?next={{request.path}}">
+      <!-- set next parameter to current path only if user is not on home page -->
+      <a class="dropdown-item"
+        href="{% url 'account_login' %}{% if request.path != jobseeker_home and request.path != employer_home %}?next={{ request.path }}{% endif %}">
         Login as {{ role|title }}
       </a>
     </li>

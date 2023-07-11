@@ -4,9 +4,7 @@ from django.db import transaction
 from allauth.account.forms import SignupForm, LoginForm
 
 from jobseeker.models import JobseekerProfile
-
-# TODO add employer profile
-# from employer.models import EmployerProfile
+from employer.models import EmployerProfile
 
 
 class CustomSignupForm(SignupForm):
@@ -21,8 +19,14 @@ class CustomSignupForm(SignupForm):
         error_messages={"required": "Please select your role."},
         required=True,
     )
+    name = forms.CharField(
+        label="Full Name",
+        max_length=70,
+        error_messages={"required": "Please enter your full name."},
+        required=True,
+    )
 
-    field_order = ["role", "email", "password1", "password2"]
+    field_order = ["role", "email", "name", "password1", "password2"]
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -32,6 +36,7 @@ class CustomSignupForm(SignupForm):
         # to "employer"
         if self.initial.get("role"):
             self.fields["role"].initial = self.initial["role"]
+        self.fields["name"].widget.attrs["placeholder"] = "Your name"
 
     @transaction.atomic  # rollback the database if there is an error
     def save(self, request):
@@ -43,11 +48,14 @@ class CustomSignupForm(SignupForm):
         # create a profile for the user based on the selected role
         match user.role:
             case self.Role.JOBSEEKER:
-                JobseekerProfile.objects.create(user=user)
+                JobseekerProfile.objects.create(
+                    user=user, name=self.cleaned_data["name"]
+                )
             case self.Role.EMPLOYER:
                 pass
-            # TODO: add employer profile
-            #     EmployerProfile.objects.create(user=user)
+                EmployerProfile.objects.create(
+                    user=user, name=self.cleaned_data["name"]
+                )
             case _:
                 raise forms.ValidationError("Invalid role")
 
@@ -73,17 +81,17 @@ class PasswordConfirmationForm(forms.Form):
     )
 
     def __init__(self, user, *args, **kwargs):
-        '''
+        """
         Store the user model in the form instance
-        '''
+        """
         self.user = user
         super().__init__(*args, **kwargs)
 
     def clean_password(self):
-        '''
+        """
         Check if the password is correct using the built-in
         `check_password` method of the user model.
-        '''
+        """
         password = self.cleaned_data.get("password")
         # The `check_password` hash the input password and compare it with the
         # user's model password that stored in the database.
