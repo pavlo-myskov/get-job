@@ -18,8 +18,7 @@ class CustomAccountAdapter(DefaultAccountAdapter):
         if role == CustomSignupForm.Role.JOBSEEKER:
             redirect_url = reverse("jobseeker_profile_update")
         elif role == CustomSignupForm.Role.EMPLOYER:
-            # TODO: Change to employer profile
-            redirect_url = reverse("resume_search")
+            redirect_url = reverse("employer_profile_update")
         else:
             return super().get_signup_redirect_url(request)
         return redirect_url
