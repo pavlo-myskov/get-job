@@ -1,13 +1,54 @@
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.views.generic.detail import BaseDetailView
+from django.contrib import messages
 from django.core import serializers
 from django.http import JsonResponse
 from django.template.loader import render_to_string
-from django.views.generic.detail import BaseDetailView
+
+from employer.models import User
+
+
+class RelatedUserRequiredMixin(LoginRequiredMixin, UserPassesTestMixin):
+    """Base Related User Mixin for views that
+      require Employer or Jobseeker user"""
+
+    def test_func(self):
+        """Check if the user is a Jobseeker or an Employer"""
+        return (
+            self.request.user.role == User.Role.JOBSEEKER
+            or self.request.user.role == User.Role.EMPLOYER
+        )
+
+    def handle_no_permission(self):
+        """
+        If the request is AJAX, return a JSON response with
+        the HTML of the 403 page.
+
+        Redirect to the specific page based on the user's authentication
+        status and role:
+        - Redirect to the login page if the user is not authenticated.
+        - Display the 403 jobseeker page if the role is not JOBSEEKER.
+        - Otherwise, display the default 403 page.
+        """
+        if self.request.is_ajax():
+            error_403_html = render_to_string("errors/403.html")
+            return JsonResponse(
+                {"error": "Forbidden", "html_page": error_403_html},
+                status=403,
+            )
+
+        if not self.request.user.is_authenticated:
+            message = "Sign in or create an account to access this page"
+            messages.add_message(self.request, messages.WARNING, message)
+            return super().handle_no_permission()
+        else:
+            return super().handle_no_permission()
 
 
 class ResumeSnapshotView(BaseDetailView):
-    def get(self, request, *args, **kwargs):
-        """Render the resume page from the json snapshot that is stored in
+    """Render the resume page from the json snapshot that is stored in
         the application instance"""
+    def get(self, request, *args, **kwargs):
         resume_snapshot = self.get_object().resume_snapshot
         # deserealize the resume snapshot
         resume_deserealized = serializers.deserialize("json", resume_snapshot)
@@ -19,14 +60,13 @@ class ResumeSnapshotView(BaseDetailView):
             "resumes/resume_detail_card_body.html",
             {"resume": resume_instance, "user": request.user},
         )
-        # TODO: add CV download
         return JsonResponse({"html_card": resume_html})
 
 
 class VacancySnapshotView(BaseDetailView):
-    def get(self, request, *args, **kwargs):
-        """Render the vacancy page from the json snapshot that is stored in
+    """Render the vacancy page from the json snapshot that is stored in
         the job offer instance"""
+    def get(self, request, *args, **kwargs):
         vacancy_snapshot = self.get_object().vacancy_snapshot
         # deserealize the vacancy snapshot
         vacancy_deserealized = serializers.deserialize(
