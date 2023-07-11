@@ -50,12 +50,45 @@
                     {{ application.vacancy }}
                   </button>
                 </h2>
-                <div id="collapse-{{ forloop.counter }}" class="accordion-collapse collapse show"
+                <div id="collapse-{{ forloop.counter }}" class="accordion-collapse collapse"
                   aria-labelledby="heading-{{ forloop.counter }}" data-bs-parent="#accordionOffers">
                   <div class="accordion-body">
                     <p>
                       Applied on the <strong>{{ application.applied_on|date:"jS M Y"}}</strong>
                     </p>
+
+                    <!-- Employer details -->
+                    <div class="mb-2">
+                      <button class="btn--royalpurple bg-body border-0 p-0 mb-1"
+                        type="button" data-bs-toggle="collapse" data-bs-target="#employer-details-{{ forloop.counter }}"
+                        aria-expanded="false" aria-controls="employer-details">
+                        See Employer details
+                        <i class="fa fa-chevron-down"></i>
+                      </button>
+                      <div class="collapse" id="employer-details-{{ forloop.counter }}">
+                        <div class="card card-body">
+                          <ul class="list-group">
+                            <li class="list-group-item border-0 px-0 py-1">
+                              <i class="fa fa-user-circle me-2 text-secondary"></i>
+                              {{ application.vacancy.employer.profile.name|default:"----" }}
+                            </li>
+                            <li class="list-group-item border-0 px-0 py-1">
+                              <i class="fa fa-phone me-2 text-secondary"></i>
+                              <a href="tel:{{ application.vacancy.employer.profile.phone }}">
+                                {{ application.vacancy.employer.profile.phone }}
+                              </a>
+                            </li>
+                            <li class="list-group-item border-0 px-0 py-1">
+                              <i class="fa fa-envelope me-2 text-secondary"></i>
+                              <a href="mailto:{{ application.vacancy.employer.email }}?subject={{ application.vacancy.title }}">
+                                {{ application.vacancy.employer.email }}
+                              </a>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+
                     <table class="table table-borderless">
                       <thead>
                         <tr class="text-muted">
