@@ -110,7 +110,7 @@ class JobDetailView(JobSearchFormMixin, DetailView):
         return annotate_jobs(queryset, self.request)
 
 
-class MyJobListView(EmployerRequiredMixin, JobSearchFormMixin, ListView):
+class MyJobListView(EmployerRequiredMixin, ResumeSearchFormMixin, ListView):
     model = Vacancy
     template_name = "jobs/my_jobs.html"
 
@@ -146,7 +146,7 @@ class MyJobListView(EmployerRequiredMixin, JobSearchFormMixin, ListView):
 
 
 class MyVacancyDetailView(
-    EmployerRequiredMixin, JobSearchFormMixin, DetailView
+    EmployerRequiredMixin, ResumeSearchFormMixin, DetailView
 ):
     model = Vacancy
     template_name = "jobs/my_vacancy_detail.html"
