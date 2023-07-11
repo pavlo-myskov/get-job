@@ -445,7 +445,7 @@ class ApplicationMixin(RelatedUserRequiredMixin):
 
     def test_func(self):
         """Allow only the related user to view
-        the application resume snapshot"""
+        the application snapshot"""
         user_test = super().test_func()
         if not user_test:
             return False

@@ -10,7 +10,11 @@ from django.urls import reverse
 from django.contrib import messages
 
 from allauth.account.utils import get_next_redirect_url
-from jobportal.base_views import ResumeSnapshotView, VacancySnapshotView
+from jobportal.base_views import (
+    RelatedUserRequiredMixin,
+    ResumeSnapshotView,
+    VacancySnapshotView,
+)
 from jobs.models import Application, Vacancy
 from resumes.utils import annotate_offered_resumes, annotate_resumes
 
@@ -196,12 +200,12 @@ class JobOfferView(EmployerRequiredMixin, SuccessMessageMixin, CreateView):
             vacancy=form.instance.vacancy,
         ).exists():
             # TODO: add link to the applicants list
-            applicants_url = reverse("employer_home")
+            applicants_url = reverse("applicants")
             form.add_error(
                 None,
                 "This jobseeker has already applied to selected vacancy "
                 "with current resume. <br>Please, check "
-                f"<a class='{applicants_url}'>Applicants</a> list.",
+                f"<a href='{applicants_url}'>Applicants</a> list.",
             )
             return super().form_invalid(form)
 
@@ -251,23 +255,33 @@ class MyJobOfferList(EmployerRequiredMixin, ListView):
         return context
 
 
-class JobOfferResumeSnapshotView(EmployerRequiredMixin, ResumeSnapshotView):
-    model = JobOffer
+class JobOfferSnapshotMixin(RelatedUserRequiredMixin):
+    """Mixin for the JobOffer snapshot views"""
 
     def test_func(self):
-        """Allow only the owner to view the job offer resume snapshot"""
-        employer_test = super().test_func()
-        return (
-            employer_test and self.request.user == self.get_object().employer
-        )
+        """Allow only the related user to view
+        the JobOffer snapshot"""
+        user_test = super().test_func()
+        if not user_test:
+            return False
+
+        # check if the user is the employer and
+        # if he is related to the job offer
+        if self.request.user.role == User.Role.EMPLOYER:
+            return self.request.user == self.get_object().employer
+        # check if the user is the jobseeker and
+
+        elif self.request.user.role == User.Role.JOBSEEKER:
+            return self.request.user == self.get_object().resume.jobseeker
+        else:
+            return False
 
 
-class JobOfferVacancySnapshotView(EmployerRequiredMixin, VacancySnapshotView):
+class JobOfferResumeSnapshotView(JobOfferSnapshotMixin, ResumeSnapshotView):
     model = JobOffer
 
-    def test_func(self):
-        """Allow only the owner to view the job offer vacancy snapshot"""
-        employer_test = super().test_func()
-        return (
-            employer_test and self.request.user == self.get_object().employer
-        )
+
+class JobOfferVacancySnapshotView(
+    JobOfferSnapshotMixin, VacancySnapshotView
+):
+    model = JobOffer
