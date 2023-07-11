@@ -10,7 +10,15 @@
 
 <main class="container-fluid bg-light px-0 flex-grow-1">
   <div class="container px-0 px-sm-3 my-4" style="max-width: 50rem;">
-    <h2 class="ms-4 mb-3">My Job Offers</h2>
+    <h2 class="ms-4 mb-3">
+      <span class="position-relative">
+        Job Offers
+        <span class="position-absolute top-0 end-25 translate-middle badge border border-light rounded-circle p-0">
+          <i class="fa fa-info-circle fs-6 text-muted" data-bs-toggle="tooltip" data-bs-placement="right"
+            title="The list of job offers you have sent to candidates."></i>
+        </span>
+      </span>
+    </h2>
 
     <!-- Nav header -->
     <nav class="card-header bg-white" aria-label="internal navigation">
@@ -42,37 +50,48 @@
                     {{ offer.resume }}
                   </button>
                 </h2>
-                <div id="collapse-{{ forloop.counter }}" class="accordion-collapse collapse show"
+                <div id="collapse-{{ forloop.counter }}" class="accordion-collapse collapse"
                   aria-labelledby="heading-{{ forloop.counter }}" data-bs-parent="#accordionOffers">
                   <div class="accordion-body">
                     <p>
                       Job Offer submitted on the <strong>{{ offer.offered_on|date:"jS M Y"}}</strong>
                     </p>
+
+                    <!-- Download CV link -->
+                    {% if offer.resume.cv %}
+                    <p>
+                      <a href="{{ offer.resume.cv.url }}" class="btn btn--cyan-blue btn-sm py-0 hover-grow"
+                        aria-label="download cv"><i class="fa fa-download"></i>
+                        Download CV
+                      </a>
+                    </p>
+                    {% endif %}
+
                     <table class="table table-borderless">
                       <thead>
                         <tr class="text-muted">
+                          <th scope="col">Jobseeker's Resume</th>
                           <th scope="col">Proposed Vacancy</th>
-                          <th scope="col">Jobseeker Resume</th>
                         </tr>
                       </thead>
                       <tbody>
                         <tr>
-                          <td>{{ offer.vacancy.title }}</td>
                           <td>{{ offer.resume.occupation }}</td>
+                          <td>{{ offer.vacancy.title }}</td>
                         </tr>
                         <tr>
-                          <td>
-                            <a href="{% url 'job_offer_vacancy_snapshot' offer.id %}"
-                            class="btn btn-outline-cyan-blue btn-sm py-0 snapshot" aria-label="view vacancy snapshot">
-                            <i class="fa fa-eye"></i>
-                            <span class="ms-2"><span class="d-none d-sm-inline">View</span> Snapshot</span>
-                            </a>
-                          </td>
                           <td>
                             <a href="{% url 'job_offer_resume_snapshot' offer.id %}"
                               class="btn btn-outline-cyan-blue btn-sm py-0 snapshot" aria-label="view resume snapshot">
                               <i class="fa fa-eye"></i>
                               <span class="ms-2"><span class="d-none d-sm-inline">View</span> Snapshot</span>
+                            </a>
+                          </td>
+                          <td>
+                            <a href="{% url 'job_offer_vacancy_snapshot' offer.id %}"
+                            class="btn btn-outline-cyan-blue btn-sm py-0 snapshot" aria-label="view vacancy snapshot">
+                            <i class="fa fa-eye"></i>
+                            <span class="ms-2"><span class="d-none d-sm-inline">View</span> Snapshot</span>
                             </a>
                           </td>
                         </tr>

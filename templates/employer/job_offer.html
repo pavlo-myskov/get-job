@@ -41,6 +41,18 @@
         </a>
         {% else %}
           <h5 class="card-title text-muted">Send a job offer to {{ resume.jobseeker.profile.name }} - {{ resume.occupation }}</h5>
+
+          <!-- Download CV link -->
+          {% if resume.cv %}
+          <p>
+            <a href="{{ resume.cv.url }}" class="btn btn--cyan-blue btn-sm py-0 hover-grow"
+              aria-label="download cv"><i class="fa fa-download"></i>
+              Download CV
+            </a>
+          </p>
+          {% endif %}
+
+          <!-- Job offer form -->
           <form method="post" id="job-offer-form" action="{% url 'job_offer' resume.id %}" >
             {% csrf_token %}
 

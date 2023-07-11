@@ -455,7 +455,8 @@ function showSnapshot(e) {
                 const response = JSON.parse(xhr.responseText);
                 $('body').html(response.html_page);
             } else {
-                console.log(xhr.responseText);
+                console.log(thrownError);
+                $('body').html(xhr.responseText);
                 alert('An error occurred while sending data to the server');
             }
         }

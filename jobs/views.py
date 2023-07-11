@@ -6,6 +6,7 @@ from django.shortcuts import get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.urls import reverse, reverse_lazy
 from django.views import View
+from django.db.models import Count
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic.detail import SingleObjectMixin
@@ -13,9 +14,14 @@ from employer.models import JobOffer
 from employer.views import EmployerRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 
-from jobportal.base_views import ResumeSnapshotView, VacancySnapshotView
+from jobportal.base_views import (
+    RelatedUserRequiredMixin,
+    ResumeSnapshotView,
+    VacancySnapshotView,
+)
 from jobseeker.views import JobseekerRequiredMixin
 from resumes.forms import ResumeSearchForm
+from users.models import User
 
 from .utils import annotate_jobs, filter_jobs
 from .models import Application, Vacancy
@@ -432,31 +438,63 @@ class JobApplyView(JobseekerRequiredMixin, SuccessMessageMixin, CreateView):
         return context
 
 
-class ApplicationResumeSnapshotView(
-    JobseekerRequiredMixin, ResumeSnapshotView
-):
+class ApplicationMixin(RelatedUserRequiredMixin):
+    """Mixin for the application snapshot views"""
+
     model = Application
 
     def test_func(self):
-        """Allow only the owner to view the application resume snapshot"""
-        jobseeker_test = super().test_func()
-        return (
-            jobseeker_test
-            and self.request.user.jobseekerprofile
-            == self.get_object().applicant
-        )
+        """Allow only the related user to view
+        the application resume snapshot"""
+        user_test = super().test_func()
+        if not user_test:
+            return False
+
+        # check if the user is the employer and
+        # if he is the owner of the vacancy of the application
+        # related to the resume snapshot
+        if self.request.user.role == User.Role.EMPLOYER:
+            return self.request.user == self.get_object().vacancy.employer
+        elif self.request.user.role == User.Role.JOBSEEKER:
+            return (
+                self.request.user.jobseekerprofile
+                == self.get_object().applicant
+            )
+        else:
+            return False
 
 
-class ApplicationVacancySnapshotView(
-    JobseekerRequiredMixin, VacancySnapshotView
-):
-    model = Application
+class ApplicationResumeSnapshotView(ApplicationMixin, ResumeSnapshotView):
+    pass
 
-    def test_func(self):
-        """Allow only the owner to view the application vacancy snapshot"""
-        jobseeker_test = super().test_func()
-        return (
-            jobseeker_test
-            and self.request.user.jobseekerprofile
-            == self.get_object().applicant
-        )
+
+class ApplicationVacancySnapshotView(ApplicationMixin, VacancySnapshotView):
+    pass
+
+
+def annotate_applications_count(vacancies):
+    """Annotate the vacancies with the number of applications
+    for each vacancy"""
+    return vacancies.annotate(
+        num_applications=Count("applications", distinct=True)
+    )
+
+
+class ApplicantsList(EmployerRequiredMixin, ListView):
+    template_name = "employer/applicants_list.html"
+    context_object_name = "vacancies"
+
+    def get_queryset(self):
+        """Return the list of employer's vacancies
+        that have at least one application"""
+        employer_vacancies = self.request.user.vacancies.filter(
+            applications__isnull=False,
+        ).distinct()
+
+        return annotate_applications_count(employer_vacancies)
+
+    def get_context_data(self, **kwargs):
+        """Add search form and back URL to the context"""
+        context = super().get_context_data(**kwargs)
+        context["nav_form"] = ResumeSearchForm(auto_id=False)
+        return context

@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+{% load static %}
+{% load custom_tags %}
+{% load time_filters %}
+
+{% block head_title %}Applicants{% endblock %}
+
+{% block content %}
+{% include 'employer/navbar.html' %}
+
+<main class="container-fluid bg-light px-0 flex-grow-1">
+  <div class="container px-0 px-sm-3 my-4" style="max-width: 50rem;">
+    <h2 class="ms-4 mb-3">
+      <span class="position-relative">
+        Applicants
+        <span class="position-absolute top-0 end-25 translate-middle badge border border-light rounded-circle p-0">
+          <i class="fa fa-info-circle fs-6 text-muted" data-bs-toggle="tooltip" data-bs-placement="right"
+            title="The list of your vacancies with applicants for each."></i>
+        </span>
+      </span>
+    </h2>
+
+    <!-- Nav header -->
+    <nav class="card-header bg-white" aria-label="internal navigation">
+      <div class="d-flex align-items-center justify-content-between">
+        <a href="{% url 'my_jobs' %}"
+        class="text-decoration-none d-flex align-items-center text-muted fs-4"
+          area-label="to my jobs">
+          <i class="fa fa-arrow-left"></i>
+          <span class="mx-2">To my jobs</span>
+        </a>
+        <a href="{% url 'employer_home' %}"
+          class="text-decoration-none d-flex align-items-center text-muted fs-4"
+          area-label="go to home page">
+          <i class="fa fa-home"></i>
+      </a>
+      </div>
+    </nav>
+
+    <div class="card mx-auto border-0 my-3 mt-1 p-3" >
+      <div class="card-body p-0">
+        {% if vacancies %}
+          <div class="accordion" id="accordionOffers">
+            {% for vacancy in vacancies %}
+              <div class="accordion-item position-relative">
+                <h2 class="accordion-header" id="heading-{{ forloop.counter }}">
+                  <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#collapse-{{ forloop.counter }}" aria-expanded="true"
+                    aria-controls="collapse-{{ forloop.counter }}">
+                    <span class="pt-1">
+                      {{ vacancy.title }}
+                      <a href="{% url 'application_vacancy_snapshot' vacancy.applications.first.id %}"
+                        class="btn-link py-0 snapshot" aria-label="view resume snapshot">
+                        <i class="fa fa-eye text-cyan-blue"></i>
+                      </a>
+                    </span>
+                    <span class="position-absolute ms-2 mt-2 top-0 start-0 translate-middle rounded-0 rounded-end badge bg-cyan-blue"
+                      data-bs-toggle="tooltip" data-bs-placement="right" title="Number of applicants">
+                        {{ vacancy.num_applications }}
+                    </span>
+                  </button>
+                </h2>
+                <div id="collapse-{{ forloop.counter }}" class="accordion-collapse collapse position-relative"
+                  aria-labelledby="heading-{{ forloop.counter }}" data-bs-parent="#accordionOffers">
+                  <div class="accordion-body">
+                    <ul class="list-group borderless ms-3" aria-label="list of applicants" style="list-style-type: circle;">
+                      {% for application in vacancy.applications.all %}
+                        <li class="list-group-item ps-0" style="display: list-item;">
+                          <div class="d-flex justify-content-between">
+                            <a href="{% url 'application_resume_snapshot' application.id %}"
+                              class="btn-link py-0 snapshot text-cyan-blue" aria-label="view resume snapshot">
+                              {{ application.resume }}
+                            </a>
+                            {% if application.resume.cv %}
+                            <a href="{{ application.resume.cv.url }}" class="btn btn--cyan-blue btn-sm flex-shrink-0 py-0 hover-grow"
+                              aria-label="download cv"><i class="fa fa-download"></i>
+                              CV
+                            </a>
+                            {% endif %}
+                          </div>
+                        </li>
+                      {% endfor %}
+                    </ul>
+
+                  {% comment %}
+                  <a href="{% url 'job_offer_vacancy_snapshot' offer.id %}"
+                  class="btn btn-outline-cyan-blue btn-sm py-0 snapshot" aria-label="view vacancy snapshot">
+                  <i class="fa fa-eye"></i>
+                  <span class="ms-2"><span class="d-none d-sm-inline">View</span> Snapshot</span>
+                  </a>
+                  {% endcomment %}
+
+                  </div>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        {% else %}
+          <h5 class="card-title">No applicants yet</h5>
+        {% endif %}
+      </div>
+      <div class="m-3 mb-sm-1">
+        <a href="{% url 'resume_search' %}" class="btn btn-cyan-blue py-1">
+          <i class="fa fa-search"></i>
+          <span class="ms-2">Search Resumes</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- Snapshot modal -->
+{% include 'snapshot_modal.html' %}
+
+{% include 'footer.html' %}
+{% endblock %}
