@@ -1,7 +1,5 @@
 {% extends "base.html" %}
 {% load static %}
-{% load custom_tags %}
-{% load time_filters %}
 
 {% block head_title %}Applicants{% endblock %}
 
@@ -81,15 +79,6 @@
                         </li>
                       {% endfor %}
                     </ul>
-
-                  {% comment %}
-                  <a href="{% url 'job_offer_vacancy_snapshot' offer.id %}"
-                  class="btn btn-outline-cyan-blue btn-sm py-0 snapshot" aria-label="view vacancy snapshot">
-                  <i class="fa fa-eye"></i>
-                  <span class="ms-2"><span class="d-none d-sm-inline">View</span> Snapshot</span>
-                  </a>
-                  {% endcomment %}
-
                   </div>
                 </div>
               </div>

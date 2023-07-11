@@ -1,5 +1,6 @@
 from django.template.loader import render_to_string
 from django.http import JsonResponse
+from django.db.models import Count
 from django.views.generic import ListView, DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.messages.views import SuccessMessageMixin
@@ -162,6 +163,34 @@ class AppliedJobList(JobseekerRequiredMixin, ListView):
     def get_queryset(self):
         applications = self.request.user.jobseekerprofile.applications.all()
         return applications
+
+    def get_context_data(self, **kwargs):
+        """Add search form and back URL to the context"""
+        context = super().get_context_data(**kwargs)
+        context["nav_form"] = SearchForm(auto_id=False)
+        return context
+
+
+def annotate_joboffers_count(resumes):
+    """Annotate the vacancies with the number of applications
+    for each vacancy"""
+    return resumes.annotate(
+        num_joboffers=Count("job_offers", distinct=True)
+    )
+
+
+class JobOffersList(JobseekerRequiredMixin, ListView):
+    template_name = "jobseeker/job_offers.html"
+    context_object_name = "resumes"
+
+    def get_queryset(self):
+        """Return the list of jobseeker's resumes
+        that have at least one job offer"""
+        jobseeker_resumes = self.request.user.resumes.filter(
+            job_offers__isnull=False,
+        ).distinct()
+
+        return annotate_joboffers_count(jobseeker_resumes)
 
     def get_context_data(self, **kwargs):
         """Add search form and back URL to the context"""

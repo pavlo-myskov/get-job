@@ -24,4 +24,9 @@ urlpatterns = [
         views.AppliedJobList.as_view(),
         name="applied_jobs",
     ),
+    path(
+        "jobseeker/joboffers",
+        views.JobOffersList.as_view(),
+        name="jobseeker_joboffers",
+    ),
 ]

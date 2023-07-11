@@ -1,0 +1,133 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block head_title %}Applicants{% endblock %}
+
+{% block content %}
+{% include 'jobseeker/navbar.html' %}
+
+<main class="container-fluid bg-light px-0 flex-grow-1">
+  <div class="container px-0 px-sm-3 my-4" style="max-width: 50rem;">
+    <h2 class="ms-4 mb-3">
+      <span class="position-relative">
+        Job Offers
+        <span class="position-absolute top-0 end-25 translate-middle badge border border-light rounded-circle p-0">
+          <i class="fa fa-info-circle fs-6 text-muted" data-bs-toggle="tooltip" data-bs-placement="right"
+            title="List of your resumes with received job offers."></i>
+        </span>
+      </span>
+    </h2>
+
+    <!-- Nav header -->
+    <nav class="card-header bg-white" aria-label="internal navigation">
+      <div class="d-flex align-items-center justify-content-between">
+        <a href="{% url 'my_resumes' %}"
+        class="text-decoration-none d-flex align-items-center text-muted fs-4"
+          area-label="to my resumes">
+          <i class="fa fa-arrow-left"></i>
+          <span class="mx-2">To my resumes</span>
+        </a>
+        <a href="{% url 'jobseeker_home' %}"
+          class="text-decoration-none d-flex align-items-center text-muted fs-4"
+          area-label="go to home page">
+          <i class="fa fa-home"></i>
+      </a>
+      </div>
+    </nav>
+
+    <div class="card mx-auto border-0 my-3 mt-1 p-3" >
+      <div class="card-body p-0">
+        {% if resumes %}
+          <div class="accordion" id="accordionOffers">
+            {% for resume in resumes %}
+              <div class="accordion-item position-relative">
+                <h2 class="accordion-header" id="heading-{{ forloop.counter }}">
+                  <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#collapse-{{ forloop.counter }}" aria-expanded="true"
+                    aria-controls="collapse-{{ forloop.counter }}">
+                    <span class="pt-1">
+                      {{ resume.occupation }}
+                      <a href="{% url 'job_offer_resume_snapshot' resume.job_offers.first.id %}"
+                        class="btn-link py-0 snapshot" aria-label="view resume snapshot">
+                        <i class="fa fa-eye text-royalpurple"></i>
+                      </a>
+                    </span>
+                    <span class="position-absolute ms-2 mt-2 top-0 start-0 translate-middle rounded-0 rounded-end badge bg-royalpurple"
+                      data-bs-toggle="tooltip" data-bs-placement="right" title="Number of offers">
+                        {{ resume.num_joboffers }}
+                    </span>
+                  </button>
+                </h2>
+                <div id="collapse-{{ forloop.counter }}" class="accordion-collapse collapse position-relative"
+                  aria-labelledby="heading-{{ forloop.counter }}" data-bs-parent="#accordionOffers">
+                  <div class="accordion-body">
+                    <ul class="list-group borderless ms-3" aria-label="list of applicants" style="list-style-type: circle;">
+                      {% for offer in resume.job_offers.all %}
+                        <li class="list-group-item ps-0" style="display: list-item;">
+                          <div class="d-flex justify-content-between">
+
+                            <a href="{% url 'job_offer_vacancy_snapshot' offer.id %}"
+                              class="btn-link py-0 snapshot text-royalpurple" aria-label="view vacancy snapshot">
+                              {{ offer.vacancy }}
+                            </a>
+
+                            <!-- Employer details -->
+                            <div class="mb-2">
+                              <button class="btn--royalpurple bg-body border-0 p-0 mb-1"
+                                type="button" data-bs-toggle="collapse" data-bs-target="#employer-details-{{ forloop.counter }}"
+                                aria-expanded="false" aria-controls="employer-details">
+                                  Employer
+                                <i class="fa fa-chevron-down"></i>
+                              </button>
+                              <div class="collapse" id="employer-details-{{ forloop.counter }}">
+                                <div class="card card-body">
+                                  <ul class="list-group">
+                                    <li class="list-group-item border-0 px-0 py-1">
+                                      <i class="fa fa-user-circle me-2 text-secondary"></i>
+                                      {{ offer.vacancy.employer.profile.name|default:"----" }}
+                                    </li>
+                                    <li class="list-group-item border-0 px-0 py-1">
+                                      <i class="fa fa-phone me-2 text-secondary"></i>
+                                      <a href="tel:{{ application.vacancy.employer.profile.phone }}">
+                                        {{ offer.vacancy.employer.profile.phone }}
+                                      </a>
+                                    </li>
+                                    <li class="list-group-item border-0 px-0 py-1">
+                                      <i class="fa fa-envelope me-2 text-secondary"></i>
+                                      <a href="mailto:{{ application.vacancy.employer.email }}?subject={{ application.vacancy.title }}">
+                                        {{ offer.vacancy.employer.email }}
+                                      </a>
+                                    </li>
+                                  </ul>
+                                </div>
+                              </div>
+                            </div>
+
+                          </div>
+                        </li>
+                      {% endfor %}
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        {% else %}
+          <h5 class="card-title">No offers yet</h5>
+        {% endif %}
+      </div>
+      <div class="m-3 mb-sm-1">
+        <a href="{% url 'job_search' %}" class="btn btn-royalpurple py-1">
+          <i class="fa fa-search"></i>
+          <span class="ms-2">Search Jobs</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- Snapshot modal -->
+{% include 'snapshot_modal.html' %}
+
+{% include 'footer.html' %}
+{% endblock %}
