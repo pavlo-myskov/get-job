@@ -1,4 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.views import View
 from django.views.generic.detail import BaseDetailView
 from django.contrib import messages
 from django.core import serializers
@@ -6,6 +7,8 @@ from django.http import JsonResponse
 from django.template.loader import render_to_string
 
 from employer.models import User
+from jobs.forms import JobSearchForm
+from resumes.forms import ResumeSearchForm
 
 
 class RelatedUserRequiredMixin(LoginRequiredMixin, UserPassesTestMixin):
@@ -81,3 +84,23 @@ class VacancySnapshotView(BaseDetailView):
             {"vacancy": vacancy_instance, "user": request.user},
         )
         return JsonResponse({"html_card": vacancy_html})
+
+
+class JobSearchFormMixin(View):
+    """Mixin to add job search form to the context"""
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # create a new instance of the form to be used in the navbar
+        context["nav_form"] = JobSearchForm(auto_id=False)
+        return context
+
+
+class ResumeSearchFormMixin(View):
+    """Mixin to add resume search form to the context"""
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # create a new instance of the form to be used in the navbar
+        context["nav_form"] = ResumeSearchForm(auto_id=False)
+        return context

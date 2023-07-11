@@ -10,9 +10,10 @@ from django.urls import reverse
 from django.contrib import messages
 
 from allauth.account.utils import get_next_redirect_url
+from jobportal.base_views import JobSearchFormMixin
 
 from jobs.models import Vacancy
-from jobs.forms import SearchForm
+from jobs.forms import JobSearchForm
 from jobs.utils import annotate_applied_jobs, annotate_jobs
 
 from users.models import User
@@ -57,7 +58,7 @@ class JobseekerRequiredMixin(LoginRequiredMixin, UserPassesTestMixin):
             return super().handle_no_permission()
 
 
-class HomeView(ListView):
+class HomeView(JobSearchFormMixin, ListView):
     # object name that will be used in the template
     context_object_name = "job_list"
     # get only first 4 active vacancies
@@ -77,18 +78,19 @@ class HomeView(ListView):
         # prepopulate the search form with the session data
         search_query = self.request.session.get("job_search_query")
         if search_query and search_query.get("title"):
-            form = SearchForm(
+            form = JobSearchForm(
                 {"title": search_query.get("title")}, auto_id=False
             )
         else:
-            form = SearchForm(auto_id=False)
+            form = JobSearchForm(auto_id=False)
 
         context["form"] = form
-        context["nav_form"] = SearchForm(auto_id=False)
         return context
 
 
-class JobseekerProfileDetailView(JobseekerRequiredMixin, DetailView):
+class JobseekerProfileDetailView(
+    JobseekerRequiredMixin, JobSearchFormMixin, DetailView
+):
     model = JobseekerProfile
     template_name = "jobseeker/profile.html"
     context_object_name = "profile"
@@ -101,12 +103,6 @@ class JobseekerProfileDetailView(JobseekerRequiredMixin, DetailView):
     def get_object(self, queryset=None):
         """Return the jobseeker profile for the current user"""
         return self.request.user.jobseekerprofile
-
-    def get_context_data(self, **kwargs):
-        """Add search form and back URL to the context"""
-        context = super().get_context_data(**kwargs)
-        context["nav_form"] = SearchForm(auto_id=False)
-        return context
 
 
 class JobseekerProfileUpdateView(
@@ -141,7 +137,7 @@ class JobseekerProfileUpdateView(
             return reverse("jobseeker_profile")
 
 
-class FavoriteJobList(JobseekerRequiredMixin, ListView):
+class FavoriteJobList(JobseekerRequiredMixin, JobSearchFormMixin, ListView):
     template_name = "jobseeker/favorite_jobs.html"
     context_object_name = "favorite_list"
 
@@ -149,14 +145,8 @@ class FavoriteJobList(JobseekerRequiredMixin, ListView):
         favorites = self.request.user.jobseekerprofile.favorites.all()
         return annotate_applied_jobs(favorites, self.request)
 
-    def get_context_data(self, **kwargs):
-        """Add search form and back URL to the context"""
-        context = super().get_context_data(**kwargs)
-        context["nav_form"] = SearchForm(auto_id=False)
-        return context
 
-
-class AppliedJobList(JobseekerRequiredMixin, ListView):
+class AppliedJobList(JobseekerRequiredMixin, JobSearchFormMixin, ListView):
     template_name = "jobseeker/applied_jobs.html"
     context_object_name = "applications"
 
@@ -164,22 +154,14 @@ class AppliedJobList(JobseekerRequiredMixin, ListView):
         applications = self.request.user.jobseekerprofile.applications.all()
         return applications
 
-    def get_context_data(self, **kwargs):
-        """Add search form and back URL to the context"""
-        context = super().get_context_data(**kwargs)
-        context["nav_form"] = SearchForm(auto_id=False)
-        return context
-
 
 def annotate_joboffers_count(resumes):
     """Annotate the vacancies with the number of applications
     for each vacancy"""
-    return resumes.annotate(
-        num_joboffers=Count("job_offers", distinct=True)
-    )
+    return resumes.annotate(num_joboffers=Count("job_offers", distinct=True))
 
 
-class JobOffersList(JobseekerRequiredMixin, ListView):
+class JobOffersList(JobseekerRequiredMixin, JobSearchFormMixin, ListView):
     template_name = "jobseeker/job_offers.html"
     context_object_name = "resumes"
 
@@ -191,9 +173,3 @@ class JobOffersList(JobseekerRequiredMixin, ListView):
         ).distinct()
 
         return annotate_joboffers_count(jobseeker_resumes)
-
-    def get_context_data(self, **kwargs):
-        """Add search form and back URL to the context"""
-        context = super().get_context_data(**kwargs)
-        context["nav_form"] = SearchForm(auto_id=False)
-        return context

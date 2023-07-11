@@ -10,18 +10,16 @@ from django.views.generic import ListView, DetailView
 from django.views.generic.detail import SingleObjectMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from django.db.models import Q
 from employer.views import EmployerRequiredMixin
-from jobs.forms import SearchForm
+from jobportal.base_views import JobSearchFormMixin, ResumeSearchFormMixin
 
-from users.models import User
 from .models import Resume
 from .forms import ResumeSearchForm, ResumeCreateForm
 from jobseeker.views import JobseekerRequiredMixin
 from .utils import annotate_resumes, filter_resumes
 
 
-class ResumeListView(ListView):
+class ResumeListView(ResumeSearchFormMixin, ListView):
     paginate_by = 6
 
     def get_queryset(self):
@@ -82,9 +80,6 @@ class ResumeListView(ListView):
         if "min_age" in self.form.errors or "max_age" in self.form.errors:
             context["age_error"] = "Age must be between 18 and 66 years"
 
-        # create a new instance of the form to be used in the navbar
-        context["nav_form"] = ResumeSearchForm(auto_id=False)
-
         # elided pagination
         # https://docs.djangoproject.com/en/3.2/_modules/django/core/paginator/#Paginator.get_elided_page_range
         page_obj = context["page_obj"]
@@ -95,21 +90,15 @@ class ResumeListView(ListView):
         return context
 
 
-class ResumeDetailView(DetailView):
+class ResumeDetailView(ResumeSearchFormMixin, DetailView):
     queryset = Resume.objects.active()
 
     def get_queryset(self):
         queryset = super().get_queryset()
         return annotate_resumes(queryset, self.request)
 
-    def get_context_data(self, **kwargs):
-        """Add search form to the context for navbar search bar"""
-        context = super().get_context_data(**kwargs)
-        context["nav_form"] = ResumeSearchForm(auto_id=False)
-        return context
 
-
-class MyResumeListView(JobseekerRequiredMixin, ListView):
+class MyResumeListView(JobseekerRequiredMixin, JobSearchFormMixin, ListView):
     model = Resume
     template_name = "resumes/my_resumes.html"
 
@@ -142,11 +131,12 @@ class MyResumeListView(JobseekerRequiredMixin, ListView):
             " cannot be edited",
         }
         context["tooltips"] = tooltips
-        context["nav_form"] = SearchForm(auto_id=False)
         return context
 
 
-class MyResumeDetailView(JobseekerRequiredMixin, DetailView):
+class MyResumeDetailView(
+    JobseekerRequiredMixin, JobSearchFormMixin, DetailView
+):
     model = Resume
     template_name = "resumes/my_resume_detail.html"
 
@@ -154,12 +144,6 @@ class MyResumeDetailView(JobseekerRequiredMixin, DetailView):
         # TODO: add test
         """Return all resumes of the owner"""
         return Resume.objects.filter(jobseeker=self.request.user)
-
-    def get_context_data(self, **kwargs):
-        """Add search form to the context for navbar search bar"""
-        context = super().get_context_data(**kwargs)
-        context["nav_form"] = SearchForm(auto_id=False)
-        return context
 
 
 class ResumeCreateView(

@@ -15,21 +15,22 @@ from employer.views import EmployerRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 
 from jobportal.base_views import (
+    JobSearchFormMixin,
     RelatedUserRequiredMixin,
+    ResumeSearchFormMixin,
     ResumeSnapshotView,
     VacancySnapshotView,
 )
 from jobseeker.views import JobseekerRequiredMixin
-from resumes.forms import ResumeSearchForm
 from users.models import User
 
 from .utils import annotate_jobs, filter_jobs
 from .models import Application, Vacancy
-from .forms import ApplicationForm, JobCreateForm, SearchForm
+from .forms import ApplicationForm, JobCreateForm, JobSearchForm
 from resumes.models import Resume
 
 
-class JobListView(ListView):
+class JobListView(JobSearchFormMixin, ListView):
     context_object_name = "job_list"
     paginate_by = 6
 
@@ -42,13 +43,13 @@ class JobListView(ListView):
         # otherwise prepopulate the search form with the session data
         # if session data is also not provided return all approved jobs
         if self.request.GET:
-            self.form = SearchForm(self.request.GET)
+            self.form = JobSearchForm(self.request.GET)
         elif self.request.session.get("job_search_query"):
-            self.form = SearchForm(
+            self.form = JobSearchForm(
                 self.request.session.get("job_search_query")
             )
         else:
-            self.form = SearchForm()
+            self.form = JobSearchForm()
             job_list = Vacancy.objects.filter(
                 status=Vacancy.JobPostStatus.ACTIVE
             )
@@ -68,7 +69,7 @@ class JobListView(ListView):
             # - update session with empty search query
             # - return all approved jobs
             if not search_data:
-                self.form = SearchForm()
+                self.form = JobSearchForm()
                 self.request.session["job_search_query"] = {}
                 job_list = Vacancy.objects.active()
             else:
@@ -89,8 +90,6 @@ class JobListView(ListView):
         """Add search form to the context"""
         context = super().get_context_data(**kwargs)
         context["form"] = self.form
-        # create a new instance of the form to be used in the navbar
-        context["nav_form"] = SearchForm(auto_id=False)
 
         # elided pagination
         # https://docs.djangoproject.com/en/3.2/_modules/django/core/paginator/#Paginator.get_elided_page_range
@@ -102,7 +101,7 @@ class JobListView(ListView):
         return context
 
 
-class JobDetailView(DetailView):
+class JobDetailView(JobSearchFormMixin, DetailView):
     # get only active vacancies
     queryset = Vacancy.objects.active()
 
@@ -110,16 +109,8 @@ class JobDetailView(DetailView):
         queryset = super().get_queryset()
         return annotate_jobs(queryset, self.request)
 
-    def get_context_data(self, **kwargs):
-        """Add search form to the context"""
-        context = super().get_context_data(**kwargs)
-        # create a new instance of the form to be used in the navbar
-        context["nav_form"] = SearchForm(auto_id=False)
 
-        return context
-
-
-class MyJobListView(EmployerRequiredMixin, ListView):
+class MyJobListView(EmployerRequiredMixin, JobSearchFormMixin, ListView):
     model = Vacancy
     template_name = "jobs/my_jobs.html"
 
@@ -151,11 +142,12 @@ class MyJobListView(EmployerRequiredMixin, ListView):
             " cannot be edited",
         }
         context["tooltips"] = tooltips
-        context["nav_form"] = ResumeSearchForm(auto_id=False)
         return context
 
 
-class MyVacancyDetailView(EmployerRequiredMixin, DetailView):
+class MyVacancyDetailView(
+    EmployerRequiredMixin, JobSearchFormMixin, DetailView
+):
     model = Vacancy
     template_name = "jobs/my_vacancy_detail.html"
 
@@ -163,12 +155,6 @@ class MyVacancyDetailView(EmployerRequiredMixin, DetailView):
         # TODO: add test
         """Return all jobs of the owner"""
         return Vacancy.objects.filter(employer=self.request.user)
-
-    def get_context_data(self, **kwargs):
-        """Add search form to the context for navbar search bar"""
-        context = super().get_context_data(**kwargs)
-        context["nav_form"] = ResumeSearchForm(auto_id=False)
-        return context
 
 
 class JobCreateView(EmployerRequiredMixin, SuccessMessageMixin, CreateView):
@@ -356,7 +342,9 @@ class JobSaveToggle(JobseekerRequiredMixin, View):
         )
 
 
-class JobApplyView(JobseekerRequiredMixin, SuccessMessageMixin, CreateView):
+class JobApplyView(
+    JobseekerRequiredMixin, JobSearchFormMixin, SuccessMessageMixin, CreateView
+):
     form_class = ApplicationForm
     template_name = "jobs/job_apply.html"
     success_message = "You have applied for the job successfully."
@@ -426,7 +414,6 @@ class JobApplyView(JobseekerRequiredMixin, SuccessMessageMixin, CreateView):
     def get_context_data(self, **kwargs):
         """Add search form, vacancy and resumes to the context"""
         context = super().get_context_data(**kwargs)
-        context["nav_form"] = SearchForm(auto_id=False)
         context["vacancy"] = get_object_or_404(
             Vacancy,
             pk=self.kwargs.get("pk"),
@@ -480,7 +467,7 @@ def annotate_applications_count(vacancies):
     )
 
 
-class ApplicantsList(EmployerRequiredMixin, ListView):
+class ApplicantsList(EmployerRequiredMixin, ResumeSearchFormMixin, ListView):
     template_name = "employer/applicants_list.html"
     context_object_name = "vacancies"
 
@@ -492,9 +479,3 @@ class ApplicantsList(EmployerRequiredMixin, ListView):
         ).distinct()
 
         return annotate_applications_count(employer_vacancies)
-
-    def get_context_data(self, **kwargs):
-        """Add search form and back URL to the context"""
-        context = super().get_context_data(**kwargs)
-        context["nav_form"] = ResumeSearchForm(auto_id=False)
-        return context
