@@ -65,16 +65,58 @@
                       {% for application in vacancy.applications.all %}
                         <li class="list-group-item ps-0" style="display: list-item;">
                           <div class="d-flex justify-content-between">
+
+                            <!-- Resume title -->
                             <a href="{% url 'application_resume_snapshot' application.id %}"
                               class="btn-link py-0 snapshot text-cyan-blue" aria-label="view resume snapshot">
                               {{ application.resume }}
                             </a>
-                            {% if application.resume.cv %}
-                            <a href="{{ application.resume.cv.url }}" class="btn btn--cyan-blue btn-sm flex-shrink-0 py-0 hover-grow"
-                              aria-label="download cv"><i class="fa fa-download"></i>
-                              CV
-                            </a>
-                            {% endif %}
+
+                            <!-- Actions -->
+                            <div class="d-flex align-items-start flex-shrink-0">
+
+                              {% if application.cover_letter %}
+                                <!-- Jobseeker's Cover Letter Modal -->
+                                <div class="ms-3">
+                                  <div role="button" class="btn--cyan-blue fs-5" data-bs-toggle="modal"
+                                    data-bs-target="#cover-letter-{{ forloop.counter }}">
+                                    <i class="fa fa-envelope hover-grow" aria-label="view cover letter"></i>
+                                  </div>
+                                  <!-- Cover Letter Modal -->
+                                  <div class="modal fade" id="cover-letter-{{ forloop.counter }}" tabindex="-1" aria-labelledby="coverLetterModal" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                                      <div class="modal-content">
+                                        <div class="modal-header">
+                                          <h6 class="modal-title text-muted" id="coverLetterLabel">Cover Letter from {{ application.applicant.name }}</h6>
+                                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                          {{ application.cover_letter }}
+                                        </div>
+                                        <div class="modal-footer">
+                                          {% if application.resume.cv %}
+                                          <a href="{{ application.resume.cv.url }}" role="button" class="btn btn-outline-cyan-blue btn-sm">Download a CV</a>
+                                          {% endif %}
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              {% endif %}
+
+                              <!-- Download CV -->
+                              {% if application.resume.cv %}
+                              <div class="ms-3">
+                                <a href="{{ application.resume.cv.url }}" class="btn btn-link text-cyan-blue p-0 m-0 hover-grow"
+                                  aria-label="download cv" role="button" style="text-decoration: none;" download>
+                                  <i class="fa fa-download"></i>
+                                  CV
+                                </a>
+                              </div>
+                              {% endif %}
+                            </div>
+                            <!-- End of Actions -->
+
                           </div>
                         </li>
                       {% endfor %}
