@@ -97,8 +97,8 @@ class EmployerProfile(models.Model):
     user = models.OneToOneField(Employer, on_delete=models.CASCADE)
     # use name instead of first_name and last_name,
     # as they don't cover global name patterns
-    name = models.CharField(max_length=254, blank=True)
-    company = models.CharField(max_length=254, blank=True)
+    name = models.CharField(max_length=70)
+    company = models.CharField(max_length=70, blank=True)
     logo = CloudinaryField("logo", blank=True, null=True)
     phone = models.CharField(max_length=20, blank=True)
     website = models.URLField(max_length=254, blank=True)
