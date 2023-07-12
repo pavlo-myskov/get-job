@@ -21,5 +21,8 @@ class ApplicationNotification(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        ordering = ["-timestamp"]
+        # order by is_read and timestamp,
+        # unread notifications at the top and
+        # the oldest notifications at the bottom
+        ordering = ["-is_read", "-timestamp"]
         verbose_name_plural = "application_notifications"

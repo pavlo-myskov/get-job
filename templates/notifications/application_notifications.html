@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+{% load static %}
+{% load custom_tags %}
+{% load time_filters %}
+
+{% block head_title %}Received Applications{% endblock %}
+
+{% block content %}
+{% include 'employer/navbar.html' %}
+
+<main class="container-fluid bg-light px-0 flex-grow-1">
+  <div class="container px-0 px-sm-3 my-4" style="max-width: 50rem;">
+    <h2 class="ms-4 mb-3">
+      <span class="position-relative">
+        Applications Received
+        <span class="position-absolute top-0 end-25 translate-middle badge border border-light rounded-circle p-0">
+          <i class="fa fa-info-circle fs-6 text-muted" data-bs-toggle="tooltip" data-bs-placement="right"
+            title="The applications you have received from jobseekers for your vacancies."> </i>
+        </span>
+      </span>
+    </h2>
+
+    <!-- Nav header -->
+    <nav class="card-header bg-white" aria-label="internal navigation">
+      <div class="d-flex align-items-center justify-content-between">
+        <a href="{% url 'my_jobs' %}"
+        class="text-decoration-none d-flex align-items-center text-muted fs-4"
+          area-label="to my jobs">
+          <i class="fa fa-arrow-left"></i>
+          <span class="mx-2">To my jobs</span>
+        </a>
+        <a href="{% url 'employer_home' %}"
+          class="text-decoration-none d-flex align-items-center text-muted fs-4"
+          area-label="go to home page">
+          <i class="fa fa-home"></i>
+      </a>
+      </div>
+    </nav>
+
+    <div class="card mx-auto border-0 my-3 mt-1 p-3" >
+      <div class="card-body p-0">
+        {% if notifications %}
+          <div class="accordion" id="accordionOffers">
+            {% for notification in notifications %}
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="heading-{{ forloop.counter }}">
+                  <button class="accordion-button {% if not notification.is_read %}bg-info{% endif %}" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#collapse-{{ forloop.counter }}" aria-expanded="true"
+                    aria-controls="collapse-{{ forloop.counter }}">
+                    {{ notification.application.vacancy.title }}
+                  </button>
+                </h2>
+                <div id="collapse-{{ forloop.counter }}" class="accordion-collapse collapse {% if not notification.is_read %}show{% endif %}"
+                  aria-labelledby="heading-{{ forloop.counter }}" data-bs-parent="#accordionOffers">
+                  <div class="accordion-body">
+                    <p>
+                      The jobseeker <strong>{{ notification.sender.name }}</strong>
+                       has applied for the vacancy on the <strong>{{ notification.application.applied_on|date:"jS M Y"}}</strong>
+                    </p>
+
+                    <!-- Cover Letter -->
+                    {% if notification.application.resume.cover_letter %}
+                    <p>
+                      <!-- TODO modal cover letter -->
+                      <a href="#" class="btn btn--cyan-blue btn-sm py-0 hover-grow"
+                        aria-label="view cover letter"><i class="fa fa-envelope"></i>
+                        View Cover Letter
+                      </a>
+                    </p>
+                    {% endif %}
+                    <!-- Download CV link -->
+                    {% if notification.application.resume.cv %}
+                    <p>
+                      <a href="{{ notification.application.resume.cv.url }}" class="btn btn--cyan-blue btn-sm py-0 hover-grow"
+                        aria-label="download cv"><i class="fa fa-download"></i>
+                        Download CV
+                      </a>
+                    </p>
+                    {% endif %}
+
+                    <table class="table table-borderless">
+                      <thead>
+                        <tr class="text-muted">
+                          <th scope="col">Jobseeker's Resume</th>
+                          <th scope="col">Vacancy Details</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>{{ notification.application.resume.occupation }}</td>
+                          <td>{{ notification.application.vacancy.title }}</td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <a href="{% url 'application_resume_snapshot' notification.application.id %}"
+                              class="btn btn-outline-cyan-blue btn-sm py-0 snapshot" aria-label="view resume snapshot">
+                              <i class="fa fa-eye"></i>
+                              <span class="ms-2"><span class="d-none d-sm-inline">View</span> Snapshot</span>
+                            </a>
+                          </td>
+                          <td>
+                            <a href="{% url 'application_vacancy_snapshot' notification.application.id %}"
+                            class="btn btn-outline-cyan-blue btn-sm py-0 snapshot" aria-label="view vacancy snapshot">
+                            <i class="fa fa-eye"></i>
+                            <span class="ms-2"><span class="d-none d-sm-inline">View</span> Snapshot</span>
+                            </a>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        {% else %}
+          <h5 class="card-title">You have not received any applications yet.</h5>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- Snapshot modal -->
+{% include 'snapshot_modal.html' %}
+
+{% include 'footer.html' %}
+{% endblock %}
