@@ -40,6 +40,9 @@
     <div class="card mx-auto border-0 my-3 mt-1 p-3" >
       <div class="card-body p-0">
         {% if notifications %}
+        <!-- csrf token -->
+        <input id="csrf_token" type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+
           <div class="accordion" id="accordionOffers">
             {% for notification in notifications %}
               <div class="accordion-item">
@@ -50,8 +53,12 @@
                     {{ notification.application.vacancy.title }}
                   </button>
                 </h2>
-                <div id="collapse-{{ forloop.counter }}" class="accordion-collapse collapse {% if not notification.is_read %}show{% endif %}"
-                  aria-labelledby="heading-{{ forloop.counter }}" data-bs-parent="#accordionOffers">
+                <div id="collapse-{{ forloop.counter }}"
+                  class="accordion-collapse notification-collapse collapse {% if not notification.is_read %}show{% endif %}"
+                  aria-labelledby="heading-{{ forloop.counter }}" data-bs-parent="#accordionOffers"
+                    data-url="{% url 'application_notification_toggle_read' notification.id %}"
+                    data-is-read="{{ notification.is_read }}">
+
                   <div class="accordion-body">
                     <p>
                       The jobseeker <strong>{{ notification.sender.name }}</strong>

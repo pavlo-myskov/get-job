@@ -28,10 +28,12 @@
             <a class="nav-link text-cyan-blue px-2 px-sm-4" href="{% url 'application_notifications' %}" aria-label="notifications">
               <span class="position-relative">
                 <i class="fa-regular fa-bell fs-4 hover-grow"></i>
-                <span class="position-absolute start-0 translate-middle badge p-1 bg-danger text-white border border-light rounded-pill">
-                  <span>{{ user.unread_application_notifications_count }}</span>
-                  <span class="visually-hidden">recieved applicants</span>
-                </span>
+                {% if user.unread_application_notifications_count > 0 %}
+                  <span class="position-absolute start-0 translate-middle badge p-1 bg-danger text-white border border-light rounded-pill">
+                    <span id="notification-counter">{{ user.unread_application_notifications_count }}</span>
+                    <span class="visually-hidden">recieved applicants</span>
+                  </span>
+                {% endif %}
               </span>
             </a>
           </li>
