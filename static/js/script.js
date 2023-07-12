@@ -339,6 +339,10 @@ function setResumeActionModal(event, actionText) {
     let actionUrl = event.target.dataset.resumeActionUrl;
     $('.modal-action').text(actionText);
     $('#resume-modal-form').attr('action', actionUrl);
+    if (actionText.toLowerCase() == 'delete') {
+        $('.additional_msg').text('The application(s) and job offer(s) associated with this resume will also be deleted')
+    }
+
     $('#resumeModal').modal('show');
 }
 
@@ -351,6 +355,9 @@ function setJobActionModal(event, actionText) {
     let actionUrl = event.target.dataset.jobActionUrl;
     $('.modal-action').text(actionText);
     $('#job-modal-form').attr('action', actionUrl);
+    if (actionText.toLowerCase() == 'delete') {
+        $('.additional_msg').text('The application(s) and job offer(s) associated with this job will also be deleted')
+    }
     $('#jobModal').modal('show');
 }
 
