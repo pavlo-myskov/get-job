@@ -66,20 +66,42 @@
                     </p>
 
                     <!-- Cover Letter -->
-                    {% if notification.application.resume.cover_letter %}
-                    <p>
-                      <!-- TODO modal cover letter -->
-                      <a href="#" class="btn btn--cyan-blue btn-sm py-0 hover-grow"
-                        aria-label="view cover letter"><i class="fa fa-envelope"></i>
+                    {% if notification.application.cover_letter %}
+                    <div>
+                      <div class="btn btn--cyan-blue btn-sm py-0" role="button" data-bs-toggle="modal"
+                        data-bs-target="#cover-letter-{{ forloop.counter }}" aria-label="view cover letter">
+                        <i class="fa fa-envelope"></i>
                         View Cover Letter
-                      </a>
-                    </p>
+                      </div>
+                      <!-- Cover Letter Modal -->
+                      <div class="modal fade" id="cover-letter-{{ forloop.counter }}" tabindex="-1" aria-labelledby="coverLetterModal" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h6 class="modal-title text-muted" id="coverLetterLabel">Cover Letter from {{ notification.sender.name }}</h6>
+                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                              {{ notification.application.cover_letter }}
+                            </div>
+                            <div class="modal-footer">
+                              {% if notification.application.resume.cv %}
+                              <a href="{{ notification.application.resume.cv.url }}" role="button" class="btn btn-outline-cyan-blue btn-sm" download>
+                                Download a CV
+                              </a>
+                              {% endif %}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                     {% endif %}
                     <!-- Download CV link -->
                     {% if notification.application.resume.cv %}
                     <p>
                       <a href="{{ notification.application.resume.cv.url }}" class="btn btn--cyan-blue btn-sm py-0 hover-grow"
-                        aria-label="download cv"><i class="fa fa-download"></i>
+                        aria-label="download cv" download>
+                        <i class="fa fa-download"></i>
                         Download CV
                       </a>
                     </p>
