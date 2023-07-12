@@ -1,4 +1,5 @@
 from django import forms
+from django.core.validators import MinLengthValidator
 
 from .models import Resume
 from jobseeker.models import JobseekerProfile
@@ -84,29 +85,29 @@ class ResumeCreateForm(forms.ModelForm):
             ),
             "skills": forms.Textarea(
                 attrs={
-                    "rows": 1,
+                    "rows": 3,
                     "placeholder": "add your skills",
                 },
             ),
             "education": forms.Textarea(
                 attrs={
-                    "rows": 3,
+                    "rows": 6,
                     "placeholder": "add your education using format:"
                     " degree, institution, year",
                 }
             ),
             "experience": forms.Textarea(
                 attrs={
-                    "rows": 3,
+                    "rows": 6,
                     "placeholder": "add job experience using format:"
                     " job title, company, year",
                 }
             ),
             "body": forms.Textarea(
                 attrs={
-                    "rows": 5,
+                    "rows": 8,
                     "placeholder": "tell potential employers about yourself",
-                }
+                },
             ),
         }
         help_texts = {
@@ -122,5 +123,7 @@ class ResumeCreateForm(forms.ModelForm):
             self.fields[field].widget.attrs.update(
                 {"class": "royalpurple-input"}
             )
-        # add required attribute to skills field
-        self.fields["skills"].required = True
+        # add min length validator to body field
+        self.fields["body"].validators.append(
+            MinLengthValidator(100)
+        )

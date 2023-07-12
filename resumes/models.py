@@ -45,12 +45,12 @@ class Resume(models.Model):
     )
     occupation = models.CharField(max_length=254)
     experience_duration = models.CharField(
-        choices=Duration.choices, max_length=50, null=True
+        choices=Duration.choices, max_length=50
     )
     experience = models.TextField(blank=True)
     education = models.TextField(blank=True)
-    skills = models.TextField(blank=True)
-    body = models.TextField(blank=True)
+    skills = models.TextField()
+    body = models.TextField()
     cv = models.FileField(
         upload_to="cv/",
         blank=True,

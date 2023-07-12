@@ -1,4 +1,5 @@
 from django import forms
+from django.core.validators import MinLengthValidator
 
 from resumes.models import Resume
 from .models import Application, Vacancy
@@ -119,3 +120,8 @@ class JobCreateForm(forms.ModelForm):
             self.fields[field].widget.attrs.update(
                 {"class": "cyan-input"}
             )
+
+        # add min length validator to body field
+        self.fields["body"].validators.append(
+            MinLengthValidator(100)
+        )
