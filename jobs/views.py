@@ -363,6 +363,7 @@ class JobApplyView(
             pk=self.kwargs.get("pk"),
             status=Vacancy.JobPostStatus.ACTIVE,
         )
+        form.instance.employer = form.instance.vacancy.employer
         # check if the applicant has already applied for the job
         # with the same resume
         if Application.objects.filter(

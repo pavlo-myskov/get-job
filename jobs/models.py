@@ -142,6 +142,11 @@ class Vacancy(models.Model):
 class Application(models.Model):
     """Applications for job vacancies"""
 
+    employer = models.ForeignKey(
+        "employer.Employer",
+        on_delete=models.CASCADE,
+        related_name="applications",
+    )
     vacancy = models.ForeignKey(
         Vacancy, on_delete=models.CASCADE, related_name="applications"
     )
