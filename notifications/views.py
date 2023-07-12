@@ -37,7 +37,7 @@ class ApplicationNotificationToggleRead(EmployerRequiredMixin, View):
         notification = get_object_or_404(ApplicationNotification, pk=pk)
         notification.is_read = True
         notification.save()
-        
+
         # get the number of unread notifications using
         # the custom method on the User model
         counter = request.user.unread_application_notifications_count()
