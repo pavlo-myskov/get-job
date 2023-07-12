@@ -52,7 +52,7 @@ class Resume(models.Model):
     skills = models.TextField()
     body = models.TextField()
     cv = models.FileField(
-        upload_to="cv/",
+        upload_to="get-job/cv/",
         blank=True,
         storage=RawMediaCloudinaryStorage(),
         validators=[file_validator],

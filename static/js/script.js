@@ -93,6 +93,8 @@ $(document).ready(function () {
 
     $('.snapshot').click(showSnapshot);
 
+    // event listener for notification collapse
+    $('.notification-collapse').on('hidden.bs.collapse', markAsRead);
 });
 
 
@@ -465,6 +467,49 @@ function showSnapshot(e) {
                 console.log(thrownError);
                 $('body').html(xhr.responseText);
                 alert('An error occurred while sending data to the server');
+            }
+        }
+    })
+}
+
+
+
+/**
+ * Mark notification as read using ajax.
+ * - Remove bg-info class from accordion button.
+ * - Update notification counter in navbar.
+ *
+ * Related to: ApplicationNotificationToggleRead view.
+ */
+function markAsRead() {
+    if ($(this).data('is-read') === 'True') {
+        return;
+    }
+
+    // remove bg-info class from accordion button
+    $(this).closest('.accordion-item').find('.accordion-button').removeClass('bg-info');
+
+    const actionEndpoint = $(this).data('url');
+    const csrfToken = $('#csrf_token').val();
+
+    $.ajax({
+        url: actionEndpoint,
+        type: 'post',
+        data: {
+            'csrfmiddlewaretoken': csrfToken,
+        },
+        dataType: 'json',
+        success: function (response) {
+            // update notification counter in navbar
+            $('#notification-counter').text(response.counter);
+        },
+        error: function (xhr, textStatus, thrownError) {
+            if (xhr.status == 403) {
+                const response = JSON.parse(xhr.responseText);
+                $('body').html(response.html_page);
+            } else {
+                console.log(thrownError);
+                $('body').html(xhr.responseText);
             }
         }
     })

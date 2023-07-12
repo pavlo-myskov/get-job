@@ -67,3 +67,9 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def get_absolute_url(self):
         return "/users/%i/" % (self.pk)
+
+    def unread_application_notifications_count(self):
+        return self.application_notifications.filter(is_read=False).count()
+
+    def unread_application_notifications(self):
+        return self.application_notifications.filter(is_read=False)

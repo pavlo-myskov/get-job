@@ -22,6 +22,7 @@ urlpatterns = [
     path("", include("jobs.urls")),
     path("", include("employer.urls")),
     path("", include("resumes.urls")),
+    path("", include("notifications.urls")),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

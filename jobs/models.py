@@ -1,7 +1,10 @@
 from django.db import models
 from django.urls import reverse
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from django.core.validators import MaxLengthValidator
 
+from notifications.models import ApplicationNotification
 from resumes.models import Resume
 
 
@@ -109,9 +112,7 @@ class Vacancy(models.Model):
     job_location = models.CharField(
         max_length=50, choices=JobLocations.choices
     )
-    job_type = models.CharField(
-        choices=JobTypes.choices, max_length=50
-    )
+    job_type = models.CharField(choices=JobTypes.choices, max_length=50)
     experience_duration = models.CharField(
         choices=Resume.Duration.choices, max_length=50
     )
@@ -169,3 +170,18 @@ class Application(models.Model):
 
     def __str__(self):
         return f"{self.applicant} - {self.vacancy}"
+
+
+@receiver(post_save, sender=Application)
+def create_application_notification(sender, instance, created, **kwargs):
+    """Create a notification for the employer when a new application is made"""
+    if created:
+        application = instance
+
+        ApplicationNotification.objects.create(
+            application=application,
+            sender=application.applicant,
+            receiver=application.vacancy.employer,
+        )
+
+        # TODO: Send email to employer
