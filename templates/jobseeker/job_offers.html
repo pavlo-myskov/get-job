@@ -47,10 +47,6 @@
                     aria-controls="collapse-{{ forloop.counter }}">
                     <span class="pt-1">
                       {{ resume.occupation }}
-                      <a href="{% url 'job_offer_resume_snapshot' resume.job_offers.first.id %}"
-                        class="btn-link py-0 snapshot" aria-label="view resume snapshot">
-                        <i class="fa fa-eye text-royalpurple"></i>
-                      </a>
                     </span>
                     <span class="position-absolute ms-2 mt-2 top-0 start-0 translate-middle rounded-0 rounded-end badge bg-royalpurple"
                       data-bs-toggle="tooltip" data-bs-placement="right" title="Number of offers">
@@ -152,7 +148,15 @@
 
                             </div>
                             <!-- End of Actions -->
-
+                          </div>
+                          <!-- Resume snapshot -->
+                          <div class="d-flex justify-content-between">
+                            <span class="text-muted">Resume Snapshot</span>
+                            <div href="{% url 'job_offer_resume_snapshot' offer.id %}" role="button"
+                              class="btn--royalpurple py-0 snapshot" aria-label="view resume snapshot">
+                              <i class="fa fa-eye hover-grow"></i>
+                              View
+                            </div>
                           </div>
                         </li>
                       {% endfor %}

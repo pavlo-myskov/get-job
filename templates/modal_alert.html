@@ -1,0 +1,17 @@
+  <!-- Modal message alert -->
+{% if messages %}
+  {% for message in messages %}
+    {% if 'modal' in message.extra_tags %}
+      <div class="modal fade" id="messagesModal" tabindex="-1" aria-labelledby="messagesModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+          <div class="modal-content">
+            <div class="modal-body text-center">
+              <p>{{ message }}</p>
+              <button type="button" class="btn btn-secondary text-center py-0" data-bs-dismiss="modal">OK</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    {% endif %}
+  {% endfor %}
+{% endif %}
