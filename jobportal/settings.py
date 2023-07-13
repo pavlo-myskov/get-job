@@ -293,6 +293,14 @@ ACCOUNT_LOGIN_ATTEMPTS_LIMIT = 5
 # prevents brute force attacks
 ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 
+# Logs the user in after confirming the email address.
+# Works only when user signs up
+ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True
+
+# Allows avoiding the need to confirm the email address
+# on page form and can be done only by clicking the link
+ACCOUNT_CONFIRM_EMAIL_ON_GET = True
+
 # Email SMTP settings
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'  # for gmail
