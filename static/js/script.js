@@ -487,7 +487,7 @@ function markAsRead() {
     }
 
     // remove bg-info class from accordion button
-    $(this).closest('.accordion-item').find('.accordion-button').removeClass('bg-info');
+    $(this).closest('.accordion-item').find('.accordion-button').removeClass('bg-info bg-warning');
 
     const actionEndpoint = $(this).data('url');
     const csrfToken = $('#csrf_token').val();
@@ -500,8 +500,12 @@ function markAsRead() {
         },
         dataType: 'json',
         success: function (response) {
+            const counter = response.counter
             // update notification counter in navbar
-            $('#notification-counter').text(response.counter);
+            $('#notification-counter').text(counter);
+            if (counter === 0) {
+                $('#read_all_form').addClass('d-none');
+            }
         },
         error: function (xhr, textStatus, thrownError) {
             if (xhr.status == 403) {
