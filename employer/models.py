@@ -7,6 +7,8 @@ from django.contrib.auth.models import BaseUserManager
 from django.contrib.auth import get_user_model
 from django.core.validators import MaxLengthValidator
 
+from notifications.models import JobOfferNotification
+
 User = get_user_model()
 
 
@@ -103,7 +105,7 @@ class EmployerProfile(models.Model):
     phone = models.CharField(max_length=20, blank=True)
     website = models.URLField(max_length=254, blank=True)
     favorites = models.ManyToManyField(
-        'resumes.Resume', blank=True, related_name="favoriters"
+        "resumes.Resume", blank=True, related_name="favoriters"
     )
 
     def save(self, *args, **kwargs):
@@ -135,7 +137,7 @@ class JobOffer(models.Model):
     """Stores job offers"""
 
     resume = models.ForeignKey(
-        'resumes.Resume', on_delete=models.CASCADE, related_name="job_offers"
+        "resumes.Resume", on_delete=models.CASCADE, related_name="job_offers"
     )
     resume_snapshot = models.JSONField()
     employer = models.ForeignKey(
@@ -144,7 +146,7 @@ class JobOffer(models.Model):
         related_name="job_offers",
     )
     vacancy = models.ForeignKey(
-        'jobs.Vacancy', on_delete=models.CASCADE, related_name="job_offers"
+        "jobs.Vacancy", on_delete=models.CASCADE, related_name="job_offers"
     )
     vacancy_snapshot = models.JSONField()
     message = models.TextField(
@@ -157,3 +159,17 @@ class JobOffer(models.Model):
 
     def __str__(self):
         return f"{self.employer} - {self.resume}"
+
+
+@receiver(post_save, sender=JobOffer)
+def create_job_offer_notification(sender, instance, created, **kwargs):
+    """Create a notification for the jobseeker
+    when a new job offer is crefated"""
+    if created:
+        job_offer = instance
+
+        JobOfferNotification.objects.create(
+            job_offer=job_offer,
+            sender=job_offer.employer,
+            receiver=job_offer.resume.jobseeker,
+        )
