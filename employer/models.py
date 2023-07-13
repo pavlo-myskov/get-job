@@ -1,4 +1,9 @@
 from cloudinary.models import CloudinaryField
+from django.conf import settings
+from django.core.mail import send_mail
+from django.contrib.sites.shortcuts import get_current_site
+from django.template.loader import render_to_string
+from django.urls import reverse
 
 from django.db import models
 from django.dispatch import receiver
@@ -173,3 +178,26 @@ def create_job_offer_notification(sender, instance, created, **kwargs):
             sender=job_offer.employer,
             receiver=job_offer.resume.jobseeker,
         )
+
+        # send email to jobseeker if email notification enabled
+        if job_offer.resume.jobseeker.email_notifications:
+            current_site = get_current_site(None)
+            job_offer_notifications_url = f"https://{current_site.domain}{reverse('job_offer_notifications')}"  # noqa
+            message = render_to_string(
+                "account/email/job_offer_notification.txt",
+                {
+                    "job_title": job_offer.vacancy.title,
+                    "employer_name": job_offer.employer.employerprofile.name,
+                    "employer_email": job_offer.employer.email,
+                    "resume": job_offer.resume.occupation,
+                    "site_url": job_offer_notifications_url,
+                    "current_site": current_site,
+                },
+            )
+            send_mail(
+                subject="New job offer",
+                message=message,
+                from_email=settings.EMAIL_HOST_USER,
+                recipient_list=[job_offer.resume.jobseeker.email],
+                fail_silently=False,
+            )

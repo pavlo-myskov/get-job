@@ -17,4 +17,9 @@ urlpatterns = [
         views.AccountDeactivateView.as_view(),
         name="account_deactivate",
     ),
+    path(
+        "emailnotification/toggle/",
+        views.EmailNotificationToggle.as_view(),
+        name="email_notification_toggle",
+    ),
 ]

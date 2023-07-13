@@ -95,6 +95,8 @@ $(document).ready(function () {
 
     // event listener for notification collapse
     $('.notification-collapse').on('hidden.bs.collapse', markAsRead);
+
+    $('#toggle_email_notification_form').submit(toggleEmailNotification);
 });
 
 
@@ -506,6 +508,55 @@ function markAsRead() {
             if (counter === 0) {
                 $('#read_all_form').addClass('d-none');
             }
+        },
+        error: function (xhr, textStatus, thrownError) {
+            if (xhr.status == 403) {
+                const response = JSON.parse(xhr.responseText);
+                $('body').html(response.html_page);
+            } else {
+                console.log(thrownError);
+                $('body').html(xhr.responseText);
+            }
+        }
+    })
+}
+
+
+/**
+ * Toggle Email Notification with ajax.
+ */
+function toggleEmailNotification(e) {
+    e.preventDefault();
+    // get action url from submit form
+    const actionEndpoint = $(this).attr('action');
+    const csrfToken = $(this).find("input[name='csrfmiddlewaretoken']").val();
+    const submitBtn = $(this).find("button[type='submit']");
+
+    $.ajax({
+        type: "POST",
+        url: actionEndpoint,
+        data: {
+            'csrfmiddlewaretoken': csrfToken,
+        },
+        // the type of data that should be returned from the server
+        dataType: "json",
+        success: function (response) {
+            // set toast message
+            $('.custom-toast-msg').text(response.successMsg);
+            let toastElementsList = [].slice.call(document.querySelectorAll('.multi-use-toast'));
+            showToasts(toastElementsList, 'success');
+
+            // change button style
+            if (response.is_notify_enabled) {
+                submitBtn.removeClass('btn-outline-danger').addClass('btn-outline-success').html(
+                    '<i class="fa fa-toggle-on"></i><span class="ms-2">Enabled</span>'
+                );
+            } else {
+                submitBtn.removeClass('btn-outline-success').addClass('btn-outline-danger').html(
+                    '<i class="fa fa-toggle-off"></i><span class="ms-2">Disabled</span>'
+                );
+            }
+
         },
         error: function (xhr, textStatus, thrownError) {
             if (xhr.status == 403) {

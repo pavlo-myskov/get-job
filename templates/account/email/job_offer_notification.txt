@@ -1,0 +1,14 @@
+{% extends "account/email/base_message.txt" %}
+
+{% block content %}
+You have a new job offer!
+
+Job Title: {{ job_title }}
+
+Employer Name: {{ employer_name }}
+Employer Email: {{ employer_email }}
+
+Your Resume: {{ resume }}
+
+To check the details, please login to your account {{ site_url }}.
+{% endblock %}
