@@ -1,6 +1,7 @@
 from django.contrib import messages
-from django.http import JsonResponse
+from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import get_object_or_404
+from django.urls import reverse
 from django.views import View
 from django.views.generic import ListView
 
@@ -30,8 +31,6 @@ class ApplicationNotificationList(
 class ApplicationNotificationToggleRead(EmployerRequiredMixin, View):
     """Set the read status of an application notification"""
 
-    http_method_names = ["post"]
-
     def post(self, request, *args, **kwargs):
         pk = kwargs.get("pk")
         notification = get_object_or_404(ApplicationNotification, pk=pk)
@@ -42,3 +41,13 @@ class ApplicationNotificationToggleRead(EmployerRequiredMixin, View):
         # the custom method on the User model
         counter = request.user.unread_application_notifications_count()
         return JsonResponse({"counter": counter})
+
+
+class ApplicationNotificationReadAll(EmployerRequiredMixin, View):
+    """Set all application notifications as read and update page"""
+
+    def post(self, request, *args, **kwargs):
+        notifications = request.user.unread_application_notifications()
+        notifications.update(is_read=True)
+        messages.success(request, "All notifications marked as read")
+        return HttpResponseRedirect(reverse("application_notifications"))

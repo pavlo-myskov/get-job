@@ -33,7 +33,7 @@
           class="text-decoration-none d-flex align-items-center text-muted fs-4"
           area-label="go to home page">
           <i class="fa fa-home"></i>
-      </a>
+        </a>
       </div>
     </nav>
 
@@ -42,6 +42,17 @@
         {% if notifications %}
         <!-- csrf token -->
         <input id="csrf_token" type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+
+        <!-- Mark all as read -->
+        {% if user.unread_application_notifications_count %}
+          <form class="text-end mb-3" action="{% url 'application_notifications_read_all' %}" method="POST">
+            {% csrf_token %}
+            <button class="btn btn--cyan-blue btn-sm py-0" type="submit" aria-label="mark all as read">
+              <i class="fa fa-check"></i>
+              Mark all as read
+            </button>
+          </form>
+        {% endif %}
 
           <div class="accordion" id="accordionOffers">
             {% for notification in notifications %}

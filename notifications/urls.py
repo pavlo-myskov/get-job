@@ -13,4 +13,9 @@ urlpatterns = [
         views.ApplicationNotificationToggleRead.as_view(),
         name="application_notification_toggle_read",
     ),
+    path(
+        "applications/readall/",
+        views.ApplicationNotificationReadAll.as_view(),
+        name="application_notifications_read_all",
+    ),
 ]
