@@ -57,6 +57,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     role = models.CharField(max_length=50, choices=Role.choices,
                             default=Role.JOBSEEKER)
+    email_notifications = models.BooleanField(default=True)
 
     # Serve email field as a unique identifier instead of username
     USERNAME_FIELD = 'email'
