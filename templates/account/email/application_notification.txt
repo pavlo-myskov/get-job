@@ -1,0 +1,13 @@
+{% extends "account/email/base_message.txt" %}
+
+{% block content %}
+You have a new application for your job posting!
+
+Job Title: {{ job_title }}
+
+Applicant Name: {{ applicant_name }}
+Applicant Email: {{ applicant_email }}
+Applicant Resume: {{ resume }}
+
+To check the details, please login to your account {{ site_url }}.
+{% endblock %}

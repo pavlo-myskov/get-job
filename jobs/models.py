@@ -1,3 +1,7 @@
+from django.conf import settings
+from django.core.mail import send_mail
+from django.contrib.sites.shortcuts import get_current_site
+from django.template.loader import render_to_string
 from django.db import models
 from django.urls import reverse
 from django.db.models.signals import post_save
@@ -184,4 +188,25 @@ def create_application_notification(sender, instance, created, **kwargs):
             receiver=application.vacancy.employer,
         )
 
-        # TODO: Send email to employer
+        # send email to employer if email notification enabled
+        if application.vacancy.employer.email_notifications:
+            current_site = get_current_site(None)
+            application_notifications_url = f"https://{current_site.domain}{reverse('application_notifications')}"  # noqa
+            message = render_to_string(
+                "account/email/application_notification.txt",
+                {
+                    "job_title": application.vacancy.title,
+                    "applicant_name": application.applicant.name,
+                    "applicant_email": application.applicant.user.email,
+                    "resume": application.resume.occupation,
+                    "site_url": application_notifications_url,
+                    "current_site": current_site,
+                },
+            )
+        send_mail(
+            subject="New application for your Vacancy",
+            message=message,
+            from_email=settings.EMAIL_HOST_USER,
+            recipient_list=[application.vacancy.employer.email],
+            fail_silently=True,
+        )
