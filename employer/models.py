@@ -180,7 +180,7 @@ def create_job_offer_notification(sender, instance, created, **kwargs):
         )
 
         # send email to jobseeker if email notification enabled
-        if job_offer.vacancy.employer.email_notifications:
+        if job_offer.resume.jobseeker.email_notifications:
             current_site = get_current_site(None)
             job_offer_notifications_url = f"https://{current_site.domain}{reverse('job_offer_notifications')}"  # noqa
             message = render_to_string(
@@ -194,10 +194,10 @@ def create_job_offer_notification(sender, instance, created, **kwargs):
                     "current_site": current_site,
                 },
             )
-        send_mail(
-            subject="New job offer",
-            message=message,
-            from_email=settings.EMAIL_HOST_USER,
-            recipient_list=[job_offer.resume.jobseeker.email],
-            fail_silently=False,
-        )
+            send_mail(
+                subject="New job offer",
+                message=message,
+                from_email=settings.EMAIL_HOST_USER,
+                recipient_list=[job_offer.resume.jobseeker.email],
+                fail_silently=False,
+            )

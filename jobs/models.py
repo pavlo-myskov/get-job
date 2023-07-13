@@ -203,10 +203,10 @@ def create_application_notification(sender, instance, created, **kwargs):
                     "current_site": current_site,
                 },
             )
-        send_mail(
-            subject="New application for your Vacancy",
-            message=message,
-            from_email=settings.EMAIL_HOST_USER,
-            recipient_list=[application.vacancy.employer.email],
-            fail_silently=True,
-        )
+            send_mail(
+                subject="New application for your Vacancy",
+                message=message,
+                from_email=settings.EMAIL_HOST_USER,
+                recipient_list=[application.vacancy.employer.email],
+                fail_silently=True,
+            )

@@ -1,4 +1,4 @@
-from django.http import Http404, HttpResponseRedirect
+from django.http import Http404, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 from django.contrib import messages
 from django.contrib.auth import logout
@@ -12,6 +12,8 @@ from django.views.defaults import (
 )
 from django.views.generic import View
 from allauth.account.views import SignupView, PasswordChangeView
+
+from jobportal.base_views import RelatedUserRequiredMixin
 
 from .forms import CustomSignupForm, PasswordConfirmationForm
 
@@ -43,9 +45,7 @@ def custom_page_not_found_view(
     return page_not_found(request, exception, template_name)
 
 
-def custom_server_error_view(
-    request, template_name="errors/500.html"
-):
+def custom_server_error_view(request, template_name="errors/500.html"):
     """Override the default server error view to display custom 500 page
     on specific URL path"""
     return server_error(request, template_name)
@@ -128,4 +128,26 @@ class AccountDeactivateView(LoginRequiredMixin, View):
         # Display form with error message.
         return render(
             request, "account/account_deactivate.html", {"form": form}
+        )
+
+
+class EmailNotificationToggle(RelatedUserRequiredMixin, View):
+    """Toggle email notification settings"""
+
+    def post(self, request, *args, **kwargs):
+        user = request.user
+        if user.email_notifications:
+            user.email_notifications = False
+            user.save()
+            success_message = "Email notifications have been disabled"
+        else:
+            user.email_notifications = True
+            user.save()
+            success_message = "Email notifications have been enabled"
+
+        return JsonResponse(
+            {
+                "is_notify_enabled": user.email_notifications,
+                "successMsg": success_message,
+            }
         )
