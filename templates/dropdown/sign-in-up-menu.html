@@ -17,7 +17,7 @@
       </a>
     </li>
     <li>
-      <a class="dropdown-item" href="{% url 'account_signup' role=role %}">
+      <a class="dropdown-item" href="{% url 'account_signup' role=role %}{% if request.path != jobseeker_home and request.path != employer_home %}?next={{ request.path }}{% endif %}">
         Register new {{ role|title }}
       </a>
     </li>

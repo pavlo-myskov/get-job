@@ -233,6 +233,21 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = "users.User"
 
 
+# ___Crispy bootstrap5___
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+CRISPY_TEMPLATE_PACK = "bootstrap5"
+
+
+# Custom message tags for Bootstrap 4, 5
+MESSAGE_TAGS = {
+        messages.DEBUG: 'secondary',
+        messages.INFO: 'info',
+        messages.SUCCESS: 'success',
+        messages.WARNING: 'warning',
+        messages.ERROR: 'danger',
+ }
+
+
 # ___Allauth___
 
 AUTHENTICATION_BACKENDS = [
@@ -258,8 +273,6 @@ SITE_ID = 1
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 
-# No e-mail verification is required to complete the signup process.
-ACCOUNT_EMAIL_VERIFICATION = 'none'
 # Removes the username field from the signup form.
 ACCOUNT_USER_MODEL_USERNAME_FIELD = None
 # Requires the user to enter a unique e-mail address during signup.
@@ -270,31 +283,30 @@ ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
 # Prevents multiple signups with the same e-mail address.
 ACCOUNT_UNIQUE_EMAIL = True
-# Disables the e-mail verification when a user signs up.
-ACCOUNT_EMAIL_VERIFICATION = 'none'
 # asks the user to Remember Me at login to keep the user logged in
 # even after closing the browser.
 ACCOUNT_SESSION_REMEMBER = None
-
-# TODO: Add email verification:
-# email verification is mandatory to complete the signup process
-# prevents brute force attacks
-# ACCOUNT_EMAIL_VERIFICATION = "mandatory"
-
 # User gets blocked from logging back in until a timeout.
 ACCOUNT_LOGIN_ATTEMPTS_LIMIT = 5
 
+# email verification is mandatory to complete the signup process
+# prevents brute force attacks
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 
-# ___Crispy bootstrap5___
-CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
-CRISPY_TEMPLATE_PACK = "bootstrap5"
+# Logs the user in after confirming the email address.
+# Works only when user signs up
+ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True
 
+# Allows avoiding the need to confirm the email address
+# on page form and can be done only by clicking the link
+ACCOUNT_CONFIRM_EMAIL_ON_GET = True
 
-# Custom message tags for Bootstrap 4, 5
-MESSAGE_TAGS = {
-        messages.DEBUG: 'secondary',
-        messages.INFO: 'info',
-        messages.SUCCESS: 'success',
-        messages.WARNING: 'warning',
-        messages.ERROR: 'danger',
- }
+# Email SMTP settings
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'  # for gmail
+EMAIL_PORT = 587
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+# password must be generated from gmail account,
+# called App Passwords, not the same as account password
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
+EMAIL_USE_TLS = True

@@ -38,10 +38,7 @@
         {% if redirect_field_value %}
         <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
         {% endif %}
-        {% comment %}
-        <!-- TODO Reset password -->
         <a class="button secondaryAction float-end" href="{% url 'account_reset_password' %}">{% trans "Forgot Password?" %}</a>
-        {% endcomment %}
         <button type="submit" class="primaryAction btn btn-info w-100 mt-1 mb-3 py-1">{% trans "Sign In" %} &raquo;</button>
       </form>
 
