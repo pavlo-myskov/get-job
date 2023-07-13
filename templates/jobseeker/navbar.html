@@ -25,8 +25,16 @@
             </form>
           </li>
           <li class="nav-item">
-            <a class="nav-link text-royalpurple px-2 px-sm-4" href="#" aria-label="notifications">
-              <i class="fa-regular fa-bell fs-5"></i>
+            <a class="nav-link text-royalpurple px-2 px-sm-4" href="{% url 'job_offer_notifications' %}" aria-label="notifications">
+              <span class="position-relative">
+                <i class="fa-regular fa-bell fs-4 hover-grow"></i>
+                {% if user.unread_job_offer_notifications_count %}
+                  <span class="position-absolute start-0 translate-middle badge p-1 bg-danger text-white border border-light rounded-pill">
+                    <span id="notification-counter">{{ user.unread_job_offer_notifications_count }}</span>
+                    <span class="visually-hidden">recieved job offers</span>
+                  </span>
+                {% endif %}
+              </span>
             </a>
           </li>
           <li class="nav-item dropdown" id="navbar--dropdown">

@@ -73,3 +73,9 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def unread_application_notifications(self):
         return self.application_notifications.filter(is_read=False)
+
+    def unread_job_offer_notifications_count(self):
+        return self.job_offer_notifications.filter(is_read=False).count()
+
+    def unread_job_offer_notifications(self):
+        return self.job_offer_notifications.filter(is_read=False)
