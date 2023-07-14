@@ -17,7 +17,13 @@ https://about.codecov.io/blog/python-code-coverage-using-github-actions-and-code
 -->
 
 ## Overview
-The relevance of job search in our time constantly increases. [Get Job](https://get-job.live) is an online Job Platform that helps Jobseekers to get desirable jobs and Employers to find the right candidates. The app includes two modes: _Jobseeker Mode_ and _Employer Mode_. _Jobseeker Mode_ allows users to search for jobs and apply for jobs as well as create their resumes and manage their applications. And _Employer Mode_ allows users to post jobs, search for candidates and hire them. The *Get Job* portal is designed to be simple and intuitive so that users can easily navigate the app and perform the desired actions.
+The relevance of job search in our time constantly increases. [Get Job](https://get-job.live) is an online Job Platform that helps Jobseekers to get desirable jobs and Employers to find the right candidates.
+This platform presents two distinct modes: _Jobseeker Mode_ and _Employer Mode_.
+
+The *Jobseeker Mode* equips users with tools to explore job opportunities, apply to open positions, and construct their resumes, all while keeping track of their applications.
+Conversely, the Employer Mode empowers employers to advertise vacancies, sift through potential candidates, and hire them accordingly.
+
+The Get Job platform has been intuitively designed, ensuring simplicity and ease of navigation as users engage with the app to fulfill their specific needs. The platform uncovers a broad range of features progressively as users delve deeper into its use. It allows users to manage their data up to the fact that each application or job offer is stored as a snapshot. Thus even if the job is closed or edited, the user can always view the application in the state at the time of submission, as well as Employer can view the Jobseeker's resume at the time of application. Also Get Job provides users with the ability to receive notifications about new job offers(for Jobseekers) and applications(for Employers), as well as to disable email notifications and view notifications only in the app.
 
 Live Demo: https://get-job.live
 
@@ -30,7 +36,7 @@ Heroku: https://get-job.herokuapp.com
 ## Table of Contents
 ...
 
-## Agile UX
+## Agile Methodology
 The main goal of the app is to deliver a solution that creates real value for the users and _UX design_ and _Agile Methodology_ are the best way to achieve this goal.
 
 #### Project Goals
@@ -57,7 +63,8 @@ The main goal of the app is to deliver a solution that creates real value for th
     - As a Jobseeker I want see the dropdown menu so that I can access the most important features of the app.
     - As a Jobseeker I want to be able to log in to my account so that I can manage my data and apply for jobs.
     - As a Jobseeker I want to be able to update my profile so that I can keep my data up to date.
-    - As a Jobseeker I want to be able to get notifications so that I can be informed about my applications.
+    - As a Jobseeker I want to be able to get push notifications and emails so that I can be informed about new job offers.
+    - As a Jobseeker I want to be able to disable email notifications so that I can view notifications only in the app.
     - As a Jobseeker I want to be able to open the appropriate job so that I can see the full job description.
     - As a Jobseeker I want to be able to see a full detailed view of the job so that I can decide if the job is appropriate for me.
     - As a Jobseeker I want to be able to apply for a job so that I can get a job.
@@ -85,6 +92,7 @@ The main goal of the app is to deliver a solution that creates real value for th
     - As a Jobseeker I want to be able to see the number of jobs found in the list of jobs so that I can see how many jobs are available based on my search criteria.
     - As a Jobseeker I want to be able to see the footer with the navigation links so that I can easily navigate the app.
     - As a Jobseeker I want to be able to change the password so that I can protect my account.
+    - As a Jobseeker I want to be able to reset the password so that I can restore access to my account.
 
 #### Employer Goals
 - ##### First Time Visitor:
@@ -101,10 +109,11 @@ The main goal of the app is to deliver a solution that creates real value for th
     - As an Employer I want to be able to login to my account so that I can manage my jobs.
     - As an Employer I want to be able to update my profile so that I can keep my data up to date.
     - As an Employer I want to be able to see my all posted jobs so that I can manage them.
-    <!-- - As an Employer I want to be able to see applicants for my jobs so that I can select the right candidate. -->
+    - As an Employer I want to be able to see applicants for my jobs so that I can select the right candidate.
     - As an Employer I want to be able to open a resume card from the search results so that I can see the full resume.
     - As an Employer I want to be able to see a full detailed view of the jobseeker's resume so that I can decide if the candidate is the perfect match for my job.
-    - As an Employer I want to be able can to get notifications so that I can be informed about new applicants.
+    - As an Employer I want to be able can to get push and email notifications so that I can be informed about new applicants.
+    - As an Employer I want to be able to disable email notifications so that I can stop receiving emails.
     - As an Employer I want to be able to logout so that I can protect my data.
     - As an Employer I want to be able to open the list of all resumes.
     - As an Employer I want to be able to select the sort order for the list of resumes so that I can see the most relevant resumes first.
@@ -135,42 +144,63 @@ The main goal of the app is to deliver a solution that creates real value for th
 #### Moderator Goals
 - As a Moderator I want to be able to review and approve the posted jobs so that I can protect the app from inappropriate content.
 
-### Agile methodology
+### Agile Development
 This project was developed with the Agile methodology which allowed me to develop the app iteratively and incrementally, and adapt changes with flexibility even in the late stages of development.
 
 _GitHub Issues_ and _Projects_ are used to manage the development process. Each part of the app is divided into _Epics__ which are broken down into _User Stories_ and _Tasks_. An Epic represents a large body of work, such as a feature.
 
-Each Epic is developed in a separate branch and merged to the master branch after testing and debugging and then deployed to the production server on _Heroku_. The _master_ branch is always production-ready and all changes are deployed automatically to the production server. This helps isolate the development of each feature and minimize the risk of breaking the production code. The feature branches merged to the _master_ branch using _Pull Requests_ which allows to review of the code and test the changes before merging.
+The Project link: https://github.com/users/FlashDrag/projects/9
 
-_GitHub Kanban_ board is used to track the progress of the development process. When _User Story_ is created, it is automatically added to the _Backlog_ column to be prioritized. The product _Backlog_ is never complete, as it is a dynamic document to respond to changes effectively. As new features are identified, they are added to the product _Backlog_. As the product is released, the product _Backlog_ is constantly updated to reflect changes in the product and changes in the market. The Kanban board includes the following columns:
+Each Epic is developed in a separate feature branch and merged to the `develop` for testing and debugging and then mergeg to the `master` branch and deployed to the production server on _Heroku_ using CI/CD. The _master_ branch is always production-ready and all changes are deployed automatically to the production server. This helps isolate the development of each feature and minimize the risk of breaking the production code. The feature branches merged to the _develop_ branch using _Pull Requests_ which allows to review of the code and test the changes with the _CI/CD_ pipeline.
+
+_GitHub Kanban_ board is used to manage the process and track the progress of the development. When _User Story_ is created, it is automatically added to the _Backlog_ column to be prioritized. The product _Backlog_ is never complete, as it is a dynamic document to respond to changes effectively. As new features are identified, they are added to the product _Backlog_. As the product is released, the product _Backlog_ is constantly updated to reflect changes in the product and changes in the market. The Kanban board includes the following columns:
 - **Backlog** - the list of all _User _Stories_ that have not yet been scheduled to be completed. As new _User Stories_ are created, they are automatically added to the _Backlog_ column.
 - **Sprint Backlog** - the collection of prioritized _User Stories_ that have been selected for the current _Sprint_.
 - **Development** - the user stories that are currently being developed.
 - **Testing** - user stories that are currently being tested.
 - **Done** - all completed and tested _User Stories_.
 
-The _User Stories_ were prioritized using the _MoSCoW_ method and moved to the _Sprint Backlog_ column and added to the _Milestone_. The prioritisation was based on the following criteria:
+The Project Table is used to filter and then allocate _User Stories_ to _Milestones_ and prioritize them. At the start of each sprint the _User Stories_ are selected from the _Backlog_ and added to the _Sprint Backlog_ with attached priority labels.
+The _User Stories_ prioritized using the _MoSCoW_ method. The prioritisation was based on the following criteria:
 - **Must Have** - The _User Story_ is crucial and add significant value to the product and must be delivered in the current iteration.
 - **Should Have** - The _User Story_ is important but not critical to the success. Simply delivery is not guaranteed within the current iteration.
 - **Could Have** - The _User Story_ is desirable and would only be delivered in their entirety in a best-case scenario. When a problem occurs and the deadline is at risk, one or more could-have items are dropped.
 - **Won't Have** - The _User Story_ will not be delivered in the current delivery timebox but may be considered for the future.
+The prioritisation based on the 60-20-20 rule where 60% of the effort is spent on the Must Have, 20% on the Should Have and rest 20% on the Could Have. When the Sprint starts, the _User Stories_ are moved to the _Development_ column, where first the Must Have items. When the development of particular _User Story_ is completed, it is moved to the _Testing_ column, tested and then moved to the _Done_ column manually or using the _commit_ message with reference to the User Story ID. If the time is running out and the _User Stories_ are not completed, the Could Have items are dropped back to the _Backlog_ column for the re-prioritisation.
 
-_Milestones_ were used to group issues into sprints. When the _Sprint_ starts, the _Milestone_ is created and the _User Stories_ are prioritised using the _MoSCoW_ method and added to the _Sprint Backlog_ column. The user story that is currently being developed is moved to the _Development_ column.
-Then after the development is completed, the _User Stories_ are moved to the _Testing_ column. When the testing is successfully completed, the _User Stories_ closed using a _commit_ message with reference to the User Story ID.
-
+## UX Design
 ### Structure
 The Get Job platform is based on an intuitive and easy-to-use structure. Every page has a consistent layout and navigation to allow users to easily find the information they need. The app has a responsive design to provide an optimal viewing experience across a wide range of devices.
 
-- The Jobseeker's and Employer's Navbar structures are similar but have different purposes. The Jobseeker can search for jobs and the Employer can search for resumes as well as Jobseeker can create a resume and the Employer can create a job post.
+- The Jobseeker's and Employer's Navbar structures are similar but have different purposes. The Jobseeker can search for jobs and the Employer can search for resumes as well as Jobseeker can create a resume and the Employer can create a job post. Also the Jobseeker can manage his profile, created resumes, applied jobs and received job offers and the Employer can manage his account, posted jobs and sent job offers, as well as review the received job applications.
 - The index page of the app is a Jobseeker home page which can be toggled to the Employer home page. The Jobseeker and the Employer home page structure is similar. The difference is only in the content of the pages.
-- The login page contains an indentical login form for jobseekers and employers but the user has to select the role before login.
-- The registration forms are different for jobseekers and employers as they include different fields.
+- The functionality of the app is limited to the user's role if the user is not logged in. The unauthenticated user can only search for jobs or resumes and have limited access to details of the resumes. The signifcant functionality is available to the authenticated users only. This approach allows to keep the app simple and easy to use for the unauthenticated users and provide the full functionality to the authenticated users. It also keeps the user longer in the app and encourages to register and login. The app's capabilities are being revealed gradually as the user interacts with the app.
+- The login and registration pages contains an indentical login form for jobseekers and employers but the user has to select the role before login.
 - The List of Resumes and the List of Jobs page structures are identical. The difference is also only in the content of the pages.
-- The app also includes separate Detailed pages of the Resume and the Job.
+- The app also includes separate Detailed view of the Resume and the Job.
 - Jobseekers and Employers have their own Profile pages to manage their accounts and view their resumes and created jobs.
 
 
-#### Flowchart
+## Wireframes
+<!-- TODO -->
+...
+
+### UI Design
+#### Colour Scheme
+The colour scheme of the app is based on two main colours: *royalpurple* - `#874c87` and *cyan-blue* - `#2d7f9b`, and few generic colours: *white* - `#fff`, *black* - `#000`, *grey* - `#6c757d`, and *lightgrey* - `#f5f7f8`. The main colors responsible for the visual separation of type of content and page elements. The Jobseeker's pages are based on the *royalpurple* colour and the Employer's pages are based on the *cyan-blue* colour. The generic colours are used for the text and background elements both on the Jobseeker's and Employer's pages.
+<!-- TODO: add colour palete image -->
+
+#### Typography
+The app uses Lato font for all text elements. The font is selected for its unique balance of originality and readability. Originally designed for a corporate client, Lato is the perfect subtle typeface for the business site. Sleek and serious, this font looks professional without coming across as too stuffy. It is legible and works well on the small screens, which is important for the app that is designed to be used on mobile devices. The font is imported using the [Google Fonts API](https://fonts.google.com/).
+
+#### Styling
+The project style based the [Bootstrap](https://getbootstrap.com/) framework. It allowed me to create a responsive layout with minimal effort and customize the design to my needs. Bootstrap is a free and open-source CSS framework directed at responsive, mobile-first front-end web development. In this app I utilized the source Sass files and customized the Bootstrap variables to create a unique design.
+- The Django project is configured to work with the **SCSS preprocessor**. The SCSS files are compiled to CSS files using the [django-sass-processor](https://pypi.org/project/django-sass-processor/) package. The django-sass-processor converts `*.scss` or `*.sass` files into `*.css` while rendering templates. It provides a template tag `{% sass_src 'path/to/file.scss' %}` which can be used instead of the built-in templatetag `static`.
+The SCSS preprocessors allows to use variables, mixins, functions, and other features that are not available in plain CSS. I customized the Bootstrap variables to create a unique design.
+The main SCSS file `main.scss` imports all other custom SCSS files and Bootstrap SCSS files. The `main.css` file is generated from the `main.scss` file and is used in the project. The `_theme.scss` file contains the Bootstrap overrides and custom variables. The `_custom.scss` file contains the all custom styles of the app and based on the SCSS and CSS code.
+
+
+### Flowchart
 The flowchart below shows the structure of the app and the relationships between the pages. The flowchart was created using [Microsoft Visio](https://www.microsoft.com/en-ie/microsoft-365/visio/).
 ![flowchart]()
 
@@ -181,24 +211,125 @@ The ER Diagram below shows the structure of the database and the relationships b
 ![er_diagram]()
 
 
-### UI Design
-...
-
-#### Wireframes
-
-
 ## Features
 Since the User always visits the site for some content and some purpose, the Features of the app are primarily designed to solve the problems of the Jobseekers and Employers and help them to achieve their goals. The UX is designed to create single-use learning and does not distract users' attention from the main goal - to find a job or a candidate.
+
+## User authentication
+To get access to the app's functionality the user has to register and login. The app uses the [Django Allauth](https://django-allauth.readthedocs.io/en/latest/) package to handle the user authentication. The package provides a set of views and templates to handle the user registration, login, logout, password reset and email confirmation.
+
+The Sign In and Sign Up links are available in the navbar dropdown menu for the unauthenticated users. The Sign In and Sign Up pages contain the login and registration forms respectively. The authentication system unified for both jobseekers and employers.
+
+The system uses the email address as the username. The email address is unique for each user and is used to identify the user. The password is used to authenticate the user. The password is stored in the database in the hashed format. The password is not visible to the user and is not stored in the session. The user has to enter the password each time he logs in.
+
+| Jobseeker Sign In | Employer Sign In |
+| --- | --- |
+| ![jobseeker_sign_in](docs/images/features/account/signin-dropdown-jobseeker.png) | ![employer_sign_in](docs/images/features/account/signin-dropdown-employer.png) |
+
+- #### Sign In
+The app allows users create an account and have additional features that are not available for the anonymous users. To get on the register or login page, the user can click on the `Sign Up/Sing In` button in the Navbar or they will be redirected automatically to the login page when they are trying to access the page that is available only for the logged in users, e.g. the Apply for the Job page or the Hiring page.
+The Sign In page is universal for both jobseekers and employers. It contains the internal navbar and login form. The user type (jobseeker or employer) is set automatically based on the email address.
+
+- ##### Internal Navbar
+The internal navbar allows the user to switch between the Sign In and Sign Up pages. Also the user can return to the Home page by clicking the appropriate icon.
+- ##### Login Form
+The login form contains the *email*, *password*, *remember me*, and *forgot password* fields. The *email* and *password* fields are required. The *remember me* checkbox allows the user to stay logged in after closing the browser. The checkbox is checked by default, so the user can stay logged in for a long time without the need to re-enter the password. The *forgot password* link redirects the user to the Password Reset page.
+- ##### Redirect
+The Sign In form redirects the user to the Home page appropriate to the user type (Jobseeker or Employer) if user came to the Sign In page from the Home page. So, if the user came to the Sign In page from the Jobseeker's Home page, but decided to login with an Employer, the app redirects them to the Employer's Home page after successful login. If the user came to the Sign In page from another page, the app redirects them to the previous page after successful login using the Django's `next` parameter. It is useful when the user tries to access the page that requires authentication, such as the `Apply for Job` page. The user is redirected to the Sign In page, but after successful login the app redirects them back to the Apply for Job form to complete the application.
+
+The authenticated user can have access only to the menu appropriate to the role. So the Jobseeker can not access the options related to the Employer and vice versa. Instead of the Profile button for an authenticated user not associated with his role, the user will see the specific message that the user is logged in as a Jobseeker/Employer and the Logout button.
+
+![Sign In page](docs/images/features/account/sign-in.png)
+
+
+- #### Sign Up
+The Sign Up page is also universal for both types of users. It contains the internal navbar and registration form.
+
+The form includes the *jobseeker/employer* toggle button, *email*, *name*, *password*, and *confirm password*.
+
+- The role field is a choice field with two options - Jobseeker and Employer. The initial role set automatically and depends where user is coming from. If the user is coming from the page related to Jobseeker, the role is set to Jobseeker. If the user is coming from Employer's page, the role is set to Employer appropriately. But the user can change the role by selecting the appropriate option based on radio buttons. The role field is mandatory and the user can not submit the form without selecting the role, as the role tied to the user account and can not be changed later.
+- The email field is a unique identifier of the user and the system does not allow users to register multiple accounts with the same email address. So the Jobseeker and the Employer can not have the same email address.
+- The password field as also required and the user can not submit the form without setting the password. The validation of the password is implemented on the client side and on the server side based on the Django Allauth package.
+
+The app uses email confirmation to verify the user's email address, that prevents brute force attacks. The user can not login to the app until the email address is verified. The confirmation method based on the combination of the `ACCOUNT_CONFIRM_EMAIL_ON_GET` and `ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION` parameters of the Django Allauth package. These configuration allows the user to confirm the email address by clicking on the link in the email and then automatically login the user after successful confirmation without the need to login manually and then redirect the user to previous page where the user came from to register the account. The confirmation link is valid for 48 hours. If the user does not confirm the email address within 3 days (by default `ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS=3`), the user has to register again. The invalid link redirects the user to appropriate page with the error message and the link to the Sign In form.
+
+The email verification feature allows the app to use the user email address for the password reset and communication with the user.
+
+Additionaly for the user convenience, the form contains the header with the back to the home page button and the link to the Sign In page if the user already has an account.
+
+| Jobseeker Sign Up | Employer Sign Up |
+| --- | --- |
+| ![jobseeker_sign_up](docs/images/features/account/Sign-Up-jobseeker.png) | ![employer_sign_up](docs/images/features/account/Sign-Up-employer.png) |
+
+| Verification Message | Verification Email |
+| --- | --- |
+| ![verification_message](docs/images/features/account/Verify-Your-E-mail-Address.png) | ![verification_email](docs/images/features/account/Verify-Your-E-mail-Address-message.png) |
+
+**Invalid Link**
+![invalid_link](docs/images/features/account/invalid.png)
+
+
+- #### Logout
+The Logout button is available for the authenticated users only and located in the Profile dropdown menu or Sign Up/Sign menu on the page that not associated with current role. When the user clicks on the Logout button, the modal window appears with the confirmation message. The user can confirm the logout by clicking on the Logout button or cancel the logout by clicking on the Dismiss button. After successful logout, the user will be redirected to the Home page.
+
+**Not associated with current role**
+![Logout button](docs/images/features/account/logout-not-role.png)
+
+**Logout modal window**
+![Logout modal](docs/images/features/account/logout.jpg)
+
+
+- #### Password Reset
+The email verification feature allows the user to reset the password using the link in the email.
+
+The reset the password the user has to click on the Forgot Password link on the Sign In page or in the Profile menu of the authenticated user. Then the user will be redirected to the Password Reset page where they have to enter the email address associated with the account. Then the app will send the email with the link to the Password Reset page. On the Password Reset page the user has to enter the new password twice.
+
+**Password Reset**
+![Password Reset](docs/images/features/account/password-reset.png)
+
+**Password Reset Email**
+![Password Reset Email](docs/images/features/account/password-reset-link.png)
+
+**Set New Password**
+![Set New Password](docs/images/features/account/password-set-new.png)
+
+- #### Change Password
+The authenticated user can change the password on the Profile page. The user has to enter the current password and the new password twice. If the user forgets the current password, the user can reset the password using the Forgot Password link that redirects the user to the [Password Reset](#password-reset) page.
+
+![Change Password](docs/images/features/account/change_password.png)
+
+
+## Jobseeker
+
+### All Pages (except forms)
+- #### Navbar
+The navigation bar includes the app logo, the toggle button to switch between the Jobseeker's and Employer's Home pages, the Sign-Up / Sign-In dropdown menu with the Sign-Up and Sign-In links for the unauthenticated users and the Profile dropdown menu for the authenticated users.
+
+The Profile dropdown menu contains:
+- **Search bar** where the jobseeker can search for job by job title keywords.
+- **My Profile** link which redirects to the Profile page where the jobseeker can view and edit his profile.
+- **Search for Jobs** link which redirects to the List of Jobs page with the fully functional search panel.
+- **Create Resume** link which redirects to the Create Resume form.
+- **My Resumes** link which redirects to the Dashboard page with the list of resumes created by the jobseeker.
+- **My Applications** link which redirects to the Dashboard page with the list of applications submitted by the jobseeker.
+- **Job Offers** link which redirects to the Dashboard page with the list of job offers received by the jobseeker.
+- **Saved Jobs** link which redirects to the List of saved Jobs page.
+- **Logout** link which logs out the user and redirects to the Home page.
+
+For the authenticated users the NavBar also contains the **Notifications** icon which shows the number of unread notifications and the **Search bar** on the large screens instead of the search bar in the Profile dropdown menu.
+
+The Navbar is fully responsive and the text of the Logo and Sign Up / Sign In buttons as well as the Search bar is hidden on small screens to save space. The Dropdown menu expands to full width on small screens to make it easier to use. In addition, the search bar of the Navbar is moved to the Dropdown menu on small screens to be easily found as it is the main feature of the app.
+The Navbar is flexible and always available when the user needs. It hides on scroll down and shows on scroll up.
+| Mobile navbar | Desktop navbar |
+|:---:|:---:|
+| ![navbar_mobile](docs/images/features/mobile-navbar.png) | ![navbar_desktop](docs/images/features/pc-navbar.png) |
+
+| Mobile dropdown menu | Desktop dropdown menu |
+|:---:|:---:|
+| ![navbar_mobile_dropdown](docs/images/features/mobile-dropdown.png) | ![navbar_desktop_dropdown](docs/images/features/pc-dropdown.png) |
 
 ### Jobseeker's Home page
 The Jobseeker's Home page is designed to help Jobseekers to find a job quickly and easily. The page divided into 5 sections: Navbar, Hero, Search panel, Latest Jobs, and Footer.
 ![jobseeker_home]()
-
-#### Sections:
-- #### Navbar
-The navigation bar is designed to be simple and intuitive. It includes the app logo, the toggle button to switch between the Jobseeker's and Employer's Home pages, the Sign-Up / Sign-In buttons if the user is not logged in and the Search bar, a Notification icon and the Profile dropdown menu if the user is logged in. The Navbar is fully responsive and the text of the Logo and Sign Up / Sign In buttons as well as the Search bar is hidden on small screens to save space. The Dropdown menu expands to full width on small screens to make it easier to use. In addition, the search bar of the Navbar is moved to the Dropdown menu on small screens to be easily found as it is the main feature of the app.
-The Navbar is flexible and always available when the user needs. It hides on scroll down and shows on scroll up.
-![navbar]()
 
 - #### Hero
 The Hero section contains call-to-action headings and a button to encourage users to create a resume. The image of the section conveys the main message of the app - recruiters are looking for candidates reviewing resumes. When the users are clicking on the `Create Resume` button and if they are logged in, then they are redirected to the Create Resume page, otherwise to the Sign-Up / Sign-In.
@@ -300,33 +431,6 @@ of the Django Form. It allows me to validate the inputed by the user age range u
 
 ### Hiring page
 ...
-
-### Login/Register
-The app allows users create an account and have additional features that are not available for the anonymous users. To get on the register or login page, the user can click on the `Sign Up/Sing In` button in the Navbar or they will be redirected automatically to the login page when they are trying to access the page that is available only for the logged in users, e.g. the Apply for the Job page or the Hiring page.
-
-- #### Sign Up form
-The Sign Up form is implemented based on the Django Allauth package. The form contains the role, email, password and password confirmation fields and the Sign Up button.
-- The role field is a choice field with two options - Jobseeker and Employer. The initial role set automatically and depends where user is coming from. If the user is coming from the page related to Jobseeker, the role is set to Jobseeker. If the user is coming from Employer's page, the role is set to Employer appropriately. But the user can change the role by selecting the appropriate option based on radio buttons. The role field is mandatory and the user can not submit the form without selecting the role, as the role tied to the user account and can not be changed later.
-- The email field is a unique identifier of the user and the system does not allow users to register multiple accounts with the same email address. So the Jobseeker and the Employer can not have the same email address.
-- The password field as also required and the user can not submit the form without setting the password. The validation of the password is implemented on the client side and on the server side based on the Django Allauth package.
-
-After successful registration, the user is redirected to the Profile page appropriate to the selected role to complete the profile.
-
-Additionaly for the user convenience, the form contains the header with the back to the previous page button that based on the next parameter in the url, and the Sign In link if the user already has an account.
-
-- #### Login form
-The Login form is also based on the Django Allauth. The user can login by email and password. The user does not have to select the role to login, as the role is tied to the user account. So the role (Jobseeker or Employer) is set automatically based on the user account.
-So the user will be redirected to the appropriate page after successful login based on the next parameter in the url. If the next parameter is not set, the user will be redirected to the Home page appropriate to the role of an account. Although the user will be redirected to next parameter if it is set, the user can only access the page appropriate to the role. So if the unauthenticated user tries to apply for the job, they will be redirected to the Login page. After successful login, the user will be redirected to the Apply for the Job form if the role is Jobseeker, otherwise the user cannot access the Apply for the Job page and get appropriate feedback.
-When the user is logged in, the Sign Up/Sign button in the Navbar is replaced by the Profile button. The Profile button contains the dropdown menu. Each role has its own dropdown menu with the appropriate links:
-- **Jobseeker**:
-My Profile, Search for Jobs, Create Resume, My Applications, Favourite Jobs, Logout
-- **Employer**:
-My Profile, Search for Resumes, Add a Vacancy, My Jobs, Logout
-
-The authenticated user can have access only to the menu appropriate to the role. So the Jobseeker can not access the options related to the Employer and vice versa. Instead of the Profile button for an authenticated user not associated with his role, the user will see the specific message that the user is logged in as a Jobseeker/Employer and the Logout button.
-
-- #### Logout
-The Logout button is available for the authenticated users only and located in the Profile dropdown menu or Sign Up/Sign menu on the page that not associated with current role. When the user clicks on the Logout button, the modal window appears with the confirmation message. The user can confirm the logout by clicking on the Logout button or cancel the logout by clicking on the Dismiss button. After successful logout, the user will be redirected to the Home page.
 
 ### Development Features
 - #### Django Authentication and Authorization System
