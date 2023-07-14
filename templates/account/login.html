@@ -17,10 +17,9 @@
       <div class="d-flex align-items-center justify-content-between">
         <!-- Return to previous page: HTTP_REFERER allows to the url by the hovering over the link,
           js is used to prevent the loading the back url and dont save url in the browser history to -->
-        <a href="{{ request.META.HTTP_REFERER }}" onclick="event.preventDefault(); window.history.back();"
-          class="text-decoration-none d-flex align-items-center text-muted fs-5"
-          area-label="return to previous page">
-          <i class="fa fa-arrow-left"></i>
+        <a href="{% url 'jobseeker_home' %}" class="text-decoration-none d-flex align-items-center text-muted fs-5"
+          area-label="go to home page">
+          <i class="fa fa-home"></i>
         </a>
         <a href="{{ signup_url }}" class="btn btn-outline-success btn-sm px-3 px-sm-3 py-0">Sign Up</a>
       </div>
