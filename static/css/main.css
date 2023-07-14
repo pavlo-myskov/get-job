@@ -7770,6 +7770,9 @@ textarea.form-control-lg {
   .d-print-none {
     display: none !important; } }
 
+body {
+  font-family: 'Lato', sans-serif; }
+
 @media screen and (max-width: 992px) {
   .dropdown {
     position: static; }
