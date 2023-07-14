@@ -267,6 +267,15 @@ Additionaly for the user convenience, the form contains the header with the back
 **Invalid Link**
 ![invalid_link](docs/images/features/account/invalid.png)
 
+- **Prevent enumeration**
+The app prevents the enumeration of the registered users by redirecting all users(registered and unregistered) to the same page with the same message. In our case it's a *Verify Your Email Address* page. This is a security feature to help protect against attacks where a malicious actor tries to discover valid emails by observing the system's response to input. So the app does not allow the user to check if the email address is registered or not. When the user tries to register the account with the email address that is already exists in the system, the app sends the email with message that someone tried to sing up for an account using the user's email address. Also it contains a link to the Reset Password page in case if the user forgot the password. If the `ACCOUNT_EMAIL_VERIFICATION` is not set to `mandatory` in the settings, then the `prevent_enumeration` attribute in the `BaseSignupForm` class set to `False` and the app allows the user to check if the email address is registered or not as the `clean_email` method of the `BaseSignupForm` class raises the `ValidationError` that display the sign up form error message.
+
+It possible to set the `ACCOUNT_PREVENT_ENUMERATION` parameter to `False` in the settings to allow the user to check if the email address is registered or not even if the `ACCOUNT_EMAIL_VERIFICATION` is set to `mandatory`, but it is **not recommended**.
+
+| Validation Error | Email Exists |
+| --- | --- |
+| ![validation_error](docs/images/features/account/Account-Already-Exists-error.png) | ![email_exists](docs/images/features/account/Account-Already-Exists.png) |
+
 
 - #### Logout
 The Logout button is available for the authenticated users only and located in the Profile dropdown menu or Sign Up/Sign menu on the page that not associated with current role. When the user clicks on the Logout button, the modal window appears with the confirmation message. The user can confirm the logout by clicking on the Logout button or cancel the logout by clicking on the Dismiss button. After successful logout, the user will be redirected to the Home page.
