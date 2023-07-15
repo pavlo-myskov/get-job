@@ -66,7 +66,7 @@ class HomeView(JobSearchFormMixin, ListView):
     template_name = "jobseeker/home.html"
 
     def get_queryset(self):
-        """Annotate the vacancies with is_saved field
+        """Annotate the vacancies with is_saved and applied field
         if user is authenticated and is a jobseeker"""
         queryset = super().get_queryset()
         return annotate_jobs(queryset, self.request)

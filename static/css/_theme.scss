@@ -31,12 +31,12 @@ $custom-font-sizes: (
 $display-font-sizes: map-merge($display-font-sizes, $custom-font-sizes);
 
 // Pagination
-$pagination-color: $royalpurple;
+$pagination-color: $secondary;
 $pagination-active-bg: $secondary;
 $pagination-active-border-color: $secondary;
-$pagination-hover-color: $royalpurple;
-$pagination-focus-color: $royalpurple;
-$pagination-focus-box-shadow: 0 0 0 0.2rem rgba($royalpurple, 0.25);
+$pagination-hover-color: $secondary;
+$pagination-focus-color: $secondary;
+$pagination-focus-box-shadow: 0 0 0 0.2rem rgba($secondary, 0.25);
 
 
 // Accordion button, universal color for both jobseeker and employer

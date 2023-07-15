@@ -62,7 +62,6 @@
         <div class="row row-cols-1 g-2">
           {% for vacancy in job_list %}
           <!-- ______vacancy card______ -->
-           <a name="{{ vacancy.id }}"></a>
           {% include "jobs/vacancy_card.html" %}
           {% endfor %}
         </div>

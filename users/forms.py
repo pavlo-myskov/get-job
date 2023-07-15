@@ -41,6 +41,9 @@ class CustomSignupForm(SignupForm):
     @transaction.atomic  # rollback the database if there is an error
     def save(self, request):
         user = super(CustomSignupForm, self).save(request)
+        # return the inherited save method if the user already exists
+        if not user:
+            return user
         # override the default role field with the selected role
         user.role = self.cleaned_data["role"]
         user.save()

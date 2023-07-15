@@ -3546,7 +3546,7 @@ textarea.form-control-lg {
 .page-link {
   position: relative;
   display: block;
-  color: #874c87;
+  color: #6c757d;
   text-decoration: none;
   background-color: #fff;
   border: 1px solid #dee2e6;
@@ -3556,15 +3556,15 @@ textarea.form-control-lg {
       transition: none; } }
   .page-link:hover {
     z-index: 2;
-    color: #874c87;
+    color: #6c757d;
     background-color: #e9ecef;
     border-color: #dee2e6; }
   .page-link:focus {
     z-index: 3;
-    color: #874c87;
+    color: #6c757d;
     background-color: #e9ecef;
     outline: 0;
-    box-shadow: 0 0 0 0.2rem rgba(135, 76, 135, 0.25); }
+    box-shadow: 0 0 0 0.2rem rgba(108, 117, 125, 0.25); }
 
 .page-item:not(:first-child) .page-link {
   margin-left: -1px; }
@@ -7769,6 +7769,9 @@ textarea.form-control-lg {
     display: inline-flex !important; }
   .d-print-none {
     display: none !important; } }
+
+body {
+  font-family: 'Lato', sans-serif; }
 
 @media screen and (max-width: 992px) {
   .dropdown {

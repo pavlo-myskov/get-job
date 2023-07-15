@@ -111,6 +111,7 @@ class ResumeCreateForm(forms.ModelForm):
             ),
         }
         help_texts = {
+            "body": "Minimum 100 characters",
             "cv": "Upload your CV in one of the following formats: "
             f"{', '.join(allowed_cv_types)}<br>"
             "Maximum file size: 512 KB",

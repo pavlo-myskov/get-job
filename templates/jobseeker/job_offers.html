@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block head_title %}Applicants{% endblock %}
+{% block head_title %}Job Offers{% endblock %}
 
 {% block content %}
 {% include 'jobseeker/navbar.html' %}
@@ -157,6 +157,13 @@
                               <i class="fa fa-eye hover-grow"></i>
                               View
                             </div>
+                          </div>
+                          <!-- Offered date -->
+                          <div class="d-flex justify-content-between">
+                            <span class="text-muted">Offered on</span>
+                            <span class="text-muted">
+                              {{ offer.offered_on|date:"d M Y" }}
+                            </span>
                           </div>
                         </li>
                       {% endfor %}

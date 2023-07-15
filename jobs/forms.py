@@ -113,6 +113,10 @@ class JobCreateForm(forms.ModelForm):
         ]
         labels = {"body": "Job Description"}
 
+        help_texts = {
+            "body": "Minimum 100 characters",
+        }
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         # add cyan-input class to all fields
