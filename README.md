@@ -272,7 +272,7 @@ Additionaly for the user convenience, the form contains the header with the back
 | --- | --- |
 | ![verification_message](docs/images/features/account/Verify-Your-E-mail-Address.png) | ![verification_email](docs/images/features/account/Verify-Your-E-mail-Address-message.png) |
 
-**Invalid Link**
+*Invalid Link*
 ![invalid_link](docs/images/features/account/invalid.png)
 
 - **Prevent enumeration**
@@ -288,10 +288,10 @@ It possible to set the `ACCOUNT_PREVENT_ENUMERATION` parameter to `False` in the
 - #### Logout
 The Logout button is available for the authenticated users only and located in the Profile dropdown menu or Sign Up/Sign menu on the page that not associated with current role. When the user clicks on the Logout button, the modal window appears with the confirmation message. The user can confirm the logout by clicking on the Logout button or cancel the logout by clicking on the Dismiss button. After successful logout, the user will be redirected to the Home page.
 
-**Not associated with current role**
+*Not associated with current role*
 ![Logout button](docs/images/features/account/logout-not-role.png)
 
-**Logout modal window**
+*Logout modal window*
 ![Logout modal](docs/images/features/account/logout.jpg)
 
 
@@ -300,19 +300,28 @@ The email verification feature allows the user to reset the password using the l
 
 The reset the password the user has to click on the Forgot Password link on the Sign In page or in the Profile menu of the authenticated user. Then the user will be redirected to the Password Reset page where they have to enter the email address associated with the account. Then the app will send the email with the link to the Password Reset page. On the Password Reset page the user has to enter the new password twice.
 
-**Password Reset**
+*Password Reset*
 ![Password Reset](docs/images/features/account/password-reset.png)
 
-**Password Reset Email**
+*Password Reset Email*
 ![Password Reset Email](docs/images/features/account/password-reset-link.png)
 
-**Set New Password**
+*Set New Password*
 ![Set New Password](docs/images/features/account/password-set-new.png)
 
 - #### Change Password
 The authenticated user can change the password on the Profile page. The user has to enter the current password and the new password twice. If the user forgets the current password, the user can reset the password using the Forgot Password link that redirects the user to the [Password Reset](#password-reset) page.
 
 ![Change Password](docs/images/features/account/change_password.png)
+
+- #### Account Deleting
+The user can delete(in fact deactivate) their account by clicking on the `Delete` button in the _Delete account_ section of the Profile page. The button redirects the user to the `Confirm Account Delete` page where they must confirm the deletion by entering their password. If the user enters the correct password, the account is deactivated and the app redirects the user to the Home page and displays the message that the account is deactivated and will be deleted in 30 days. So if the user changes their mind, they can contact the app support and reactivate their account. The appropriate message is displayed when the user tries to log in with the deactivated account as well as the app redirects them to the Create Account page.
+
+*Delete Account Confirmation*
+![Delete Account](docs/images/features/account/acc-delete.png)
+
+*Account Deactivated Message*
+![Account Deactivated](docs/images/features/account/acc-delete-msg.png)
 
 [Back to top](#table-of-contents)
 
@@ -501,15 +510,40 @@ The user can also Reset the form by clicking on the `Reset` button. The button c
 *Job Application page*
 ![jobseeker apply for the job](docs/images/features/job_apply.png)
 
-*Email notification*
+*New Application Email notification*
 ![application email notification](docs/images/features/new-application-email.png)
+
+[Back to top](#table-of-contents)
 
 
 ### Jobseeker's Profile page
-...
+The Jobseeker's Profile is accessible from the navbar dropdown menu. The page contains the nav header with the *To Job Search* link and Home button, Profile details, Email notifications, [Change password](#Change-Password) and [Delete account](#Account-Deleting) sections.
 
-- #### Account Deleting
-The user can delete(in fact deactivate) their account by clicking on the `Delete` button in the _Delete account_ section of the Profile page. The button redirects the user to the `Confirm Account Delete` page where they must confirm the deletion by entering their password. If the user enters the correct password, the account is deactivated and the app redirects the user to the Home page and displays the message that the account is deactivated and will be deleted in 30 days. So if the user changes their mind, they can contact the app support and reactivate their account. The appropriate message is displayed when the user tries to log in with the deactivated account as well as the app redirects them to the Create Account page.
+- #### Jobseeker Profile details
+The Profile details section is designed as the card with the user's avatar, full name, gender, date of birth, address, phone number, email, and the `Edit` button. The user can update their profile details by clicking on the `Edit` button. The button redirects the user to the `Edit Profile` page.
+
+- #### Email notifications
+The Email notifications button allows the user to enable or disable the New Job Offers notifications. The button is designed as Bootstrap button with Font Awesome toggler icon inside. The email notifications are enabled by default and the button is green, and the toggle icon is `fa fa-toggle-on`. If the user clicks on the button, the app sends the post request to the server using Ajax and toggles the notifications. It allows the user to enable or disable the notifications without reloading the page. The button is updated to the red color and the toggler icon is changed to the `fa fa-toggle-off` icon.
+
+![jobseeker profile page](docs/images/features/jobseeker-profile.png)
+
+[Back to top](#table-of-contents)
+
+### Jobseeker Edit Profile
+The user can update their profile details on the Edit Profile page. The user can change all details that are displayed on the Profile page except the email. The email is not editable because it is used as the username and is unique. If the user wants to use another email, they must create a new account. The title of the form has the tooltip with the description that appears when the user hovers over the title. It helps the user to understand why they have to provide the details. Running a little ahead, the details are used to generate the resumes.
+
+*I chose this approach because the user can have multiple resumes and the personal data that is included in resumes usually is constant. If the user updates the details on the Edit Profile page, the resumes also updated automatically.*
+
+![jobseeker edit profile page](docs/images/features/jobseeker_profile_update.png)
+
+##### Profile Picture
+To store the images of the Jobseekers, I used the [Cloudinary](https://cloudinary.com/) service.
+The Cloudinary field uses the Cloudinary API to upload the images to the Cloudinary server and store the image URL in the database. The Cloudinary API provides a lot of functionality to manipulate the images.
+For the Jobseekers profile avatars, I used the `gravity` AI feature to crop the images to the square shape based on the face detection. Also, I set `public_ids` based on the user email addresses as the unique identifiers of the images. The names generated from the email addresses using the regex pattern to replace the all non-alphanumeric characters with the underscore. The images resized to the 200x200 pixels and changed the format to the WebP to improve the performance of the app and save the Cloudinary storage space.
+Also if the user doesn't upload the image, the default avatar is used.
+
+To validate the uploded data I implemented the custom File validator `jobportal.validators.FileValidator` that checks the image size and format. The validation prevents the user from uploading the images larger than 5MB and the images that are not in the jpeg, png, webp, svg+xml, gif, tiff, bmp, jpg. The custom validator also used for other types of files that are uploaded by the users.
+The validator passed to the `to_python` method of the extended `cloudinary.forms.CloudinaryFileField` class. It allows to validate the data before it is converted to the CloudinaryResource object.
 
 - #### My Resumes
 The user can create multiple resumes and manage them on the My Resumes page. The page contains the table of the current Jobseeker resumes. Each row of the table represents the resume and includes the Resume Title(Ocupation), the Resume Status, the Last Updated date and the Action buttons.
@@ -538,12 +572,6 @@ The user can save any job to the Favorites by clicking on the `Save` button on t
 - #### Employer's Search bar
 
 - #### Latest Resumes
-
-
-##### Card Image
-To store the images of the Jobseekers, I used the [Cloudinary](https://cloudinary.com/) service.
-The Cloudinary field uses the Cloudinary API to upload the images to the Cloudinary server and store the image URL in the database. The Cloudinary API provides a lot of functionality to manipulate the images.
-For the Jobseekers profile avatars, I used the `gravity` AI feature to crop the images to the square shape based on the face detection. Also, I set `public_ids` based on the user email addresses as the unique identifiers of the images. The names generated from the email addresses using the regex pattern to replace the all non-alphanumeric characters with the underscore. The images resized to the 200x200 pixels and changed the format to the WebP to improve the performance of the app and save the Cloudinary storage space.
 
 ### Resume Search
 
