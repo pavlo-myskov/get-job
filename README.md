@@ -337,7 +337,7 @@ The Profile dropdown menu contains:
 For the authenticated users the NavBar also contains the **Notifications** icon which shows the number of unread notifications and the **Search bar** on the large screens instead of the search bar in the Profile dropdown menu.
 
 The Navbar is fully responsive and the text of the Logo and Sign Up / Sign In buttons as well as the Search bar is hidden on small screens to save space. The Dropdown menu expands to full width on small screens to make it easier to use. In addition, the search bar of the Navbar is moved to the Dropdown menu on small screens to be easily found as it is the main feature of the app.
-The Navbar is flexible and always available when the user needs. It hides on scroll down and shows on scroll up.
+The Navbar is flexible and always available when the user needs. It hides on scroll down and shows on scroll up. The dropdown menu is also hides on scroll down with the Navbar but not shows on scroll up.
 | Mobile navbar | Desktop navbar |
 |:---:|:---:|
 | ![navbar_mobile](docs/images/features/mobile-navbar.png) | ![navbar_desktop](docs/images/features/pc-navbar.png) |
@@ -377,16 +377,16 @@ It is placed in the center of the page to be easily found and allows users to ac
 The Latest Jobs section is a list of the latest vacancies posted by Employers. Each Vacancy represented by a Bootstrap Card component. The home page contains four active(approved) latest vacancies. The section is fully responsive. On small screens, the cards are arranged in one column and on extra large screens in two columns to be easily readable.
 
 ##### Vacancy Card
-Each card inclule Job Title, Time ago, Company Name, Job Location, Salary, Company Logo, main section of the Job Description and footer with the action buttons.
+Each card inclule Job Title, Time since, Company Name, Job Location, Salary, Company Logo, main section of the Job Description and footer with the action buttons.
 
 - **Card Header**
-The card header contains Job Title and Time ago. The Jobseekers can see the `Applied` badge on the cards of the jobs they have already applied for. The feature based on Django annotations, as the `Vacancy` model initially does not contain the `applied` field.
+The card header contains Job Title and Time since. The Jobseekers can see the `Applied` badge on the cards of the jobs they have already applied for. The feature based on Django annotations, as the `Vacancy` model initially does not contain the `applied` field.
 
-The Time ago represents using custom template filter that extends the built-in `timesince` filter. The filter converts datetime object to the string with the number of units and the unit name that passed since the datetime object. The datetime object is the `updated_on` field of the `Vacancy` model.
+The Time since represents the custom template filter extends the inherent timesince filter to denote the time elapsed. This filter transforms a datetime object into a string, showing the amount of time in a specific unit since the datetime object was last modified. The datetime object is the `updated_on` field of the `Vacancy` model.
 
 The Job Title is truncated with the Bootstrap class `text-truncate` to meke the cards more compact and presentable.
 
-The Card is fully responsive and the Time ago is moved to the bottom of the Job Title on small screens and the Company logo is decreased in size and moved to the top right corner of the card.
+The Card is fully responsive and the Time since is moved to the bottom of the Job Title on small screens and the Company logo is decreased in size and moved to the top right corner of the card.
 
 **Card Body**
 The card body is clickable and redirects the user to the Job Details page. To tell the user that the card is clickable, on the hover the card body is highlighted with the shadow. Also I added the double arrow to the description section, which is kind of a hint that the card is clickable on the small screens.
@@ -417,7 +417,7 @@ The Job Search page contains the search results and the advanced search panel. T
 ![jobseeker_search](docs/images/features/jobs.png)
 
 - #### Header
-The header contains the Back to Home button that redirects the user to the Home page and Found Job Count that displays the number of jobs found by the search query. The Job Count is updated each time the user submits the search query. If there are no jobs found, the counter is changed to the `No jobs found`.
+The header contains the Back to Home button that redirects the user to the Home page and Found Job Count that displays the number of jobs found by the search query. The Job Count is updated each time the user submits the search query. If there are no jobs found, the counter is changed to the `No jobs found`. The Job word is changed to the Jobs if the number of jobs is more than 1. It is implemented with the `page_obj.paginator.count` and template filter `pluralize`. This approach allows me to avoid using the *if-else* statement and looks more elegant.
 
 - #### Search results
 The search results represented by the Bootstrap Cards, the same as the Latest Jobs section on the Home page. Each card is clickable and redirects the user to the Job Details page. The cards are arranged in one column with 6 cards per page. The vacancies is ordered by the `updated_on` field of the `Vacancy` model. The most recently updated or created vacancies are displayed first. Only approved vacancies can be displayed on the Job Search page.
@@ -455,9 +455,30 @@ Implemented two types of pagination - with the page numbers and with the Previou
 [back to top](#table-of-contents)
 
 ### Job Details page
+The Job Details provides the user with the detailed information about an active job. To access the page, user can click on the Job Card on the Home page or on the Job Search page. It is styled according to the Jobseeker design and based on the Bootstrap cards. The job detail card contains a header, applied indicator, job and company details and logo, footer with the Apply, Save and Top buttons.
 
-#### Sections:
-...
+- ##### Header
+The header contains the Back to job search button that redirects user to the Job Search page and action buttons: Apply and Save.
+
+Back to job search button allows the user to return to the Job Search page on the same search query and continue the job search from the same place. Thus the user doesn't have to scroll the page to get back to where they were before. It is implemented with internal anchor links. The Back to job search button contains the url with the vacancy id `{% url 'job_search' %}#{{ vacancy.id }}` and each job card has the name attribute with the vacancy id `<a name="{{ vacancy.id }}"></a>`. So when the user clicks on the Back to job search button, the page scrolls to the job card with the vacancy id that is passed in the url.
+
+The Save functionality available only for the authorized users and hidden for the anonymous and other users. It is implemented with the AJAX request and based on the Django annotations, which allows me to annotate vacancies with the `is_saved` field and then display the button state according to the field value.
+
+- ##### Applied indicator
+The applied indicator is also based on the Django annotations with the `is_applied` and `applied_on` fields. It allows the user to see if the user already applied for the job and when. The `applied_on` datetime field is converted to the user-friendly format using the custom template filter that extends the `timesince` Django template filter. It shows the unit of time since the user applied for the job. Also, this indicator includes the `See my applications` button that redirects the user to the My Applications page.
+
+![jobseeker applied indicator](docs/images/features/applied-indicator.png)
+
+- ##### Job details
+The job details card contains job title, time since the job was updated, company logo, company name, area, salary, job type, job location, required experience, company website and job description. All type of users can see the job details. The job description is formatted with the `linebreaks` Django template filter to display the text in the paragraphs. The job details card is responsive and expands to full width on small screens. The logo is decreased in size and replaced with the time since, and the time since is moved to the bottom of job title on the small screens.
+
+- ##### Footer
+In case the job decsription can be too long on the small screens, the user has access to action buttons in the header and footer of the card. The Top button allows the user to scroll to the top of the page.
+
+*Job Details page*
+![jobseeker job details page](docs/images/features/job_details.png)
+
+
 
 ### Apply for the Job
 The user can apply for the job by clicking on the `Apply` button on the Job Card on the Home and Job Search pages or on the Job Details page. The button redirects the user to the `Job application` page.
@@ -480,7 +501,7 @@ The user can create multiple resumes and manage them on the My Resumes page. The
 - The **Resume Title** is clickable and redirects the user to the Resume Details page. The title is truncated to 40 characters to fit the table cell and be more readable on small screens. Each word of the title is line-breaked to the new line on small screens, but if the title contains the long word, the table cell is expanded to fit the word until it will be truncated. Then if the table is too wide, the horizontal scrollbar appears.
 - The **Resume Status** indicates the current status of the resume. The status can be _In Review_, _Rejected_, _Active_ or _Closed_. The row color depends on the status. The _In Review_ status is yellow, the _Rejected_ status is red, the _Active_ status is green and the _Closed_ status is gray. The _In Review_ status is set by default when the user creates or updates the resume details. Each status has the appropriate tooltip with the description that appears when the user hovers over the icon.
 Other statuses can be set by the admin. The _Rejected_ status means that the resume does not meet the requirements or contains the inappropriate content. The _Active_ status means that the resume is approved by the admin and is visible to the Employers. The _Closed_ status means that the resume is closed by the user and is not visible to the Employers.
-- The **Last Updated** date converted to the user-friendly format by custom template filter and displayed as time ago. E.g. _2 days ago_ or _1 month ago_.
+- The **Last Updated** date converted to the user-friendly format by custom template filter and displayed as time since. E.g. _2 days ago_ or _1 month ago_.
 - The **Control** buttons allow the user to manage the resume. The user can edit the resume details, delete the resume or close the resume. The _Edit_ button redirects the user to the Resume Update page. All resumes except the _Closed_ resumes can be edited. The _Close_ and _Delete_ buttons open the modal window to asks the user to confirm closing/deletion. Once the user has confirmed the action, and the table is updated and an appropriate message shown. The _Close_ button changed to _Open_ and the resume status is changed to _Closed_. The user can reopen the resume, update and display it to the employers again. Once the resume was reopened, it gets the _In Review_ status by default, so the user can update it or/and wait for approval. Only the _Active_ resumes will be shown in the search results and can be viewed by the Employers.
 - The **Create New Resume** button redirects the user to the Resume Create page where they can create the new resume. The user can have only up to 5 resumes. If the user tries to create the new resume when they already have 5 resumes, the app redirects them to the My Resumes page and displays the appropriate modal alert. So the user can delete the old resume to create the new one.
 
