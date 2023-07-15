@@ -123,6 +123,13 @@
                               View
                             </div>
                           </div>
+                          <!-- Application date -->
+                          <div class="d-flex justify-content-between">
+                            <span class="text-muted">Applied on</span>
+                            <span class="text-muted">
+                              {{ offer.applied_on|date:"d M Y" }}
+                            </span>
+                          </div>
                         </li>
                       {% endfor %}
                     </ul>

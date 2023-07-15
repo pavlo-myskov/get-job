@@ -158,6 +158,13 @@
                               View
                             </div>
                           </div>
+                          <!-- Offered date -->
+                          <div class="d-flex justify-content-between">
+                            <span class="text-muted">Offered on</span>
+                            <span class="text-muted">
+                              {{ offer.offered_on|date:"d M Y" }}
+                            </span>
+                          </div>
                         </li>
                       {% endfor %}
                     </ul>
