@@ -632,6 +632,32 @@ The user can save any job to the Favorites by clicking on the `Save` button on t
 
 ![jobseeker saved jobs page](docs/images/features/Saved-Jobs.png)
 
+- #### Notifications
+When the Employer sends the job offer to the Jobseeker, the app sends the email and internal app notifications to the Jobseeker.
+
+- #### Email Notifications
+Email message contains the Job Title, Employer's name and email, and the title of the Resume that the employer has selected. The email message has the link to the Job Offers page, so the user can view the job offer details by clicking on the link. The email message is sent to the Jobseeker's email address that was provided during the registration.
+
+- #### Internal App Notifications
+The internal app notification represented by the FontAwesome *Bell* icon with the *Badge* that displays the number of unread notifications. The badge is displayed only if the user has unread notifications. The badge is updated only when the user updates the page.
+
+The user can view the list of notifications by clicking on the *Bell* icon. The list of notifications is represented by the Bootstrap Accordion component. The compponents ordered by two criterias: the first is if the notification is read or not, the second is the date when the notification was created. The unread notifications are displayed first in descending order. Each unread notification is expanded by default and has the yellow header. The read notifications are collapsed by default and have the white header. When the user clicks on the header of the unread notification, the notification is marked as read, header color is changed to white, the element is collapsed and Navbar *Bell* icon badge is updated. These functionality is implemented using the Ajax and allows the user to mark the notification as read without redirecting and page reloading. The user also can mark all notifications as read by clicking on the *Mark all as read* button. The button is displayed only if the user has unread notifications. This method triggers the page reloading.
+
+The notification body contains the short description of the notification with the Employer name and date when the offer was sent. The user can view the Employer message by clicking on the *View Message* button. The button opens the modal window. Also the user can view the Vacancy and Resume snapshots that represent the copy of the Vacancy and Resume details on the moment when the offer was sent. The snapshots are displayed in the modal window and have the same structure as the Vacancy and Resume Details pages. The snapshots are implemented using the Ajax requests.
+
+
+*New Job Offer Email Notification*
+![new job offer email notification](docs/images/features/email-Job-Offer.png)
+
+*Unread Notification*
+![Received-Job-Offers](docs/images/features/Received-Job-Offers.png)
+
+*Message Modal*
+![msg-from-employer](docs/images/features/msg-from-employer-notifications.jpg)
+
+*Vacancy Snapshot Modal*
+![vacancy snapshot modal](docs/images/features/Received-Job-Offers-vacancy-snapshot.jpg)
+
 [Back to top](#table-of-contents)
 
 ### Employer's Home page
