@@ -545,18 +545,49 @@ Also if the user doesn't upload the image, the default avatar is used.
 To validate the uploded data I implemented the custom File validator `jobportal.validators.FileValidator` that checks the image size and format. The validation prevents the user from uploading the images larger than 5MB and the images that are not in the jpeg, png, webp, svg+xml, gif, tiff, bmp, jpg. The custom validator also used for other types of files that are uploaded by the users.
 The validator passed to the `to_python` method of the extended `cloudinary.forms.CloudinaryFileField` class. It allows to validate the data before it is converted to the CloudinaryResource object.
 
+
+- #### Create Resume
+The user can create the resume by clicking on the `Create Resume` button in the Hero section, Dropdown menu, My Resumes page or on the Resume Details page. The button redirects the user to the Create Resume page. The page contains the form with the following fields:
+    - **Occupation** - the occupation of the is the title of the resume.
+    The field is required but not unique. The occupation is used as the resume identifier and is displayed on the My Resumes page, on Resume cards, email notifications and so on. It it used in search queries to find the resumes.
+    - **Experience duration** - is a choice field with the predefined choices: _Less than 1 year_, _1-2 years_, _2-5 years_, _5-10 years_, _10+ years_. The field is required and the user must select one of the options.
+    - **Skills** - is a text field that allows the user to enter the skills. The field is required. The user can enter the skills separated by the comma. The skills are used in search queries to find the resumes.
+    - **Education** - is a text field that allows the user to enter the education. The field is not mandatory.
+    - **Experience** - is a text field that allows the user to enter the experience. The field is not mandatory.
+    - **About** - is a text field that allows the user to enter the information about themselves. The field is required and must be minimum 100 characters long. The field is presented in job cards and set as mandatory to provide the information about the jobseeker to the employers in the short form in search results. So the user can build the first sentence so that it is more attractive to employers.
+    - **CV** - is a file field that allows the user to upload the CV. The field is not required. The CV is used to provide the additional information about the jobseeker to the employers. The CV uses the same custom validator as the profile picture but with other parameters. The max file size is 512KB and the allowed formats are pdf, doc, and docx. The CV is not displayed on the Resume cards and it accessible only on Hiring page or in Employer's dashboard if the employer sent the job offer to the jobseeker or the jobseeker applied for the employer's vacancy.
+
+Once the user submits the form, the app creates the resume and redirects the user to My Resumes page. The user can see the new resume in the table. The resume has the _In Review_ status by default and must be approved by app administration.
+
+![jobseeker create resume page](docs/images/features/create_resume.png)
+
 - #### My Resumes
-The user can create multiple resumes and manage them on the My Resumes page. The page contains the table of the current Jobseeker resumes. Each row of the table represents the resume and includes the Resume Title(Ocupation), the Resume Status, the Last Updated date and the Action buttons.
-- The **Resume Title** is clickable and redirects the user to the Resume Details page. The title is truncated to 40 characters to fit the table cell and be more readable on small screens. Each word of the title is line-breaked to the new line on small screens, but if the title contains the long word, the table cell is expanded to fit the word until it will be truncated. Then if the table is too wide, the horizontal scrollbar appears.
-- The **Resume Status** indicates the current status of the resume. The status can be _In Review_, _Rejected_, _Active_ or _Closed_. The row color depends on the status. The _In Review_ status is yellow, the _Rejected_ status is red, the _Active_ status is green and the _Closed_ status is gray. The _In Review_ status is set by default when the user creates or updates the resume details. Each status has the appropriate tooltip with the description that appears when the user hovers over the icon.
-Other statuses can be set by the admin. The _Rejected_ status means that the resume does not meet the requirements or contains the inappropriate content. The _Active_ status means that the resume is approved by the admin and is visible to the Employers. The _Closed_ status means that the resume is closed by the user and is not visible to the Employers.
-- The **Last Updated** date converted to the user-friendly format by custom template filter and displayed as time since. E.g. _2 days ago_ or _1 month ago_.
-- The **Control** buttons allow the user to manage the resume. The user can edit the resume details, delete the resume or close the resume. The _Edit_ button redirects the user to the Resume Update page. All resumes except the _Closed_ resumes can be edited. The _Close_ and _Delete_ buttons open the modal window to asks the user to confirm closing/deletion. Once the user has confirmed the action, and the table is updated and an appropriate message shown. The _Close_ button changed to _Open_ and the resume status is changed to _Closed_. The user can reopen the resume, update and display it to the employers again. Once the resume was reopened, it gets the _In Review_ status by default, so the user can update it or/and wait for approval. Only the _Active_ resumes will be shown in the search results and can be viewed by the Employers.
-- The **Create New Resume** button redirects the user to the Resume Create page where they can create the new resume. The user can have only up to 5 resumes. If the user tries to create the new resume when they already have 5 resumes, the app redirects them to the My Resumes page and displays the appropriate modal alert. So the user can delete the old resume to create the new one.
+The user can create multiple resumes and manage them on the [My Resumes page](#my-resume-details). For example, the user can create the resume with the occupation `Frontend Developer` and `Backend Developer` to increase the chances to be found by the employers. The page contains the table of the current Jobseeker resumes. Each row of the table represents the resume and includes the Resume Title(Ocupation), the Resume Status, the Last Updated date and the Action buttons.
+- ##### Resume Title
+The Resume Title is clickable and redirects the user to the Resume Details page. The title is truncated to 40 characters to fit the table cell and be more readable on small screens. Each word of the title is line-breaked to the new line on small screens, but if the title contains the long word, the table cell is expanded to fit the word until it will be truncated. Then if the table is too wide, the horizontal scrollbar appears.
+- ##### Resume Status
+The Resume status indicates the current status of the resume. The status can be _In Review_, _Rejected_, _Active_ or _Closed_. The row color depends on the status. The _In Review_ status is yellow, the _Rejected_ status is red, the _Active_ status is green and the _Closed_ status is gray. Each status has the appropriate tooltip with the description that appears when the user hovers over the icon.
+
+- _Active_ status means that the resume is approved by the admin and is visible to the Employers.
+- _In Review_ status is set by default when the user creates or updates the resume details. The resume is not visible to the Employers until it is approved by the admin. The admin can approve or reject the resume on the Admin dashboard. The resume status is changed to _Active_ if the admin approves the resume or to _Rejected_ if the admin rejects the resume.
+- _Rejected_ status means that the resume does not meet the requirements or contains the inappropriate content.The user can update the resume details and submit it again. The resume status is changed to _In Review_.
+- _Closed_ status means that the resume is closed by the user and is not visible to the Employers. It cannot be updated until the user reopens it.
+
+If the Jobseeker applied for the vacancy when the resume had an `Active` status and then closed or edited the resume, the employer still will be able to see the resume details snapshot in the Applications section of the Employer's dashboard. The snapshot contains full resume details on the moment of application except Jobseeker personal details that are tied to the Jobseeker profile and can be updated by the Jobseeker. Once the Jobseeker decides to delete the resume or profile, all applications together with the resume snapshots will be deleted from the database. It allows the Jobseekers to control what information is available to the Employers and vice versa.
+- ##### Last Updated
+ The Last Updated date converted to the user-friendly format by custom template filter and displayed as time since. E.g. _2 days ago_ or _1 month ago_.
+- ##### Control
+The Control buttons allow the user to manage the resume. The user can edit the resume details, delete the resume or close the resume. The _Edit_ button redirects the user to the Resume Update page. All resumes except the _Closed_ resumes can be edited. The _Close_ and _Delete_ buttons open the modal window to asks the user to confirm closing/deletion. Once the user has confirmed the action, and the table is updated and an appropriate message shown. The _Close_ button changed to _Open_ and the resume status is changed to _Closed_. The user can reopen the resume, update and display it to the employers again. Once the resume was reopened, it gets the _In Review_ status by default, so the user can update it or/and wait for approval. Only the _Active_ resumes will be shown in the search results and can be viewed by the Employers.
+
+**Create New Resume** button redirects the user to the Resume Create page where they can create the new resume. The user can have only up to 5 resumes. If the user tries to create the new resume when they already have 5 resumes, the app redirects them to the My Resumes page and displays the appropriate modal alert. So the user can delete the old resume to create the new one.
+
+![jobseeker my resumes page](docs/images/features/My-Resumes.png)
 
 - #### My Resume Details
 <!-- TODO: Add anchor link to the Resume Details in employer section -->
-The Resume Details page is available from the My Resumes list. The page is similar to the Resume Details page of the Employer, but has the different color interface (jobseeker style) and the different functionality. The user can update the resume details, close or delete the resume using the appropriate buttons. These buttons have the same behavior as the buttons on the My Resumes page.
+The Resume Details page is available from the My Resumes list. The page content is identical to the [Resume Details](#) page content for the Employers, but has the different color interface (jobseeker style) and the different header and footer buttons. The user can update the resume details, close or delete the resume using the appropriate buttons. These buttons have the same behavior as the buttons on the My Resumes page.
+
+![jobseeker resume details page](docs/images/features/my-resume-details.png)
 
 
 - #### Saved Jobs
