@@ -583,11 +583,33 @@ The Control buttons allow the user to manage the resume. The user can edit the r
 
 ![jobseeker my resumes page](docs/images/features/My-Resumes.png)
 
-- #### My Resume Details
+- ##### My Resume Details
 <!-- TODO: Add anchor link to the Resume Details in employer section -->
 The Resume Details page is available from the My Resumes list. The page content is identical to the [Resume Details](#) page content for the Employers, but has the different color interface (jobseeker style) and the different header and footer buttons. The user can update the resume details, close or delete the resume using the appropriate buttons. These buttons have the same behavior as the buttons on the My Resumes page.
 
 ![jobseeker resume details page](docs/images/features/my-resume-details.png)
+
+- ##### Update Resume
+The user can update the resume details on the Resume Update page. The form is accessible from the My Resumes page and from the Resume Details page. The form is identical to the [Create Resume](#create-resume) form (**it uses the same Django form class, but now is bound to the existing resume instance**), but the user can see the current resume details and edit them. When the user submits the form, the app updates the resume and redirects the user to the My Resumes page. The updated resume has the _In Review_ status by default and must be approved by app administration.
+
+![jobseeker update resume page](docs/images/features/Update-Resume.png)
+
+
+- #### My Applications
+My Applications is the page where the user can view the list of the applications that they have submitted. Each application is represented by Bootstrap Accordion component collapsed by default. The Accordion header represented by the Job Title, so the user can easily find the application that they need. The user can expand the element to view the application details.
+These details include application date, employers details, vacancy title and button to view the snapshot, resume title and snapshot button.
+
+The snapshot functionality allows the user to view the resume/vacancy details that were submitted with the application. The snapshot is the copy of the resume/vacancy details on the moment of application, except user personal details that stored in the Profile DB table. The snapshot is stored in the Application in the JSON format. The snapshot view based on the Ajax request to the server. The app sends the Ajax request to the server, and the Django view renders the resume/vacancy page from the json snapshot that is stored in the application instance and return as a JsonResponse. Then the Ajax success callback function inserts the response into the Bootstrap modal window and opens it. It allows the user to view the resume/vacancy details quickly without leaving the page.
+
+The snapshot modal window is fully responsive and has the same structure as the resume/vacancy details page. The modal window has the two close buttons: one on the top and one on the bottom of the modal window. The top close button is fixed and always visible. 
+
+![jobseeker my applications page](docs/images/features/Applied-Jobs.png)
+
+*Snapshot Modal*
+![jobseeker snapshot modal](docs/images/features/Applied-Jobs-snapshot.png)
+
+
+
 
 
 - #### Saved Jobs
@@ -706,18 +728,8 @@ The _Continuous Deployment_ workflow is implemented using [Heroku GitHub Integra
 - ### Code
 The Get Job platform is based on my own implementation of code, applying what I have learned from the [Code Institute](https://codeinstitute.net/) Full Stack Software Development course and other educational resources.
 
-- ### Educational Resources
-    - Django Multiple User Types, Custom User Model, and email authentication
-    https://youtu.be/f0hdXr2MOEA
-    https://youtu.be/Z6QMPAcS6E8
-    https://medium.com/geekculture/how-to-implement-multiple-user-types-in-django-b72df7a98dc3
-    https://medium.com/@royprins/django-custom-user-model-email-authentication-d3e89d36210f
-    - CI/CD pipelines
-    https://blog.logrocket.com/ci-cd-pipelines-react-github-actions-heroku/
-
-
 - ### Content
-    - Logo Briefcase from https://uxwing.com
+    - Logo and favicon Briefcase from https://icons8.com
     - Hero image of the jobseeker page designed By agny_illustration from https://pngtree.com/freepng/modern-flat-design-concept-of-recruitment-presentation-for-employment-and-recruiting-application-for-employee-hiring-can-used-for-web-banner-infographics-landing-page-flat-vector-illustration_5332898.html?sol=downref&id=bef
     - Hero image of the employer page designed by pikepicture from https://pngtree.com/freepng/recruitment-process-vector-human-resources-choice-of-candidate-employee-office-chair-vacancy-executive-search-recruiting-hiring-hr-isolated-illustration_5190146.html?sol=downref&id=bef?sol=downref&id=bef
     - Branching Strategy diagram is taken from [ci-cd-pipelines-react-github-actions-heroku](https://blog.logrocket.com/ci-cd-pipelines-react-github-actions-heroku/) blog post.
