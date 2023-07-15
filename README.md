@@ -479,15 +479,30 @@ In case the job decsription can be too long on the small screens, the user has a
 ![jobseeker job details page](docs/images/features/job_details.png)
 
 
-
 ### Apply for the Job
 The user can apply for the job by clicking on the `Apply` button on the Job Card on the Home and Job Search pages or on the Job Details page. The button redirects the user to the `Job application` page.
 
-The page contains the form with the two sections:
+The page contains the nav header with *To job details* link and Home button, employer details collapsible card, and form with the two sections.
+
+- #### Employer details
+The employer details card is collapsed by default and can be expanded by clicking on the `See Employer Details` button link. It includes Employer name, Phone number and email. So the user can contact the employer directly if they have any questions about the job. The phone number and email are clickable and open the default phone and email apps respectively.
+
+- #### Application form
 - First of all, the user must select the resume to apply for the job if there any resumes approved by the app support. If the user has no approved resumes yet, they will be prompted to create a new resume or check the all resumes status on the My Resumes page. If the user has approved resumes, they can select the resume using Radio buttons. Also each resume has the `View` button that allows the user to see the resume details or/and edit the resume. The View page is opened in the new tab to prevent the user from losing the data in the application form.
 - The second section of the form is the Cover Letter. The user can enter the cover letter text in the textarea. The text is limited to 1000 characters and is not required. The max lenght validation is on the client-side and on the server-side as well. The client-side validation prevents the user from entering more than 1000 characters and the server-side one prevents the user from submitting the form with text longer than 1000 characters. The server-side validation errors are displayed under the textarea. Also there is a `Text Counter` under the textarea that shows the number of characters entered by the user and the maximum allowed number of characters. The counter is updated on each input event regardless of whether the user entered the text using the keyboard or pasted it from the clipboard.
 
 The user can submit the application form only if they selected the resume. Is the user tries to submit the form without selecting the resume, the app displays the default browser validation error message `Please select one of these options`. Also if the malicious user tries to submit the form with disabled JavaScript validation, the server-side validation will still prevent the submission and the user will see the appropriate error message under the resume selection section.
+
+- #### Submitting the form
+The user can submit the form by clicking on the `Submit` button. When the user successfully submits the form, the app sends the notification to the employer email and add new application notification to the employer's navbar notification counter. The user redirected back to search results page to the position of the applied job. So the user can continue the job search from the same place. The app also displays the success message using Bootstrap toast component and Django messages framework.
+
+The user can also Reset the form by clicking on the `Reset` button. The button clears the Cover Letter field and uncheck the selected resume. The counter is not reseted but when the user starts typing the text, it is updated.
+
+*Job Application page*
+![jobseeker apply for the job](docs/images/features/job_apply.png)
+
+*Email notification*
+![application email notification](docs/images/features/new-application-email.png)
 
 
 ### Jobseeker's Profile page
