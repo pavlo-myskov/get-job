@@ -527,8 +527,6 @@ The Email notifications button allows the user to enable or disable the New Job 
 
 ![jobseeker profile page](docs/images/features/jobseeker-profile.png)
 
-[Back to top](#table-of-contents)
-
 ### Jobseeker Edit Profile
 The user can update their profile details on the Edit Profile page. The user can change all details that are displayed on the Profile page except the email. The email is not editable because it is used as the username and is unique. If the user wants to use another email, they must create a new account. The title of the form has the tooltip with the description that appears when the user hovers over the title. It helps the user to understand why they have to provide the details. Running a little ahead, the details are used to generate the resumes.
 
@@ -545,6 +543,7 @@ Also if the user doesn't upload the image, the default avatar is used.
 To validate the uploded data I implemented the custom File validator `jobportal.validators.FileValidator` that checks the image size and format. The validation prevents the user from uploading the images larger than 5MB and the images that are not in the jpeg, png, webp, svg+xml, gif, tiff, bmp, jpg. The custom validator also used for other types of files that are uploaded by the users.
 The validator passed to the `to_python` method of the extended `cloudinary.forms.CloudinaryFileField` class. It allows to validate the data before it is converted to the CloudinaryResource object.
 
+[Back to top](#table-of-contents)
 
 - #### Create Resume
 The user can create the resume by clicking on the `Create Resume` button in the Hero section, Dropdown menu, My Resumes page or on the Resume Details page. The button redirects the user to the Create Resume page. The page contains the form with the following fields:
@@ -594,6 +593,7 @@ The user can update the resume details on the Resume Update page. The form is ac
 
 ![jobseeker update resume page](docs/images/features/Update-Resume.png)
 
+[Back to top](#table-of-contents)
 
 - #### My Applications
 The My Applications page is available from the Jobseeker's Dropdown menu.
@@ -625,9 +625,14 @@ The body of the Accordion card contains the list of job offers. Each job offer i
 *Employer Message Modal*
 ![employer's message modal](docs/images/features/employer-msg-modal.png)
 
+[Back to top](#table-of-contents)
 
 - #### Saved Jobs
-The user can save any job to the Favorites by clicking on the `Save` button on the Job Card or on the Job Details page. All saved jobs can be viewed on the Saved Jobs page that is available from the Jobseeker's Dropdown menu only for the authenticated users. The page contains a list of the saved jobs. Each row of the list represents a job and is clickable. So the user can view the job details by clicking on the job title. Also the row contains Action buttons that allow a user to remove the job from the Favorites or directly apply for the job. The removing action does not require the confirmation, as this action is not critical.
+The user can save any job to the Favorites by clicking on the `Save` button on the Job Card or on the Job Details page. All saved jobs can be viewed on the Saved Jobs page that is available from the Jobseeker's Dropdown menu only for the authenticated users. The page contains a list of the saved jobs. Each row of the list represents a job and is clickable. So the user can view the job details by clicking on the job title. The link redirects the user to the Job Details page. Also the row contains Action buttons that allow a user to remove the job from the Favorites or directly apply for the job. The removing action does not require the confirmation, as this action is not critical. The QuerySet of the saved jobs is annotated with `is_applied` field that indicates if the user has already applied for the job. The field is used to display the appropriate button state on the each row.
+
+![jobseeker saved jobs page](docs/images/features/Saved-Jobs.png)
+
+[Back to top](#table-of-contents)
 
 ### Employer's Home page
 
