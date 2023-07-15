@@ -596,20 +596,34 @@ The user can update the resume details on the Resume Update page. The form is ac
 
 
 - #### My Applications
+The My Applications page is available from the Jobseeker's Dropdown menu.
 My Applications is the page where the user can view the list of the applications that they have submitted. Each application is represented by Bootstrap Accordion component collapsed by default. The Accordion header represented by the Job Title, so the user can easily find the application that they need. The user can expand the element to view the application details.
 These details include application date, employers details, vacancy title and button to view the snapshot, resume title and snapshot button.
 
 The snapshot functionality allows the user to view the resume/vacancy details that were submitted with the application. The snapshot is the copy of the resume/vacancy details on the moment of application, except user personal details that stored in the Profile DB table. The snapshot is stored in the Application in the JSON format. The snapshot view based on the Ajax request to the server. The app sends the Ajax request to the server, and the Django view renders the resume/vacancy page from the json snapshot that is stored in the application instance and return as a JsonResponse. Then the Ajax success callback function inserts the response into the Bootstrap modal window and opens it. It allows the user to view the resume/vacancy details quickly without leaving the page.
 
-The snapshot modal window is fully responsive and has the same structure as the resume/vacancy details page. The modal window has the two close buttons: one on the top and one on the bottom of the modal window. The top close button is fixed and always visible. 
+The snapshot modal window is fully responsive and has the same structure as the resume/vacancy details page. The modal window has the two close buttons: one on the top and one on the bottom of the modal window. The top close button is fixed and always visible.
 
 ![jobseeker my applications page](docs/images/features/Applied-Jobs.png)
 
-*Snapshot Modal*
+*Vacancy Snapshot Modal*
 ![jobseeker snapshot modal](docs/images/features/Applied-Jobs-snapshot.png)
 
+- #### Job Offers
+The Job Offers page is available from the Jobseeker's Dropdown menu.
+The Job Offers page represents the list of Jobseeke's resumes with the sublists of the job offers that the user has received from the Employers for their resumes. Each card is an Accordion element that is collapsed by default.
 
+The Accordion header is represented by the Resume title and Offer counter( the number of offers that the user has received for the resume). The user can expand the Accordion element to view the list of job offers.
 
+The body of the Accordion card contains the list of job offers. Each job offer includes the clickable Job Title that displays the Job Details snapshot in the modal window, the Employer details icon that opens the Employer Details modal window, and the Employer's message, which also can be viewed in the modal window. The employer details and message modal windows can be switched by the appropriate buttons. Also, the user can view the Resume snapshot that is stored in the job offer. The Resume snapshot is displayed in the modal window and has the same structure as the Resume Details page. Each offer contains the date when the offer was sent. The snapshot views is implemented using the Ajax requests. The snapshot modal example can be found in the [My Applications](#my-applications) section.
+
+![jobseeker job offers page](docs/images/features/jobseeker-job-offers.png)
+
+*Employer Details Modal*
+![jobseeker employer details modal](docs/images/features/employer-details-modal.png)
+
+*Employer Message Modal*
+![employer's message modal](docs/images/features/employer-msg-modal.png)
 
 
 - #### Saved Jobs
