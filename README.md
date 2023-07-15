@@ -29,8 +29,6 @@ Live Demo: https://get-job.live
 
 Heroku: https://get-job.herokuapp.com
 
-
-
 ![mockup]()
 
 ## Table of Contents
@@ -168,6 +166,8 @@ The _User Stories_ prioritized using the _MoSCoW_ method. The prioritisation was
 - **Won't Have** - The _User Story_ will not be delivered in the current delivery timebox but may be considered for the future.
 The prioritisation based on the 60-20-20 rule where 60% of the effort is spent on the Must Have, 20% on the Should Have and rest 20% on the Could Have. When the Sprint starts, the _User Stories_ are moved to the _Development_ column, where first the Must Have items. When the development of particular _User Story_ is completed, it is moved to the _Testing_ column, tested and then moved to the _Done_ column manually or using the _commit_ message with reference to the User Story ID. If the time is running out and the _User Stories_ are not completed, the Could Have items are dropped back to the _Backlog_ column for the re-prioritisation.
 
+[Back to top](#table-of-contents)
+
 ## UX Design
 ### Structure
 The Get Job platform is based on an intuitive and easy-to-use structure. Every page has a consistent layout and navigation to allow users to easily find the information they need. The app has a responsive design to provide an optimal viewing experience across a wide range of devices.
@@ -181,7 +181,7 @@ The Get Job platform is based on an intuitive and easy-to-use structure. Every p
 - Jobseekers and Employers have their own Profile pages to manage their accounts and view their resumes and created jobs.
 
 
-## Wireframes
+### Wireframes
 <!-- TODO -->
 ...
 
@@ -210,11 +210,12 @@ The Get Job platform uses a relational database to store and manage data. The RD
 The ER Diagram below shows the structure of the database and the relationships between the tables. This diagram was created using [Microsoft Visio](https://www.microsoft.com/en-ie/microsoft-365/visio/).
 ![er_diagram]()
 
+[Back to top](#table-of-contents)
 
 ## Features
 Since the User always visits the site for some content and some purpose, the Features of the app are primarily designed to solve the problems of the Jobseekers and Employers and help them to achieve their goals. The UX is designed to create single-use learning and does not distract users' attention from the main goal - to find a job or a candidate.
 
-## User authentication
+### User authentication
 To get access to the app's functionality the user has to register and login. The app uses the [Django Allauth](https://django-allauth.readthedocs.io/en/latest/) package to handle the user authentication. The package provides a set of views and templates to handle the user registration, login, logout, password reset and email confirmation.
 
 The Sign In and Sign Up links are available in the navbar dropdown menu for the unauthenticated users. The Sign In and Sign Up pages contain the login and registration forms respectively. The authentication system unified for both jobseekers and employers.
@@ -226,13 +227,14 @@ The system uses the email address as the username. The email address is unique f
 | ![jobseeker_sign_in](docs/images/features/account/signin-dropdown-jobseeker.png) | ![employer_sign_in](docs/images/features/account/signin-dropdown-employer.png) |
 
 - #### Sign In
-The app allows users create an account and have additional features that are not available for the anonymous users. To get on the register or login page, the user can click on the `Sign Up/Sing In` button in the Navbar or they will be redirected automatically to the login page when they are trying to access the page that is available only for the logged in users, e.g. the Apply for the Job page or the Hiring page.
+The app allows users create an account and have additional features that are not available for the anonymous users. To get on the register or login page, the user can click on the `Sign Up/Sing In` button in the Navbar or they will be redirected automatically to the login page when they are trying to access the page that is available only for the logged in users, e.g. the *Apply for the Job* page or the Hiring page.
 The Sign In page is universal for both jobseekers and employers. It contains the internal navbar and login form. The user type (jobseeker or employer) is set automatically based on the email address.
 
 - ##### Internal Navbar
 The internal navbar allows the user to switch between the Sign In and Sign Up pages. Also the user can return to the Home page by clicking the appropriate icon.
 - ##### Login Form
-The login form contains the *email*, *password*, *remember me*, and *forgot password* fields. The *email* and *password* fields are required. The *remember me* checkbox allows the user to stay logged in after closing the browser. The checkbox is checked by default, so the user can stay logged in for a long time without the need to re-enter the password. The *forgot password* link redirects the user to the Password Reset page.
+The login form contains the *email*, *password*, *remember me*, and *forgot password* fields. The *email* and *password* fields are required. The *remember me* checkbox allows the user to stay logged in after closing the browser. The checkbox is checked by default, so the user can stay logged in for a long time without the need to re-enter the password. The lifetime of the session depends on the [SESSION_COOKIE_AGE](https://docs.djangoproject.com/en/3.2/ref/settings/#session-cookie-age). The default value is 2 weeks.
+ The *forgot password* link redirects the user to the Password Reset page.
 - ##### Redirect
 The Sign In form redirects the user to the Home page appropriate to the user type (Jobseeker or Employer) if user came to the Sign In page from the Home page. So, if the user came to the Sign In page from the Jobseeker's Home page, but decided to login with an Employer, the app redirects them to the Employer's Home page after successful login. If the user came to the Sign In page from another page, the app redirects them to the previous page after successful login using the Django's `next` parameter. It is useful when the user tries to access the page that requires authentication, such as the `Apply for Job` page. The user is redirected to the Sign In page, but after successful login the app redirects them back to the Apply for Job form to complete the application.
 
@@ -246,11 +248,14 @@ The Sign Up page is also universal for both types of users. It contains the inte
 
 The form includes the *jobseeker/employer* toggle button, *email*, *name*, *password*, and *confirm password*.
 
-- The role field is a choice field with two options - Jobseeker and Employer. The initial role set automatically and depends where user is coming from. If the user is coming from the page related to Jobseeker, the role is set to Jobseeker. If the user is coming from Employer's page, the role is set to Employer appropriately. But the user can change the role by selecting the appropriate option based on radio buttons. The role field is mandatory and the user can not submit the form without selecting the role, as the role tied to the user account and can not be changed later.
-- The email field is a unique identifier of the user and the system does not allow users to register multiple accounts with the same email address. So the Jobseeker and the Employer can not have the same email address.
-- The password field as also required and the user can not submit the form without setting the password. The validation of the password is implemented on the client side and on the server side based on the Django Allauth package.
+- The *role* field is a choice field with two options - Jobseeker and Employer. The initial role set automatically and depends where user is coming from. If the user is coming from the page related to Jobseeker, the role is set to Jobseeker. If the user is coming from Employer's page, the role is set to Employer appropriately. But the user can change the role by selecting the appropriate option based on radio buttons. The role field is mandatory and the user can not submit the form without selecting the role, as the role tied to the user account and can not be changed later.
+- The *email* field is a unique identifier of the user and the system does not allow users to register multiple accounts with the same email address. So the Jobseeker and the Employer can not have the same email address.
+- The *name* field is mandatory and should contain the full name of the user. The reason why the app uses only one name field instead of the first and last name fields is internationalization. The app is designed to be used by the users from different countries and cultures. Not every user has the first and last name. For example, in some countries the name consists of three parts - first name, middle name, and last name.
+- The *password* field as also required and the user can not submit the form without setting the password. The validation of the password is implemented on the client side and on the server side based on the Django Allauth package.
 
-The app uses email confirmation to verify the user's email address, that prevents brute force attacks. The user can not login to the app until the email address is verified. The confirmation method based on the combination of the `ACCOUNT_CONFIRM_EMAIL_ON_GET` and `ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION` parameters of the Django Allauth package. These configuration allows the user to confirm the email address by clicking on the link in the email and then automatically login the user after successful confirmation without the need to login manually and then redirect the user to previous page where the user came from to register the account. The confirmation link is valid for 48 hours. If the user does not confirm the email address within 3 days (by default `ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS=3`), the user has to register again. The invalid link redirects the user to appropriate page with the error message and the link to the Sign In form.
+The app uses email confirmation to verify the user's email address, that prevents brute force attacks. The user can not login to the app until the email address is verified. The confirmation method based on the combination of the `ACCOUNT_CONFIRM_EMAIL_ON_GET` and `ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION` parameters of the Django Allauth package. These configuration allows the user to confirm the email address by clicking on the link in the email and then automatically login the user after successful confirmation without the need to login manually and then redirect the user to previous page where the user came from to register the account. The redirect is implemented using the Django's `next` parameter in `get_email_confirmation_url` and `get_email_confirmation_redirect_url` methods of the `CustomAccountAdapter` class that extends the `allauth.account.adapter.DefaultAccountAdapter`.
+
+The confirmation link is valid for 48 hours. If the user does not confirm the email address within 3 days (by default `ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS=3`), the user has to register again. The invalid link redirects the user to appropriate page with the error message and the link to the Sign In form.
 
 The email verification feature allows the app to use the user email address for the password reset and communication with the user.
 
@@ -306,12 +311,14 @@ The authenticated user can change the password on the Profile page. The user has
 
 ![Change Password](docs/images/features/account/change_password.png)
 
+[Back to top](#table-of-contents)
 
 ## Jobseeker
 
-### All Pages (except forms)
+### All Pages (*except forms)
+*The user form pages do not have the main navigation bar and footer. They have the own nav header with the limited navigation links. It allows the user to focus on the form and not be distracted by the other links.*
 - #### Navbar
-The navigation bar includes the app logo, the toggle button to switch between the Jobseeker's and Employer's Home pages, the Sign-Up / Sign-In dropdown menu with the Sign-Up and Sign-In links for the unauthenticated users and the Profile dropdown menu for the authenticated users.
+The navigation bar includes the app logo(with link to home page), the toggle button to switch between the Jobseeker's and Employer's Home pages, the Sign-Up / Sign-In dropdown menu with the Sign-Up and Sign-In links for the unauthenticated users and the Profile dropdown menu for the authenticated users.
 
 The Profile dropdown menu contains:
 - **Search bar** where the jobseeker can search for job by job title keywords.
@@ -336,21 +343,68 @@ The Navbar is flexible and always available when the user needs. It hides on scr
 |:---:|:---:|
 | ![navbar_mobile_dropdown](docs/images/features/mobile-dropdown.png) | ![navbar_desktop_dropdown](docs/images/features/pc-dropdown.png) |
 
+The dropdown menu is only available for the authenticated users with the jobseeker role and on the Jobseeker's site pages. When the authenticated user with the Jobseeker role visits the Employer's site, the Profile dropdown menu is replaced with message that the user is currently logged in as a jobseeker and the Sign Out button.
+![not associated dropdown](docs/images/features/logged-in-as-jobseeker.png)
+
+- #### Footer
+The footer is simple and permanent. It contains the web app name with the link to the Home page, copyright string with the updateable year and the link to the developer's LinkedIn profile. The footer is responsive and fixed to the bottom of the page if the page content is not enough to fill the page.
+
+![footer](docs/images/features/footer.png)
+
+[Back to top](#table-of-contents)
+
 ### Jobseeker's Home page
-The Jobseeker's Home page is designed to help Jobseekers to find a job quickly and easily. The page divided into 5 sections: Navbar, Hero, Search panel, Latest Jobs, and Footer.
-![jobseeker_home]()
+The Jobseeker's Home page is designed to help Jobseekers to find a job quickly and easily. The main goal of the home page is to encourage users to create a resume and start searching for a job. As the home page is more demonstrative than functional, it represents the limited versions of the main features of the app to show the users how the app works and what they can do with it.
+
+The page divided into 5 sections: Navbar, Hero, Search panel, Latest Jobs, and Footer.
+![jobseeker_home](docs/images/features/jobseeker_home.png)
 
 - #### Hero
-The Hero section contains call-to-action headings and a button to encourage users to create a resume. The image of the section conveys the main message of the app - recruiters are looking for candidates reviewing resumes. When the users are clicking on the `Create Resume` button and if they are logged in, then they are redirected to the Create Resume page, otherwise to the Sign-Up / Sign-In.
-![hero]()
+The Hero section contains call-to-action headings and a button to encourage users to create a resume. The image of the section conveys the main message of the app - recruiters are looking for candidates reviewing resumes. When the users are clicking on the `Create Resume` button and if they are logged in, then they are redirected to the Create Resume page, otherwise to the Sign-Up / Sign-In. If the user is already logged in as an Employer, then the button is disabled and the tooltip appears with the message that only jobseekers can create resumes.
+![hero](docs/images/features/jobseeker_hero.png)
 
 - #### Jobseeker's Search bar
-One of the important features of the app is the search bar. It is placed in the center of the page to be easily found and allows users to achieve their main goal - to find a job quickly and easily. The functionality of the search bar is the same as the search bar of the Navbar. It takes the user input and searches for the jobs that match the input.
-![search_bar]()
+One of the important features of the app is the search.
+
+The home page contains the search bar with limited functionality.
+It is placed in the center of the page to be easily found and allows users to achieve their main goal - to find a job quickly and easily. The functionality of the search bar is the same as the search bar of the Navbar. It takes the user input and searches for the job title keywords in the database. The user will be redirected to the Job Search page with the search results and advanced search panel with passed keywords. It allows the user to use the advanced search panel to narrow the search results. Also the query will be stored in the session until the user types a new query or clears the search bar. The query automatically passed to the search bar each time the user visits the page. To clear the session the user has to click on the `Reset` button of the advanced search panel or clear the search bar and submit the empty query. When the user submits the empty query, the app redirects the user to the Job Search page with the all jobs in the database. The `Filter` button redirects the user to the Job Search page with the advanced search panel and all jobs in the database.
+![jobseeker_home_search_bar](docs/images/features/jobseeker_home_search.png)
 
 - #### Latest Jobs
-The Latest Jobs section is a list of the latest vacancies posted by Employers. Each Vacancy represented by a Bootstrap Card component. The Card contains the Job Title, Days ago, the Company Name, the Location, the Salary and the main section of the Job Description. The card title is clickable and redirects the user to the Job Details page. Also a user can save the job to the Favorites or directly Apply for the Job escaping the Job Details page. The section is fully responsive. On small screens, the cards are arranged in one column and on extra large screens in two columns to be easily readable.
-![latest_jobs]()
+The Latest Jobs section is a list of the latest vacancies posted by Employers. Each Vacancy represented by a Bootstrap Card component. The home page contains four active(approved) latest vacancies. The section is fully responsive. On small screens, the cards are arranged in one column and on extra large screens in two columns to be easily readable.
+
+##### Vacancy Card
+Each card inclule Job Title, Time ago, Company Name, Job Location, Salary, Company Logo, main section of the Job Description and footer with the action buttons.
+
+- **Card Header**
+The card header contains Job Title and Time ago. The Jobseekers can see the `Applied` badge on the cards of the jobs they have already applied for. The feature based on Django annotations, as the `Vacancy` model initially does not contain the `applied` field.
+
+The Time ago represents using custom template filter that extends the built-in `timesince` filter. The filter converts datetime object to the string with the number of units and the unit name that passed since the datetime object. The datetime object is the `updated_on` field of the `Vacancy` model.
+
+The Job Title is truncated with the Bootstrap class `text-truncate` to meke the cards more compact and presentable.
+
+The Card is fully responsive and the Time ago is moved to the bottom of the Job Title on small screens and the Company logo is decreased in size and moved to the top right corner of the card.
+
+**Card Body**
+The card body is clickable and redirects the user to the Job Details page. To tell the user that the card is clickable, on the hover the card body is highlighted with the shadow. Also I added the double arrow to the description section, which is kind of a hint that the card is clickable on the small screens.
+
+The description section text is truncated to the 3 lines using custom truncation implemended with Sass. I did not use the Django truncation filter because it truncates the text to the specified number of characters and does not care about the number of lines.
+
+**Action buttons**
+- Unauthenticated users
+    - The unauthenticated users can also open the details page.
+    - The *Save* button is hidden.
+    - The *Apply* button redirects the user to the Sign-Up / Sign-In page with the appropriate *toast* message.
+- Authenticated users
+    The authenticated user with Jobseeker role can save the job to Favorites or directly *Apply for the Job* escaping the Job Details page.
+    - The Save feature is implemented with Ajax to avoid page reloading when the user saves the job. The feature also based on the Django annotations, and if the Job already saved, the button is displayed as *Saved*.
+    - The Apply button redirects the user to the *Apply for the Job* page even if the user already applied for the job. The reason why the user can always go to the *Apply for the Job* page is that the user can apply for the job using other resume.
+- Unauthorized users
+    Usually unauthorized users are Employers or other users with the role that does not allow them to apply for the job.
+    - The *Apply* button is disabled and the tooltip appears with the message that only Jobseekers can apply for the job.
+    - The *Save* button is hidden.
+
+![latest_jobs](docs/images/features/latest_jobs.png)
 
 ### Job Search page
 #### Sections:
