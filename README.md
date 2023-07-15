@@ -194,7 +194,10 @@ The colour scheme of the app is based on two main colours: *royalpurple* - `#874
 The app uses Lato font for all text elements. The font is selected for its unique balance of originality and readability. Originally designed for a corporate client, Lato is the perfect subtle typeface for the business site. Sleek and serious, this font looks professional without coming across as too stuffy. It is legible and works well on the small screens, which is important for the app that is designed to be used on mobile devices. The font is imported using the [Google Fonts API](https://fonts.google.com/).
 
 #### Styling
+The app style is consistent across all pages and elements. The app uses a responsive layout to provide an optimal viewing experience across a wide range of devices.
+
 The project style based the [Bootstrap](https://getbootstrap.com/) framework. It allowed me to create a responsive layout with minimal effort and customize the design to my needs. Bootstrap is a free and open-source CSS framework directed at responsive, mobile-first front-end web development. In this app I utilized the source Sass files and customized the Bootstrap variables to create a unique design.
+
 - The Django project is configured to work with the **SCSS preprocessor**. The SCSS files are compiled to CSS files using the [django-sass-processor](https://pypi.org/project/django-sass-processor/) package. The django-sass-processor converts `*.scss` or `*.sass` files into `*.css` while rendering templates. It provides a template tag `{% sass_src 'path/to/file.scss' %}` which can be used instead of the built-in templatetag `static`.
 The SCSS preprocessors allows to use variables, mixins, functions, and other features that are not available in plain CSS. I customized the Bootstrap variables to create a unique design.
 The main SCSS file `main.scss` imports all other custom SCSS files and Bootstrap SCSS files. The `main.css` file is generated from the `main.scss` file and is used in the project. The `_theme.scss` file contains the Bootstrap overrides and custom variables. The `_custom.scss` file contains the all custom styles of the app and based on the SCSS and CSS code.
@@ -406,21 +409,50 @@ The description section text is truncated to the 3 lines using custom truncation
 
 ![latest_jobs](docs/images/features/latest_jobs.png)
 
+[Back to top](#table-of-contents)
+
 ### Job Search page
-#### Sections:
+The Job Search page contains the search results and the advanced search panel. The page is accessible by the search bars of the Navbar and the Home page, by the link in the Dropdown menu of the Navbar and links from some other internal pages of the Jobseeker Dashboard.
+
+![jobseeker_search](docs/images/features/jobs.png)
+
+- #### Header
+The header contains the Back to Home button that redirects the user to the Home page and Found Job Count that displays the number of jobs found by the search query. The Job Count is updated each time the user submits the search query. If there are no jobs found, the counter is changed to the `No jobs found`.
+
 - #### Search results
-The user can access the Job Search page by using the search bar on the Home page. When the user submits the search query, the app redirects them to the Job Search page and displays the search results.
-The search results represented by the Bootstrap Cards, the same as the Latest Jobs section on the Home page. Each card is clickable and redirects the user to the Job Details page.
+The search results represented by the Bootstrap Cards, the same as the Latest Jobs section on the Home page. Each card is clickable and redirects the user to the Job Details page. The cards are arranged in one column with 6 cards per page. The vacancies is ordered by the `updated_on` field of the `Vacancy` model. The most recently updated or created vacancies are displayed first. Only approved vacancies can be displayed on the Job Search page.
+
 - #### Search panel
-Also, the page contains the full search panel with the search filters including _Job Title_, _Area_, _Job Location_ and _Job Type_. Each filter has a dropdown menu with the list of options. The user can select the options and combine the filters to narrow the search results. The panel is sticky on large screens and always available when the user scrolls the page. On small screens, the search panel is collapsible to save space. The user can expand it by clicking on the `Tap to Expand Search Panel` button. This panel is collapsed by default and also collapsed when user submit the valid search query to leave the more space for the search results. If the user submits the invalid search query, the panel is expanded and the user can see the form validation errors under the input fields.
-- #### Number of found jobs and Back to Home button
-On the top right side of the page's main container, the user can see the number of found jobs by the search query and return to the Home page by clicking on the arrow icon that is on the left top side of the container.
+The Search page contains the advanced search panel with the search filters including _Job Title_, _Area_, _Job Location_ and _Job Type_. Each filter has a dropdown menu with the list of options. The user can select the options and combine the filters to narrow the search results.
+The panel is sticky on large screens and always available when the user scrolls the page. On small screens, the search panel is collapsible to save space. The user can expand it by clicking on the `Tap to Expand Search Panel` button. This panel is collapsed by default if no search query is passed. Otherwise, the panel is expanded and the user can see the search query in the input fields. The Search panel is styled according to the Jobseeker page design.
+
+The search query is stored in the session and the user can see the query in the input fields even if the page reloaded or the user returns to the page after some time. It is overwritten each time the user submits the search query. If the user submits the invalid search query, the panel is expanded and the user can see the form validation errors under the input fields. The search is implemented using `django.db.models.Q` object that allows to combine the search filters with the logical OR operator and make more complex queries. The *Job Title* search query is case-insensitive and the user can search by the part of the word.
+
+The user can reset the search query by clicking on the `Reset` button. The button reset all search queries, remove it from the session storage and update the Job Search page.
+
+All search filters (exept *job title*) are choice fields. It allows the app to validate the user input and improve the search results.
+- **Area**
+The Area filter is implemented without third-party libraries. The list of areas contains all Ireland counties and the cities that have the same name as the counties, Dublin and its divisions, Northern Ireland, UK, Europe and Worldwide. So the user can search jobs by all Ireland, by counties or by cities. If the user search jobs in particular county, the search results would contain the jobs from the cities of this county if the city in the area list. To search jobs in particular city, the user should select the city from the dropdown menu. But if the user wants to search jobs in Dublin, the user can select Dublin from the dropdown menu and the search results would contain the jobs from all Dublin divisions. This kind of search functionality allows the user to narrow the search results.
+
+- **Job Location**
+The Job Location is a choice field that allows the user to search jobs by the location type. It includes 3 options: On Site, Remote and Hybrid. The user can select only one option to narrow the search results.
+
+- **Job Type**
+The Job Type contains 7 options and the user is allowed to select only one option: Full-time, Part-time, Contract, Permanent, Temporary, Apprenticeship, Volunteer.
+
+![jobseeker search mobile panel](docs/images/features/job_search_mobile.png)
+
 - #### Pagination
-The search results are paginated to improve the UX and make the page more user-friendly. Implemented two types of pagination - with the page numbers and with the Previous and Next buttons to give the user the choice:
+The search results are paginated to improve the UX and make the page more user-friendly.
+The page paginated by 6 items per page.
+
+Implemented two types of pagination - with the page numbers and with the Previous and Next buttons to give the user the choice:
 - The Previous and Next buttons respresented by the Font Awesome icons. Also the user can jump to the first or the last page by using the appropriate buttons with the double arrows.
 - The pagination with the page numbers is implemented as _Elided Pagination_, so the user can see the first and the last page at the start and the end of the pagination bar respectively, the current highlighted page at the center and the previous and the next pages on the left and the right sides of the current page. The other pages are hidden with the ellipsis.
 
-![back_to_top_button]()
+![jobseeker search pagination](docs/images/features/jobs_pagination.png)
+
+[back to top](#table-of-contents)
 
 ### Job Details page
 
