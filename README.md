@@ -594,8 +594,7 @@ The Control buttons allow the user to manage the resume. The user can edit the r
 ![jobseeker my resumes page](docs/images/features/My-Resumes.png)
 
 - ##### My Resume Details
-<!-- TODO: Add anchor link to the Resume Details in employer section -->
-The Resume Details page is available from the My Resumes list. The page content is identical to the [Resume Details](#) page content for the Employers, but has the different color interface (jobseeker style) and the different header and footer buttons. The user can update the resume details, close or delete the resume using the appropriate buttons. These buttons have the same behavior as the buttons on the My Resumes page.
+The Resume Details page is available from the My Resumes list. The page content is identical to the [Resume Details](#resume-details) page content for the Employers, but has the different color interface (jobseeker style) and the different header and footer buttons. The user can update the resume details, close or delete the resume using the appropriate buttons. These buttons have the same behavior as the buttons on the My Resumes page.
 
 ![jobseeker resume details page](docs/images/features/my-resume-details.png)
 
@@ -736,6 +735,22 @@ The Employer Profile page accessible from the dropdown menu. The page contains t
 The user can update the Employer details by clicking on the Edit button. The page will display the same fields as the Employer Profile page. The fields are prefilled with the current Employer details. The user can update the details and save the changes by clicking on the Submit button. After the changes are submitted, the user will be redirected back to the Employer Profile page.
 
 ![employer profile update page](docs/images/features/employer-update-profile.png)
+
+[Back to top](#table-of-contents)
+
+### Create Vacancy
+The Create Vacancy page accessible from the dropdown menu, Post a Job button on the Home page, and My Vacancies page. The page contains the form with the fields that allow the Employer to create a new vacancy. The form contains the Title, Area, Job Location, Job Type, Salary, Experience duration and Job Description fields. More details about the fields can be found in the [Vacancy Card](#vacancy-card) section.
+
+After the vacancy is created, the Employer will be redirected to the My Vacancies page. Before the vacancy will be displayed on the Job Search page, it has to be approved by the Admin. The Admin can approve or reject the vacancy from the Admin panel if the vacancy does not meet the requirements.
+
+![create vacancy page](docs/images/features/Create-Vacancy.png)
+
+### My Vacancies
+The My Vacancies page accessible from the dropdown menu and has identical structure and functionality as the [My Resumes](#my-resumes) page. The page contains the list of the Employer's vacancies with the status badge, title last update date, and the Action buttons. The Action buttons allow the Employer to edit, close, and delete the vacancy. Only the vacancies with the status `Active` shown on the Job Search page and can be used to send a job offer to the Jobseeker. The total number of vacancies the Employer can create is limited to 5. If the Employer has 5 active vacancies, they will not be able to create a new vacancy until deletes one.
+
+![my vacancies page](docs/images/features/My-Jobs.png)
+
+[Back to top](#table-of-contents)
 
 ### Development Features
 - #### Django Authentication and Authorization System
