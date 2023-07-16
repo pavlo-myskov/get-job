@@ -21,19 +21,21 @@ The Flake8 validation is used to check the Python code for PEP8 requirements. Th
 
 
 ## JavaScript Validation
-<!-- TODO -->
+To validate the JavaScript code I used the [JSHint](https://jshint.com/) tool. As I used single JavaScript file `script.js` for the whole website I pasted the code into the JSHint tool and validated it.
+
+![JSHint Validation](images/testing/JSHint.png)
 
 ## HTML Validation
 To validate the HTML code I used the [W3C Markup Validation Service](https://validator.w3.org/). The HTML code was validated for each page of the website as the app uses Django's templates to render the HTML code.
 
 | Page | Result |
 | :--- | :---: |
-| Jobseeker Home | ![Jobseeker Home](https://validator.w3.org/nu/?doc=https%3A%2F%2Fget-job.live%2F)
-| Job Search | ![Job Search](https://validator.w3.org/nu/?doc=https%3A%2F%2Fget-job.live%2Fjobs%2F)
-| Job Details | ![Job Details](https://validator.w3.org/nu/?doc=https%3A%2F%2Fget-job.live%2Fjobs%2F7)
-| Employer Home | ![Employer Home](https://validator.w3.org/nu/?doc=https%3A%2F%2Fget-job.live%2Femployer)
-| Resume Search | ![Resume Search](https://validator.w3.org/nu/?doc=https%3A%2F%2Fget-job.live%2Fresumes%2F)
-| Resume Details | ![Resume Details](https://validator.w3.org/nu/?doc=https%3A%2F%2Fget-job.live%2Fresume%2F6)
+| Jobseeker Home | [Jobseeker Home](https://validator.w3.org/nu/?doc=https%3A%2F%2Fget-job.live%2F)
+| Job Search | [Job Search](https://validator.w3.org/nu/?doc=https%3A%2F%2Fget-job.live%2Fjobs%2F)
+| Job Details | [Job Details](https://validator.w3.org/nu/?doc=https%3A%2F%2Fget-job.live%2Fjobs%2F7)
+| Employer Home | [Employer Home](https://validator.w3.org/nu/?doc=https%3A%2F%2Fget-job.live%2Femployer)
+| Resume Search | [Resume Search](https://validator.w3.org/nu/?doc=https%3A%2F%2Fget-job.live%2Fresumes%2F)
+| Resume Details | [Resume Details](https://validator.w3.org/nu/?doc=https%3A%2F%2Fget-job.live%2Fresume%2F6)
 
 
 
