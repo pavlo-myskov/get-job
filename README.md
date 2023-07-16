@@ -237,8 +237,8 @@ The flowchart is simplified version of the app's structure and the relationships
 The Get Job platform uses a relational database to store and manage data. The RDBMS used for this project is [PostgreSQL](https://www.postgresql.org/) which is hosted on the cloud service [ElephantSQL](https://www.elephantsql.com/).
 
 The ER Diagram below shows the structure of the database and the relationships between the tables. This diagram was created using [Microsoft Visio](https://www.microsoft.com/en-ie/microsoft-365/visio/).
-<!-- TODO -->
-![er_diagram]()
+
+![er_diagram](docs/images/erd.png)
 
 [Back to top](#table-of-contents)
 
@@ -313,7 +313,7 @@ In case when a not registered user tries to access the page that requires authen
 - **Prevent enumeration**
 The app prevents the enumeration of the registered users by redirecting all users(registered and unregistered) to the same page with the same message. In our case it's a *Verify Your Email Address* page. This is a security feature to help protect against attacks where a malicious actor tries to discover valid emails by observing the system's response to input. So the app does not allow the user to check if the email address is registered or not. When the user tries to register the account with the email address that is already exists in the system, the app sends the email with message that someone tried to sing up for an account using the user's email address. Also it contains a link to the Reset Password page in case if the user forgot the password. If the `ACCOUNT_EMAIL_VERIFICATION` is not set to `mandatory` in the settings, then the `prevent_enumeration` attribute in the `BaseSignupForm` class set to `False` and the app allows the user to check if the email address is registered or not as the `clean_email` method of the `BaseSignupForm` class raises the `ValidationError` that display the sign up form error message.
 
-It possible to set the `ACCOUNT_PREVENT_ENUMERATION` parameter to `False` in the settings to allow the user to check if the email address is registered or not even if the `ACCOUNT_EMAIL_VERIFICATION` is set to `mandatory`, but it is **not recommended**.
+It possible to set the `ACCOUNT_PREVENT_ENUMERATION` parameter to `False` in the settings to allow the user to check if the email address is registered or not even if the `ACCOUNT_EMAIL_VERIFICATION` is set to `mandatory`, but it is **not recommended**. The *Validation Error* screenshot is shown below as an example, but it is not implemented in the app to prevent the enumeration.
 
 | Validation Error | Email Exists |
 | --- | --- |
@@ -816,7 +816,23 @@ The Notification cards with unread notifications have the blue background and di
 <!-- TODO: moderation -->
 
 ### Future Features
-<!-- TODO -->
+- #### Telegram Bot
+First of all, the Telegram Bot will be used to notify app support team about the new jobs and resumes that were created by the users. It will help to moderate the content quickly and improve the user experience.
+
+Secondly, the Telegram Bot will be used to notify the Employer about the new job applications and Jobseekers about the new job offers.
+
+The Bot will send the message to the Employer with the job title, applicant name, ocuppation and applicant email, and link to the Applications Received page.
+
+For the Jobseekers the Bot will send the message with the job title, Employer name and email, and link to the Job Offers page to view the job offer.
+
+The Bot will be created using the Aoiogram Python Framework and integrated with the app using the Telegram Bot API. The API allows to send the messages to the Telegram users using the Bot.
+
+- #### Refactor code structure
+    - Break the app into smaller apps to make the codebase more maintainable and scalable.
+    - Make a clear separation between the Employer/EmployerProfile and Jobseeker/JobseekerProfile functionality.
+
+- #### Completely cover the app with tests
+
 
 ### Development Features
 - #### Role System
