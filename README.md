@@ -812,6 +812,12 @@ The Notification cards with unread notifications have the blue background and di
 
 [Back to top](#table-of-contents)
 
+### Admin Panel
+<!-- TODO: moderation -->
+
+### Future Features
+<!-- TODO -->
+
 ### Development Features
 - #### Role System
 To manage the different types of users, I created Custom User Model and implemented a role system.
