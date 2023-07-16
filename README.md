@@ -188,7 +188,6 @@ The Get Job platform is based on an intuitive and easy-to-use structure. Every p
 ### UI Design
 #### Colour Scheme
 The colour scheme of the app is based on two main colours: *royalpurple* - `#874c87` and *cyan-blue* - `#2d7f9b`, and few generic colours: *white* - `#fff`, *black* - `#000`, *grey* - `#6c757d`, and *lightgrey* - `#f5f7f8`. The main colors responsible for the visual separation of type of content and page elements. The Jobseeker's pages are based on the *royalpurple* colour and the Employer's pages are based on the *cyan-blue* colour. The generic colours are used for the text and background elements both on the Jobseeker's and Employer's pages.
-<!-- TODO: add colour palete image -->
 
 #### Typography
 The app uses Lato font for all text elements. The font is selected for its unique balance of originality and readability. Originally designed for a corporate client, Lato is the perfect subtle typeface for the business site. Sleek and serious, this font looks professional without coming across as too stuffy. It is legible and works well on the small screens, which is important for the app that is designed to be used on mobile devices. The font is imported using the [Google Fonts API](https://fonts.google.com/).
@@ -205,12 +204,14 @@ The main SCSS file `main.scss` imports all other custom SCSS files and Bootstrap
 
 ### Flowchart
 The flowchart below shows the structure of the app and the relationships between the pages. The flowchart was created using [Microsoft Visio](https://www.microsoft.com/en-ie/microsoft-365/visio/).
+<!-- TODO -->
 ![flowchart]()
 
 ### Database Design
 The Get Job platform uses a relational database to store and manage data. The RDBMS used for this project is [PostgreSQL](https://www.postgresql.org/) which is hosted on the cloud service [ElephantSQL](https://www.elephantsql.com/).
 
 The ER Diagram below shows the structure of the database and the relationships between the tables. This diagram was created using [Microsoft Visio](https://www.microsoft.com/en-ie/microsoft-365/visio/).
+<!-- TODO -->
 ![er_diagram]()
 
 [Back to top](#table-of-contents)
@@ -610,6 +611,7 @@ The My Applications page is available from the Jobseeker's Dropdown menu.
 My Applications is the page where the user can view the list of the applications that they have submitted. Each application is represented by Bootstrap Accordion component collapsed by default. The Accordion header represented by the Job Title, so the user can easily find the application that they need. The user can expand the element to view the application details.
 These details include application date, employers details, vacancy title and button to view the snapshot, resume title and snapshot button.
 
+##### Snapshot functionality
 The snapshot functionality allows the user to view the resume/vacancy details that were submitted with the application. The snapshot is the copy of the resume/vacancy details on the moment of application, except user personal details that stored in the Profile DB table. The snapshot is stored in the Application in the JSON format. The snapshot view based on the Ajax request to the server. The app sends the Ajax request to the server, and the Django view renders the resume/vacancy page from the json snapshot that is stored in the application instance and return as a JsonResponse. Then the Ajax success callback function inserts the response into the Bootstrap modal window and opens it. It allows the user to view the resume/vacancy details quickly without leaving the page.
 
 The snapshot modal window is fully responsive and has the same structure as the resume/vacancy details page. The modal window has the two close buttons: one on the top and one on the bottom of the modal window. The top close button is fixed and always visible.
@@ -749,6 +751,38 @@ After the vacancy is created, the Employer will be redirected to the My Vacancie
 The My Vacancies page accessible from the dropdown menu and has identical structure and functionality as the [My Resumes](#my-resumes) page. The page contains the list of the Employer's vacancies with the status badge, title last update date, and the Action buttons. The Action buttons allow the Employer to edit, close, and delete the vacancy. Only the vacancies with the status `Active` shown on the Job Search page and can be used to send a job offer to the Jobseeker. The total number of vacancies the Employer can create is limited to 5. If the Employer has 5 active vacancies, they will not be able to create a new vacancy until deletes one.
 
 ![my vacancies page](docs/images/features/My-Jobs.png)
+
+[Back to top](#table-of-contents)
+
+### Job Offers
+The Job Offers page represents the list of the Job Offers sent by the Employer to the Jobseeker. Each Job Offer is a Accordion card that contains the clickable header with Jobseeker Occupation and email, and the body with the submittion date, Jobseeker Resume snapshot and Vacancy snapshot. More details about the snapshots can be found in the [Snapshot functionality](#snapshot-functionality) section of the My Applications page.
+
+![job offers page](docs/images/features/sent-Job-Offers.png)
+
+*Vacancy snapshot*
+![vacancy snapshot](docs/images/features/vacancy-snapshot.jpg)
+
+### Recruitment Dashboard
+The Dashboard allows the Employer to view the statistics of the Posted Jobs. The page page containt list of the Employer's vacancies with sublists of the Jobseekers resumes that applied for the vacancy. Each list represended by the Accordion card with header that contains the Vacancy title and the number of the Jobseekers that applied for the vacancy. The body of the card contains the list of the Jobseekers resumes title(clickable) that includes the Occupation and the email address, and the Action buttons. The Action buttons allow the Employer to download the Jobseeker CV and View the Cover Letter. The Cover Letter is a text message that the Jobseeker can send to the Employer with the job application. Also the Employer can view the Resume and Vacancy snapshots that were created at the time when the Jobseeker applied for the vacancy.
+
+![applicants page](docs/images/features/Applicants.png)
+
+### Saved Resumes
+The Saved Resumes page represents the list of the Jobseekers resumes that were saved by the Employer. The page has identical structure and similar functionality as the [Saved Jobs](#saved-jobs) page.
+
+![saved resumes page](docs/images/features/Saved-Resumes.png)
+
+### Notifications
+The app notifications are used to notify the Employer about the new job applications. When the Jobseeker applies for the vacancy, the Employer will receive an email and in-app notifications. The email one contains job title, applicant name and ocuppation and applicant email, and link to the Applications Received page. The in-app notification represented by the bell icon in the navbar with the number of the unread notifications. When the Employer clicks on the bell icon, they will be redirected to the Applications Received page.
+
+The Application Received page contains the list of Accordion cards. Each card represents the Jobseeker that applied for the vacancy. The card header contains the Vacancy title. The card body contains the Jobseeker name, date of the application, and the Action buttons. The Employer can view the Cover Letter and download a CV. Also the Employer can view the Vacancy and Resume snapshots that were created at the time when the Jobseeker applied for the vacancy.
+
+The Notification cards with unread notifications have the blue background and displayed on the top of the list. To mark the notification as read, the Employer has to click on the Accordion card header. After the notification is read the card background will be changed to white and notification counter on the bell icon will be decreased by one. This functionality implemented using Ajax requests. It allows the Employer to read the notifications without reloading the page.
+
+![notifications page](docs/images/features/Received-Applications.png)
+
+*Cover Letter on the Application Received page*
+![cover letter](docs/images/features/Received-Applications-cover-letter.jpg)
 
 [Back to top](#table-of-contents)
 
