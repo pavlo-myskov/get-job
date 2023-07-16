@@ -672,15 +672,26 @@ The notification body contains the short description of the notification with th
 [Back to top](#table-of-contents)
 
 ### Employer's Home page
-
-#### Sections:
+The Employer's has similar to the [Jobseeker's Home](#jobseekers-home-page) page structure. It contains NavBar, Hero, Employer's Search bar, and the list of the latest Resumes.
 - #### Navbar
+The Employer Navbar contains the Logo, Jobseeker/Employer toggle button with the appropriate links to the Jobseeker's and Employer's Home pages, search bar, notifications icon, and the dropdown menu.
+
+- The search bar is used to search resumes by occupation and skills keywords.
+- The Notification icon is used to display the number of unread notifications.
+- The dropdown menu contains the links to the My Profile, Search Resumes, Post a Vacancy, My Jobs, My Job Offers, Recruitment Dashboard, Saved Resumes, and Logout button.
 
 - #### Hero
+The Hero image presents the Employer's Home page and contains call to action button that redirects the to the Post a Vacancy page. If the user not authenticated, the button redirects the user to the Login page. If the user is not authorized to post a vacancy, the button displays the tooltip with the message that only the Employer can post a vacancy.
 
 - #### Employer's Search bar
+The search bar is used to search resumes by occupation and skills keywords. The search bar is the same as the [Jobseeker's Search bar](#jobseekers-search-bar) and has the same functionality but searches resumes instead of jobs. It contains two butttons which redirects the user to the Resume Search page. The Filter button redirects the user to the Resume Search page without any search query. So if the search query was in the session storage it will be passed to the Resume Search page. The Find Resume button redirects the user to the Resume Search page with the search query that was provided by the user. If no search query was provided, the user will be redirected to the Resume Search page with empty search query and the the Search Page page will display all resumes.
 
 - #### Latest Resumes
+The Latest Resumes section contains the list of the latest resumes. The Home page displays the latest 4 approved resumes.
+
+Each resume respresented by Bootstrap card. The card is similar to the [Vacancy Card](#vacancy-card). It contains the Offered badge if the Employer has sent the job offer to the Jobseeker for this resume, Resume title(Occupation), Date when the resume was created or updated, Jobseeker Profile image, Jobseeker name, Experience duration, the list of the Jobseeker skills and body text that contains the short description of the Jobseeker. All fuctionality is the same as the [Vacancy Card](#vacancy-card) with the exception of the Hire button that redirects the user to the Send Job Offer page.
+
+![employer home page](docs/images/features/employer-home.png)
 
 ### Resume Search
 
