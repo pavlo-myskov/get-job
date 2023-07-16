@@ -190,7 +190,7 @@ The Get Job platform is based on an intuitive and easy-to-use structure. Every p
 
 
 ### Wireframes
-The wireframes were created using [Balsamiq](https://balsamiq.com/).
+The wireframes were created using [Balsamiq](https://balsamiq.com/). Here are some initial wireframes created at the beginning of the project. The final design may differ from the initial wireframes.
 
 *Jobseeker Home Page*
 ![Jobseeker Home](docs/images/wireframes/jobseeker-home-page.png)
@@ -229,9 +229,9 @@ The main SCSS file `main.scss` imports all other custom SCSS files and Bootstrap
 
 
 ### Flowchart
-The flowchart below shows the structure of the app and the relationships between the pages. The flowchart was created using [Microsoft Visio](https://www.microsoft.com/en-ie/microsoft-365/visio/).
-<!-- TODO -->
-![flowchart]()
+The flowchart is simplified version of the app's structure and the relationships between the pages. It does not include all pages and elements as it was created on the early stage of the project and was used as a reference for the development process.
+
+![flowchart](docs/images/flowchart.png)
 
 ### Database Design
 The Get Job platform uses a relational database to store and manage data. The RDBMS used for this project is [PostgreSQL](https://www.postgresql.org/) which is hosted on the cloud service [ElephantSQL](https://www.elephantsql.com/).
@@ -903,7 +903,7 @@ In fact, one major benefit of Amazon S3 is the ability to create a new bucket fo
 
 
 ## Testing
-See [TESTING.md](https://github.com/FlashDrag/get-job/blob/master/docs/README.md) for an overview of the app testing and debugging.
+See [TESTING.md](https://github.com/FlashDrag/get-job/blob/master/docs/TESTING.md) for an overview of the app testing and debugging.
 
 ## Deployment, CI/CD
 The Get Job platform is deployed on the [Heroku](https://www.heroku.com/) cloud platform and can be accessed here https://get-job.live.
