@@ -693,23 +693,49 @@ Each resume respresented by Bootstrap card. The card is similar to the [Vacancy 
 
 ![employer home page](docs/images/features/employer-home.png)
 
+[Back to top](#table-of-contents)
+
 ### Resume Search
+The basic structure of the Resume Search page is the same as the [Job Search page](#job-search-page).
 
-#### Sections:
-...
+- #### Search bar
+The Resume Search bar contains the Occupation and Skills keywords input, Experience range selector, Gender and Age range.
 
-- #### Age range selector
-As the multiple sliders are not supported by the Bootstrap, I used the [jQuery UI Slider](https://jqueryui.com/slider/) to implement the Age range selector. The user can select the age range by dragging the slider handles or by clicking on the slider bar. The selected range is displayed in the Age range decorative input field. The input field is read-only and disabled. To capture the slider state and insert it into the form I implemented the hidden input fields that are part
+- ##### Age range selector
+As the multiple sliders are not supported by the Bootstrap, I used the [jQuery UI Slider](https://jqueryui.com/slider/) to implement the Age range selector.
+
+The Age range selector allows the user to select the age range of the Jobseeker. The age range is represented by the two sliders. The user can select the age range by dragging the slider handles or by clicking on the slider bar. The selected range is displayed in the Age range decorative input field. The input field is read-only and disabled. To capture the slider state and insert it into the form I implemented the hidden input fields that are part
 of the Django Form. It allows me to validate the inputed by the user age range using server side django validation if the malicious user is trying to force a value change of the hidden input fields or set an invalid value into the search query in the url.
+
+![resume search page](docs/images/features/resume-search.png)
 
 
 ### Resume Details
+The Resume Details card contains Header with To resume search button, Hire and Save buttons, body with the Jobseeker details, and Footer with the Action buttons. The card is similar to the [Vacancy Details card](#vacancy-details-card) with the exception of the Hire button that redirects the user to the Send Job Offer page and content of the body.
 
-#### Sections:
-...
+The Resume details include the Jobseeker Occupation, Profile picture, Name, Experience duration, Gender, Age, Phone number, Email address, Experience description, Education, Skills, and Body text. The personal information(gender, age, phone, email) is displayed only for Employer users.
+
+![resume details page](docs/images/features/resume-detail.png)
+
 
 ### Hiring page
-...
+The app allows the Employer to send a job offer to the Jobseeker by using the Hiring page. The Hiring page is accessible from the Resume card and the Resume details page. The Hiring page contains Jobseeker name with Occupation, List of Employer's Vacancies, and the Job offer message input field. The Employer can select the vacancy from the list of his vacancies, view the vacancy details(opens in the new tab), and send the job offer message to the Jobseeker. The Job offer message is optional and cannot be longer than 1000 characters. If the Employer does have any active vacancies, they will be prompted to create a vacancy or go to the My Vacancies page to check the status of the vacancies. The My Vacancies and Create Vacancy pages open in the new tab to allow the user go back to the Hiring page and save the job offer message or job itself to apply for it later.
+
+When the Employer sends the job offer, the system creates Vacancy and Resume snapshots and store them in JSON format in JobOffer database table. So the Jobseeker and Employer can view the vacancy and resume details at the time when the job offer was sent. Also the app sends the [email notification and in-app notification](#notifications) to the Jobseeker with the job offer details and the link to the Hiring page.
+
+![hiring page](docs/images/features/sending-Job-Offer.png)
+
+[Back to top](#table-of-contents)
+
+### Employer Profile
+The Employer Profile page accessible from the dropdown menu. The page contains the Employer details (Employer name, Company name, Company logo, Company website, Phone number and Email address) that can be updated by the Employer clicking on the Edit button. From the page the Employer can also [Disable Email Notifications](#email-notifications) that enabled by default, [change password](#change-password), and [delete account](#account-deleting).
+
+![employer profile page](docs/images/features/employer-profile.png)
+
+- #### Update Employer details
+The user can update the Employer details by clicking on the Edit button. The page will display the same fields as the Employer Profile page. The fields are prefilled with the current Employer details. The user can update the details and save the changes by clicking on the Submit button. After the changes are submitted, the user will be redirected back to the Employer Profile page.
+
+![employer profile update page](docs/images/features/employer-update-profile.png)
 
 ### Development Features
 - #### Django Authentication and Authorization System
