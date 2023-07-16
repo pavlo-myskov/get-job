@@ -32,6 +32,7 @@ Heroku: https://get-job.herokuapp.com
 ![mockup]()
 
 ## Table of Contents
+<!-- TODO -->
 ...
 
 ## Agile Methodology
@@ -166,6 +167,13 @@ The _User Stories_ prioritized using the _MoSCoW_ method. The prioritisation was
 - **Won't Have** - The _User Story_ will not be delivered in the current delivery timebox but may be considered for the future.
 The prioritisation based on the 60-20-20 rule where 60% of the effort is spent on the Must Have, 20% on the Should Have and rest 20% on the Could Have. When the Sprint starts, the _User Stories_ are moved to the _Development_ column, where first the Must Have items. When the development of particular _User Story_ is completed, it is moved to the _Testing_ column, tested and then moved to the _Done_ column manually or using the _commit_ message with reference to the User Story ID. If the time is running out and the _User Stories_ are not completed, the Could Have items are dropped back to the _Backlog_ column for the re-prioritisation.
 
+
+*GitHub Kanban Board*
+![GitHub Kanban Board](docs/images/Board.png)
+
+*GitHub Project Table*
+![GitHub Project Table](docs/images/Table.png)
+
 [Back to top](#table-of-contents)
 
 ## UX Design
@@ -189,8 +197,12 @@ The Get Job platform is based on an intuitive and easy-to-use structure. Every p
 #### Colour Scheme
 The colour scheme of the app is based on two main colours: *royalpurple* - `#874c87` and *cyan-blue* - `#2d7f9b`, and few generic colours: *white* - `#fff`, *black* - `#000`, *grey* - `#6c757d`, and *lightgrey* - `#f5f7f8`. The main colors responsible for the visual separation of type of content and page elements. The Jobseeker's pages are based on the *royalpurple* colour and the Employer's pages are based on the *cyan-blue* colour. The generic colours are used for the text and background elements both on the Jobseeker's and Employer's pages.
 
+![Colour Palette](docs/images/Palette.png)
+
 #### Typography
 The app uses Lato font for all text elements. The font is selected for its unique balance of originality and readability. Originally designed for a corporate client, Lato is the perfect subtle typeface for the business site. Sleek and serious, this font looks professional without coming across as too stuffy. It is legible and works well on the small screens, which is important for the app that is designed to be used on mobile devices. The font is imported using the [Google Fonts API](https://fonts.google.com/).
+
+![Lato Font](docs/images/Lato-Google-Fonts.png)
 
 #### Styling
 The app style is consistent across all pages and elements. The app uses a responsive layout to provide an optimal viewing experience across a wide range of devices.
@@ -787,9 +799,6 @@ The Notification cards with unread notifications have the blue background and di
 [Back to top](#table-of-contents)
 
 ### Development Features
-- #### Django Authentication and Authorization System
-The app uses the Django Allauth package that is built on top of the built-in Django Authentication and Authorization System. The system provides a secure way to manage user accounts and allows users to create an account, login, logout, reset password, and update their profile. Also, the package is used to provide additional features such as email verification, social authentication, and password reset.
-
 - #### Role System
 To manage the different types of users, I created Custom User Model and implemented a role system.
 The app contains two main types of users - Jobseekers and Employers. So the system allows users to create an account as a Jobseeker or an Employer. All the time when we want to create a new user, we have to assign him to a role. The email address is used as a unique identifier of the user and the system does not allow users to register multiple accounts with the same email address. So the Jobseeker and the Employer can not have the same email address.
@@ -808,10 +817,43 @@ See the [Deployment](#deployment) section for more details about the CI/CD proce
 |![branching_strategy](docs/images/ci-cd-diagram.avif)|
 
 - #### Database
-The app uses a relational database service [ElephantSQL](https://www.elephantsql.com/) to store and manage data.
+The app uses a relational database service [ElephantSQL](https://www.elephantsql.com/) to store and manage data. In this project I used 3 databases - `local`, `staging`, and `production`. The `local` database is used for local development and testing. It's a SQLite database that is provided by Django. The `staging` and `production` databases are PostgreSQL databases that are provided by ElephantSQL. The `staging` database is used for testing the app before it is deployed to the production environment.
+
+*Database Configuration for different environments*
+```
+development = os.getenv('DEVELOPMENT', False) == 'True'
+
+if development:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
+elif len(sys.argv) > 0 and sys.argv[1] != 'collectstatic':
+    if os.getenv("DATABASE_URL", None) is None:
+        raise Exception("DATABASE_URL environment variable not defined")
+
+    import dj_database_url
+    DATABASES = {
+        'default': dj_database_url.config(
+            default=os.getenv('DATABASE_URL')
+        )
+    }
+```
+
+*ElephantSQL Instances for different environments*
+![Instances-ElephantSQL](docs/images/Instances-ElephantSQL.png)
 
 - #### Static Files
-The app uses the [Cloudinary](https://cloudinary.com/) cloud service to store static files such as images, CSS, and JavaScript files.
+The app uses the [Cloudinary](https://cloudinary.com/) cloud service to store static files such as images, CSS, and JavaScript files and media files such as user avatars, CVs, and company logos. Initially, I used the [AWS S3](https://aws.amazon.com/s3/) cloud service to store static files. But the free tier of the AWS S3 service includes 5 GB of storage, 20,000 Get Requests, and 2,000 Put Requests. It was not enough for my project, especially put requests. Contrary to popular belief, setting up Amazon S3 was far from difficult.
+In fact, one major benefit of Amazon S3 is the ability to create a new bucket for each application, ensuring better organization and conflict-free storage. However, I decided to use Cloudinary even it provides a single 'bucket' for all my applications. I managed to figure out and set up Cloudinary for several projects without any issues. Each project has its own folder in the Cloudinary media library.
+
+*Cloudinary Management - Static Files*
+![Cloudinary](docs/images/Cloudinary-Management.png)
+
+*Cloudinary Management - Media Files*
+![Cloudinary](docs/images/Cloudinary-Management-2.png)
 
 ## Technologies Used
 - ### Languages
@@ -847,24 +889,65 @@ The app uses the [Cloudinary](https://cloudinary.com/) cloud service to store st
 
 
 ## Testing
-See [TESTING.md]() for an overview of the app testing and debugging.
-<!-- TODO Add screenshots of the coverage report -->
+See [TESTING.md](https://github.com/FlashDrag/get-job/blob/master/docs/README.md) for an overview of the app testing and debugging.
 
 ## Deployment, CI/CD
 The Get Job platform is deployed on the [Heroku](https://www.heroku.com/) cloud platform and can be accessed here https://get-job.live.
-The _get-job.live_ domain name uses the [Heroku DNS service](https://devcenter.heroku.com/articles/custom-domains) to point to the Heroku app. Usually Heroku free dyno plan does not support [SSL certificates for custom domains](https://devcenter.heroku.com/articles/ssl#dynos-and-certificate-options). But they provides a free ssl certificate for the _herokuapp.com_ domain. So the dyno is upgraded to the Hobby plan to enable the ssl certificate for the custom domain.
+The _get-job.live_ domain is registered with [Name.com](https://www.name.com/) and uses uses the [Heroku DNS service](https://devcenter.heroku.com/articles/custom-domains) to point to the Heroku app. Usually Heroku free dyno plan does not support [SSL certificates for custom domains](https://devcenter.heroku.com/articles/ssl#dynos-and-certificate-options). But they provides a free ssl certificate for the _herokuapp.com_ domain. So the dyno is upgraded to the Hobby plan to enable the ssl certificate for the custom domain.
+
+*heroku ssl certificates*
+![ssl_certificates](docs/images/deploy/ssl-certs.png)
+
+*Domain DNS settings - heroku.com*
+![domain_dns](docs/images/deploy/DNS-settings-heroku.png)
+
+*Domain DNS settings - name.com*
+![domain_dns](docs/images/deploy/Domain-Management-Name-com.png)
+
+- #### SSL Redirect
+SSL Redirect is enabled in the Django settings to automatically redirect all http requests to https in the production environment.
+```
+development = os.getenv('DEVELOPMENT', False) == 'True'
+
+if development:
+    SECURE_SSL_REDIRECT = False
+    SESSION_COOKIE_SECURE = False
+    CSRF_COOKIE_SECURE = False
+else:
+    # redirect from http to https
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+    SECURE_SSL_REDIRECT = True
+    # set session and csrf cookies to secure
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+```
 
 The build, test, and deployment processes of the app are _automated_ using Continuous Integration based on [GitHub Actions](https://docs.github.com/en/actions) and Continuous Deployment based on [Heroku Pipelines](https://devcenter.heroku.com/articles/pipelines).
 
 - #### Continuous Integration
 The GitHub repository is configured to use automated _Continuous Integration_ workflows. The workflow is triggered when a pull request is created and merged into the `develop` and/or `master` branches. When the workflow is triggered, it performs the build, lint, and test tasks.
 
+*GitHub Actions CI workflow*
+![ci_workflow](docs/images/deploy/github-Actions.png)
+
+![ci_workflow](docs/images/deploy/ci-github-action.png)
+
+
 - #### Continuous Deployment
 The _Continuous Deployment_ workflow is implemented using [Heroku GitHub Integration](https://devcenter.heroku.com/articles/github-integration). This feature allows me to connect the app to a GitHub repository and deploy the app automatically from the selected branch when a new commit is pushed to the repository. The GitHub integration also supports the option to [wait for CI to pass before deploying](https://devcenter.heroku.com/articles/github-integration#automatic-deploys) the app. So the app is deployed automatically only when the build and test tasks are passed.
+
+*Heroku GitHub Integration and Automatic Deploys*
+![heroku_github_integration](docs/images/deploy/Heroku-CD.png)
 
 [Heroku Pipelines](https://devcenter.heroku.com/articles/pipelines) is used to implement the _Continuous Deployment_ workflow. The pipeline is configured to deploy the app to the two environments - _Staging_ and _Production_:
 1. The _Staging_ stage is used to preview code changes and features before being deployed to production. This stage is triggered when a new commit is pushed to the `develop` branch or a pull request is merged into the branch from the feature branches. The app is deployed to the Heroku staging environment automatically when the tests are passed. The staging environment is available here https://get-job-dev.herokuapp.com.
 2. The _Production_ stage is a live environment for the app. It is triggered when a new commit is pushed to the `master` branch. It also deploys the app automatically when GitHub Actions CI is passed. The production environment is available by the link https://get-job.herokuapp.com.
+
+![heroku_pipeline](docs/images/deploy/Pipeline-Heroku.png)
+
+#### Deployment process
+<!-- TODO -->
+
 
 ## Credits
 - ### Code
