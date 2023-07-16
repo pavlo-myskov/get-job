@@ -7,7 +7,7 @@ const bootstrapColors = {
     warning: 'rgb(255, 193, 7)',
     info: 'rgb(13, 202, 240)',
     light: 'rgb(248, 249, 250)',
-}
+};
 
 // ___MAIN FUNCTIONALITY___
 $(document).ready(function () {
@@ -17,16 +17,16 @@ $(document).ready(function () {
     let dropdown = initDropdown();
 
     // init and show toast messages if they exist
-    let toastElementsList = [].slice.call(document.querySelectorAll('.default-msg-toast'))
+    let toastElementsList = [].slice.call(document.querySelectorAll('.default-msg-toast'));
     showToasts(toastElementsList);
     // init and show messages Modal if it exists
     $('#messagesModal').modal('show');
 
     // init tooltips
-    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
     var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-        return new bootstrap.Tooltip(tooltipTriggerEl)
-    })
+        return new bootstrap.Tooltip(tooltipTriggerEl);
+    });
 
 
     hideShowNavbar(windowWidth, dropdown);
@@ -89,7 +89,7 @@ $(document).ready(function () {
 
         $('#max-text-length-value').text(maxLen);
         $('#current-text-length-value').text(currentLen);
-    })
+    });
 
     $('.snapshot').click(showSnapshot);
 
@@ -114,7 +114,7 @@ function initDropdown() {
         dropdown = new bootstrap.Dropdown(dropdownToggle);
         dropdownEl.addEventListener('show.bs.dropdown', function () {
             this.classList.add('shown');
-        })
+        });
     }
 
     return dropdown;
@@ -134,7 +134,7 @@ function hideShowNavbar(windowWidth, dropdown) {
         // add smart scroll that fixes the navbar
         $('.navbar').addClass('smart-scroll');
         // add padding top to show content behind navbar
-        $('body').css('padding-top', $('.navbar').outerHeight() + 'px')
+        $('body').css('padding-top', $('.navbar').outerHeight() + 'px');
         let last_scroll_top = 0;
 
         // add scroll event handler that detects scroll up/down
@@ -171,9 +171,9 @@ function hideShowNavbar(windowWidth, dropdown) {
  */
 function fixDaysCounterPosition(windowWidth) {
     if (windowWidth > 575) {
-        $('.days-counter').removeClass('card-subtitle').addClass('position-absolute top-0 end-0 pt-2 pe-3')
+        $('.days-counter').removeClass('card-subtitle').addClass('position-absolute top-0 end-0 pt-2 pe-3');
     } else {
-        $('.days-counter').removeClass('position-absolute top-0 end-0 pt-2 pe-3').addClass('card-subtitle')
+        $('.days-counter').removeClass('position-absolute top-0 end-0 pt-2 pe-3').addClass('card-subtitle');
     }
 }
 
@@ -182,9 +182,9 @@ function fixDaysCounterPosition(windowWidth) {
  */
 function fixCardImagePosition(windowWidth) {
     if (windowWidth < 576) {
-        $('.resume-card--img').css('max-height', '50px').addClass('position-absolute top-0 end-0 pt-2')
+        $('.resume-card--img').css('max-height', '50px').addClass('position-absolute top-0 end-0 pt-2');
     } else {
-        $('.resume-card--img').css('max-height', '70px').removeClass('position-absolute top-0 end-0 pt-2')
+        $('.resume-card--img').css('max-height', '70px').removeClass('position-absolute top-0 end-0 pt-2');
     }
 }
 
@@ -302,12 +302,12 @@ function insertRoleToTitle() {
 function showToasts(toastElementsList, toastBootstrapColor) {
     var toastList = toastElementsList.map(function (toastEl) {
 
-        return new bootstrap.Toast(toastEl)
-    })
+        return new bootstrap.Toast(toastEl);
+    });
 
     changeToastsColor(toastElementsList, toastBootstrapColor);
     // show toast by default
-    toastList.forEach(toast => toast.show())
+    toastList.forEach(toast => toast.show());
 }
 
 /**
@@ -327,7 +327,7 @@ function changeToastsColor(toastElList, toastBootstrapColor) {
         }
         // set default color if bootstrapColor is undefined
         // ?? - Nullish coalescing operator
-        let rgbColor = bootstrapColors[bootstrapColor] ?? bootstrapColors['light'];
+        let rgbColor = bootstrapColors[bootstrapColor] ?? bootstrapColors.light;
         // set css variable
         toast.style.setProperty('--toast-bg-color', rgbColor);
     }
@@ -344,7 +344,7 @@ function setResumeActionModal(event, actionText) {
     $('.modal-action').text(actionText);
     $('#resume-modal-form').attr('action', actionUrl);
     if (actionText.toLowerCase() == 'delete') {
-        $('.additional_msg').text('The application(s) and job offer(s) associated with this resume will also be deleted')
+        $('.additional_msg').text('The application(s) and job offer(s) associated with this resume will also be deleted');
     }
 
     $('#resumeModal').modal('show');
@@ -360,7 +360,7 @@ function setJobActionModal(event, actionText) {
     $('.modal-action').text(actionText);
     $('#job-modal-form').attr('action', actionUrl);
     if (actionText.toLowerCase() == 'delete') {
-        $('.additional_msg').text('The application(s) and job offer(s) associated with this job will also be deleted')
+        $('.additional_msg').text('The application(s) and job offer(s) associated with this job will also be deleted');
     }
     $('#jobModal').modal('show');
 }
@@ -375,7 +375,7 @@ function toggleSaveUnsave(e) {
     const csrfToken = $(this).find("input[name='csrfmiddlewaretoken']").val();
 
     // select all save buttons of the card that contains submitted form
-    const targetCard = $(this).closest('.card')
+    const targetCard = $(this).closest('.card');
     const saveBtns = targetCard.find('.save-form').find("button[type='submit']");
 
     $.ajax({
@@ -408,7 +408,7 @@ function toggleSaveUnsave(e) {
             console.error('AJAX POST Save/Unsave: "An error occurred while sending data to the server"');
             alert('An error occurred while sending data to the server');
         }
-    })
+    });
 }
 
 /**
@@ -431,7 +431,7 @@ function removeSaved(e) {
         },
         dataType: 'json',
         success: function (response) {
-            console.log('success')
+            console.log('success');
             // set toast message
             $('.custom-toast-msg').text(response.successMsg);
             let toastElementsList = [].slice.call(document.querySelectorAll('.multi-use-toast'));
@@ -444,7 +444,7 @@ function removeSaved(e) {
             console.error('AJAX POST Remove Saved: "An error occurred while sending data to the server"');
             alert('An error occurred while sending data to the server');
         }
-    })
+    });
 }
 
 
@@ -471,7 +471,7 @@ function showSnapshot(e) {
                 alert('An error occurred while sending data to the server');
             }
         }
-    })
+    });
 }
 
 
@@ -502,7 +502,7 @@ function markAsRead() {
         },
         dataType: 'json',
         success: function (response) {
-            const counter = response.counter
+            const counter = response.counter;
             // update notification counter in navbar
             $('#notification-counter').text(counter);
             if (counter === 0) {
@@ -518,7 +518,7 @@ function markAsRead() {
                 $('body').html(xhr.responseText);
             }
         }
-    })
+    });
 }
 
 
@@ -567,5 +567,5 @@ function toggleEmailNotification(e) {
                 $('body').html(xhr.responseText);
             }
         }
-    })
+    });
 }
