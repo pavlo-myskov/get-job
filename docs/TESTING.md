@@ -4,14 +4,21 @@
 ...
 
 ## Unit Testing
-The unit tests were written using Django's built-in testing framework based on Python's unittest module. The tests can be found in the `tests' directory of each app. To run the tests, use the following command: `python manage.py test`. To run the tests automatically I used CI/CD processes with GitHub Actions. The more detailed information about the CI/CD processes can be found in the **Deployment** section of the [README.md](https://github.com/FlashDrag/get-job/blob/master/README.md) file.
+The unit tests were written using Django's built-in testing framework based on Python's unittest module. The tests can be found in the `tests' directory of each Django app. To run the tests automatically I used CI/CD processes with GitHub Actions. The more detailed information about the CI/CD processes can be found in the **Deployment** section of the [README.md](https://github.com/FlashDrag/get-job/blob/master/README.md#continuous-integration) file.
 
 *Django Unit Tests GitHub Actions Workflow*
 ![Unit Tests](images/testing/unit-testing.png)
 
 ### Coverage
-The coverage report was generated using the [Coverage](https://coverage.readthedocs.io/en/coverage-5.5/) tool. The report can be found in the `htmlcov` directory.
-<!-- TODO Add screenshots of the coverage report -->
+The coverage report was generated using the [Coverage](https://coverage.readthedocs.io/) tool.
+To generate the HTML report I used the following command:
+```
+$ coverage run manage.py test
+$ coverage html
+```
+
+![Coverage Report](images/testing/Coverage-report.png)
+
 
 ## PEP8 - Flake8 Validation
 The Flake8 validation is used to check the Python code for PEP8 requirements. The validation is configured in the `production.yml` and `development.yml` files in the `.github/workflows` directory. The validation is run automatically with the CI/CD processes.

@@ -9,13 +9,6 @@
 [![PostgreSQL](https://img.shields.io/badge/ElephantSQL-575757?style=flat&logo=postgresql&logoColor=white&labelColor=4169E1&label=PostgreSQL)](https://www.elephantsql.com/)
 
 
-<!-- TODO Add coverage -->
-<!-- [![Codecov](https://img.shields.io/codecov/c/github/FlashDrag/get-job?label=Coverage&logo=codecov)](https://codecov.io/gh/FlashDrag/get-job)
-
-https://github.com/aiogram/aiogram/blob/dev-3.x/.github/workflows/tests.yml
-https://about.codecov.io/blog/python-code-coverage-using-github-actions-and-codecov/
--->
-
 ## Overview
 The relevance of job search in our time constantly increases. [Get Job](https://get-job.live) is an online Job Platform that helps Jobseekers to get desirable jobs and Employers to find the right candidates.
 This platform presents two distinct modes: _Jobseeker Mode_ and _Employer Mode_.
