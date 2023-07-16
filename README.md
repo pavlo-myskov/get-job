@@ -237,8 +237,8 @@ The flowchart is simplified version of the app's structure and the relationships
 The Get Job platform uses a relational database to store and manage data. The RDBMS used for this project is [PostgreSQL](https://www.postgresql.org/) which is hosted on the cloud service [ElephantSQL](https://www.elephantsql.com/).
 
 The ER Diagram below shows the structure of the database and the relationships between the tables. This diagram was created using [Microsoft Visio](https://www.microsoft.com/en-ie/microsoft-365/visio/).
-<!-- TODO -->
-![er_diagram]()
+
+![er_diagram](docs/images/erd.png)
 
 [Back to top](#table-of-contents)
 
@@ -816,7 +816,23 @@ The Notification cards with unread notifications have the blue background and di
 <!-- TODO: moderation -->
 
 ### Future Features
-<!-- TODO -->
+- #### Telegram Bot
+First of all, the Telegram Bot will be used to notify app support team about the new jobs and resumes that were created by the users. It will help to moderate the content quickly and improve the user experience.
+
+Secondly, the Telegram Bot will be used to notify the Employer about the new job applications and Jobseekers about the new job offers.
+
+The Bot will send the message to the Employer with the job title, applicant name, ocuppation and applicant email, and link to the Applications Received page.
+
+For the Jobseekers the Bot will send the message with the job title, Employer name and email, and link to the Job Offers page to view the job offer.
+
+The Bot will be created using the Aoiogram Python Framework and integrated with the app using the Telegram Bot API. The API allows to send the messages to the Telegram users using the Bot.
+
+- #### Refactor code structure
+    - Break the app into smaller apps to make the codebase more maintainable and scalable.
+    - Make a clear separation between the Employer/EmployerProfile and Jobseeker/JobseekerProfile functionality.
+
+- #### Completely cover the app with tests
+
 
 ### Development Features
 - #### Role System
