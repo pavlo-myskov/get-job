@@ -230,7 +230,7 @@ The system uses the email address as the username. The email address is unique f
 | ![jobseeker_sign_in](docs/images/features/account/signin-dropdown-jobseeker.png) | ![employer_sign_in](docs/images/features/account/signin-dropdown-employer.png) |
 
 - #### Sign In
-The app allows users create an account and have additional features that are not available for the anonymous users. To get on the register or login page, the user can click on the `Sign Up/Sing In` button in the Navbar or they will be redirected automatically to the login page when they are trying to access the page that is available only for the logged in users, e.g. the *Apply for the Job* page or the Hiring page.
+The app allows users create an account and have additional features that are not available for the anonymous users. To get on the register or login page, the user can click on the `Sign Up/Sing In` button in the Navbar or they will be redirected automatically to the login page when they are trying to access the page that is available only for the logged in users, e.g. *Apply for the Job* page, *Hiring* page, *Create a Job/Ressume* page.
 The Sign In page is universal for both jobseekers and employers. It contains the internal navbar and login form. The user type (jobseeker or employer) is set automatically based on the email address.
 
 - ##### Internal Navbar
@@ -238,10 +238,12 @@ The internal navbar allows the user to switch between the Sign In and Sign Up pa
 - ##### Login Form
 The login form contains the *email*, *password*, *remember me*, and *forgot password* fields. The *email* and *password* fields are required. The *remember me* checkbox allows the user to stay logged in after closing the browser. The checkbox is checked by default, so the user can stay logged in for a long time without the need to re-enter the password. The lifetime of the session depends on the [SESSION_COOKIE_AGE](https://docs.djangoproject.com/en/3.2/ref/settings/#session-cookie-age). The default value is 2 weeks.
  The *forgot password* link redirects the user to the Password Reset page.
-- ##### Redirect
+- ##### Login Redirect
 The Sign In form redirects the user to the Home page appropriate to the user type (Jobseeker or Employer) if user came to the Sign In page from the Home page. So, if the user came to the Sign In page from the Jobseeker's Home page, but decided to login with an Employer, the app redirects them to the Employer's Home page after successful login. If the user came to the Sign In page from another page, the app redirects them to the previous page after successful login using the Django's `next` parameter. It is useful when the user tries to access the page that requires authentication, such as the `Apply for Job` page. The user is redirected to the Sign In page, but after successful login the app redirects them back to the Apply for Job form to complete the application.
 
 The authenticated user can have access only to the menu appropriate to the role. So the Jobseeker can not access the options related to the Employer and vice versa. Instead of the Profile button for an authenticated user not associated with his role, the user will see the specific message that the user is logged in as a Jobseeker/Employer and the Logout button.
+
+In case when the unauthorized user tries to access the page during login that requires another role, e.g. the Jobseeker tries to access the Employer's page the app renders the 403 Forbidden page.
 
 ![Sign In page](docs/images/features/account/sign-in.png)
 
@@ -256,13 +258,19 @@ The form includes the *jobseeker/employer* toggle button, *email*, *name*, *pass
 - The *name* field is mandatory and should contain the full name of the user. The reason why the app uses only one name field instead of the first and last name fields is internationalization. The app is designed to be used by the users from different countries and cultures. Not every user has the first and last name. For example, in some countries the name consists of three parts - first name, middle name, and last name.
 - The *password* field as also required and the user can not submit the form without setting the password. The validation of the password is implemented on the client side and on the server side based on the Django Allauth package.
 
-The app uses email confirmation to verify the user's email address, that prevents brute force attacks. The user can not login to the app until the email address is verified. The confirmation method based on the combination of the `ACCOUNT_CONFIRM_EMAIL_ON_GET` and `ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION` parameters of the Django Allauth package. These configuration allows the user to confirm the email address by clicking on the link in the email and then automatically login the user after successful confirmation without the need to login manually and then redirect the user to previous page where the user came from to register the account. The redirect is implemented using the Django's `next` parameter in `get_email_confirmation_url` and `get_email_confirmation_redirect_url` methods of the `CustomAccountAdapter` class that extends the `allauth.account.adapter.DefaultAccountAdapter`.
+- ##### Confirmation
+The app uses email confirmation to verify the user's email address, that prevents brute force attacks. The user can not login to the app until the email address is verified. The confirmation method based on the combination of the `ACCOUNT_CONFIRM_EMAIL_ON_GET` and `ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION` parameters of the Django Allauth package. These configuration allows the user to confirm the email address by clicking on the link in the email and then automatically login the user after successful confirmation without the need to login manually.
 
 The confirmation link is valid for 48 hours. If the user does not confirm the email address within 3 days (by default `ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS=3`), the user has to register again. The invalid link redirects the user to appropriate page with the error message and the link to the Sign In form.
 
 The email verification feature allows the app to use the user email address for the password reset and communication with the user.
 
-Additionaly for the user convenience, the form contains the header with the back to the home page button and the link to the Sign In page if the user already has an account.
+- ##### Sing Up Redirect
+After successful registration(confirmation) the app redirects the user to Update Profile page to complete the profile, the data of which is used to create job postings or resumes, and then redirects the user to Create Job or Resume page to create the first job post or resume. The redirect is implemented using the Django's custom `get_email_confirmation_redirect_url` method of the `CustomAccountAdapter` class that extends the `allauth.account.adapter.DefaultAccountAdapter`.
+
+It allows to guide the user through the full registration process and helps to avoid the situation when the user registered but did not complete the profile and did not create the first job post or resume for further job/employee search.
+
+In case when a not registered user tries to access the page that requires authentication, such as the `Apply for Job` or `Create Resume` pages the app will not redirect the user back to the same page after successful registration to continue the process as [login redirect](#login-redirect) does, because the user has to complete the profile and create the first job post or resume before applying for the job or hiring the employee and then it requires the administrator's approval.
 
 | Jobseeker Sign Up | Employer Sign Up |
 | --- | --- |
@@ -506,6 +514,9 @@ The user can submit the application form only if they selected the resume. Is th
 The user can submit the form by clicking on the `Submit` button. When the user successfully submits the form, the app sends the notification to the employer email and add new application notification to the employer's navbar notification counter. The user redirected back to search results page to the position of the applied job. So the user can continue the job search from the same place. The app also displays the success message using Bootstrap toast component and Django messages framework.
 
 The user can also Reset the form by clicking on the `Reset` button. The button clears the Cover Letter field and uncheck the selected resume. The counter is not reseted but when the user starts typing the text, it is updated.
+
+- #### No active resumes
+If the user has no active resumes, the app displays the message with the link to the My Resumes page and the button to create a new resume. The user can create a new resume by clicking on the `Create New Resume` button. The My Resumes link and Create New Resume button open the My Resumes page and the Create Resume page respectively in the new tab to prevent the user from losing the job details page in case the user wants to save the job to apply later.
 
 *Job Application page*
 ![jobseeker apply for the job](docs/images/features/job_apply.png)

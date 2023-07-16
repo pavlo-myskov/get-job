@@ -31,10 +31,10 @@
       <div class="card-body">
         {% if not are_jobs_available %}
         <h5 class="card-title">You cannot send a job offer as you do not currently have an active vacancy.</h5>
-        <p class="card-text">Create a new job post or go to <a href="{% url 'my_jobs' %}">my jobs</a> to check status of your all vacancies.</p>
+        <p class="card-text">Create a new job post or go to <a href="{% url 'my_jobs' %}" target="_blank">my jobs</a> to check status of your all vacancies.</p>
       </div>
       <div class="text-end text-sm-start m-3 mb-sm-1">
-        <a href="{% url 'job_create' %}?next={% url 'resume_detail' resume.id %}"
+        <a href="{% url 'job_create' %}" target="_blank"
           class="btn btn-outline-cyan-blue py-1">
           <i class="fa fa-plus"></i>
           <span class="ms-2">Add New Job</span>
