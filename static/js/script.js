@@ -97,6 +97,9 @@ $(document).ready(function () {
     $('.notification-collapse').on('hidden.bs.collapse', markAsRead);
 
     $('#toggle_email_notification_form').submit(toggleEmailNotification);
+
+    // add current year to footer
+    $('#copyrightYear').text(new Date().getFullYear());
 });
 
 
