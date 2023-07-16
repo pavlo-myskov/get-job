@@ -31,10 +31,12 @@
       <div class="card-body">
         {% if not are_resumes_available %}
         <h5 class="card-title">You cannot apply for jobs as you do not currently have an active resume.</h5>
-        <p class="card-text">Create a new resume or go to <a href="{% url 'my_resumes' %}">my resumes</a> to check status of your all resumes.</p>
+        <p class="card-text">Create a new resume or go to
+          <a href="{% url 'my_resumes' %}" target="_blank">my resumes</a>
+          to check status of your all resumes.</p>
       </div>
       <div class="text-end text-sm-start m-3 mb-sm-1">
-        <a href="{% url 'resume_create' %}?next={% url 'job_detail' vacancy.id %}"
+        <a href="{% url 'resume_create' %}" target="_blank"
           class="btn btn-outline-royalpurple py-1">
           <i class="fa fa-plus"></i>
           <span class="ms-2">Add New Resume</span>
