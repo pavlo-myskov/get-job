@@ -32,6 +32,7 @@ Heroku: https://get-job.herokuapp.com
 ![mockup]()
 
 ## Table of Contents
+<!-- TODO -->
 ...
 
 ## Agile Methodology
@@ -166,6 +167,13 @@ The _User Stories_ prioritized using the _MoSCoW_ method. The prioritisation was
 - **Won't Have** - The _User Story_ will not be delivered in the current delivery timebox but may be considered for the future.
 The prioritisation based on the 60-20-20 rule where 60% of the effort is spent on the Must Have, 20% on the Should Have and rest 20% on the Could Have. When the Sprint starts, the _User Stories_ are moved to the _Development_ column, where first the Must Have items. When the development of particular _User Story_ is completed, it is moved to the _Testing_ column, tested and then moved to the _Done_ column manually or using the _commit_ message with reference to the User Story ID. If the time is running out and the _User Stories_ are not completed, the Could Have items are dropped back to the _Backlog_ column for the re-prioritisation.
 
+
+*GitHub Kanban Board*
+![GitHub Kanban Board](docs/images/Board.png)
+
+*GitHub Project Table*
+![GitHub Project Table](docs/images/Table.png)
+
 [Back to top](#table-of-contents)
 
 ## UX Design
@@ -182,16 +190,33 @@ The Get Job platform is based on an intuitive and easy-to-use structure. Every p
 
 
 ### Wireframes
-<!-- TODO -->
-...
+The wireframes were created using [Balsamiq](https://balsamiq.com/). Here are some initial wireframes created at the beginning of the project. The final design may differ from the initial wireframes.
+
+*Jobseeker Home Page*
+![Jobseeker Home](docs/images/wireframes/jobseeker-home-page.png)
+
+*Employer Home Page*
+![Employer Home](docs/images/wireframes/employer-home-page.png)
+
+*Vacancy List*
+![Vacancy List](docs/images/wireframes/vacancy_list.png)
+
+*Resume List*
+![Resume List](docs/images/wireframes/candidates.png)
+
+*Vacancy Details*
+![Vacancy Details](docs/images/wireframes/job-detailed-page.png)
 
 ### UI Design
 #### Colour Scheme
 The colour scheme of the app is based on two main colours: *royalpurple* - `#874c87` and *cyan-blue* - `#2d7f9b`, and few generic colours: *white* - `#fff`, *black* - `#000`, *grey* - `#6c757d`, and *lightgrey* - `#f5f7f8`. The main colors responsible for the visual separation of type of content and page elements. The Jobseeker's pages are based on the *royalpurple* colour and the Employer's pages are based on the *cyan-blue* colour. The generic colours are used for the text and background elements both on the Jobseeker's and Employer's pages.
-<!-- TODO: add colour palete image -->
+
+![Colour Palette](docs/images/Palette.png)
 
 #### Typography
 The app uses Lato font for all text elements. The font is selected for its unique balance of originality and readability. Originally designed for a corporate client, Lato is the perfect subtle typeface for the business site. Sleek and serious, this font looks professional without coming across as too stuffy. It is legible and works well on the small screens, which is important for the app that is designed to be used on mobile devices. The font is imported using the [Google Fonts API](https://fonts.google.com/).
+
+![Lato Font](docs/images/Lato-Google-Fonts.png)
 
 #### Styling
 The app style is consistent across all pages and elements. The app uses a responsive layout to provide an optimal viewing experience across a wide range of devices.
@@ -204,13 +229,15 @@ The main SCSS file `main.scss` imports all other custom SCSS files and Bootstrap
 
 
 ### Flowchart
-The flowchart below shows the structure of the app and the relationships between the pages. The flowchart was created using [Microsoft Visio](https://www.microsoft.com/en-ie/microsoft-365/visio/).
-![flowchart]()
+The flowchart is simplified version of the app's structure and the relationships between the pages. It does not include all pages and elements as it was created on the early stage of the project and was used as a reference for the development process.
+
+![flowchart](docs/images/flowchart.png)
 
 ### Database Design
 The Get Job platform uses a relational database to store and manage data. The RDBMS used for this project is [PostgreSQL](https://www.postgresql.org/) which is hosted on the cloud service [ElephantSQL](https://www.elephantsql.com/).
 
 The ER Diagram below shows the structure of the database and the relationships between the tables. This diagram was created using [Microsoft Visio](https://www.microsoft.com/en-ie/microsoft-365/visio/).
+<!-- TODO -->
 ![er_diagram]()
 
 [Back to top](#table-of-contents)
@@ -594,8 +621,7 @@ The Control buttons allow the user to manage the resume. The user can edit the r
 ![jobseeker my resumes page](docs/images/features/My-Resumes.png)
 
 - ##### My Resume Details
-<!-- TODO: Add anchor link to the Resume Details in employer section -->
-The Resume Details page is available from the My Resumes list. The page content is identical to the [Resume Details](#) page content for the Employers, but has the different color interface (jobseeker style) and the different header and footer buttons. The user can update the resume details, close or delete the resume using the appropriate buttons. These buttons have the same behavior as the buttons on the My Resumes page.
+The Resume Details page is available from the My Resumes list. The page content is identical to the [Resume Details](#resume-details) page content for the Employers, but has the different color interface (jobseeker style) and the different header and footer buttons. The user can update the resume details, close or delete the resume using the appropriate buttons. These buttons have the same behavior as the buttons on the My Resumes page.
 
 ![jobseeker resume details page](docs/images/features/my-resume-details.png)
 
@@ -611,6 +637,7 @@ The My Applications page is available from the Jobseeker's Dropdown menu.
 My Applications is the page where the user can view the list of the applications that they have submitted. Each application is represented by Bootstrap Accordion component collapsed by default. The Accordion header represented by the Job Title, so the user can easily find the application that they need. The user can expand the element to view the application details.
 These details include application date, employers details, vacancy title and button to view the snapshot, resume title and snapshot button.
 
+##### Snapshot functionality
 The snapshot functionality allows the user to view the resume/vacancy details that were submitted with the application. The snapshot is the copy of the resume/vacancy details on the moment of application, except user personal details that stored in the Profile DB table. The snapshot is stored in the Application in the JSON format. The snapshot view based on the Ajax request to the server. The app sends the Ajax request to the server, and the Django view renders the resume/vacancy page from the json snapshot that is stored in the application instance and return as a JsonResponse. Then the Ajax success callback function inserts the response into the Bootstrap modal window and opens it. It allows the user to view the resume/vacancy details quickly without leaving the page.
 
 The snapshot modal window is fully responsive and has the same structure as the resume/vacancy details page. The modal window has the two close buttons: one on the top and one on the bottom of the modal window. The top close button is fixed and always visible.
@@ -672,38 +699,126 @@ The notification body contains the short description of the notification with th
 [Back to top](#table-of-contents)
 
 ### Employer's Home page
-
-#### Sections:
+The Employer's has similar to the [Jobseeker's Home](#jobseekers-home-page) page structure. It contains NavBar, Hero, Employer's Search bar, and the list of the latest Resumes.
 - #### Navbar
+The Employer Navbar contains the Logo, Jobseeker/Employer toggle button with the appropriate links to the Jobseeker's and Employer's Home pages, search bar, notifications icon, and the dropdown menu.
+
+- The search bar is used to search resumes by occupation and skills keywords.
+- The Notification icon is used to display the number of unread notifications.
+- The dropdown menu contains the links to the My Profile, Search Resumes, Post a Vacancy, My Jobs, My Job Offers, Recruitment Dashboard, Saved Resumes, and Logout button.
 
 - #### Hero
+The Hero image presents the Employer's Home page and contains call to action button that redirects the to the Post a Vacancy page. If the user not authenticated, the button redirects the user to the Login page. If the user is not authorized to post a vacancy, the button displays the tooltip with the message that only the Employer can post a vacancy.
 
 - #### Employer's Search bar
+The search bar is used to search resumes by occupation and skills keywords. The search bar is the same as the [Jobseeker's Search bar](#jobseekers-search-bar) and has the same functionality but searches resumes instead of jobs. It contains two butttons which redirects the user to the Resume Search page. The Filter button redirects the user to the Resume Search page without any search query. So if the search query was in the session storage it will be passed to the Resume Search page. The Find Resume button redirects the user to the Resume Search page with the search query that was provided by the user. If no search query was provided, the user will be redirected to the Resume Search page with empty search query and the the Search Page page will display all resumes.
 
 - #### Latest Resumes
+The Latest Resumes section contains the list of the latest resumes. The Home page displays the latest 4 approved resumes.
+
+Each resume respresented by Bootstrap card. The card is similar to the [Vacancy Card](#vacancy-card). It contains the Offered badge if the Employer has sent the job offer to the Jobseeker for this resume, Resume title(Occupation), Date when the resume was created or updated, Jobseeker Profile image, Jobseeker name, Experience duration, the list of the Jobseeker skills and body text that contains the short description of the Jobseeker. All fuctionality is the same as the [Vacancy Card](#vacancy-card) with the exception of the Hire button that redirects the user to the Send Job Offer page.
+
+![employer home page](docs/images/features/employer-home.png)
+
+[Back to top](#table-of-contents)
 
 ### Resume Search
+The basic structure of the Resume Search page is the same as the [Job Search page](#job-search-page).
 
-#### Sections:
-...
+- #### Search bar
+The Resume Search bar contains the Occupation and Skills keywords input, Experience range selector, Gender and Age range.
 
-- #### Age range selector
-As the multiple sliders are not supported by the Bootstrap, I used the [jQuery UI Slider](https://jqueryui.com/slider/) to implement the Age range selector. The user can select the age range by dragging the slider handles or by clicking on the slider bar. The selected range is displayed in the Age range decorative input field. The input field is read-only and disabled. To capture the slider state and insert it into the form I implemented the hidden input fields that are part
+- ##### Age range selector
+As the multiple sliders are not supported by the Bootstrap, I used the [jQuery UI Slider](https://jqueryui.com/slider/) to implement the Age range selector.
+
+The Age range selector allows the user to select the age range of the Jobseeker. The age range is represented by the two sliders. The user can select the age range by dragging the slider handles or by clicking on the slider bar. The selected range is displayed in the Age range decorative input field. The input field is read-only and disabled. To capture the slider state and insert it into the form I implemented the hidden input fields that are part
 of the Django Form. It allows me to validate the inputed by the user age range using server side django validation if the malicious user is trying to force a value change of the hidden input fields or set an invalid value into the search query in the url.
+
+![resume search page](docs/images/features/resume-search.png)
 
 
 ### Resume Details
+The Resume Details card contains Header with To resume search button, Hire and Save buttons, body with the Jobseeker details, and Footer with the Action buttons. The card is similar to the [Vacancy Details card](#vacancy-details-card) with the exception of the Hire button that redirects the user to the Send Job Offer page and content of the body.
 
-#### Sections:
-...
+The Resume details include the Jobseeker Occupation, Profile picture, Name, Experience duration, Gender, Age, Phone number, Email address, Experience description, Education, Skills, and Body text. The personal information(gender, age, phone, email) is displayed only for Employer users.
+
+![resume details page](docs/images/features/resume-detail.png)
+
 
 ### Hiring page
-...
+The app allows the Employer to send a job offer to the Jobseeker by using the Hiring page. The Hiring page is accessible from the Resume card and the Resume details page. The Hiring page contains Jobseeker name with Occupation, List of Employer's Vacancies, and the Job offer message input field. The Employer can select the vacancy from the list of his vacancies, view the vacancy details(opens in the new tab), and send the job offer message to the Jobseeker. The Job offer message is optional and cannot be longer than 1000 characters. If the Employer does have any active vacancies, they will be prompted to create a vacancy or go to the My Vacancies page to check the status of the vacancies. The My Vacancies and Create Vacancy pages open in the new tab to allow the user go back to the Hiring page and save the job offer message or job itself to apply for it later.
+
+When the Employer sends the job offer, the system creates Vacancy and Resume snapshots and store them in JSON format in JobOffer database table. So the Jobseeker and Employer can view the vacancy and resume details at the time when the job offer was sent. Also the app sends the [email notification and in-app notification](#notifications) to the Jobseeker with the job offer details and the link to the Hiring page.
+
+![hiring page](docs/images/features/sending-Job-Offer.png)
+
+[Back to top](#table-of-contents)
+
+### Employer Profile
+The Employer Profile page accessible from the dropdown menu. The page contains the Employer details (Employer name, Company name, Company logo, Company website, Phone number and Email address) that can be updated by the Employer clicking on the Edit button. From the page the Employer can also [Disable Email Notifications](#email-notifications) that enabled by default, [change password](#change-password), and [delete account](#account-deleting).
+
+![employer profile page](docs/images/features/employer-profile.png)
+
+- #### Update Employer details
+The user can update the Employer details by clicking on the Edit button. The page will display the same fields as the Employer Profile page. The fields are prefilled with the current Employer details. The user can update the details and save the changes by clicking on the Submit button. After the changes are submitted, the user will be redirected back to the Employer Profile page.
+
+![employer profile update page](docs/images/features/employer-update-profile.png)
+
+[Back to top](#table-of-contents)
+
+### Create Vacancy
+The Create Vacancy page accessible from the dropdown menu, Post a Job button on the Home page, and My Vacancies page. The page contains the form with the fields that allow the Employer to create a new vacancy. The form contains the Title, Area, Job Location, Job Type, Salary, Experience duration and Job Description fields. More details about the fields can be found in the [Vacancy Card](#vacancy-card) section.
+
+After the vacancy is created, the Employer will be redirected to the My Vacancies page. Before the vacancy will be displayed on the Job Search page, it has to be approved by the Admin. The Admin can approve or reject the vacancy from the Admin panel if the vacancy does not meet the requirements.
+
+![create vacancy page](docs/images/features/Create-Vacancy.png)
+
+### My Vacancies
+The My Vacancies page accessible from the dropdown menu and has identical structure and functionality as the [My Resumes](#my-resumes) page. The page contains the list of the Employer's vacancies with the status badge, title last update date, and the Action buttons. The Action buttons allow the Employer to edit, close, and delete the vacancy. Only the vacancies with the status `Active` shown on the Job Search page and can be used to send a job offer to the Jobseeker. The total number of vacancies the Employer can create is limited to 5. If the Employer has 5 active vacancies, they will not be able to create a new vacancy until deletes one.
+
+![my vacancies page](docs/images/features/My-Jobs.png)
+
+[Back to top](#table-of-contents)
+
+### Job Offers
+The Job Offers page represents the list of the Job Offers sent by the Employer to the Jobseeker. Each Job Offer is a Accordion card that contains the clickable header with Jobseeker Occupation and email, and the body with the submittion date, Jobseeker Resume snapshot and Vacancy snapshot. More details about the snapshots can be found in the [Snapshot functionality](#snapshot-functionality) section of the My Applications page.
+
+![job offers page](docs/images/features/sent-Job-Offers.png)
+
+*Vacancy snapshot*
+![vacancy snapshot](docs/images/features/vacancy-snapshot.jpg)
+
+### Recruitment Dashboard
+The Dashboard allows the Employer to view the statistics of the Posted Jobs. The page page containt list of the Employer's vacancies with sublists of the Jobseekers resumes that applied for the vacancy. Each list represended by the Accordion card with header that contains the Vacancy title and the number of the Jobseekers that applied for the vacancy. The body of the card contains the list of the Jobseekers resumes title(clickable) that includes the Occupation and the email address, and the Action buttons. The Action buttons allow the Employer to download the Jobseeker CV and View the Cover Letter. The Cover Letter is a text message that the Jobseeker can send to the Employer with the job application. Also the Employer can view the Resume and Vacancy snapshots that were created at the time when the Jobseeker applied for the vacancy.
+
+![applicants page](docs/images/features/Applicants.png)
+
+### Saved Resumes
+The Saved Resumes page represents the list of the Jobseekers resumes that were saved by the Employer. The page has identical structure and similar functionality as the [Saved Jobs](#saved-jobs) page.
+
+![saved resumes page](docs/images/features/Saved-Resumes.png)
+
+### Notifications
+The app notifications are used to notify the Employer about the new job applications. When the Jobseeker applies for the vacancy, the Employer will receive an email and in-app notifications. The email one contains job title, applicant name and ocuppation and applicant email, and link to the Applications Received page. The in-app notification represented by the bell icon in the navbar with the number of the unread notifications. When the Employer clicks on the bell icon, they will be redirected to the Applications Received page.
+
+The Application Received page contains the list of Accordion cards. Each card represents the Jobseeker that applied for the vacancy. The card header contains the Vacancy title. The card body contains the Jobseeker name, date of the application, and the Action buttons. The Employer can view the Cover Letter and download a CV. Also the Employer can view the Vacancy and Resume snapshots that were created at the time when the Jobseeker applied for the vacancy.
+
+The Notification cards with unread notifications have the blue background and displayed on the top of the list. To mark the notification as read, the Employer has to click on the Accordion card header. After the notification is read the card background will be changed to white and notification counter on the bell icon will be decreased by one. This functionality implemented using Ajax requests. It allows the Employer to read the notifications without reloading the page.
+
+![notifications page](docs/images/features/Received-Applications.png)
+
+*Cover Letter on the Application Received page*
+![cover letter](docs/images/features/Received-Applications-cover-letter.jpg)
+
+[Back to top](#table-of-contents)
+
+### Admin Panel
+<!-- TODO: moderation -->
+
+### Future Features
+<!-- TODO -->
 
 ### Development Features
-- #### Django Authentication and Authorization System
-The app uses the Django Allauth package that is built on top of the built-in Django Authentication and Authorization System. The system provides a secure way to manage user accounts and allows users to create an account, login, logout, reset password, and update their profile. Also, the package is used to provide additional features such as email verification, social authentication, and password reset.
-
 - #### Role System
 To manage the different types of users, I created Custom User Model and implemented a role system.
 The app contains two main types of users - Jobseekers and Employers. So the system allows users to create an account as a Jobseeker or an Employer. All the time when we want to create a new user, we have to assign him to a role. The email address is used as a unique identifier of the user and the system does not allow users to register multiple accounts with the same email address. So the Jobseeker and the Employer can not have the same email address.
@@ -722,10 +837,43 @@ See the [Deployment](#deployment) section for more details about the CI/CD proce
 |![branching_strategy](docs/images/ci-cd-diagram.avif)|
 
 - #### Database
-The app uses a relational database service [ElephantSQL](https://www.elephantsql.com/) to store and manage data.
+The app uses a relational database service [ElephantSQL](https://www.elephantsql.com/) to store and manage data. In this project I used 3 databases - `local`, `staging`, and `production`. The `local` database is used for local development and testing. It's a SQLite database that is provided by Django. The `staging` and `production` databases are PostgreSQL databases that are provided by ElephantSQL. The `staging` database is used for testing the app before it is deployed to the production environment.
+
+*Database Configuration for different environments*
+```
+development = os.getenv('DEVELOPMENT', False) == 'True'
+
+if development:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
+elif len(sys.argv) > 0 and sys.argv[1] != 'collectstatic':
+    if os.getenv("DATABASE_URL", None) is None:
+        raise Exception("DATABASE_URL environment variable not defined")
+
+    import dj_database_url
+    DATABASES = {
+        'default': dj_database_url.config(
+            default=os.getenv('DATABASE_URL')
+        )
+    }
+```
+
+*ElephantSQL Instances for different environments*
+![Instances-ElephantSQL](docs/images/Instances-ElephantSQL.png)
 
 - #### Static Files
-The app uses the [Cloudinary](https://cloudinary.com/) cloud service to store static files such as images, CSS, and JavaScript files.
+The app uses the [Cloudinary](https://cloudinary.com/) cloud service to store static files such as images, CSS, and JavaScript files and media files such as user avatars, CVs, and company logos. Initially, I used the [AWS S3](https://aws.amazon.com/s3/) cloud service to store static files. But the free tier of the AWS S3 service includes 5 GB of storage, 20,000 Get Requests, and 2,000 Put Requests. It was not enough for my project, especially put requests. Contrary to popular belief, setting up Amazon S3 was far from difficult.
+In fact, one major benefit of Amazon S3 is the ability to create a new bucket for each application, ensuring better organization and conflict-free storage. However, I decided to use Cloudinary even it provides a single 'bucket' for all my applications. I managed to figure out and set up Cloudinary for several projects without any issues. Each project has its own folder in the Cloudinary media library.
+
+*Cloudinary Management - Static Files*
+![Cloudinary](docs/images/Cloudinary-Management.png)
+
+*Cloudinary Management - Media Files*
+![Cloudinary](docs/images/Cloudinary-Management-2.png)
 
 ## Technologies Used
 - ### Languages
@@ -761,24 +909,65 @@ The app uses the [Cloudinary](https://cloudinary.com/) cloud service to store st
 
 
 ## Testing
-See [TESTING.md]() for an overview of the app testing and debugging.
-<!-- TODO Add screenshots of the coverage report -->
+See [TESTING.md](https://github.com/FlashDrag/get-job/blob/master/docs/TESTING.md) for an overview of the app testing and debugging.
 
 ## Deployment, CI/CD
 The Get Job platform is deployed on the [Heroku](https://www.heroku.com/) cloud platform and can be accessed here https://get-job.live.
-The _get-job.live_ domain name uses the [Heroku DNS service](https://devcenter.heroku.com/articles/custom-domains) to point to the Heroku app. Usually Heroku free dyno plan does not support [SSL certificates for custom domains](https://devcenter.heroku.com/articles/ssl#dynos-and-certificate-options). But they provides a free ssl certificate for the _herokuapp.com_ domain. So the dyno is upgraded to the Hobby plan to enable the ssl certificate for the custom domain.
+The _get-job.live_ domain is registered with [Name.com](https://www.name.com/) and uses uses the [Heroku DNS service](https://devcenter.heroku.com/articles/custom-domains) to point to the Heroku app. Usually Heroku free dyno plan does not support [SSL certificates for custom domains](https://devcenter.heroku.com/articles/ssl#dynos-and-certificate-options). But they provides a free ssl certificate for the _herokuapp.com_ domain. So the dyno is upgraded to the Hobby plan to enable the ssl certificate for the custom domain.
+
+*heroku ssl certificates*
+![ssl_certificates](docs/images/deploy/ssl-certs.png)
+
+*Domain DNS settings - heroku.com*
+![domain_dns](docs/images/deploy/DNS-settings-heroku.png)
+
+*Domain DNS settings - name.com*
+![domain_dns](docs/images/deploy/Domain-Management-Name-com.png)
+
+- #### SSL Redirect
+SSL Redirect is enabled in the Django settings to automatically redirect all http requests to https in the production environment.
+```
+development = os.getenv('DEVELOPMENT', False) == 'True'
+
+if development:
+    SECURE_SSL_REDIRECT = False
+    SESSION_COOKIE_SECURE = False
+    CSRF_COOKIE_SECURE = False
+else:
+    # redirect from http to https
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+    SECURE_SSL_REDIRECT = True
+    # set session and csrf cookies to secure
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+```
 
 The build, test, and deployment processes of the app are _automated_ using Continuous Integration based on [GitHub Actions](https://docs.github.com/en/actions) and Continuous Deployment based on [Heroku Pipelines](https://devcenter.heroku.com/articles/pipelines).
 
 - #### Continuous Integration
 The GitHub repository is configured to use automated _Continuous Integration_ workflows. The workflow is triggered when a pull request is created and merged into the `develop` and/or `master` branches. When the workflow is triggered, it performs the build, lint, and test tasks.
 
+*GitHub Actions CI workflow*
+![ci_workflow](docs/images/deploy/github-Actions.png)
+
+![ci_workflow](docs/images/deploy/ci-github-action.png)
+
+
 - #### Continuous Deployment
 The _Continuous Deployment_ workflow is implemented using [Heroku GitHub Integration](https://devcenter.heroku.com/articles/github-integration). This feature allows me to connect the app to a GitHub repository and deploy the app automatically from the selected branch when a new commit is pushed to the repository. The GitHub integration also supports the option to [wait for CI to pass before deploying](https://devcenter.heroku.com/articles/github-integration#automatic-deploys) the app. So the app is deployed automatically only when the build and test tasks are passed.
+
+*Heroku GitHub Integration and Automatic Deploys*
+![heroku_github_integration](docs/images/deploy/Heroku-CD.png)
 
 [Heroku Pipelines](https://devcenter.heroku.com/articles/pipelines) is used to implement the _Continuous Deployment_ workflow. The pipeline is configured to deploy the app to the two environments - _Staging_ and _Production_:
 1. The _Staging_ stage is used to preview code changes and features before being deployed to production. This stage is triggered when a new commit is pushed to the `develop` branch or a pull request is merged into the branch from the feature branches. The app is deployed to the Heroku staging environment automatically when the tests are passed. The staging environment is available here https://get-job-dev.herokuapp.com.
 2. The _Production_ stage is a live environment for the app. It is triggered when a new commit is pushed to the `master` branch. It also deploys the app automatically when GitHub Actions CI is passed. The production environment is available by the link https://get-job.herokuapp.com.
+
+![heroku_pipeline](docs/images/deploy/Pipeline-Heroku.png)
+
+#### Deployment process
+<!-- TODO -->
+
 
 ## Credits
 - ### Code
