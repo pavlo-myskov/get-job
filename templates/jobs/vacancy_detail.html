@@ -9,8 +9,7 @@
     <!-- Job detail header -->
     <div class="card-header">
       <div class="d-flex align-items-center justify-content-between">
-        <a href="{% url 'job_search' %}#{{ vacancy.id }}" class="text-decoration-none d-flex align-items-center text-muted fs-4"
-          area-label="to search results">
+        <a href="{% url 'job_search' %}#{{ vacancy.id }}" class="text-decoration-none d-flex align-items-center text-muted fs-4">
           <i class="fa fa-arrow-left"></i>
           <span class="mx-2">To job search</span>
         </a>
@@ -67,13 +66,14 @@
             </form>
           {% endif %}
           <div role="button" class="back-to-top d-flex align-items-center text-royalpurple hover-grow"
-            area-label="scroll to top">
+            area-label>
             <i class="fa fa-arrow-up"></i>
           </div>
         </div>
       </div>
     </div>
 
+  </div>
 </main>
 
 {% include 'footer.html' %}
