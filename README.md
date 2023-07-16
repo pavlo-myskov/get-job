@@ -190,8 +190,22 @@ The Get Job platform is based on an intuitive and easy-to-use structure. Every p
 
 
 ### Wireframes
-<!-- TODO -->
-...
+The wireframes were created using [Balsamiq](https://balsamiq.com/).
+
+*Jobseeker Home Page*
+![Jobseeker Home](docs/images/wireframes/jobseeker-home-page.png)
+
+*Employer Home Page*
+![Employer Home](docs/images/wireframes/employer-home-page.png)
+
+*Vacancy List*
+![Vacancy List](docs/images/wireframes/vacancy_list.png)
+
+*Resume List*
+![Resume List](docs/images/wireframes/candidates.png)
+
+*Vacancy Details*
+![Vacancy Details](docs/images/wireframes/job-detailed-page.png)
 
 ### UI Design
 #### Colour Scheme
