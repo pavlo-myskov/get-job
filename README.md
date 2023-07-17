@@ -1079,7 +1079,67 @@ The _Continuous Deployment_ workflow is implemented using [Heroku GitHub Integra
 [Back to top](#table-of-contents)
 
 #### Deployment process
-<!-- TODO -->
+- ##### Clone the repository
+1. Go to the [GitHub repository](https://github.com/FlashDrag/get-job)
+2. Select the method to clone the repository between HTTPS, SSH, and GitHub CLI and copy the link.
+3. Open the terminal on your local machine and change the current working directory to the location where you want the cloned directory to be made.
+4. Type `git clone`, and then paste the URL you copied earlier.
+    ```
+    $ git clone <repository_URL>
+    ```
+5. Set up a virtual environment for the project and install the project dependencies from the `requirements.txt` file.
+    ```
+    $ pip install -r requirements.txt
+    ```
+![clone_repo](docs/images/clone-repo.png)
+
+- ##### Heroku CLI deployment instructions
+    - Install gunicorn to replace the Django development server:
+        ```
+        $ pip install gunicorn
+        ```
+    - Create requirements file:
+        ```
+        $ pip freeze > requirements.txt
+        ```
+    - Create a Heroku Procfile:
+        ```
+        $ touch Procfile
+        ```
+    - Create a Heroku Procfile:
+        ```
+        $ echo web: gunicorn <name_of_project>.wsgi:application > Procfile
+        # e.g: `web: gunicorn django_todo.wsgi:application`
+        ```
+    - Login to Heroku:
+        ```
+        $ heroku login
+        ```
+    - Create a Heroku app:
+        ```
+        $ heroku create <name of app> --region eu
+        ```
+    - Set the environment variables in Heroku. See the list of variables in the `.env_example` file in the root directory of the project.
+
+        ```
+        $ heroku config:set <name of variable>=<value of variable>
+        ```
+    - Add the Heroku app URL to the ALLOWED_HOSTS list in `settings.py`:
+        ```
+        ALLOWED_HOSTS = ['<name of app>.herokuapp.com', '127.0.0.1']
+        ```
+    - Commit and push the code to Heroku:
+        ```
+        $ git add .
+        $ git commit -m "Setup Heroku files for deployment"
+        $ git push heroku master
+        ```
+    - Run the migrations on Heroku:
+        ```
+        $ heroku run python manage.py migrate
+        ```
+
+    **Note**: The `DEBUG` and `DEVELOPMENT` environment variables must be set to False in the Heroku app for the production environment to avoid exposing sensitive information.
 
 
 ## Credits

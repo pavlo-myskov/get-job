@@ -106,9 +106,11 @@ The Google Lighthouse tool was used to check the performance, accessibility, bes
 ## Compatibility Testing
 - ### Browser Compatibility
 The game was tested on the following browsers:
+
     - Google Chrome
     - Mozilla Firefox
     - Microsoft Egde
+
 The app worked well across all browsers and discrepancies were not found.
 
 - ### Device Compatability and Responsiveness Testing
@@ -132,22 +134,29 @@ Tested devices:
 - iPadPro
 
 **Some results of the testing on iPhone 12 Pro**:
+
 ![Jobseeker Home](images/testing/responsiveness/home.png)
+
 *Jobseeker Home*
 
 ![Job Search](images/testing/responsiveness/jobs.png)
+
 *Job Search*
 
 ![Job Details](images/testing/responsiveness/job-details.png)
+
 *Job Details*
 
 ![Employer Home](images/testing/responsiveness/employer-home.png)
+
 *Employer Home*
 
 ![Resume Search](images/testing/responsiveness/resumes.png)
+
 *Resume Search*
 
 ![Resume Details](images/testing/responsiveness/resume-details.png)
+
 *Resume Details*
 
 [Back to top](#table-of-contents)
@@ -220,7 +229,7 @@ Tested devices:
 - On the mobile devices, when the user returns to the search results page from the job details page, auto scroll to the same position on the page does not work. The user is returned to the top of the page. The auto scroll uses the anchor tag with the id of the job that passes to the name parameter of the anchor tag.
 The issue is not present on the desktop version of the website.
 
-Possible solution: change the name parameter to the id parameter of the anchor tag.
+    Possible solution: change the name parameter to the id parameter of the anchor tag.
 
 [Back to top](#table-of-contents)
 
