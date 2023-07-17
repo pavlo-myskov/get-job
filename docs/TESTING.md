@@ -183,7 +183,38 @@ Tested devices:
 - [x] As a Jobseeker, I can disable the email notifications.
 - [x] As a Jobseeker, I can delete my account.
 - [x] As a Jobseeker, I can log out.
-- [x] As a user, I see the flash messages on the top of the page after I perform an action.
+
+- ##### Employer
+- [x] As a visitor, I understand that I can register as an Employer and post a job.
+- [x] As a visitor, I can switch to the Employer tab.
+- [x] As a visitor, I can see the list of the latest resumes on the home page.
+- [x] As a visitor, I can search for a resume using filters on the Search Resumes page.
+- [x] As a visitor, I can view the details of a resume.
+- [x] As a visitor, I can click on the "Post a Job" button on the home page and get redirected to the login page.
+- [x] As an unregistered user, I can switch to the register tab on the login page and select the Employer role.
+- [x] As an Employer, I get email confirmation link and get redirected to the Edit Profile page to complete my profile using the link.
+- [x] As an Employer, I can complete my profile and upload a company logo.
+- [x] As an Employer, I redirected to the Create Job page after I complete my profile.
+- [x] As an Employer, I can create a new job and get redirected to the Job Details page.
+- [x] As an Employer, I can view the details of my job and edit it.
+- [x] As an Employer, I can view the list of my all jobs on the My Jobs page and check the status of each job.
+- [x] As an Employer, I can send a Job Offer to a jobseeker using the "Hire" button on the resume card in the search results.
+- [x] As an Employer, I get redirected to the Job Offer page after I press the "Hire" button.
+- [x] As an Employer, I can see the name and occupation of the jobseeker and the list of my active jobs.
+- [x] As an Employer, I can view the details of my job on the new tab.
+- [x] As an Employer, I can select the job, text a message and send the Job Offer.
+- [x] As an Employer, I can view the list of my Job Offers on the My Job Offers page.
+- [x] As an Employer, I can view the details of my Job Offer including the date, resume and vacancy snapshots that can be opened in a modal window.
+- [x] As an Employer, I can get the email notification when the jobseeker applies for my job that I posted.
+- [x] As an Employer, I can see the notification on the top of the page when I receive a new application.
+- [x] As an Employer, I can view the list of my applications on the Notifications and Recruitment Dashboard pages.
+- [x] As an Employer, On the Recruitment Dashboard I can see the number of applications for each job and details of each application including resume snapshot, jobseeker's Cover Letter and CV. I can also view the details of the job on the date of application.
+- [x] As an Employer, I can save the resume to my Favourites for later review.
+- [x] As an Employer, I can edit my profile and jobs.
+- [x] As an Employer, I can change my password, disable the email notifications and delete my account.
+- [x] As an Employer, I can log out.
+
+- [x] As a user, I see the flash messages on the top of the page each time I perform an action.
 
 ## Bugs/Issues
 - On the mobile devices, when the user returns to the search results page from the job details page, auto scroll to the same position on the page does not work. The user is returned to the top of the page. The auto scroll uses the anchor tag with the id of the job that passes to the name parameter of the anchor tag.
