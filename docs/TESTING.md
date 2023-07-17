@@ -1,10 +1,27 @@
 # Get Job Testing
 
 ## Table of Contents
-...
+- [Unit Testing](#unit-testing)
+    * [Coverage](#coverage)
+- [PEP8 - Flake8 Validation](#pep8---flake8-validation)
+- [JavaScript Validation](#javascript-validation)
+- [HTML Validation](#html-validation)
+- [CSS Validation](#css-validation)
+- [Lighthouse](#lighthouse)
+    * [Desktop](#desktop)
+    * [Mobile](#mobile)
+- [Compatibility Testing](#compatibility-testing)
+    * [Browser Compatibility](#browser-compatibility)
+    * [Device Compatibility](#device-compatibility)
+- [User Stories Testing](#user-stories-testing)
+    * [Jobseeker](#jobseeker)
+    * [Employer](#employer)
+- [Bugs/Issues](#bugs/issues)
+
+[Back to README.md](https://github.com/FlashDrag/get-job/blob/master/README.md#testing)
 
 ## Unit Testing
-The unit tests were written using Django's built-in testing framework based on Python's unittest module. The tests can be found in the `tests' directory of each Django app. To run the tests automatically I used CI/CD processes with GitHub Actions. The more detailed information about the CI/CD processes can be found in the **Deployment** section of the [README.md](https://github.com/FlashDrag/get-job/blob/master/README.md#continuous-integration) file.
+The unit tests were written using Django's built-in testing framework based on Python's unittest module. The tests can be found in the `tests' directory of each Django app. To run the tests automatically I used CI/CD processes with GitHub Actions. The more detailed information about the CI/CD processes can be found in the [Deployment](https://github.com/FlashDrag/get-job/blob/master/README.md#continuous-integration) section of the file.
 
 *Django Unit Tests GitHub Actions Workflow*
 ![Unit Tests](images/testing/unit-testing.png)
@@ -26,6 +43,7 @@ The Flake8 validation is used to check the Python code for PEP8 requirements. Th
 *Flake8 Validation GitHub Actions Workflow*
 ![Flake8 Validation](images/testing/flake8.png)
 
+[Back to top](#table-of-contents)
 
 ## JavaScript Validation
 To validate the JavaScript code I used the [JSHint](https://jshint.com/) tool. As I used single JavaScript file `script.js` for the whole website I pasted the code into the JSHint tool and validated it.
@@ -45,7 +63,6 @@ To validate the HTML code I used the [W3C Markup Validation Service](https://val
 | Resume Details | [Resume Details](https://validator.w3.org/nu/?doc=https%3A%2F%2Fget-job.live%2Fresume%2F6)
 
 
-
 ## CSS Validation
 To validate the CSS code I used the [Jigsaw](https://jigsaw.w3.org/css-validator/) tool. As I used the SCSS preprocessor to write the CSS code, I validated the compiled `main.css` file that stores all the CSS code an located on the Cloudinary CDN.
 <p>
@@ -58,8 +75,8 @@ To validate the CSS code I used the [Jigsaw](https://jigsaw.w3.org/css-validator
 
 ![main css validation results](images/testing/CSS-Validator.png)
 
-## Responsiveness
-<!-- TODO -->
+[Back to top](#table-of-contents)
+
 
 ## Lighthouse
 The Google Lighthouse tool was used to check the performance, accessibility, best practices, and SEO of the website. The tests were run on the deployed website.
@@ -84,9 +101,64 @@ The Google Lighthouse tool was used to check the performance, accessibility, bes
 | Resume Search | ![Resume Search](images/testing/lighthouse/resumes-mobile.png) |
 | Resume Details | ![Resume Details](images/testing/lighthouse/resume-details-mobile.png) |
 
+[Back to top](#table-of-contents)
+
+## Compatibility Testing
+- ### Browser Compatibility
+The game was tested on the following browsers:
+    - Google Chrome
+    - Mozilla Firefox
+    - Microsoft Egde
+The app worked well across all browsers and discrepancies were not found.
+
+- ### Device Compatability and Responsiveness Testing
+The app was tested using Google Chrome Developer Tool - Device Mode Toolbar.
+
+Tested devices:
+- iPhone SE
+- iPhone 12 Pro
+- Pixel 5
+- Samsung Galaxy S8+
+- Samsung Galaxy S20 Ultra
+- iPad Air
+- iPad Mini
+- Surface Pro 7
+- Surface Duo
+- Galaxy Fold
+- Samsung Galaxy A51
+- Nest Hub
+- Nest Hub Max
+- iPad
+- iPadPro
+
+**Some results of the testing on iPhone 12 Pro**:
+![Jobseeker Home](images/testing/responsiveness/home.png)
+*Jobseeker Home*
+
+![Job Search](images/testing/responsiveness/jobs.png)
+*Job Search*
+
+![Job Details](images/testing/responsiveness/job-details.png)
+*Job Details*
+
+![Employer Home](images/testing/responsiveness/employer-home.png)
+*Employer Home*
+
+![Resume Search](images/testing/responsiveness/resumes.png)
+*Resume Search*
+
+![Resume Details](images/testing/responsiveness/resume-details.png)
+*Resume Details*
+
+[Back to top](#table-of-contents)
+
 ## Manual Testing
 #### User Stories Testing
 
 
-## Bugs
-<!-- TODO -->
+## Bugs/Issues
+-
+
+[Back to top](#table-of-contents)
+
+[Back to README.md](https://github.com/FlashDrag/get-job/blob/master/README.md)
