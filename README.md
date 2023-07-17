@@ -828,6 +828,15 @@ The Bot will be created using the Aoiogram Python Framework and integrated with 
 
 - #### Other features
     - Add the ability to style Resumes and Job Posts using the Markdown syntax.
+    - Add pagination to other pages that may contain a large number of items, such as the My Applications page, Notifications page, etc.
+    - When the user Reset the Search filters, the app should show the appropriate message to the user, that all items are displayed.
+    - Reset the Cover Letter char counter when the user clicks on the Reset button.
+    - Scroll to the first card on the Search Results page when the user submits the Search form on mobile devices.
+    - Add the ability to change the user's email address.
+    - Add more search filters to the Search form.
+    - Refactor Salary field. Make it an IntegerField and add the ability to search by the Salary range similar to the Age search.
+    - Mark the visited Vacancy and Resume pages muted.
+    - Add the tooltips to Resume and Vacancy snapshots. The tooltip should explain that the Personal data is not frozen.
 
 
 ### Development Features
