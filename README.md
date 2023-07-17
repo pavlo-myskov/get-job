@@ -22,7 +22,7 @@ Live Demo: https://get-job.live
 
 Heroku: https://get-job.herokuapp.com
 
-![mockup]()
+![mockup](docs/images/mockup.png)
 
 ## Table of Contents
 - [Agile Methodology](#agile-methodology)
