@@ -154,10 +154,42 @@ Tested devices:
 
 ## Manual Testing
 #### User Stories Testing
-
+- ##### Jobseeker
+- [x] As a visitor, I easily understand the purpose of the website.
+- [x] As a visitor, I can use search functionality to find a job.
+- [x] As a visitor, I can view the details of a job.
+- [x] As an unauthenticated visitor, I can press the "Apply" button on the job details page and get redirected to the login page.
+- [x] As an unregisterd user, I switch to the register tab on the login page and register an account.
+- [x] As a Jobseeker, I successfully register an account and get email confirmation.
+- [x] The email confirmation link redirects me to the Edit Profile page to complete my profile. It also automatically logs me in.
+- [x] As a Jobseeker, I can upload my profile picture and complete my profile.
+- [x] The app redirects me to the Create Resume page after I complete my profile.
+- [x] As a Jobseeker, I can create a new resume.
+- [x] As a Jobseeker, I can view the details of my resume. The resume status is set to "IN REVIEW" by default.
+- [x] As a Jobseeker, I can view the list of my resumes on the My Resumes page.
+- [x] I can edit, close and delete my resumes.
+- [x] As a Jobseeker, I can save a job to my Favourites for later review.
+- [x] As a Jobseeker, I can view the list of my Favourites on the My Favourites page.
+- [x] As a logged in Jobseeker, I can apply for a job by pressing the "Apply" button on the job details page.
+- [x] I can view the the Employer's contact details and list of my approved resumes on the Job Application page.
+- [x] I can click on my Resume to check the details. It opens in a new tab, so my Cover Letter is not lost.
+- [x] As a Jobseeker, I can submit the application with my Cover Letter and selected Resume.
+- [x] As a Jobseeker, I can view the list of my applications on the My Applications page.
+- [x] I can view the details of my application including Vacancy and Resume snapshots that saved at the stage of application, except for personal details.
+- [x] As a Jobseeker, I receive an email notification with a Job Offer for my other resume that I did not use for the application.
+- [x] As a Jobseeker, I can view the details of the Job Offer on the Notifications and Job Offers page.
+- [x] As a Jobseeker, I edit my profile and resumes.
+- [x] As a Jobseeker, I change my password.
+- [x] As a Jobseeker, I can disable the email notifications.
+- [x] As a Jobseeker, I can delete my account.
+- [x] As a Jobseeker, I can log out.
+- [x] As a user, I see the flash messages on the top of the page after I perform an action.
 
 ## Bugs/Issues
--
+- On the mobile devices, when the user returns to the search results page from the job details page, auto scroll to the same position on the page does not work. The user is returned to the top of the page. The auto scroll uses the anchor tag with the id of the job that passes to the name parameter of the anchor tag.
+The issue is not present on the desktop version of the website.
+
+Possible solution: change the name parameter to the id parameter of the anchor tag.
 
 [Back to top](#table-of-contents)
 
