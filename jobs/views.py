@@ -187,7 +187,7 @@ class JobCreateView(EmployerRequiredMixin, SuccessMessageMixin, CreateView):
                 "The maximum number of vacancies has been reached. ",
                 extra_tags="modal",
             )
-            return HttpResponseRedirect(reverse_lazy("my_vacancies"))
+            return HttpResponseRedirect(reverse("my_jobs"))
 
         return super().handle_no_permission()
 
@@ -384,7 +384,6 @@ class JobApplyView(
             resume=form.instance.resume,
             vacancy=form.instance.vacancy,
         ).exists():
-            # TODO: add job invitations link: reverse("job_invitations")
             job_invitations_url = reverse("jobseeker_home")
             form.add_error(
                 None,

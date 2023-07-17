@@ -196,7 +196,6 @@ class JobOfferView(
             resume=form.instance.resume,
             vacancy=form.instance.vacancy,
         ).exists():
-            # TODO: add link to the applicants list
             applicants_url = reverse("applicants")
             form.add_error(
                 None,
