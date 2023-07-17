@@ -881,6 +881,9 @@ The Notification cards with unread notifications have a blue background and are 
 
 
 ### Moderator
+#### Notifications
+When the Jobseeker create a new resume or Employer create a new vacancy, the app support team will receive an email. The email contains the link to the Admin Panel, the title of the vacancy/resume and name and email of the user that created the vacancy/resume. Notifications is implemented using Django Signals. The signals are triggered when the new vacancy/resume is created and send the emails using `send_mass_mail()` function. The email is sent to the users that has `is_staff` and `email_notifications` set to True.
+
 #### Admin Panel
 The Admin Panel is used mostly to approve or reject vacancies and resumes.
 
@@ -890,7 +893,7 @@ To add users that can moderate the vacancies and resumes with the limited I crea
 
 ### Future Features
 - ##### Telegram Bot
-First of all, the Telegram Bot will be used to notify the app support team about the new jobs and resumes that were created by the users. It will help to moderate the content quickly and improve the user experience.
+Firstly, the Telegram Bot will be used to notify the app support team about the new jobs and resumes that were created by the users. It will help to moderate the content quickly and improve the user experience.
 
 Secondly, the Telegram Bot will be used to notify the Employer about new job applications and Jobseekers about new job offers.
 

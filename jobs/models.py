@@ -1,5 +1,6 @@
 from django.conf import settings
-from django.core.mail import send_mail
+from django.db.models import Q
+from django.core.mail import send_mail, send_mass_mail
 from django.contrib.sites.shortcuts import get_current_site
 from django.template.loader import render_to_string
 from django.db import models
@@ -7,6 +8,7 @@ from django.urls import reverse
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.core.validators import MaxLengthValidator
+from django.contrib.auth import get_user_model
 
 from notifications.models import ApplicationNotification
 from resumes.models import Resume
@@ -142,6 +144,35 @@ class Vacancy(models.Model):
 
     def get_absolute_url(self):
         return reverse("job_detail", args=[str(self.pk)])
+
+
+@receiver(post_save, sender=Vacancy)
+def notify_admin(sender, instance, created, **kwargs):
+    """Send email to staff when a new vacancy is created"""
+    if created:
+        User = get_user_model()
+        subject = "New vacancy created!"
+        current_site = get_current_site(None)
+        message = (
+            f"Please review the vacancy {instance.title} created by "
+            f"{instance.employer.employerprofile.name} - {instance.employer.email}\n\n"  # noqa
+            f"{current_site}/admin/jobs/vacancy/"
+        )
+
+        admin_list = User.objects.filter(
+            Q(is_staff=True) & Q(email_notifications=True)
+        )
+        recipient_list = [admin.email for admin in admin_list]
+        datatuple = (
+            (
+                subject,
+                message,
+                settings.EMAIL_HOST_USER,
+                recipient_list,
+            ),
+        )
+
+        send_mass_mail(datatuple, fail_silently=True)
 
 
 class Application(models.Model):
