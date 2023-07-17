@@ -16,7 +16,7 @@ This platform presents two distinct modes: _Jobseeker Mode_ and _Employer Mode_.
 The *Jobseeker Mode* equips users with tools to explore job opportunities, apply to open positions, and construct their resumes, all while keeping track of their applications.
 Conversely, the Employer Mode empowers employers to advertise vacancies, sift through potential candidates, and hire them accordingly.
 
-The Get Job platform has been intuitively designed, ensuring simplicity and ease of navigation as users engage with the app to fulfill their specific needs. The platform uncovers a broad range of features progressively as users delve deeper into its use. It allows users to manage their data up to the fact that each application or job offer is stored as a snapshot. Thus even if the job is closed or edited, the user can always view the application in the state at the time of submission, as well as Employer can view the Jobseeker's resume at the time of application. Also, Get Job provides users with the ability to receive notifications about new job offers(for Jobseekers) and applications(for Employers), as well as to disable email notifications and view notifications only in the app.
+The Get Job platform has been intuitively designed, ensuring simplicity and ease of navigation as users engage with the app to fulfill their specific needs. The platform uncovers a broad range of features progressively as users delve deeper into its use. It allows users to manage their data up to the fact that each application or job offer is stored as a snapshot. Thus even if the job is closed or edited, the user can always view the application in the state at the time of submission, as well as Employer can view the Jobseeker's resume at the time of application. Also, Get Job provides users with the ability to receive notifications about new job offers(for Jobseekers) and applications(for Employers), when the resume or vacancy is approved or rejected. The user can disable email notifications at any time and view them only in the app.
 
 Live Demo: https://get-job.live
 
@@ -90,13 +90,6 @@ Heroku: https://get-job.herokuapp.com
 - [Deployment, CI/CD](#deployment-cicd)
 - [Credits](#credits)
 - [Contacts](#contacts)
-
-
-
-
-
-
-
 
 
 ## Agile Methodology
@@ -664,6 +657,9 @@ The user can create the resume by clicking on the `Create Resume` button in the 
 
 Once the user submits the form, the app creates the resume and redirects the user to the My Resumes page. The user can see the new resume in the table. The resume has the _In Review_ status by default and must be approved by the app administration.
 
+*Notifications*
+The administration receives the email notification about the new resume and can approve or reject the resume on Admin panel. Once the resume is approved or rejected, the user receives an email notification with the resume status. If the resume is approved, the user can use it to apply for the vacancies. If the resume is rejected, the user can update the resume and submit it again.
+
 ![jobseeker create resume page](docs/images/features/create_resume.png)
 
 #### My Resumes
@@ -840,6 +836,9 @@ The Create Vacancy page is accessible from the dropdown menu, the Post a Job but
 
 After the vacancy is created, the Employer will be redirected to the My Vacancies page. Before the vacancy will be displayed on the Job Search page, it has to be approved by the Admin. The Admin can approve or reject the vacancy from the Admin panel if the vacancy does not meet the requirements.
 
+*Notifications*
+The administration receives an email notification about the new job post and can approve or reject it in the Admin panel. Once the vacancy is approved or rejected, the user receives an email notification with the job post status. If the job is approved, the jobseekers can view the vacancy on the Job Search page and apply for it. If the job is rejected, the Employer can update the vacancy and submit it again.
+
 ![create vacancy page](docs/images/features/Create-Vacancy.png)
 
 #### My Vacancies
@@ -895,7 +894,8 @@ I created custom error pages for the 400, 403, 404, and 500 errors. Also 403 err
 ![403 error page](docs/images/403-Forbidden.png)
 
 ### Feedback
-The application gives the users appropriate feedback all the time. The feedback is provided using the Bootstrap toasts, modals and form alerts. The toasts usually used to notify the user about the successful or unsuccessful action. The modals are used to confirm the action or more important notifications. The form alerts are used to notify the user about the errors in the form. The app uses client-side and server-side validation to prevent the user from submitting the form with the invalid data. 
+The application gives the users appropriate feedback all the time. The feedback is provided using the Bootstrap toasts, modals and form alerts. The toasts usually used to notify the user about the successful or unsuccessful action. The modals are used to confirm the action or more important notifications. The form alerts are used to notify the user about the errors in the form. The app uses client-side and server-side validation to prevent the user from submitting the form with the invalid data.
+
 
 *Succesful action toast*
 ![success toast](docs/images/features/succesful-msg.png)
