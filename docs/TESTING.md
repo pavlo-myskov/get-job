@@ -67,21 +67,26 @@ The Google Lighthouse tool was used to check the performance, accessibility, bes
 ### Desktop
 | Page | Result |
 | :--- | :--- |
-| Jobseeker Home | ![Jobseeker Home](images/testing/lighthouse/jobseeker-home.png) |
-<!-- TODO -->
+| Jobseeker Home | ![Jobseeker Home](images/testing/lighthouse/home.png) |
+| Job Search | ![Job Search](images/testing/lighthouse/jobs.png) |
+| Job Details | ![Job Details](images/testing/lighthouse/job-details.png) |
+| Employer Home | ![Employer Home](images/testing/lighthouse/employer-home.png) |
+| Resume Search | ![Resume Search](images/testing/lighthouse/resumes.png) |
+| Resume Details | ![Resume Details](images/testing/lighthouse/resume-details.png) |
 
 ### Mobile
 | Page | Result |
 | :--- | :--- |
-| Jobseeker Home | ![Jobseeker Home](images/testing/lighthouse/jobseeker-home-mobile.png) |
-<!-- TODO -->
-...
+| Jobseeker Home | ![Jobseeker Home](images/testing/lighthouse/home-mobile.png) |
+| Job Search | ![Job Search](images/testing/lighthouse/jobs-mobile.png) |
+| Job Details | ![Job Details](images/testing/lighthouse/job-details-mobile.png) |
+| Employer Home | ![Employer Home](images/testing/lighthouse/employer-home-mobile.png) |
+| Resume Search | ![Resume Search](images/testing/lighthouse/resumes-mobile.png) |
+| Resume Details | ![Resume Details](images/testing/lighthouse/resume-details-mobile.png) |
 
 ## Manual Testing
-<!-- TODO -->
+#### User Stories Testing
 
-## User Stories Testing
-<!-- TODO -->
 
 ## Bugs
 <!-- TODO -->
