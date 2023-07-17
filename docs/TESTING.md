@@ -231,6 +231,8 @@ The issue is not present on the desktop version of the website.
 
     Possible solution: change the name parameter to the id parameter of the anchor tag.
 
+- I tried to follow the Accessibility rules and used the `aria-label`, `aria-labelledby`, `aria-current` and other attributes to make the website more accessible. However, in some cases, I probably used the wrong attributes. I will need to do more research on the topic to use the right attributes in right places.
+
 [Back to top](#table-of-contents)
 
 [Back to README.md](https://github.com/FlashDrag/get-job/blob/master/README.md)
