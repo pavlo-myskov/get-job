@@ -889,13 +889,27 @@ The Admin Panel is used mostly to approve or reject vacancies and resumes.
 
 To add users that can moderate the vacancies and resumes with the limited I created the Group called `MODERATORS`. The Group has permission to view the Admin Panel and approve or reject the vacancies and resumes and some other permissions. The Group permissions can be changed only by the Admin. Only admin users can add the Moderator. To add a new Moderator the admin has to create a new user and set them as `is_staff` and add them to the `MODERATORS` group.
 
+### Error Pages
+I created custom error pages for the 400, 403, 404, and 500 errors. Also 403 error is divided into two pages. One for the Jobseeker side and one for the Employer side. So when the not authorized user tries to access the page that is not allowed for them, they will see the 403 error page with the message that the page is allowed only for the Jobseekers or Employers respectively. All error pages have the same structure and links to the Job Search and Resume Search pages.
+
+![403 error page](docs/images/403-Forbidden.png)
+
+### Feedback
+The application gives the users appropriate feedback all the time. The feedback is provided using the Bootstrap toasts, modals and form alerts. The toasts usually used to notify the user about the successful or unsuccessful action. The modals are used to confirm the action or more important notifications. The form alerts are used to notify the user about the errors in the form. The app uses client-side and server-side validation to prevent the user from submitting the form with the invalid data. 
+
+*Succesful action toast*
+![success toast](docs/images/features/succesful-msg.png)
+
+*Warning toast*
+![warning toast](docs/images/features/warning-msg.png)
+
 [Back to top](#table-of-contents)
 
 ### Future Features
 - ##### Telegram Bot
 Firstly, the Telegram Bot will be used to notify the app support team about the new jobs and resumes that were created by the users. It will help to moderate the content quickly and improve the user experience.
 
-Secondly, the Telegram Bot will be used to notify the Employer about new job applications and Jobseekers about new job offers.
+Secondly, if the user has a Telegram account, they will be able to receive notifications about new job applications and job offers directly to the Telegram app. The notifications will be sent to the user only if they have a Telegram account and the Telegram Bot is enabled in the app settings.
 
 The Bot will send the message to the Employer with the job title, applicant name, occupation and applicant email, and link to the Applications Received page.
 
@@ -903,9 +917,14 @@ For the Jobseekers the Bot will send the message with the job title, Employer na
 
 The Bot will be created using the Aoiogram Python Framework and integrated with the app using the Telegram Bot API. The API allows to send messages to Telegram users using the Bot.
 
-- ##### Refactor code structure
+- #### Celery
+The Django-based email sending is synchronous and it can slow down the app's performance. Use Celery to send emails asynchronously as it not blocking the main application process while it sends emails. It's focused on real-time operation but also supports scheduling. Django has good support for integrating with Celery.
+
+- ##### Refactoring
     - Break the app into smaller apps to make the codebase more maintainable and scalable.
+    - Move the *JobOffer* and *Application* functionality to separate apps.
     - Make a clear separation between the Employer/EmployerProfile and Jobseeker/JobseekerProfile functionality.
+    - Refactor the structure of the templates and static files.
 
 - ##### Completely cover the app with tests
 
@@ -1144,10 +1163,14 @@ The _Continuous Deployment_ workflow is implemented using [Heroku GitHub Integra
 
     **Note**: The `DEBUG` and `DEVELOPMENT` environment variables must be set to False in the Heroku app for the production environment to avoid exposing sensitive information.
 
+![heroku config vars](docs/images/config-vars-heroku.png)
+
 
 ## Credits
 - ### Code
 The Get Job platform is based on my implementation of code, applying what I have learned from the [Code Institute](https://codeinstitute.net/) Full Stack Software Development course and other educational resources.
+
+*All code snippets taken from external sources are credited in the code comments*.
 
 - ### Content
     - Logo and favicon Briefcase from https://icons8.com
@@ -1155,6 +1178,7 @@ The Get Job platform is based on my implementation of code, applying what I have
     - Hero image of the employer page designed by pikepicture from https://pngtree.com/freepng/recruitment-process-vector-human-resources-choice-of-candidate-employee-office-chair-vacancy-executive-search-recruiting-hiring-hr-isolated-illustration_5190146.html?sol=downref&id=bef?sol=downref&id=bef
     - Branching Strategy diagram is taken from [ci-cd-pipelines-react-github-actions-heroku](https://blog.logrocket.com/ci-cd-pipelines-react-github-actions-heroku/) blog post.
     - Placeholder Company image by <a href="https://pixabay.com/users/ricinator-3282802/?utm_source=link-attribution&utm_medium=referral&utm_campaign=image&utm_content=2010880">Ricarda Mölck</a> from <a href="https://pixabay.com//?utm_source=link-attribution&utm_medium=referral&utm_campaign=image&utm_content=2010880">Pixabay</a>
+    - The people photos that are used in the app to create the user profiles are taken from https://unsplash.com
 
 [Back to top](#table-of-contents)
 
