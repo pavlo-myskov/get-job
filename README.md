@@ -25,8 +25,79 @@ Heroku: https://get-job.herokuapp.com
 ![mockup]()
 
 ## Table of Contents
-<!-- TODO -->
-...
+- [Agile Methodology](#agile-methodology)
+    * [User Stories](#user-stories)
+        + [Jobseeker Goals](#jobseeker-goals)
+        + [Employer Goals](#employer-goals)
+        + [Moderator Goals](#moderator-goals)
+    * [Development process](#development-features)
+- [UX Design](#ux-design)
+    * [Structure](#structure)
+    * [Wireframes](#wireframes)
+    * [UI Design](#ui-design)
+        - [Color Scheme](#color-scheme)
+        - [Typography](#typography)
+        - [Styling](#styling)
+    * [Flowchart](#flowchart)
+    * [Database Design](#database-design)
+- [Features](#features)
+    * [User authentication](#user-authentication)
+        + [Sign In](#sign-in)
+        + [Sign Up](#sign-up)
+        + [Sign Out](#sign-out)
+        + [Password Reset](#password-reset)
+        + [Change Password](#change-password)
+        + [Account Deletion](#account-deletion)
+    * [Jobseeker](#jobseeker)
+        * [All Pages](#all-pages)
+        * [Jobseeker's Home page](#jobseekers-home-page)
+        * [Job Search page](#job-search-page)
+        * [Job Details page](#job-details-page)
+        * [Job Application page](#job-application-page)
+        * [Jobseeker's Profile page](#jobseekers-profile-page)
+        * [Jobseeker Edit Profile](#jobseeker-edit-profile)
+        * [Create Resume](#create-resume)
+        * [My Resumes](#my-resumes)
+        * [My Resume Details](#resume-details)
+        * [Update Resume](#update-resume)
+        * [My Applications](#my-applications)
+        * [Job Offers](#job-offers)
+        * [Saved Jobs](#saved-jobs)
+        * [Notifications](#notifications)
+    * [Employer](#employer)
+        * [Employer's Home page](#employers-home-page)
+        * [Resume Search](#resume-search)
+        * [Resume Details](#resume-details)
+        * [Hiring page](#hiring-page)
+        * [Employer's Profile](#employers-profile)
+        * [Employer Edit Profile](#employer-edit-profile)
+        * [Create Vacancy](#create-vacancy)
+        * [My Vacancies](#my-vacancies)
+        * [Job Offers](#job-offers)
+        * [Recruitment Dashboard](#recruitment-dashboard)
+        * [Saved Resumes](#saved-resumes)
+        * [Notifications](#notifications)
+    * [Moderator](#moderator)
+        [Admin Panel](#admin-panel)
+    * [Future Features](#future-features)
+    * [Development Features](#development-features)
+        - [Role System](#role-system)
+        - [Branching Strategy](#branching-strategy)
+- [Database](#database)
+- [Static Files](#static-files)
+- [Technologies Used](#technologies-used)
+- [Testing](#testing)
+- [Deployment, CI/CD](#deployment-cicd)
+- [Credits](#credits)
+- [Contacts](#contacts)
+
+
+
+
+
+
+
+
 
 ## Agile Methodology
 The main goal of the app is to deliver a solution that creates real value for the users and _UX design_ and _Agile Methodology_ are the best way to achieve this goal.
@@ -134,9 +205,10 @@ The main goal of the app is to deliver a solution that creates real value for th
     - As an Employer, I want to be able to change the password so that I can protect my account.
 
 #### Moderator Goals
-As a Moderator, I want to be able to review and approve the posted jobs so that I can protect the app from inappropriate content.
+- As a Moderator, I want to be able to review and approve the posted jobs so that I can protect the app from inappropriate content.
+- As a Moderator, I want to get email notifications about new job and resume posts so that I can review them.
 
-### Agile Development
+### Development process
 This project was developed with the Agile methodology which allowed me to develop the app iteratively and incrementally, and adapt changes with flexibility even in the late stages of development.
 
 _GitHub Issues_ and _Projects_ are used to manage the development process. Each part of the app is divided into _Epics__ which are broken down into _User Stories_ and _Tasks_. An Epic represents a large body of work, such as a feature.
@@ -166,6 +238,9 @@ The prioritization is based on the 60-20-20 rule where 60% of the effort is spen
 
 *GitHub Project Table*
 ![GitHub Project Table](docs/images/Table.png)
+
+*Milestones*
+![Milestones](docs/images/Milestones.png)
 
 [Back to top](#table-of-contents)
 
@@ -313,7 +388,7 @@ It is possible to set the `ACCOUNT_PREVENT_ENUMERATION` parameter to `False` in 
 | ![validation_error](docs/images/features/account/Account-Already-Exists-error.png) | ![email_exists](docs/images/features/account/Account-Already-Exists.png) |
 
 
-- #### Logout
+- #### Sign Out
 The Logout button is available for authenticated users only and is located in the Profile dropdown menu or Sign Up/Sign menu on the page that is not associated with the current role. When the user clicks on the Logout button, the modal window appears with the confirmation message. The user can confirm the logout by clicking on the Logout button or cancel the logout by clicking on the Dismiss button. After successful logout, the user will be redirected to the Home page.
 
 *Not associated with current role*
@@ -342,7 +417,7 @@ The authenticated user can change the password on the Profile page. The user has
 
 ![Change Password](docs/images/features/account/change_password.png)
 
-- #### Account Deleting
+- #### Account Deletion
 The user can delete(in fact deactivate) their account by clicking on the `Delete` button in the _Delete account_ section of the Profile page. The button redirects the user to the `Confirm Account Delete` page where they must confirm the deletion by entering their password. If the user enters the correct password, the account is deactivated and the app redirects the user to the Home page and displays the message that the account is deactivated and will be deleted in 30 days. So if the user changes their mind, they can contact the app support and reactivate their account. The appropriate message is displayed when the user tries to log in with the deactivated account as well as the app redirects them to the Create Account page.
 
 *Delete Account Confirmation*
@@ -353,11 +428,12 @@ The user can delete(in fact deactivate) their account by clicking on the `Delete
 
 [Back to top](#table-of-contents)
 
-## Jobseeker
+### Jobseeker
 
-### All Pages (*except forms)
+#### All Pages
+
 *The user form pages do not have the main navigation bar and footer. They have their nav header with limited navigation links. It allows the user to focus on the form and not be distracted by the other links.*
-- #### Navbar
+- ##### Navigation Bar
 The navigation bar includes the app logo(with a link to the home page), the toggle button to switch between the Jobseeker's and Employer's Home pages, the Sign-Up / Sign-In dropdown menu with the Sign-Up and Sign-In links for the unauthenticated users and the Profile dropdown menu for the authenticated users.
 
 The Profile dropdown menu contains:
@@ -386,33 +462,33 @@ The Navbar is flexible and always available when the user needs it. It hides on 
 The dropdown menu is only available for authenticated users with the jobseeker role and on the Jobseeker's site pages. When the authenticated user with the Jobseeker role visits the Employer's site, the Profile dropdown menu is replaced with a message that the user is currently logged in as a Jobseeker and the Sign Out button.
 ![not associated dropdown](docs/images/features/logged-in-as-jobseeker.png)
 
-- #### Footer
+- ##### Footer
 The footer is simple and permanent. It contains the web app name with the link to the Home page, the copyright string with the updateable year and the link to the developer's LinkedIn profile. The footer is responsive and fixed to the bottom of the page if the page content is not enough to fill the page.
 
 ![footer](docs/images/features/footer.png)
 
 [Back to top](#table-of-contents)
 
-### Jobseeker's Home page
+#### Jobseeker's Home page
 The Jobseeker's Home page is designed to help Jobseekers to find a job quickly and easily. The main goal of the home page is to encourage users to create a resume and start searching for a job. As the home page is more demonstrative than functional, it represents the limited versions of the main features of the app to show the users how the app works and what they can do with it.
 The page is divided into 5 sections: Navbar, Hero, Search panel, Latest Jobs, and Footer.
 ![jobseeker_home](docs/images/features/jobseeker_home.png)
 
-- #### Hero
+- ##### Hero Section
 The Hero section contains call-to-action headings and a button to encourage users to create a resume. The image of the section conveys the main message of the app - recruiters are looking for candidates reviewing resumes. When the users are clicking on the `Create Resume` button and if they are logged in, then they are redirected to the Create Resume page, otherwise to the Sign-Up / Sign-In. If the user is already logged in as an Employer, then the button is disabled and the tooltip appears with the message that only jobseekers can create resumes.
 ![hero](docs/images/features/jobseeker_hero.png)
 
-- #### Jobseeker's Search bar
+- ##### Jobseeker's Search bar
 One of the important features of the app is the search.
 
 The home page contains a search bar with limited functionality.
 It is placed in the center of the page to be easily found and allows users to achieve their main goal - to find a job quickly and easily. The functionality of the search bar is the same as the search bar of the Navbar. It takes the user input and searches for the job title keywords in the database. The user will be redirected to the Job Search page with the search results and advanced search panel with passed keywords. It allows the user to use the advanced search panel to narrow the search results. Also, the query will be stored in the session until the user types a new query or clears the search bar. The query is automatically passed to the search bar each time the user visits the page. To clear the session the user has to click on the `Reset` button of the advanced search panel or clear the search bar and submit the empty query. When the user submits the empty query, the app redirects the user to the Job Search page with the all jobs in the database. The `Filter` button redirects the user to the Job Search page with the advanced search panel and all jobs in the database.
 ![jobseeker_home_search_bar](docs/images/features/jobseeker_home_search.png)
 
-- #### Latest Jobs
+- ##### Latest Jobs
 The Latest Jobs section is a list of the latest vacancies posted by Employers. Each Vacancy is represented by a Bootstrap Card component. The home page contains four active(approved) latest vacancies. The section is fully responsive. On small screens, the cards are arranged in one column and on extra large screens in two columns to be easily readable.
 
-##### Vacancy Card
+###### Vacancy Card
 Each card includes the Job Title, Time since, Company Name, Job Location, Salary, Company Logo, the main section of the Job Description and the footer with the action buttons.
 
 - **Card Header**
@@ -447,18 +523,18 @@ The description section text is truncated to the 3 lines using custom truncation
 
 [Back to top](#table-of-contents)
 
-### Job Search page
+#### Job Search page
 The Job Search page contains the search results and the advanced search panel. The page is accessible by the search bars of the Navbar and the Home page, by the link in the Dropdown menu of the Navbar and links from some other internal pages of the Jobseeker Dashboard.
 
 ![jobseeker_search](docs/images/features/jobs.png)
 
-- #### Header
+- ##### Header
 The header contains the Back to Home button that redirects the user to the Home page and Found Job Count which displays the number of jobs found by the search query. The Job Count is updated each time the user submits the search query. If there are no jobs found, the counter is changed to `No jobs found`. The Job word is changed to the Jobs if the number of jobs is more than 1. It is implemented with the `page_obj.paginator.count` and template filter `pluralize`. This approach allows me to avoid using the *if-else* statement and looks more elegant.
 
-- #### Search results
+- ##### Search results
 The search results are represented by the Bootstrap Cards, the same as the Latest Jobs section on the Home page. Each card is clickable and redirects the user to the Job Details page. The cards are arranged in one column with 6 cards per page. The vacancies are ordered by the `updated_on` field of the `Vacancy` model. The most recently updated or created vacancies are displayed first. Only approved vacancies can be displayed on the Job Search page.
 
-- #### Search panel
+- ##### Search panel
 The Search page contains the advanced search panel with the search filters including _Job Title_, _Area_, _Job Location_ and _Job Type_. Each filter has a dropdown menu with a list of options. The user can select the options and combine the filters to narrow the search results.
 The panel is sticky on large screens and is always available when the user scrolls the page. On small screens, the search panel is collapsible to save space. The user can expand it by clicking on the `Tap to Expand Search Panel` button. This panel is collapsed by default if no search query is passed. Otherwise, the panel is expanded and the user can see the search query in the input fields. The Search panel is styled according to the Jobseeker page design.
 
@@ -478,7 +554,7 @@ The Job Type contains 7 options and the user is allowed to select only one optio
 
 ![jobseeker search mobile panel](docs/images/features/job_search_mobile.png)
 
-- #### Pagination
+- ##### Pagination
 The search results are paginated to improve the UX and make the page more user-friendly.
 The page is paginated by 6 items per page.
 
@@ -490,7 +566,7 @@ Implemented two types of pagination - with the page numbers and with the Previou
 
 [back to top](#table-of-contents)
 
-### Job Details page
+#### Job Details page
 The Job Details provide the user with detailed information about an active job. To access the page, the user can click on the Job Card on the Home page or the Job Search page. It is styled according to the Jobseeker design and based on the Bootstrap cards. The job detail card contains a header, applied indicator, job and company details and logo, and footer with the Apply, Save and Top buttons.
 
 - ##### Header
@@ -515,26 +591,26 @@ In case the job description can be too long on the small screens, the user has a
 ![jobseeker job details page](docs/images/features/job_details.png)
 
 
-### Apply for the Job
+#### Job Application page
 The user can apply for the job by clicking on the `Apply` button on the Job Card on the Home and Job Search pages or the Job Details page. The button redirects the user to the `Job application` page.
 
 The page contains the nav header with the *To job details* link and Home button, employer details collapsible card, and a form with the two sections.
 
-- #### Employer details
+- ##### Employer details
 The employer details card is collapsed by default and can be expanded by clicking on the `See Employer Details` button link. It includes Employer's name, Phone number and email. So the user can contact the employer directly if they have any questions about the job. The phone number and email are clickable and open the default phone and email apps respectively.
 
-- #### Application form
+- ##### Application form
 - First of all, the user must select the resume to apply for the job if there are any resumes approved by the app support. If the user has no approved resumes yet, they will be prompted to create a new resume or check the all resumes status on the My Resumes page. If the user has approved resumes, they can select the resume using the Radio buttons. Also, each resume has the `View` button that allows the user to see the resume details or/and edit the resume. The View page is opened in the new tab to prevent the user from losing the data in the application form.
 - The second section of the form is the Cover Letter. The user can enter the cover letter text in the textarea. The text is limited to 1000 characters and is not required. The max length validation is on the client side and the server side as well. The client-side validation prevents the user from entering more than 1000 characters and the server-side one prevents the user from submitting the form with text longer than 1000 characters. The server-side validation errors are displayed under the textarea. Also, there is a `Text Counter` under the textarea that shows the number of characters entered by the user and the maximum allowed number of characters. The counter is updated on each input event regardless of whether the user entered the text using the keyboard or pasted it from the clipboard.
 
 The user can submit the application form only if they selected the resume. If the user tries to submit the form without selecting the resume, the app displays the default browser validation error message `Please select one of these options`. Also if the malicious user tries to submit the form with disabled JavaScript validation, the server-side validation will still prevent the submission and the user will see the appropriate error message under the resume selection section.
 
-- #### Submitting the form
+- ##### Submitting the form
 The user can submit the form by clicking on the `Submit` button. When the user successfully submits the form, the app sends the notification to the employer's email and adds a new application notification to the employer's navbar notification counter. The user was redirected back to the search results page to the position of the applied job. So the user can continue the job search from the same place. The app also displays the success message using the Bootstrap toast component and Django messages framework.
 
 The user can also Reset the form by clicking on the `Reset` button. The button clears the Cover Letter field and unchecks the selected resume. The counter is not reset but when the user starts typing the text, it is updated.
 
-- #### No active resumes
+- ##### No active resumes
 If the user has no active resumes, the app displays the message with the link to the My Resumes page and the button to create a new resume. The user can create a new resume by clicking on the `Create New Resume` button. The My Resumes link and Create New Resume button open the My Resumes page and the Create Resume page respectively in the new tab to prevent the user from losing the job details page in case the user wants to save the job to apply later.
 
 *Job Application page*
@@ -546,18 +622,18 @@ If the user has no active resumes, the app displays the message with the link to
 [Back to top](#table-of-contents)
 
 
-### Jobseeker's Profile page
+#### Jobseeker's Profile page
 The Jobseeker's Profile is accessible from the navbar dropdown menu. The page contains the nav header with the *To Job Search* link and Home button, Profile details, Email notifications, [Change password](#Change-Password) and [Delete account](#Account-Deleting) sections.
 
-- #### Jobseeker Profile details
+- ##### Jobseeker Profile details
 The Profile Details section is designed as the card with the user's avatar, full name, gender, date of birth, address, phone number, email, and the `Edit` button. The user can update their profile details by clicking on the `Edit` button. The button redirects the user to the `Edit Profile` page.
 
-- #### Email notifications
+- ##### Email notifications
 The Email notifications button allows the user to enable or disable the New Job Offers notifications. The button is designed as a Bootstrap button with Font Awesome toggler icon inside. The email notifications are enabled by default and the button is green, and the toggle icon is `fa fa-toggle-on`. If the user clicks on the button, the app sends the post request to the server using Ajax and toggles the notifications. It allows the user to enable or disable the notifications without reloading the page. The button is updated to the red color and the toggled icon is changed to the `fa fa-toggle-off` icon.
 
 ![jobseeker profile page](docs/images/features/jobseeker-profile.png)
 
-### Jobseeker Edit Profile
+#### Jobseeker Edit Profile
 The user can update their profile details on the Edit Profile page. The user can change all details that are displayed on the Profile page except the email. The email is not editable because it is used as a username and is unique. If the user wants to use another email, they must create a new account. The title of the form has a tooltip with the description that appears when the user hovers over the title. It helps the user to understand why they have to provide the details. Running a little ahead, the details are used to generate the resumes.
 
 *I chose this approach because the user can have multiple resumes and the personal data that is included in resumes usually is constant. If the user updates the details on the Edit Profile page, the resumes are also updated automatically.*
@@ -575,7 +651,7 @@ The validator passed to the `to_python` method of the extended `cloudinary.forms
 
 [Back to top](#table-of-contents)
 
-- #### Create Resume
+#### Create Resume
 The user can create the resume by clicking on the `Create Resume` button in the Hero section, Dropdown menu, My Resumes page or on the Resume Details page. The button redirects the user to the Create Resume page. The page contains the form with the following fields:
     - **Occupation** - the occupation is the title of the resume.
     The field is required but not unique. The occupation is used as the resume identifier and is displayed on the My Resumes page, on Resume cards, email notifications and so on. It is used in search queries to find resumes.
@@ -590,7 +666,7 @@ Once the user submits the form, the app creates the resume and redirects the use
 
 ![jobseeker create resume page](docs/images/features/create_resume.png)
 
-- #### My Resumes
+#### My Resumes
 The user can create multiple resumes and manage them on the [My Resumes page](#my-resume-details). For example, the user can create a resume with the occupation `Frontend Developer` and `Backend Developer` to increase the chances to be found by employers. The page contains the table of the current Jobseeker resumes. Each row of the table represents the resume and includes the Resume Title(Occupation), the Resume Status, the Last Updated date and the Action buttons.
 - ##### Resume Title
 The Resume Title is clickable and redirects the user to the Resume Details page. The title is truncated to 40 characters to fit the table cell and be more readable on small screens. Each word of the title is line-breaks to the new line on small screens, but if the title contains a long word, the table cell is expanded to fit the word until it will be truncated. Then if the table is too wide, the horizontal scrollbar appears.
@@ -612,19 +688,19 @@ The Control buttons allow the user to manage the resume. The user can edit the r
 
 ![jobseeker my resumes page](docs/images/features/My-Resumes.png)
 
-- ##### My Resume Details
+#### My Resume Details
 The Resume Details page is available from the My Resumes list. The page content is identical to the [Resume Details](#resume-details) page content for the Employers but has a different color interface (jobseeker style) and different header and footer buttons. The user can update the resume details, and close or delete the resume using the appropriate buttons. These buttons have the same behavior as the buttons on the My Resumes page.
 
 ![jobseeker resume details page](docs/images/features/my-resume-details.png)
 
-- ##### Update Resume
+#### Update Resume
 The user can update the resume details on the Resume Update page. The form is accessible from the My Resumes page and the Resume Details page. The form is identical to the [Create Resume](#create-resume) form (**it uses the same Django form class, but now is bound to the existing resume instance**), but the user can see the current resume details and edit them. When the user submits the form, the app updates the resume and redirects the user to the My Resumes page. The updated resume has the _In Review_ status by default and must be approved by the app administration.
 
 ![jobseeker update resume page](docs/images/features/Update-Resume.png)
 
 [Back to top](#table-of-contents)
 
-- #### My Applications
+#### My Applications
 The My Applications page is available from the Jobseeker's Dropdown menu.
 My Applications is the page where the user can view the list of the applications that they have submitted. Each application is represented by the Bootstrap Accordion component collapsed by default. The Accordion header is represented by the Job Title, so the user can easily find the application that they need. The user can expand the element to view the application details.
 These details include application date, employers details, vacancy title and button to view the snapshot, resume title and snapshot button.
@@ -639,7 +715,7 @@ The snapshot modal window is fully responsive and has the same structure as the 
 *Vacancy Snapshot Modal*
 ![jobseeker snapshot modal](docs/images/features/Applied-Jobs-snapshot.png)
 
-- #### Job Offers
+#### Job Offers
 The Job Offers page is available from the Jobseeker's Dropdown menu.
 The Job Offers page represents the list of Jobseeke's resumes with the sublists of the job offers that the user has received from the Employers for their resumes. Each card is an Accordion element that is collapsed by default.
 
@@ -657,18 +733,18 @@ The body of the Accordion card contains the list of job offers. Each job offer i
 
 [Back to top](#table-of-contents)
 
-- #### Saved Jobs
+#### Saved Jobs
 The user can save any job to the Favorites by clicking on the `Save` button on the Job Card or the Job Details page. All saved jobs can be viewed on the Saved Jobs page which is available from the Jobseeker's Dropdown menu only for authenticated users. The page contains a list of the saved jobs. Each row of the list represents a job and is clickable. So the user can view the job details by clicking on the job title. The link redirects the user to the Job Details page. Also, the row contains Action buttons that allow a user to remove the job from the Favorites or directly apply for the job. The removing action does not require confirmation, as this action is not critical. The QuerySet of the saved jobs is annotated with `is_applied` field that indicates if the user has already applied for the job. The field is used to display the appropriate button state on each row.
 
 ![jobseeker saved jobs page](docs/images/features/Saved-Jobs.png)
 
-- #### Notifications
+#### Notifications
 When the Employer sends the job offer to the Jobseeker, the app sends the email and internal app notifications to the Jobseeker.
 
-- #### Email Notifications
+- ##### Email Notifications
 The email message contains the Job Title, the Employer's name and email, and the title of the Resume that the employer has selected. The email message has a link to the Job Offers page, so the user can view the job offer details by clicking on the link. The email message is sent to the Jobseeker's email address that was provided during the registration.
 
-- #### Internal App Notifications
+- ##### Internal App Notifications
 The internal app notification is represented by the FontAwesome *Bell* icon with the *Badge* that displays the number of unread notifications. The badge is displayed only if the user has unread notifications. The badge is updated only when the user updates the page.
 
 The user can view the list of notifications by clicking on the *Bell* icon. The list of notifications is represented by the Bootstrap Accordion component. The components are ordered by two criteria: the first is if the notification is read or not, and the second is the date when the notification was created. The unread notifications are displayed first in descending order. Each unread notification is expanded by default and has a yellow header. The read notifications are collapsed by default and have a white header. When the user clicks on the header of the unread notification, the notification is marked as read, the header color is changed to white, the element is collapsed and the Navbar _Bell_ icon badge is updated. This functionality is implemented using Ajax and allows the user to mark the notification as read without redirecting and page reloading. The user also can mark all notifications as read by clicking on the *Mark all as read* button. The button is displayed only if the user has unread notifications. This method triggers the page reloading.
@@ -690,19 +766,21 @@ The notification body contains a short description of the notification with the 
 
 [Back to top](#table-of-contents)
 
-### Employer's Home page
+### Employer
+
+#### Employer's Home page
 The Employer page has similar to the [Jobseeker's Home](#jobseekers-home-page) page structure. It contains NavBar, Hero, Employer's Search bar, and the list of the latest Resumes.
-- #### Navbar
+- ##### Navbar
 The Employer Navbar contains the Logo, Jobseeker/Employer toggle button with the appropriate links to the Jobseeker's and Employer's Home pages, search bar, notifications icon, and dropdown menu.
 
 - The search bar is used to search resumes by occupation and skills keywords.
 - The Notification icon is used to display the number of unread notifications.
 - The dropdown menu contains the links to the My Profile, Search Resumes, Post a Vacancy, My Jobs, My Job Offers, Recruitment Dashboard, Saved Resumes, and Logout buttons.
 
-- #### Hero
+- ##### Hero
 The Hero image presents the Employer's Home page and contains a call to action button that redirects to the Post a Vacancy page. If the user is not authenticated, the button redirects the user to the Login page. If the user is not authorized to post a vacancy, the button displays the tooltip with the message that only the Employer can post a vacancy.
 
-- #### Employer's Search bar
+- ##### Employer's Search bar
 The search bar is used to search resumes by occupation and skills keywords. The search bar is the same as the [Jobseeker's Search bar](#jobseekers-search-bar) and has the same functionality but searches resume instead of jobs. It contains two buttons that redirect the user to the Resume Search page. The Filter button redirects the user to the Resume Search page without any search query. So if the search query was in the session storage it will be passed to the Resume Search page. The Find Resume button redirects the user to the Resume Search page with the search query that was provided by the user. If no search query was provided, the user will be redirected to the Resume Search page with an empty search query and the Search Page page will display all resumes.
 
 - #### Latest Resumes
@@ -713,13 +791,13 @@ Each resume is represented by a Bootstrap card. The card is similar to the [Vaca
 
 [Back to top](#table-of-contents)
 
-### Resume Search
+#### Resume Search
 The basic structure of the Resume Search page is the same as the [Job Search page](#job-search-page).
 
-- #### Search bar
+- ##### Search bar
 The Resume Search bar contains the Occupation and Skills keywords input, Experience range selector, Gender and Age range.
 
-- ##### Age range selector
+- ###### Age range selector
 As the multiple sliders are not supported by Bootstrap, I used the [jQuery UI Slider](https://jqueryui.com/slider/) to implement the Age range selector.
 
 The Age range selector allows the user to select the age range of the Jobseeker. The age range is represented by the two sliders. The user can select the age range by dragging the slider handles or by clicking on the slider bar. The selected range is displayed in the Age range decorative input field. The input field is read-only and disabled. To capture the slider state and insert it into the form I implemented the hidden input fields that are part
@@ -728,7 +806,7 @@ of the Django Form. It allows me to validate the inputted by the user age range 
 ![resume search page](docs/images/features/resume-search.png)
 
 
-### Resume Details
+#### Resume Details
 The Resume Details card contains a Header with the To Resume search button, Hire and Save buttons, a body with the Jobseeker details, and a Footer with the Action buttons. The card is similar to the Vacancy [Details card](#vacancy-details-card) except for the Hire button that redirects the user to the Send Job Offer page and the content of the body.
 
 The Resume details include the Jobseeker's Occupation, Profile picture, Name, Experience duration, Gender, Age, Phone number, Email address, Experience description, Education, Skills, and Body text. The personal information(gender, age, phone, email) is displayed only for Employer users.
@@ -736,7 +814,7 @@ The Resume details include the Jobseeker's Occupation, Profile picture, Name, Ex
 ![resume details page](docs/images/features/resume-detail.png)
 
 
-### Hiring page
+#### Hiring page
 The app allows the Employer to send a job offer to the Jobseeker by using the Hiring page. The Hiring page is accessible from the Resume card and the Resume details page. The Hiring page contains the Jobseeker name with Occupation, List of Employer's Vacancies, and the Job offer message input field. The Employer can select the vacancy from the list of his vacancies, view the vacancy details(opens in the new tab), and send the job offer message to the Jobseeker. The Job offer message is optional and cannot be longer than 1000 characters. If the Employer does have any active vacancies, they will be prompted to create a vacancy or go to the My Vacancies page to check the status of the vacancies. The My Vacancies and Create Vacancy pages open in the new tab to allow the user to go back to the Hiring page and save the job offer message or the job itself to apply for it later.
 
 When the Employer sends the job offer, the system creates Vacancy and Resume snapshots and stores them in JSON format in the JobOffer database table. So the Jobseeker and Employer can view the vacancy and resume details at the time when the job offer was sent. Also, the app sends the [email notification and in-app notification](#notifications) to the Jobseeker with the job offer details and the link to the Hiring page.
@@ -745,33 +823,33 @@ When the Employer sends the job offer, the system creates Vacancy and Resume sna
 
 [Back to top](#table-of-contents)
 
-### Employer Profile
+#### Employer's Profile
 The Employer Profile page is accessible from the dropdown menu. The page contains the Employer details (Employer name, Company name, Company logo, Company website, Phone number and Email address) that can be updated by the Employer clicking on the Edit button. From the page, the Employer can also Disable Email [Notifications](#email-notifications) that are enabled by default, [change password](#change-password), and [delete account](#account-deleting).
 
 ![employer profile page](docs/images/features/employer-profile.png)
 
-- #### Update Employer details
+#### Employer Edit Profile
 The user can update the Employer details by clicking on the Edit button. The page will display the same fields as the Employer Profile page. The fields are prefilled with the current Employer details. The user can update the details and save the changes by clicking on the Submit button. After the changes are submitted, the user will be redirected back to the Employer Profile page.
 
 ![employer profile update page](docs/images/features/employer-update-profile.png)
 
 [Back to top](#table-of-contents)
 
-### Create Vacancy
+#### Create Vacancy
 The Create Vacancy page is accessible from the dropdown menu, the Post a Job button on the Home page, and the My Vacancies page. The page contains the form with the fields that allow the Employer to create a new vacancy. The form contains the Title, Area, Job Location, Job Type, Salary, Experience duration and Job Description fields. More details about the fields can be found in the [Vacancy Card](#vacancy-card) section.
 
 After the vacancy is created, the Employer will be redirected to the My Vacancies page. Before the vacancy will be displayed on the Job Search page, it has to be approved by the Admin. The Admin can approve or reject the vacancy from the Admin panel if the vacancy does not meet the requirements.
 
 ![create vacancy page](docs/images/features/Create-Vacancy.png)
 
-### My Vacancies
+#### My Vacancies
 The My Vacancies page is accessible from the dropdown menu and has an identical structure and functionality as the [My Resumes](#my-resumes) page. The page contains the list of the Employer's vacancies with the status badge, title last update date, and the Action buttons. The Action buttons allow the Employer to edit, close, and delete the vacancy. Only the vacancies with the status `Active` are shown on the Job Search page and can be used to send a job offer to the Jobseeker. The total number of vacancies the Employer can create is limited to 5. If the Employer has 5 active vacancies, they will not be able to create a new vacancy until deletes one.
 
 ![my vacancies page](docs/images/features/My-Jobs.png)
 
 [Back to top](#table-of-contents)
 
-### Job Offers
+#### Job Offers
 The Job Offers page represents the list of the Job Offers sent by the Employer to the Jobseeker. Each Job Offer is an Accordion card that contains the clickable header with Jobseeker Occupation and email, and the body with the submission date, Jobseeker Resume snapshot and Vacancy snapshot. More details about the snapshots can be found in the [Snapshot functionality](#snapshot-functionality) section of the My Applications page.
 
 ![job offers page](docs/images/features/sent-Job-Offers.png)
@@ -779,17 +857,17 @@ The Job Offers page represents the list of the Job Offers sent by the Employer t
 *Vacancy snapshot*
 ![vacancy snapshot](docs/images/features/vacancy-snapshot.jpg)
 
-### Recruitment Dashboard
+#### Recruitment Dashboard
 The Dashboard allows the Employer to view the statistics of the Posted Jobs. The page contains a list of the Employer's vacancies with sublists of the Jobseeker's resumes that applied for the vacancy. Each list is represented by the Accordion card with a header that contains the Vacancy title and the number of the Jobseekers that applied for the vacancy. The body of the card contains the list of the Jobseeker's resumes title(clickable) that includes the Occupation and the email address, and the Action buttons. The Action buttons allow the Employer to download the Jobseeker CV and View the Cover Letter. The Cover Letter is a text message that the Jobseeker can send to the Employer with the job application. Also, the Employer can view the Resume and Vacancy snapshots that were created at the time when the Jobseeker applied for the vacancy.
 
 ![applicants page](docs/images/features/Applicants.png)
 
-### Saved Resumes
+#### Saved Resumes
 The Saved Resumes page represents the list of the Jobseeker's resumes that were saved by the Employer. The page has an identical structure and similar functionality to the [Saved Jobs](#saved-jobs) page.
 
 ![saved resumes page](docs/images/features/Saved-Resumes.png)
 
-### Notifications
+#### Notifications
 The app notifications are used to notify the Employer about new job applications. When the Jobseeker applies for the vacancy, the Employer will receive an email and in-app notifications. Email one contains the job title, applicant name and occupation and applicant email, and link to the Applications Received page. The in-app notification is represented by the bell icon in the navbar with the number of unread notifications. When the Employer clicks on the bell icon, they will be redirected to the Applications Received page.
 
 The Application Received page contains the list of Accordion cards. Each card represents the Jobseeker that applied for the vacancy. The card header contains the Vacancy title. The card body contains the Jobseeker's name, the date of the application, and the Action buttons. The Employer can view the Cover Letter and download a CV. Also, the Employer can view the Vacancy and Resume snapshots that were created at the time when the Jobseeker applied for the vacancy.
@@ -801,15 +879,17 @@ The Notification cards with unread notifications have a blue background and are 
 *Cover Letter on the Application Received page*
 ![cover letter](docs/images/features/Received-Applications-cover-letter.jpg)
 
-[Back to top](#table-of-contents)
 
-### Admin Panel
+### Moderator
+#### Admin Panel
 The Admin Panel is used mostly to approve or reject vacancies and resumes.
 
 To add users that can moderate the vacancies and resumes with the limited I created the Group called `MODERATORS`. The Group has permission to view the Admin Panel and approve or reject the vacancies and resumes and some other permissions. The Group permissions can be changed only by the Admin. Only admin users can add the Moderator. To add a new Moderator the admin has to create a new user and set them as `is_staff` and add them to the `MODERATORS` group.
 
+[Back to top](#table-of-contents)
+
 ### Future Features
-- #### Telegram Bot
+- ##### Telegram Bot
 First of all, the Telegram Bot will be used to notify the app support team about the new jobs and resumes that were created by the users. It will help to moderate the content quickly and improve the user experience.
 
 Secondly, the Telegram Bot will be used to notify the Employer about new job applications and Jobseekers about new job offers.
@@ -820,13 +900,13 @@ For the Jobseekers the Bot will send the message with the job title, Employer na
 
 The Bot will be created using the Aoiogram Python Framework and integrated with the app using the Telegram Bot API. The API allows to send messages to Telegram users using the Bot.
 
-- #### Refactor code structure
+- ##### Refactor code structure
     - Break the app into smaller apps to make the codebase more maintainable and scalable.
     - Make a clear separation between the Employer/EmployerProfile and Jobseeker/JobseekerProfile functionality.
 
-- #### Completely cover the app with tests
+- ##### Completely cover the app with tests
 
-- #### Other features
+- #### Other future features
     - Add the ability to style Resumes and Job Posts using the Markdown syntax.
     - Add pagination to other pages that may contain a large number of items, such as the My Applications page, Notifications page, etc.
     - When the user Reset the Search filters, the app should show the appropriate message to the user, that all items are displayed.
@@ -838,6 +918,7 @@ The Bot will be created using the Aoiogram Python Framework and integrated with 
     - Mark the visited Vacancy and Resume pages muted.
     - Add the tooltips to Resume and Vacancy snapshots. The tooltip should explain that the Personal data is not frozen.
 
+[Back to top](#table-of-contents)
 
 ### Development Features
 - #### Role System
@@ -857,7 +938,11 @@ See the [Deployment](#deployment) section for more details about the CI/CD proce
 |:--:|
 |![branching_strategy](docs/images/ci-cd-diagram.avif)|
 
-- #### Database
+**Note**: After merge, each feature branch should be deleted to keep the repository clean. But in this case, in order to preserve the history of the project and demonstrate the branching strategy, I decided to leave the branches.
+
+[Back to top](#table-of-contents)
+
+## Database
 The app uses a relational database service [ElephantSQL](https://www.elephantsql.com/) to store and manage data. In this project, I used 3 databases - `local`, `staging`, and `production`. The `local` database is used for local development and testing. It's an SQLite database that is provided by Django. The `staging` and `production` databases are PostgreSQL databases that are provided by ElephantSQL. The `staging` database is used for testing the app before it is deployed to the production environment.
 
 *Database Configuration for different environments*
@@ -886,7 +971,9 @@ elif len(sys.argv) > 0 and sys.argv[1] != 'collectstatic':
 *ElephantSQL Instances for different environments*
 ![Instances-ElephantSQL](docs/images/Instances-ElephantSQL.png)
 
-- #### Static Files
+[Back to Table of contents](#table-of-contents)
+
+## Static Files
 The app uses the [Cloudinary](https://cloudinary.com/) cloud service to store static files such as images, CSS, and JavaScript files and media files such as user avatars, CVs, and company logos. Initially, I used the [AWS S3](https://aws.amazon.com/s3/) cloud service to store static files. But the free tier of the AWS S3 service includes 5 GB of storage, 20,000 Get Requests, and 2,000 Put Requests. It was not enough for my project, especially put requests. Contrary to popular belief, setting up Amazon S3 was far from difficult.
 One major benefit of Amazon S3 is the ability to create a new bucket for each application, ensuring better organization and conflict-free storage. However, I decided to use Cloudinary even though it provides a single 'bucket' for all my applications. I managed to figure out and set up Cloudinary for several projects without any issues. Each project has its folder in the Cloudinary media library.
 
@@ -896,6 +983,8 @@ One major benefit of Amazon S3 is the ability to create a new bucket for each ap
 *Cloudinary Management - Media Files*
 ![Cloudinary](docs/images/Cloudinary-Management-2.png)
 
+[Back to Top](#table-of-contents)
+
 ## Technologies Used
 - ### Languages
     - [HTML5](https://en.wikipedia.org/wiki/HTML5)
@@ -903,7 +992,7 @@ One major benefit of Amazon S3 is the ability to create a new bucket for each ap
     - [JavaScript](https://en.wikipedia.org/wiki/JavaScript)
     - [Python](https://en.wikipedia.org/wiki/Python_(programming_language))
 - ### Frameworks, Libraries
-    - [Django 4.2](https://docs.djangoproject.com/en/4.2/)
+    - [Django 3.2](https://docs.djangoproject.com/en/3.2/)
     - [Bootstrap 5](https://getbootstrap.com/docs/5.3/getting-started/introduction/)
     - [jQuery 3.6.4](https://releases.jquery.com/)
     - [jQuery UI 1.13.2](https://jqueryui.com/)
@@ -925,12 +1014,13 @@ One major benefit of Amazon S3 is the ability to create a new bucket for each ap
 - [django-crispy-forms](https://django-crispy-forms.readthedocs.io/en/latest/)
 - [cripsy-bootstrap5](https://github.com/django-crispy-forms/crispy-bootstrap5)
 - [django-allauth](https://django-allauth.readthedocs.io/en/latest/)
-- [django-compressor](https://django-compressor.readthedocs.io/en/stable/)
 - [django-sass-processor](https://pypi.org/project/django-sass-processor/)
 
 
 ## Testing
 See [TESTING.md](https://github.com/FlashDrag/get-job/blob/master/docs/TESTING.md) for an overview of the app testing and debugging.
+
+[Back to top](#table-of-contents)
 
 ## Deployment, CI/CD
 The Get Job platform is deployed on the [Heroku](https://www.heroku.com/) cloud platform and can be accessed here https://get-job.live.
@@ -986,6 +1076,8 @@ The _Continuous Deployment_ workflow is implemented using [Heroku GitHub Integra
 
 ![heroku_pipeline](docs/images/deploy/Pipeline-Heroku.png)
 
+[Back to top](#table-of-contents)
+
 #### Deployment process
 <!-- TODO -->
 
@@ -1001,9 +1093,13 @@ The Get Job platform is based on my implementation of code, applying what I have
     - Branching Strategy diagram is taken from [ci-cd-pipelines-react-github-actions-heroku](https://blog.logrocket.com/ci-cd-pipelines-react-github-actions-heroku/) blog post.
     - Placeholder Company image by <a href="https://pixabay.com/users/ricinator-3282802/?utm_source=link-attribution&utm_medium=referral&utm_campaign=image&utm_content=2010880">Ricarda Mölck</a> from <a href="https://pixabay.com//?utm_source=link-attribution&utm_medium=referral&utm_campaign=image&utm_content=2010880">Pixabay</a>
 
+[Back to top](#table-of-contents)
+
 ## Contacts
 If you have any questions about the project, or you would like to contact me for any other reason, please feel free to contact me by email or via social media.
 
 [![Gmail Badge](https://img.shields.io/badge/-flashdrag@gmail.com-c14438?style=flat-square&logo=Gmail&logoColor=white&link=mailto:flashdrag@gmail.com)](mailto:flashdrag@gmail.com)
 
 [<img src='https://img.shields.io/badge/Telegram-333333?style=for-the-badge&logo=telegram&logoColor=white&style=plastic&logoWidth=20&labelColor=2CA5E0' alt='Telegram'>](https://t.me/flashdrag) [<img src='https://img.shields.io/badge/LinkedIn-333333?style=for-the-badge&logo=linkedin&logoColor=white&style=plastic&logoWidth=20&labelColor=0077B5' alt='Telegram'>](https://www.linkedin.com/in/pavlo-myskov)
+
+[Back to top](#table-of-contents)
