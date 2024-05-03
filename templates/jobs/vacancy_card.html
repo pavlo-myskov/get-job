@@ -1,5 +1,6 @@
 {% load static %}
 {% load time_filters %}
+{% load cloudinary %}
 
 <div class="col">
   <a name="{{ vacancy.id }}"></a>
@@ -53,8 +54,7 @@
           </li>
         </ul>
         <div class="col-4 mx-auto my-auto text-center">
-          <img src="{% static 'images/company-placeholder.png' %}" class="img-thumbnail" alt="company logo"
-            style="max-height: 80px;">
+          {% cloudinary  vacancy.employer.profile.logo style="max-height: 80px" class="img-thumbnail" alt="company logo" %}
         </div>
       </div>
       <div class="d-flex">
