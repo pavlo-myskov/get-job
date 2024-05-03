@@ -1044,64 +1044,11 @@ See [TESTING.md](https://github.com/FlashDrag/get-job/blob/master/docs/TESTING.m
 
 [Back to top](#table-of-contents)
 
-## Deployment, CI/CD
-The Get Job platform is deployed on the [Heroku](https://www.heroku.com/) cloud platform and can be accessed here https://get-job.live.
-The _get-job.live_ domain is registered with [Name.com](https://www.name.com/) and uses the [Heroku DNS service](https://devcenter.heroku.com/articles/custom-domains) to point to the Heroku app. Usually, Heroku free dyno plan does not support [SSL certificates for custom domains](https://devcenter.heroku.com/articles/ssl#dynos-and-certificate-options). But they provide a free SSL certificate for the _herokuapp.com_ domain. So the dyno is upgraded to the Hobby plan to enable the SSL certificate for the custom domain.
+## Deployment, Domain, CI/CD
+The Get Job platform is deployed on the [Heroku](https://www.heroku.com/) cloud platform and can be accessed here https://get-job.org or here https://get-job.herokuapp.com.
 
-*Heroku SSL certificates*
-![ssl_certificates](docs/images/deploy/ssl-certs.png)
-
-*Domain DNS settings - heroku.com*
-![domain_dns](docs/images/deploy/DNS-settings-heroku.png)
-
-*Domain DNS settings - name.com*
-![domain_dns](docs/images/deploy/Domain-Management-Name-com.png)
-
-- #### SSL Redirect
-SSL Redirect is enabled in the Django settings to automatically redirect all HTTP requests to HTTPS in the production environment.
-```
-development = os.getenv('DEVELOPMENT', False) == 'True'
-
-if development:
-    SECURE_SSL_REDIRECT = False
-    SESSION_COOKIE_SECURE = False
-    CSRF_COOKIE_SECURE = False
-else:
-    # redirect from http to https
-    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-    SECURE_SSL_REDIRECT = True
-    # set session and csrf cookies to secure
-    SESSION_COOKIE_SECURE = True
-    CSRF_COOKIE_SECURE = True
-```
-
-The build, test, and deployment processes of the app are _automated_ using Continuous Integration based on [GitHub Actions](https://docs.github.com/en/actions) and Continuous Deployment based on [Heroku Pipelines](https://devcenter.heroku.com/articles/pipelines).
-
-- #### Continuous Integration
-The GitHub repository is configured to use automated _Continuous Integration_ workflows. The workflow is triggered when a pull request is created and merged into the `develop` and/or `master` branches. When the workflow is triggered, it performs the build, lint, and test tasks.
-
-*GitHub Actions CI workflow*
-![ci_workflow](docs/images/deploy/github-Actions.png)
-
-![ci_workflow](docs/images/deploy/ci-github-action.png)
-
-
-- #### Continuous Deployment
-The _Continuous Deployment_ workflow is implemented using [Heroku GitHub Integration](https://devcenter.heroku.com/articles/github-integration). This feature allows me to connect the app to a GitHub repository and deploy the app automatically from the selected branch when a new commit is pushed to the repository. The GitHub integration also supports the option to [wait for CI to pass before deploying](https://devcenter.heroku.com/articles/github-integration#automatic-deploys) the app. So the app is deployed automatically only when the build and test tasks are passed.
-
-*Heroku GitHub Integration and Automatic Deploys*
-![heroku_github_integration](docs/images/deploy/Heroku-CD.png)
-
-[Heroku Pipelines](https://devcenter.heroku.com/articles/pipelines) is used to implement the _Continuous Deployment_ workflow. The pipeline is configured to deploy the app to the two environments - _Staging_ and _Production_:
-1. The _Staging_ stage is used to preview code changes and features before being deployed to production. This stage is triggered when a new commit is pushed to the `develop` branch or a pull request is merged into the branch from the feature branches. The app is deployed to the Heroku staging environment automatically when the tests are passed. The staging environment is available here https://get-job-dev.herokuapp.com.
-2. The _Production_ stage is a live environment for the app. It is triggered when a new commit is pushed to the `master` branch. It also deploys the app automatically when GitHub Actions CI is passed. The production environment is available by the link https://get-job.herokuapp.com.
-
-![heroku_pipeline](docs/images/deploy/Pipeline-Heroku.png)
-
-[Back to top](#table-of-contents)
-
-#### Deployment process
-- ##### Clone the repository
+### Deployment process
+- #### Clone the repository
 1. Go to the [GitHub repository](https://github.com/FlashDrag/get-job)
 2. Select the method to clone the repository between HTTPS, SSH, and GitHub CLI and copy the link.
 3. Open the terminal on your local machine and change the current working directory to the location where you want the cloned directory to be made.
@@ -1115,7 +1062,7 @@ The _Continuous Deployment_ workflow is implemented using [Heroku GitHub Integra
     ```
 ![clone_repo](docs/images/clone-repo.png)
 
-- ##### Heroku CLI deployment instructions
+- #### Heroku CLI deployment instructions
     - Install gunicorn to replace the Django development server:
         ```
         $ pip install gunicorn
@@ -1164,6 +1111,114 @@ The _Continuous Deployment_ workflow is implemented using [Heroku GitHub Integra
     **Note**: The `DEBUG` and `DEVELOPMENT` environment variables must be set to False in the Heroku app for the production environment to avoid exposing sensitive information.
 
 ![heroku config vars](docs/images/config-vars-heroku.png)
+
+### Domain and SSL Configuration
+
+- #### Domain
+
+<details>
+<summary>Namecheap.com (Active)</summary>
+The get-job.org domain is registered on namecheap.com
+
+- Buy domain
+- Configure the domain DNS settings in Heroku and Namecheap.com. The Heroku DNS settings are used to point the domain to the Heroku app. 
+*Domain DNS settings - heroku.com*
+![domain_dns_heroku](docs/images/deploy/DNS-settings-heroku-namecheap.png)
+
+*Domain DNS settings - namecheap.com*
+    1. Point DNS Target value from "get-job.org" to CNAME host "@"
+    2. Point DNS Target value from "www.get-job.org" to CNAME host "www"
+![domain_dns_namecheap](docs/images/deploy/dns-management-namecheap.png)
+
+- Add SSL certificate in Heroku.
+Usually, Heroku free dyno plan does not support [SSL certificates for custom domains](https://devcenter.heroku.com/articles/ssl#dynos-and-certificate-options). They only provide a free SSL certificate for the _herokuapp.com_ domain. In this case, the dyno is upgraded to the **Hobby** plan to enable the SSL certificate for the custom domain.
+
+![domain_dns](docs/images/deploy/heroku-ssl-1.png)
+
+---
+![domain_dns](docs/images/deploy/heroku-ssl-2.png)
+
+---
+![domain_dns](docs/images/deploy/heroku-namecheap-ssl-1.png)
+
+---
+- Wait for the DNS settings to propagate.
+![domain_dns](docs/images/deploy/heroku-namecheap-ssl-2.png)
+
+
+For more information about Connecting Heroku App to your Namecheap domain, see https://medium.com/@codemon_/connect-heroku-app-to-your-namecheap-domain-afde5d616a8
+</details>
+
+<details>
+<summary>Name.com (Expired)</summary>
+The get-job.live domain is registered with name.com and uses the [Heroku DNS service](https://devcenter.heroku.com/articles/custom-domains) to point to the Heroku app.
+
+- Buy domain
+- Configure the domain DNS settings in Heroku and Name.com. The Heroku DNS settings are used to point the domain to the Heroku app. 
+*Domain DNS settings - heroku.com*
+![domain_dns](docs/images/deploy/DNS-settings-heroku.png)
+
+*Domain DNS settings - name.com*
+![domain_dns](docs/images/deploy/Domain-Management-Name-com.png)
+
+- Configure SSL settings in Heroku. 
+Usually, Heroku free dyno plan does not support [SSL certificates for custom domains](https://devcenter.heroku.com/articles/ssl#dynos-and-certificate-options). But they provide a free SSL certificate for the _herokuapp.com_ domain. So the dyno is upgraded to the **Hobby** plan to enable the SSL certificate for the custom domain.
+
+![domain_dns](docs/images/deploy/heroku-ssl-1.png)
+
+---
+![domain_dns](docs/images/deploy/heroku-ssl-2.png)
+
+---
+![domain_dns](docs/images/deploy/heroku-namecom-ssl-1.png)
+
+---
+![domain_dns](docs/images/deploy/heroku-namecom-ssl-2.png)
+</details>
+
+- #### Setup SSL Redirect
+SSL Redirect is enabled in the Django settings to automatically redirect all HTTP requests to HTTPS in the production environment.
+```
+development = os.getenv('DEVELOPMENT', False) == 'True'
+
+if development:
+    SECURE_SSL_REDIRECT = False
+    SESSION_COOKIE_SECURE = False
+    CSRF_COOKIE_SECURE = False
+else:
+    # redirect from http to https
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+    SECURE_SSL_REDIRECT = True
+    # set session and csrf cookies to secure
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+```
+
+### CI/CD
+The build, test, and deployment processes of the app are _automated_ using Continuous Integration based on [GitHub Actions](https://docs.github.com/en/actions) and Continuous Deployment based on [Heroku Pipelines](https://devcenter.heroku.com/articles/pipelines).
+
+- #### Continuous Integration
+The GitHub repository is configured to use automated _Continuous Integration_ workflows. The workflow is triggered when a pull request is created and merged into the `develop` and/or `master` branches. When the workflow is triggered, it performs the build, lint, and test tasks.
+
+*GitHub Actions CI workflow*
+![ci_workflow](docs/images/deploy/github-Actions.png)
+
+![ci_workflow](docs/images/deploy/ci-github-action.png)
+
+
+- #### Continuous Deployment
+The _Continuous Deployment_ workflow is implemented using [Heroku GitHub Integration](https://devcenter.heroku.com/articles/github-integration). This feature allows me to connect the app to a GitHub repository and deploy the app automatically from the selected branch when a new commit is pushed to the repository. The GitHub integration also supports the option to [wait for CI to pass before deploying](https://devcenter.heroku.com/articles/github-integration#automatic-deploys) the app. So the app is deployed automatically only when the build and test tasks are passed.
+
+*Heroku GitHub Integration and Automatic Deploys*
+![heroku_github_integration](docs/images/deploy/Heroku-CD.png)
+
+[Heroku Pipelines](https://devcenter.heroku.com/articles/pipelines) is used to implement the _Continuous Deployment_ workflow. The pipeline is configured to deploy the app to the two environments - _Staging_ and _Production_:
+1. The _Staging_ stage is used to preview code changes and features before being deployed to production. This stage is triggered when a new commit is pushed to the `develop` branch or a pull request is merged into the branch from the feature branches. The app is deployed to the Heroku staging environment automatically when the tests are passed. The staging environment is available here https://get-job-dev.herokuapp.com.
+2. The _Production_ stage is a live environment for the app. It is triggered when a new commit is pushed to the `master` branch. It also deploys the app automatically when GitHub Actions CI is passed. The production environment is available by the link https://get-job.herokuapp.com.
+
+![heroku_pipeline](docs/images/deploy/Pipeline-Heroku.png)
+
+[Back to top](#table-of-contents)
 
 
 ## Credits
