@@ -43,8 +43,8 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost',
                  'get-job-dev.herokuapp.com',
                  'get-job.herokuapp.com',
-                 'get-job.live',
-                 'www.get-job.live']
+                 'get-job.org',
+                 'www.get-job.org']
 
 # Clickjacking protection. Means that you can
 # only embed your site in an iframe on your own domain.
