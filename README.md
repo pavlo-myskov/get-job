@@ -10,7 +10,7 @@
 
 
 ## Overview
-The relevance of job search in our time constantly increases. [Get Job](https://get-job.live) is an online Job Platform that helps Jobseekers to get desirable jobs and Employers find the right candidates.
+The relevance of job search in our time constantly increases. [Get Job](https://get-job.org) is an online Job Platform that helps Jobseekers to get desirable jobs and Employers find the right candidates.
 This platform presents two distinct modes: _Jobseeker Mode_ and _Employer Mode_.
 
 The *Jobseeker Mode* equips users with tools to explore job opportunities, apply to open positions, and construct their resumes, all while keeping track of their applications.
@@ -18,7 +18,7 @@ Conversely, the Employer Mode empowers employers to advertise vacancies, sift th
 
 The Get Job platform has been intuitively designed, ensuring simplicity and ease of navigation as users engage with the app to fulfill their specific needs. The platform uncovers a broad range of features progressively as users delve deeper into its use. It allows users to manage their data up to the fact that each application or job offer is stored as a snapshot. Thus even if the job is closed or edited, the user can always view the application in the state at the time of submission, as well as Employer can view the Jobseeker's resume at the time of application. Also, Get Job provides users with the ability to receive notifications about new job offers(for Jobseekers) and applications(for Employers), when the resume or vacancy is approved or rejected. The user can disable email notifications at any time and view them only in the app.
 
-Live Demo: https://get-job.live
+Live Demo: https://get-job.org
 
 Heroku: https://get-job.herokuapp.com
 
@@ -1120,17 +1120,15 @@ The Get Job platform is deployed on the [Heroku](https://www.heroku.com/) cloud 
 <summary>Namecheap.com (Active)</summary>
 The get-job.org domain is registered on namecheap.com
 
-- Buy domain
-- Configure the domain DNS settings in Heroku and Namecheap.com. The Heroku DNS settings are used to point the domain to the Heroku app. 
-*Domain DNS settings - heroku.com*
+- Add two domains to your Heroku app. 
 ![domain_dns_heroku](docs/images/deploy/DNS-settings-heroku-namecheap.png)
 
-*Domain DNS settings - namecheap.com*
-    1. Point DNS Target value from "get-job.org" to CNAME host "@"
-    2. Point DNS Target value from "www.get-job.org" to CNAME host "www"
+- Configure DNS settings on Namecheap
+    1. Set DNS Target value from subdomain "www.get-job.org" to CNAME host "www"
+    2. Set DNS Target value from root domain "get-job.org" to ALIAS host "@"
 ![domain_dns_namecheap](docs/images/deploy/dns-management-namecheap.png)
 
-- Add SSL certificate in Heroku.
+- Add SSL certificate in Heroku using ACM (Automated Certificate Management).
 Usually, Heroku free dyno plan does not support [SSL certificates for custom domains](https://devcenter.heroku.com/articles/ssl#dynos-and-certificate-options). They only provide a free SSL certificate for the _herokuapp.com_ domain. In this case, the dyno is upgraded to the **Hobby** plan to enable the SSL certificate for the custom domain.
 
 ![domain_dns](docs/images/deploy/heroku-ssl-1.png)
@@ -1141,12 +1139,13 @@ Usually, Heroku free dyno plan does not support [SSL certificates for custom dom
 ---
 ![domain_dns](docs/images/deploy/heroku-namecheap-ssl-1.png)
 
----
-- Wait for the DNS settings to propagate.
+
+- Wait for the DNS settings to propagate and heroku to issue the SSL certificate. [It usually takes between 45 and 60 minutes to generate a TLS certificate for your app's custom domains.](https://devcenter.heroku.com/articles/automated-certificate-management#view-your-certificate-status) 
 ![domain_dns](docs/images/deploy/heroku-namecheap-ssl-2.png)
 
 
-For more information about Connecting Heroku App to your Namecheap domain, see https://medium.com/@codemon_/connect-heroku-app-to-your-namecheap-domain-afde5d616a8
+For more information about Connecting Heroku App to your Namecheap domain, see 
+https://devcenter.heroku.com/articles/custom-domains and https://devcenter.heroku.com/articles/automated-certificate-management#view-your-certificate-status
 </details>
 
 <details>
