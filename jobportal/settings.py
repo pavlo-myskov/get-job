@@ -37,6 +37,12 @@ if DEBUG:
 else:
     print('Debug mode is OFF.')
 
+DEBUG_PROPAGATE_EXCEPTIONS = os.getenv("DEBUG_PROPAGATE_EXCEPTIONS", False) == "True"
+if DEBUG_PROPAGATE_EXCEPTIONS:
+    print("Debug propagate exceptions is ON.")
+else:
+    print("Debug propagate exceptions is OFF.")
+
 SECRET_KEY = os.getenv('SECRET_KEY')
 
 
